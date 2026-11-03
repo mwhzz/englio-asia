@@ -1,0 +1,375 @@
+/* The learning path on the plain page: unit cards with lessons on a soft curve. */
+
+.trail {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.trail-unit {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The shared unit sign, sitting in the page flow instead of on a scene. */
+.trail .usign {
+  position: relative;
+  width: 100%;
+  background: var(--ios-cell);
+  transform: none;
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+.trail-stops {
+  position: relative;
+}
+
+.trail-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  overflow: visible;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.trail-seg {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.trail-seg.is-done {
+  stroke: color-mix(in srgb, var(--u) 45%, transparent);
+}
+
+/* Toward the next lesson: dots in the unit's color, drifting forward. */
+.trail-seg.is-current {
+  stroke: color-mix(in srgb, var(--u) 60%, transparent);
+  stroke-dasharray: 0.1 11;
+  animation: trail-flow 1.4s linear infinite;
+}
+
+.trail-seg.is-locked {
+  stroke: var(--ios-separator);
+  stroke-dasharray: 0.1 11;
+}
+
+@keyframes trail-flow {
+  to {
+    stroke-dashoffset: -11.1;
+  }
+}
+
+/* ---------- Lesson stops ---------- */
+
+.tstop {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  animation: tstop-in 0.4s var(--ease) both;
+}
+
+.tstop.is-open {
+  z-index: 6;
+}
+
+@keyframes tstop-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+}
+
+.tstop-btn {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.tstop-btn:active {
+  opacity: 0.7;
+}
+
+.tstop-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--u) 60%, transparent);
+  outline-offset: 3px;
+}
+
+/* Finished: filled with the unit's color. */
+.tstop-done .tstop-btn {
+  background: var(--u);
+  color: #fff;
+}
+
+/* A finished unit's trophy turns gold. */
+.tstop-done.is-final .tstop-btn {
+  background: #ffcc00;
+}
+
+/* Next: bigger, with a halo and a ripple. */
+.tstop-current .tstop-btn {
+  width: 72px;
+  height: 72px;
+  padding-left: 3px;
+  background: var(--u);
+  color: #fff;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--u) 18%, transparent);
+}
+
+/* Locked: a quiet white cell with a lock. */
+.tstop-locked .tstop-btn {
+  background: var(--ios-cell);
+  color: var(--ios-tertiary);
+  box-shadow: inset 0 0 0 0.5px var(--ios-separator);
+}
+
+/* The lesson's name under its stop. */
+.tstop-name {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: 140px;
+  /* A pill in the page color, so the line passes behind the name. */
+  padding: 2px 8px 3px;
+  border-radius: 10px;
+  background: var(--ios-bg);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.tstop-name small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+.tstop-locked .tstop-name {
+  color: var(--ios-secondary);
+}
+
+.tstop-locked .tstop-name small {
+  color: var(--ios-tertiary);
+}
+
+/* One-tap start under the next lesson. */
+.tstop-start {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 7px 18px 8px;
+  border: none;
+  border-radius: 999px;
+  background: var(--ios-cell);
+  color: var(--u);
+  line-height: 1.15;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 0.5px var(--ios-separator);
+  transform: translateX(-50%);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.tstop-start:active {
+  opacity: 0.7;
+}
+
+.tstop-start:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--u) 60%, transparent);
+  outline-offset: 3px;
+}
+
+.tstop-start strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.tstop-start small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ios-secondary);
+}
+
+/* The lesson card opens right under the stop. */
+.tstop .rpop {
+  top: calc(100% + 14px);
+  background: var(--ios-cell);
+}
+
+.trail-end {
+  align-self: center;
+  margin: 4px 0 0;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 14px;
+}
+
+/* ---------- Units further ahead, folded into rows ---------- */
+
+.urow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 11px;
+  border: none;
+  border-radius: 18px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  text-align: left;
+  box-shadow: inset 0 0 0 0.5px var(--glass-edge);
+  cursor: pointer;
+  transition: transform 0.3s var(--spring);
+}
+
+.urow + .urow {
+  margin-top: -8px;
+}
+
+.urow:active {
+  transform: scale(0.98);
+}
+
+.urow:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--u) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.urow-num {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--u) 16%, transparent);
+  color: var(--u);
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.urow-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.urow-text strong {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.urow-text span {
+  font-size: 12px;
+  color: var(--ios-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.urow-chevron {
+  flex: none;
+  color: var(--ios-tertiary);
+}
+
+/* ---------- The unit test at the end of each unit ---------- */
+
+.uts {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 16px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  text-align: left;
+  box-shadow: inset 0 0 0 1.5px var(--ios-separator);
+  cursor: pointer;
+}
+
+.uts:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.uts-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--ios-fill);
+  color: var(--ios-tertiary);
+}
+
+.uts.is-ready {
+  box-shadow: inset 0 0 0 2px var(--u);
+}
+
+.uts.is-ready .uts-icon {
+  background: var(--u);
+  color: #fff;
+}
+
+.uts.is-passed .uts-icon {
+  background: #ffcc00;
+  color: #fff;
+}
+
+.uts-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.uts-text strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.uts-text small {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.uts-go {
+  flex: none;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--u);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}

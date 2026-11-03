@@ -1,0 +1,612 @@
+/* Admin panel: plain iOS-style cells on the grouped background, a sidebar on wide screens. */
+
+body {
+  background: var(--ios-bg);
+  color: var(--ios-label);
+}
+
+.ad-shell {
+  min-height: 100dvh;
+  display: flex;
+}
+
+/* ---------- Sidebar (a top bar on phones) ---------- */
+
+.ad-nav {
+  position: sticky;
+  top: 0;
+  flex: none;
+  width: 220px;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 18px 12px;
+  border-right: 0.5px solid var(--ios-separator);
+  background: var(--ios-cell);
+}
+
+.ad-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 8px 18px;
+}
+
+.ad-brand small {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ad-nav-item {
+  display: block;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--ios-label);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+}
+
+.ad-nav-item:hover {
+  background: var(--ios-fill);
+}
+
+.ad-nav-item.is-on {
+  background: color-mix(in srgb, var(--ios-blue) 12%, transparent);
+  color: var(--ios-blue);
+  font-weight: 600;
+}
+
+.ad-nav-gap {
+  flex: 1;
+}
+
+.ad-main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px clamp(16px, 4vw, 40px) 60px;
+}
+
+@media (max-width: 760px) {
+  .ad-shell {
+    flex-direction: column;
+  }
+  .ad-nav {
+    width: auto;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    z-index: 5;
+    padding: 10px 12px;
+    border-right: none;
+    border-bottom: 0.5px solid var(--ios-separator);
+  }
+  .ad-brand {
+    margin: 0 8px 0 0;
+  }
+  .ad-nav-gap {
+    display: none;
+  }
+}
+
+/* ---------- Page pieces ---------- */
+
+.ad-page {
+  max-width: 980px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ad-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ad-head h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.ad-head h1 span {
+  font-weight: 600;
+  color: var(--ios-secondary);
+}
+
+.ad-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--ios-cell);
+}
+
+.ad-card h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ad-card h2 span {
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+.ad-card h2 em,
+.ad-section-head em {
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.ad-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.ad-section-head h2 {
+  margin: 0;
+}
+
+.ad-unit .ad-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 50%;
+  background: var(--u);
+}
+
+.ad-muted {
+  margin: 0;
+  color: var(--ios-secondary);
+  font-size: 14px;
+}
+
+.ad-error {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--ios-red) 10%, transparent);
+  color: var(--ios-red);
+  font-size: 14px;
+}
+
+.ad-empty {
+  padding: 10px 0;
+  color: var(--ios-tertiary);
+  font-size: 14px;
+}
+
+.ad-link {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ios-blue);
+  font-size: 15px;
+}
+
+.ad-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ad-tools .ad-input {
+  flex: 1;
+  min-width: 160px;
+  max-width: 320px;
+}
+
+/* ---------- Buttons and inputs ---------- */
+
+.ad-btn {
+  height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 9px;
+  background: var(--ios-fill);
+  color: var(--ios-blue);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.ad-btn:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.ad-btn:disabled {
+  opacity: 0.4;
+}
+
+.ad-btn.is-small {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.ad-btn.is-primary {
+  background: var(--ios-blue);
+  color: #fff;
+}
+
+.ad-btn.is-danger {
+  color: var(--ios-red);
+}
+
+.ad-input {
+  width: 100%;
+  padding: 9px 11px;
+  border: none;
+  border-radius: 9px;
+  background: var(--ios-bg);
+  box-shadow: inset 0 0 0 0.5px var(--ios-separator);
+  color: var(--ios-label);
+  font: inherit;
+  font-size: 15px;
+  resize: vertical;
+}
+
+.ad-input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ios-blue);
+}
+
+.ad-color {
+  width: 64px;
+  height: 38px;
+  padding: 0;
+  border: none;
+  border-radius: 9px;
+  background: none;
+}
+
+.ad-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 8px 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ios-blue) 5%, var(--ios-cell));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ios-blue) 20%, transparent);
+}
+
+.ad-card > .ad-form {
+  margin: 0;
+}
+
+.ad-form h3 {
+  margin: 6px 0 0;
+  font-size: 15px;
+}
+
+.ad-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ad-field > span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ios-secondary);
+}
+
+.ad-field small {
+  font-size: 12px;
+  color: var(--ios-secondary);
+}
+
+.ad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .ad-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ad-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--ios-cell);
+}
+
+.ad-tip .ad-btn {
+  align-self: flex-start;
+}
+
+/* ---------- Lists ---------- */
+
+.ad-list {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.ad-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 0;
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.ad-item-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.ad-item-open {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  padding: 4px 0;
+  border: none;
+  background: none;
+  color: var(--ios-label);
+  font-size: 15px;
+  text-align: left;
+}
+
+.ad-item-open:hover strong {
+  color: var(--ios-blue);
+}
+
+.ad-item-open span {
+  color: var(--ios-secondary);
+}
+
+.ad-item-open small {
+  flex-basis: 100%;
+  color: var(--ios-tertiary);
+  font-size: 12px;
+}
+
+/* ---------- Dashboard ---------- */
+
+.ad-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.ad-stat small {
+  display: block;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.ad-stat strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ad-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.ad-bars {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ad-bars li {
+  display: grid;
+  grid-template-columns: 9.5em 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.ad-bars li > span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ad-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+
+.ad-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ios-blue);
+}
+
+.ad-bars em {
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Learners table ---------- */
+
+.ad-table-wrap {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.ad-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ad-table th,
+.ad-table td {
+  padding: 10px 14px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ad-table th {
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ad-table td {
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.ad-table tbody tr {
+  cursor: pointer;
+}
+
+.ad-table tbody tr:hover {
+  background: color-mix(in srgb, var(--ios-blue) 6%, transparent);
+}
+
+.ad-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- One learner ---------- */
+
+.ad-dl {
+  margin: 0;
+}
+
+.ad-dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 0.5px solid var(--ios-separator);
+  font-size: 15px;
+}
+
+.ad-dl div:first-child {
+  border-top: none;
+}
+
+.ad-dl dt {
+  color: var(--ios-secondary);
+}
+
+.ad-dl dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.ad-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.ad-chips li {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  font-size: 13px;
+}
+
+.ad-chips em {
+  color: var(--ios-secondary);
+  font-style: normal;
+}
+
+/* ---------- Sign in ---------- */
+
+.ad-login {
+  width: min(360px, calc(100% - 32px));
+  margin: 14vh auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--ios-cell);
+}
+
+.ad-login h1 {
+  margin: 6px 0 0;
+  font-size: 24px;
+}
+
+/* Course editor: the format help and the course text. */
+.ad-help {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--ad-soft, rgba(120, 120, 128, 0.1));
+  font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+}
+
+.ad-code {
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, 'Anek Bangla', monospace;
+  tab-size: 2;
+}
+
+.ad-dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.ad-bars em.ad-warn {
+  color: #ff3b30;
+  font-weight: 600;
+}

@@ -1,0 +1,10 @@
+.shell {
+  min-height: 100dvh;
+}
+
+/* Shown for a moment while the onboarding code loads. */
+.ob-loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+}

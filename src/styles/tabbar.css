@@ -1,0 +1,63 @@
+/* Floating Liquid Glass tab bar. */
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tabbar-glass {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    inset 0 0 0 0.5px var(--glass-edge),
+    0 14px 34px -14px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.tabbar-item {
+  min-width: clamp(66px, 20vw, 88px);
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s,
+    transform 0.3s var(--spring);
+}
+
+.tabbar-item:active {
+  transform: scale(0.92);
+}
+
+/* The selected tab sits in a lighter glass bubble, tinted blue. */
+.tabbar-item.is-on {
+  background: color-mix(in srgb, var(--ios-blue) 14%, transparent);
+  color: var(--ios-blue);
+}
+
+.tabbar-item:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ios-blue) 50%, transparent);
+  outline-offset: 2px;
+}

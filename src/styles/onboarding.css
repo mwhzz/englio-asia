@@ -1,0 +1,1440 @@
+/*
+ * Onboarding in the iOS visual language: system font, grouped backgrounds,
+ * flat filled buttons, hairline separators and Apple system colors.
+ * Scoped under .ob.
+ */
+
+.ob {
+  --ob-bg: #f2f2f7;
+  --ob-cell: #ffffff;
+  --ob-label: #000000;
+  --ob-secondary: rgba(60, 60, 67, 0.6);
+  --ob-tertiary: rgba(60, 60, 67, 0.3);
+  --ob-fill: rgba(120, 120, 128, 0.12);
+  --ob-fill-strong: rgba(120, 120, 128, 0.2);
+  --ob-separator: rgba(60, 60, 67, 0.29);
+  --ob-glass: rgba(255, 255, 255, 0.8);
+  --ob-glass-bg: rgba(255, 255, 255, 0.6);
+  --ob-glass-hi: rgba(255, 255, 255, 0.95);
+  --ob-glass-edge: rgba(0, 0, 0, 0.08);
+
+  --ob-blue: #007aff;
+  --ob-blue-tint: rgba(0, 122, 255, 0.12);
+  --ob-green: #34c759;
+  --ob-red: #ff3b30;
+  --ob-red-deep: #c7271e;
+
+  --ob-land-base: #f3f6f4;
+  --ob-div-mix: 30%;
+  --ob-light-opacity: 1;
+  --ob-dot: #007aff;
+  --ob-aur-1: rgba(52, 199, 89, 0.22);
+  --ob-aur-2: rgba(0, 122, 255, 0.18);
+  --ob-aur-3: rgba(255, 149, 0, 0.14);
+  --ob-land-a: #dcf1e2;
+  --ob-land-b: #b4dfc0;
+  --ob-land-dim: #e5f2e9;
+  --ob-land-hover: #c6e8cf;
+  --ob-border: #ffffff;
+  --ob-side: #93bc9f;
+  --ob-shadow: rgba(30, 60, 40, 0.22);
+  --ob-label-ink: #1f3b2a;
+  --ob-label-halo: rgba(255, 255, 255, 0.8);
+
+  --ob-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --ob-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--ob-bg);
+  color: var(--ob-label);
+  font-family: 'Inter', 'Anek Bangla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .ob {
+    --ob-bg: #000000;
+    --ob-cell: #1c1c1e;
+    --ob-label: #ffffff;
+    --ob-secondary: rgba(235, 235, 245, 0.6);
+    --ob-tertiary: rgba(235, 235, 245, 0.3);
+    --ob-fill: rgba(118, 118, 128, 0.24);
+    --ob-fill-strong: rgba(118, 118, 128, 0.32);
+    --ob-separator: rgba(84, 84, 88, 0.65);
+    --ob-glass: rgba(44, 44, 46, 0.8);
+    --ob-glass-bg: rgba(72, 72, 78, 0.38);
+    --ob-glass-hi: rgba(255, 255, 255, 0.2);
+    --ob-glass-edge: rgba(255, 255, 255, 0.12);
+
+    --ob-blue: #0a84ff;
+    --ob-blue-tint: rgba(10, 132, 255, 0.18);
+    --ob-green: #30d158;
+    --ob-red: #ff453a;
+    --ob-red-deep: #b3241c;
+
+    --ob-land-base: #1b2420;
+    --ob-div-mix: 38%;
+    --ob-light-opacity: 0.45;
+    --ob-dot: #ffffff;
+    --ob-aur-1: rgba(48, 209, 88, 0.2);
+    --ob-aur-2: rgba(10, 132, 255, 0.24);
+    --ob-aur-3: rgba(191, 90, 242, 0.16);
+    --ob-land-a: #2f4d39;
+    --ob-land-b: #22392a;
+    --ob-land-dim: #263c2e;
+    --ob-land-hover: #3b6047;
+    --ob-border: rgba(0, 0, 0, 0.7);
+    --ob-side: #101d15;
+    --ob-shadow: rgba(0, 0, 0, 0.8);
+    --ob-label-ink: #e2efe5;
+    --ob-label-halo: rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* Chosen in settings: dark even when the phone is in light mode. */
+:root[data-theme='dark'] .ob {
+  --ob-bg: #000000;
+  --ob-cell: #1c1c1e;
+  --ob-label: #ffffff;
+  --ob-secondary: rgba(235, 235, 245, 0.6);
+  --ob-tertiary: rgba(235, 235, 245, 0.3);
+  --ob-fill: rgba(118, 118, 128, 0.24);
+  --ob-fill-strong: rgba(118, 118, 128, 0.32);
+  --ob-separator: rgba(84, 84, 88, 0.65);
+  --ob-glass: rgba(44, 44, 46, 0.8);
+  --ob-glass-bg: rgba(72, 72, 78, 0.38);
+  --ob-glass-hi: rgba(255, 255, 255, 0.2);
+  --ob-glass-edge: rgba(255, 255, 255, 0.12);
+
+  --ob-blue: #0a84ff;
+  --ob-blue-tint: rgba(10, 132, 255, 0.18);
+  --ob-green: #30d158;
+  --ob-red: #ff453a;
+  --ob-red-deep: #b3241c;
+
+  --ob-land-base: #1b2420;
+  --ob-div-mix: 38%;
+  --ob-light-opacity: 0.45;
+  --ob-dot: #ffffff;
+  --ob-aur-1: rgba(48, 209, 88, 0.2);
+  --ob-aur-2: rgba(10, 132, 255, 0.24);
+  --ob-aur-3: rgba(191, 90, 242, 0.16);
+  --ob-land-a: #2f4d39;
+  --ob-land-b: #22392a;
+  --ob-land-dim: #263c2e;
+  --ob-land-hover: #3b6047;
+  --ob-border: rgba(0, 0, 0, 0.7);
+  --ob-side: #101d15;
+  --ob-shadow: rgba(0, 0, 0, 0.8);
+  --ob-label-ink: #e2efe5;
+  --ob-label-halo: rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- Screens ---------- */
+
+.ob-screen {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 20px calc(14px + env(safe-area-inset-bottom));
+  /* The map layer sits underneath; only real controls catch taps. */
+  pointer-events: none;
+}
+
+.ob-screen > * {
+  pointer-events: auto;
+}
+
+.ob-screen > .ob-map-slot {
+  flex: 1;
+  min-height: 0;
+  /* Full-bleed: the map spans the whole window width. */
+  margin: 0 calc(50% - 50vw);
+  pointer-events: none;
+}
+
+.ob-scroll {
+  overflow-y: auto;
+  pointer-events: auto;
+  overscroll-behavior: contain;
+}
+
+/* In a scrolling screen items keep their size instead of being squeezed. */
+.ob-scroll > * {
+  flex-shrink: 0;
+}
+
+.ob-grow {
+  flex: 1 0 0;
+}
+
+.ob-head {
+  padding-top: 2px;
+  text-align: center;
+}
+
+.ob-title {
+  margin: 0;
+  font-size: clamp(28px, 8vw, 34px);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.ob-sub {
+  margin: 4px 0 0;
+  font-size: 17px;
+  line-height: 1.35;
+  color: var(--ob-secondary);
+}
+
+/* Each screen's pieces slide in from the direction of travel. */
+.ob-rise {
+  animation: ob-slide 0.5s var(--ob-ease) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 40ms);
+}
+
+@keyframes ob-slide {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir, 1) * 24px));
+  }
+}
+
+/* ---------- Welcome ---------- */
+
+.ob-brand {
+  display: flex;
+  justify-content: center;
+  padding-top: calc(10px + env(safe-area-inset-top));
+}
+
+.ob-copy {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.ob-welcome .ob-rise {
+  animation-name: ob-up;
+  animation-duration: 0.7s;
+  animation-delay: calc(1.25s + var(--i, 0) * 110ms);
+}
+
+.ob-welcome .ob-brand {
+  animation-delay: 0.1s;
+}
+
+@keyframes ob-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---------- Nav bar ---------- */
+
+.ob-nav {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  padding: calc(8px + env(safe-area-inset-top)) 16px 2px;
+}
+
+.ob-back {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  color: var(--ob-label);
+  cursor: pointer;
+  transition: transform 0.3s var(--ob-spring);
+}
+
+.ob-back:active {
+  transform: scale(0.88);
+}
+
+/* iOS page control: the current page stretches into a capsule. */
+.ob-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.ob-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ob-fill-strong);
+  transition:
+    width 0.5s var(--ob-spring),
+    background 0.3s;
+}
+
+.ob-dots .is-done {
+  background: color-mix(in srgb, var(--ob-label) 45%, transparent);
+}
+
+.ob-dots .is-current {
+  width: 24px;
+  background: var(--ob-blue);
+}
+
+/* ---------- Buttons ---------- */
+
+/* Tinted Liquid Glass capsule. */
+.ob-button {
+  width: 100%;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ob-blue) 82%, white), var(--ob-blue) 60%);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.12),
+    0 14px 26px -14px color-mix(in srgb, var(--ob-blue) 80%, black);
+  cursor: pointer;
+  transition:
+    transform 0.35s var(--ob-spring),
+    box-shadow 0.3s,
+    filter 0.2s;
+}
+
+.ob-button:active:not(:disabled) {
+  transform: scale(0.96);
+  filter: brightness(1.08);
+}
+
+.ob-button:disabled {
+  background: var(--ob-glass-bg);
+  color: var(--ob-tertiary);
+  box-shadow:
+    inset 0 1px 0 var(--ob-glass-hi),
+    inset 0 0 0 0.5px var(--ob-glass-edge);
+  cursor: default;
+}
+
+.ob-button:focus-visible,
+.ob-list button:focus-visible,
+.ob-search-btn:focus-visible,
+.ob-back:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ob-blue) 50%, transparent);
+  outline-offset: 2px;
+}
+
+/* Liquid Glass surface for floating controls and cards. */
+.ob :is(.ob-back, .ob-search-btn, .ob-chip, .ob-field, .ob-alt-item:not(.is-on), .bdmap-control-group, .bdmap-control-single) {
+  background: var(--ob-glass-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 var(--ob-glass-hi),
+    inset 0 0 0 0.5px var(--ob-glass-edge),
+    0 10px 26px -14px rgba(0, 0, 0, 0.3);
+}
+
+.ob :is(.ob-search-btn, .ob-alt-item, .ob-field) {
+  border-radius: 999px;
+}
+
+.ob :is(.bdmap-control-group, .bdmap-control-single) {
+  border-radius: 22px;
+}
+
+.ob .ob-chip {
+  border-radius: 22px;
+}
+
+/* ---------- Map layer ---------- */
+
+.ob-map-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition:
+    transform 0.75s var(--ob-ease),
+    width 0.75s var(--ob-ease),
+    height 0.75s var(--ob-ease),
+    opacity 0.35s ease;
+}
+
+.ob-map-layer.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bdmap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.bdmap-clip {
+  width: 100%;
+  height: 100%;
+  perspective: 1300px;
+}
+
+/* While picking, the zoomed map is clipped with soft edges. */
+.bdmap-pick .bdmap-clip {
+  overflow: hidden;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.bdmap-tilt {
+  width: 100%;
+  height: 100%;
+  padding: 3% 4%;
+  transform-origin: 50% 55%;
+  transform: rotateX(8deg);
+  transition: transform 1.2s var(--ob-ease);
+}
+
+.bdmap-intro .bdmap-tilt {
+  padding: 0 4%;
+  transform: rotateX(26deg) rotateZ(-4deg) scale(0.9);
+  transition-delay: 0.9s;
+}
+
+.bdmap:not(.is-ready) .bdmap-tilt {
+  transform: rotateX(0deg) scale(0.94);
+}
+
+.bdmap-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bdmap-intro .bdmap-svg {
+  animation: bd-float 6s 2.4s ease-in-out infinite;
+}
+
+.bdmap-pick .bdmap-svg {
+  touch-action: none;
+  cursor: grab;
+}
+
+.bdmap-pick .bdmap-svg.is-gesturing {
+  cursor: grabbing;
+}
+
+.bdmap-zoom {
+  transform-origin: 0 0;
+  transition: transform 0.7s var(--ob-ease);
+}
+
+/* Follow the finger exactly while dragging or pinching. */
+.is-gesturing .bdmap-zoom {
+  transition: none;
+}
+
+.bdmap-side {
+  fill: var(--ob-side);
+}
+
+.bdmap-shadow {
+  fill: var(--ob-shadow);
+}
+
+.bdmap-land path {
+  fill: color-mix(in srgb, var(--div) var(--ob-div-mix), var(--ob-land-base));
+  stroke: var(--ob-border);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.3s ease;
+}
+
+.bdmap-pick .bdmap-land path {
+  cursor: pointer;
+}
+
+.has-selection .bdmap-land path {
+  fill: color-mix(in srgb, var(--div) calc(var(--ob-div-mix) * 0.45), var(--ob-land-base));
+}
+
+@media (hover: hover) {
+  .bdmap-pick .bdmap-land path:hover {
+    fill: color-mix(in srgb, var(--div) calc(var(--ob-div-mix) + 18%), var(--ob-land-base));
+  }
+}
+
+.bdmap-labels text,
+.bdmap-lift text {
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-family: 'Anek Bangla', sans-serif;
+  font-stretch: 85%;
+  font-weight: 600;
+  fill: var(--ob-label-ink);
+  paint-order: stroke;
+  stroke: var(--ob-label-halo);
+  stroke-width: 2.2px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.has-selection .bdmap-labels text {
+  opacity: 0.6;
+}
+
+/* The selected district rises out of the slab. */
+.bdmap-lift {
+  pointer-events: none;
+  transform: translateY(-8px);
+  animation: bd-lift 0.55s var(--ob-spring) both;
+}
+
+.bdmap-lift-side {
+  fill: var(--ob-red-deep);
+}
+
+.bdmap-lift-top {
+  fill: var(--ob-red);
+  stroke: #fff;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 6px 8px rgba(120, 10, 10, 0.3));
+}
+
+.bdmap-lift text {
+  fill: #fff;
+  font-weight: 700;
+  stroke: rgba(140, 20, 15, 0.5);
+}
+
+/* Floating zoom buttons, like Apple Maps. */
+.bdmap-controls {
+  position: absolute;
+  top: 12px;
+  right: max(16px, calc(50% - 244px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: bd-fade 0.4s ease both;
+}
+
+.bdmap-control-group,
+.bdmap-control-single {
+  border-radius: 12px;
+  background: var(--ob-glass);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 0 0 0.5px var(--ob-separator),
+    0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.bdmap-control-group {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bdmap-control-group button,
+.bdmap-control-single {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: none;
+  color: var(--ob-blue);
+  cursor: pointer;
+}
+
+.bdmap-control-single {
+  background: var(--ob-glass);
+  animation: ob-pop 0.3s var(--ob-spring) both;
+}
+
+.bdmap-control-group button + button {
+  box-shadow: inset 0 0.5px 0 var(--ob-separator);
+}
+
+.bdmap-control-group button:disabled {
+  color: var(--ob-tertiary);
+  cursor: default;
+}
+
+.bdmap-control-group button:active:not(:disabled),
+.bdmap-control-single:active {
+  background: var(--ob-fill);
+}
+
+/* Intro: borders draw from north to south, then fill, then the slab and names appear. */
+.bdmap-intro .bdmap-land path {
+  vector-effect: none;
+  stroke-width: 1.2;
+  animation: bd-draw 1.15s var(--ob-ease) var(--d) both;
+}
+
+.bdmap-intro .bdmap-depth {
+  animation: bd-fade 0.9s 1s ease both;
+}
+
+.bdmap-intro .bdmap-light {
+  animation: bd-fade 0.9s 1s ease both;
+}
+
+@keyframes bd-draw {
+  0% {
+    stroke: var(--ob-blue);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    fill-opacity: 0;
+  }
+  55% {
+    stroke: var(--ob-blue);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
+  }
+  100% {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+
+@keyframes bd-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes bd-float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes bd-lift {
+  from {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+}
+
+/* ---------- District step ---------- */
+
+.ob-picked {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 62px;
+}
+
+.ob-chip {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--ob-cell);
+  animation: ob-pop 0.4s var(--ob-spring) both;
+}
+
+.ob-chip strong {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ob-chip small {
+  display: block;
+  font-size: 13px;
+  color: var(--ob-secondary);
+}
+
+.ob-chip-dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--dot, var(--ob-red));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot, var(--ob-red)) 22%, transparent);
+}
+
+.ob-hint {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  color: var(--ob-secondary);
+}
+
+/* iOS "tinted" button. */
+.ob-search-btn {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 22px;
+  background: var(--ob-blue-tint);
+  color: var(--ob-blue);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ob-search-btn:active {
+  opacity: 0.6;
+}
+
+.ob-credit {
+  margin: -8px 0 0;
+  text-align: center;
+  font-size: 10px;
+  color: var(--ob-tertiary);
+}
+
+/* ---------- Search sheet ---------- */
+
+.ob-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  animation: bd-fade 0.25s ease both;
+}
+
+.ob-sheet {
+  width: 100%;
+  max-width: 560px;
+  height: 88dvh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px 12px 0 0;
+  background: var(--ob-bg);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.16);
+  animation: ob-sheet 0.5s var(--ob-ease) both;
+}
+
+@keyframes ob-sheet {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.ob-grabber {
+  width: 36px;
+  height: 5px;
+  margin: 6px auto;
+  border-radius: 3px;
+  background: var(--ob-tertiary);
+}
+
+.ob-search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 16px 8px;
+}
+
+.ob-search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 8px 0 10px;
+  border-radius: 10px;
+  background: var(--ob-fill);
+  color: var(--ob-secondary);
+}
+
+.ob-search-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--ob-label);
+  font-size: 17px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ob-search-field input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ob-text-btn {
+  border: none;
+  background: none;
+  color: var(--ob-blue);
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.ob-sheet-list {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 16px calc(24px + env(safe-area-inset-bottom));
+}
+
+.ob-empty {
+  margin: 40px 0;
+  text-align: center;
+  color: var(--ob-secondary);
+}
+
+/* ---------- Grouped lists (iOS "inset grouped") ---------- */
+
+.ob-list-header {
+  margin: 4px 16px 7px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ob-secondary);
+}
+
+.ob-sheet-list .ob-list-header {
+  margin-top: 22px;
+}
+
+.ob-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--ob-cell);
+}
+
+.ob-list button {
+  position: relative;
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border: none;
+  background: none;
+  color: var(--ob-label);
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ob-list button:active {
+  background: var(--ob-fill);
+}
+
+.ob-list li:not(:last-child) button::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 0;
+  bottom: 0;
+  height: 0.5px;
+  background: var(--ob-separator);
+}
+
+.ob-list-en {
+  margin-left: auto;
+  font-size: 15px;
+  color: var(--ob-secondary);
+}
+
+.ob-check {
+  min-width: 16px;
+  color: var(--ob-blue);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ---------- Name step ---------- */
+
+.ob-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0 4px;
+  text-align: center;
+}
+
+.ob-identity strong {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.ob-identity strong.is-placeholder {
+  color: var(--ob-tertiary);
+}
+
+.ob-identity small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  color: var(--ob-secondary);
+}
+
+.ob-pin {
+  color: var(--ob-red);
+}
+
+/* Contacts-style avatar. */
+.ob-avatar {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #a5abb8, #858994);
+  color: #fff;
+  font-weight: 600;
+}
+
+.ob-avatar span {
+  animation: ob-pop 0.35s var(--ob-spring) both;
+}
+
+.ob-field {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 12px 0 16px;
+  border-radius: 12px;
+  background: var(--ob-cell);
+}
+
+.ob-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--ob-label);
+  font-size: 17px;
+}
+
+.ob-field input::placeholder {
+  color: var(--ob-tertiary);
+}
+
+.ob-clear {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ob-tertiary);
+  color: var(--ob-cell);
+  cursor: pointer;
+}
+
+.ob-footnote {
+  margin: 7px 16px 0;
+  font-size: 13px;
+  color: var(--ob-secondary);
+}
+
+/* ---------- Class step ---------- */
+
+.ob-focus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 22px;
+  margin: 4px 4px 0;
+  font-size: 15px;
+  color: var(--ob-secondary);
+  animation: ob-up 0.4s var(--ob-ease) both;
+}
+
+.ob-focus-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* On the class screen the student pass shrinks a little to make room for the dial. */
+.ob-card-compact .lc-float {
+  max-width: min(320px, 78vw, 23vh * 1.586);
+}
+
+.ob-card-compact .lc-stage {
+  padding: 0 0 4px;
+}
+
+/* ---------- Class dial (a watch face, classes as hours) ---------- */
+
+.dial {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, 290px, 36vh);
+  aspect-ratio: 1;
+  margin: 2px auto 0;
+  border-radius: 50%;
+  outline: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.dial:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ob-blue) 40%, transparent);
+}
+
+/* Outer ring, one colored arc per stage. */
+.dial-arcs {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ff6a3d 0deg,
+    #ff2d55 13deg,
+    transparent 13deg 17deg,
+    #5ac8fa 17deg,
+    #007aff 163deg,
+    transparent 163deg 167deg,
+    #34c759 167deg,
+    #30b0c7 313deg,
+    transparent 313deg 317deg,
+    #ff9500 317deg,
+    #ff6a3d 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.2cqw), #000 calc(100% - 2.2cqw + 0.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.2cqw), #000 calc(100% - 2.2cqw + 0.5px));
+}
+
+.dial-face {
+  position: absolute;
+  inset: 3.6cqw;
+  border-radius: 50%;
+  background: var(--ob-cell);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.06),
+    0 20px 40px -24px rgba(0, 0, 0, 0.4);
+}
+
+/* Minute ticks around the edge of the face. */
+.dial-ticks {
+  position: absolute;
+  inset: 2cqw;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -0.4deg, var(--ob-tertiary) 0 0.8deg, transparent 0.8deg 6deg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.2cqw), #000 calc(100% - 2.2cqw + 0.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.2cqw), #000 calc(100% - 2.2cqw + 0.5px));
+}
+
+.dial-num {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 12.4cqw;
+  height: 12.4cqw;
+  margin: -6.2cqw 0 0 -6.2cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ob-label);
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 7cqw;
+  font-weight: 600;
+  pointer-events: none;
+  transform: rotate(var(--a)) translateY(-35cqw) rotate(calc(-1 * var(--a)));
+  transition:
+    color 0.25s,
+    transform 0.45s var(--ob-spring);
+}
+
+.dial-num.is-on {
+  background: linear-gradient(145deg, var(--g1), var(--g2));
+  color: #fff;
+  box-shadow: 0 8px 16px -8px var(--g2);
+  transform: rotate(var(--a)) translateY(-35cqw) rotate(calc(-1 * var(--a))) scale(1.18);
+}
+
+.dial-hand {
+  position: absolute;
+  z-index: 1;
+  bottom: 50%;
+  left: 50%;
+  width: 1.4cqw;
+  height: 29cqw;
+  margin-left: -0.7cqw;
+  border-radius: 1cqw;
+  background: linear-gradient(to top, var(--g2), var(--g1));
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transform: rotate(var(--hand));
+  transition:
+    transform 0.7s var(--ob-spring),
+    opacity 0.3s;
+}
+
+.dial.has-hand .dial-hand {
+  opacity: 1;
+}
+
+.dial-center {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: 42cqw;
+  height: 42cqw;
+  margin: -21cqw 0 0 -21cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6cqw;
+  border-radius: 50%;
+  background: var(--ob-bg);
+  box-shadow:
+    inset 0 0 0 0.5px var(--ob-separator),
+    0 6px 18px -8px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  pointer-events: none;
+  animation: ob-pop 0.4s var(--ob-spring) both;
+}
+
+.dial-center strong {
+  font-size: 6.2cqw;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.dial-center small {
+  font-size: 4.2cqw;
+  font-weight: 600;
+  color: var(--g2);
+}
+
+.dial-center .dial-center-empty {
+  font-size: 13cqw;
+  line-height: 1;
+  color: var(--ob-tertiary);
+}
+
+.dial-center-empty + small {
+  color: var(--ob-secondary);
+}
+
+.dial-center-icon {
+  color: var(--g2);
+}
+
+/* ---------- University / job ---------- */
+
+.ob-alt {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ob-alt-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 48px;
+  padding: 0 8px;
+  white-space: nowrap;
+  border: none;
+  border-radius: 14px;
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font-size: clamp(13px, 4.2vw, 16px);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.3s var(--ob-spring),
+    box-shadow 0.3s;
+}
+
+.ob-alt-item svg {
+  flex: none;
+  color: var(--g2);
+}
+
+.ob-alt-item:active {
+  transform: scale(0.96);
+}
+
+.ob-alt-item.is-on {
+  background: linear-gradient(145deg, var(--g1), var(--g2));
+  color: #fff;
+  box-shadow: 0 12px 22px -12px var(--g2);
+}
+
+.ob-alt-item.is-on svg {
+  color: #fff;
+}
+
+.ob-alt-item:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ob-blue) 50%, transparent);
+  outline-offset: 2px;
+}
+
+.ob-sticky-cta {
+  position: sticky;
+  bottom: 0;
+  padding-top: 12px;
+  background: linear-gradient(to bottom, transparent, var(--ob-bg) 30%);
+}
+
+/* ---------- Done ---------- */
+
+.ob-done {
+  align-items: center;
+  justify-content: center;
+}
+
+.ob-done-check svg {
+  animation: ob-pop 0.5s 0.75s var(--ob-spring) both;
+}
+
+.ob-done-check circle {
+  fill: transparent;
+  stroke: var(--ob-blue);
+  stroke-width: 3;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation:
+    ob-stroke 0.6s var(--ob-ease) forwards,
+    ob-fill-circle 0.35s 0.55s ease forwards;
+}
+
+.ob-done-check path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: ob-stroke 0.4s 0.7s var(--ob-ease) forwards;
+}
+
+@keyframes ob-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ob-fill-circle {
+  to {
+    fill: var(--ob-blue);
+  }
+}
+
+@keyframes ob-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+/* Short phones: tighten the class screen so card, dial and button fit together. */
+@media (max-height: 720px) {
+  .ob-class-step .ob-sub {
+    display: none;
+  }
+
+  .ob-class-step .ob-card-compact .lc-float {
+    max-width: min(320px, 78vw, 21vh * 1.586);
+  }
+
+  .ob-class-step .dial {
+    width: min(100%, 290px, 33vh);
+  }
+}
+
+/* ---------- Map extras: lighting, city lights, speech bubbles, ripples ---------- */
+
+.bdmap-light {
+  pointer-events: none;
+  opacity: var(--ob-light-opacity);
+}
+
+.bdmap-lights circle {
+  fill: var(--ob-dot);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 5px var(--ob-dot));
+  animation: bd-twinkle 3.2s calc(1.7s + var(--t)) ease-in-out infinite;
+}
+
+@keyframes bd-twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+.bdmap-bubble {
+  animation: bd-bubble 2.8s var(--ob-ease) both;
+}
+
+.bdmap-bubble path {
+  fill: #ffffff;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.18));
+}
+
+.bdmap-bubble text {
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  fill: #0b0b0f;
+}
+
+.bdmap-bubble-dot {
+  fill: var(--ob-blue);
+}
+
+@keyframes bd-bubble {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.4);
+  }
+  14% {
+    opacity: 1;
+    transform: translateY(0) scale(1.08);
+  }
+  24% {
+    transform: translateY(0) scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-14px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.96);
+  }
+}
+
+.bdmap-ripple {
+  pointer-events: none;
+}
+
+.bdmap-ripple circle {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bd-ripple 2s ease-out infinite;
+}
+
+.bdmap-ripple circle + circle {
+  animation-delay: 1s;
+}
+
+.bdmap-hint circle {
+  stroke: var(--ob-blue);
+  stroke-width: 2.5;
+}
+
+@keyframes bd-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+/* Slowly drifting aurora behind the welcome screen. */
+.ob-aurora {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 32% at 22% 28%, var(--ob-aur-1), transparent 70%),
+    radial-gradient(34% 30% at 80% 38%, var(--ob-aur-2), transparent 70%),
+    radial-gradient(44% 38% at 50% 85%, var(--ob-aur-3), transparent 70%);
+  filter: blur(30px);
+  animation: ob-aurora 16s ease-in-out infinite alternate;
+  transition: opacity 0.8s ease;
+}
+
+.ob-aurora.is-off {
+  opacity: 0;
+}
+
+@keyframes ob-aurora {
+  to {
+    transform: translate(4%, -3%) rotate(8deg) scale(1.08);
+  }
+}
+
+.ob-hint strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ob-label);
+}
+
+.ob-hint small {
+  font-size: 13px;
+}

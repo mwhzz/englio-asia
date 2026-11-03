@@ -1,0 +1,22 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.36em;
+  line-height: 1;
+}
+
+.logo-mark {
+  flex: none;
+  filter: drop-shadow(0 4px 8px rgba(36, 138, 61, 0.25));
+}
+
+.logo-word {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--text);
+}
+
+.logo-word span {
+  color: var(--primary);
+}

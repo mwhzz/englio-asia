@@ -1,0 +1,188 @@
+/* ---------- District league ---------- */
+
+.lc {
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ios-orange) 35%, transparent);
+}
+
+.lc-icon {
+  background: linear-gradient(160deg, #ffcc00, var(--ios-orange));
+}
+
+.lgp {
+  z-index: 45;
+}
+
+.lp-bar-space {
+  flex: none;
+  width: 36px;
+}
+
+.lgp-hero::after {
+  content: none;
+}
+
+.lgp-hero h1 {
+  margin-top: 6px;
+}
+
+.lgp-rank {
+  display: inline-grid;
+  place-items: center;
+  min-width: 52px;
+  height: 52px;
+  padding: 0 10px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #ffcc00, var(--ios-orange));
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--ios-orange) 35%, transparent);
+}
+
+.lgp-note {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.lgp-bars,
+.lgp-people {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.lgp-bars {
+  gap: 12px;
+}
+
+.lgp-bars li,
+.lgp-people li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lgp-pos {
+  flex: none;
+  width: 22px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ios-tertiary);
+}
+
+.lgp-bars li:nth-child(-n + 3) .lgp-pos,
+.lgp-people li:nth-child(-n + 3) .lgp-pos {
+  color: var(--ios-orange);
+}
+
+.lgp-bar-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.lgp-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.lgp-bar-label small {
+  flex: none;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.lgp-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+
+.lgp-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--ios-label) 22%, transparent);
+  animation: lgp-grow 0.6s var(--ease) both;
+  transform-origin: left;
+}
+
+.lgp-bars li.is-mine .lgp-track span {
+  background: linear-gradient(90deg, #ffcc00, var(--ios-orange));
+}
+
+.lgp-bars li.is-mine .lgp-bar-label > span {
+  font-weight: 600;
+}
+
+@keyframes lgp-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.lgp-people li {
+  min-height: 52px;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+
+.lgp-people li:last-child {
+  border-bottom: none;
+}
+
+.lgp-people li.is-me {
+  margin: 0 -10px;
+  padding: 0 10px;
+  border-radius: 12px;
+  border-bottom-color: transparent;
+  background: color-mix(in srgb, var(--ios-orange) 12%, transparent);
+}
+
+.lgp-avatar {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.lgp-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.lgp-name small {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.lgp-xp {
+  flex: none;
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lgp-track span {
+    animation: none;
+  }
+}

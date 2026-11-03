@@ -1,0 +1,41 @@
+import { describe, expect, it } from 'vitest';
+import { buildLesson } from './lesson';
+import { DEFAULT_PROGRESS } from './progress';
+import { buildReview, dueKeys, noteMistake, noteRight, reviewKey } from './review';
+
+const today = '2026-11-03';
+
+describe('mistake review', () => {
+  it('brings a missed item back tomorrow, then after 3, 7 and 14 days, then lets it go', () => {
+    let p = noteMistake(DEFAULT_PROGRESS, 'w:hello', today);
+    expect(p.review['w:hello']).toEqual({ due: '2026-11-04', step: 0 });
+    expect(dueKeys(p, today)).toEqual([]);
+    expect(dueKeys(p, '2026-11-04')).toEqual(['w:hello']);
+    p = noteRight(p, 'w:hello', '2026-11-04');
+    expect(p.review['w:hello']).toEqual({ due: '2026-11-07', step: 1 });
+    p = noteRight(p, 'w:hello', '2026-11-07');
+    p = noteRight(p, 'w:hello', '2026-11-14');
+    expect(p.review['w:hello'].step).toBe(3);
+    p = noteRight(p, 'w:hello', '2026-11-28');
+    expect(p.review['w:hello']).toBeUndefined();
+  });
+
+  it('starts over when missed again, and ignores right answers on items not in review', () => {
+    let p = noteMistake(DEFAULT_PROGRESS, 's:I am fine.', today);
+    p = noteRight(p, 's:I am fine.', '2026-11-04');
+    p = noteMistake(p, 's:I am fine.', '2026-11-07');
+    expect(p.review['s:I am fine.']).toEqual({ due: '2026-11-08', step: 0 });
+    expect(noteRight(DEFAULT_PROGRESS, 'w:cat', today)).toBe(DEFAULT_PROGRESS);
+  });
+
+  it('builds exercises for exactly the due words and sentences', () => {
+    const lesson = buildLesson('u1-l1');
+    let p = DEFAULT_PROGRESS;
+    const keys = lesson.map(reviewKey).filter((k): k is string => !!k);
+    for (const k of keys) p = noteMistake(p, k, today);
+    const due = new Set(dueKeys(p, '2026-11-04'));
+    const exercises = buildReview(p, '2026-11-04');
+    expect(exercises.length).toBe(Math.min(10, due.size));
+    for (const ex of exercises) expect(due.has(reviewKey(ex)!)).toBe(true);
+  });
+});

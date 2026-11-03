@@ -1,0 +1,400 @@
+/* Home page (docs/STYLE_GUIDE.md): greeting under a soft glow, this week, today's goal, Up Next card. */
+
+.shell {
+  background: var(--ios-bg);
+}
+
+.home {
+  min-height: 100dvh;
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
+  background: var(--ios-bg);
+  color: var(--ios-label);
+}
+
+.home-body {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.home-rise {
+  animation: home-rise 0.6s var(--ease) both;
+}
+
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---------- Header ---------- */
+
+@property --glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #3ba4f6;
+}
+
+/* No picture, just a soft glow at the top in the color of the hour. */
+.home-head {
+  --glow-mix: 26%;
+  position: relative;
+  padding: calc(14px + env(safe-area-inset-top)) 0 16px;
+  background: radial-gradient(140% 90% at 50% -20%, color-mix(in srgb, var(--glow) var(--glow-mix), transparent), transparent 72%);
+  transition: --glow 2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .home-head {
+    --glow-mix: 34%;
+  }
+}
+
+/* Chosen in settings: dark even when the phone is in light mode. */
+:root[data-theme='dark'] .home-head {
+  --glow-mix: 34%;
+}
+
+.home-head-inner {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.home-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+/* A monogram like an iOS contact. */
+.home-avatar {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #a6abb7, #858a96);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring);
+}
+
+.home-avatar:active {
+  transform: scale(0.9);
+}
+
+.home-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.home-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: var(--ios-cell);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pill-streak svg {
+  color: var(--ios-orange);
+}
+
+.pill-streak.is-off svg {
+  color: var(--ios-tertiary);
+}
+
+.pill-xp svg {
+  color: #ffcc00;
+}
+
+.pill-heart svg {
+  color: var(--ios-red);
+}
+
+.home-date {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+.home-greeting {
+  margin: 2px 0 0;
+  font-size: clamp(30px, 9vw, 38px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.home-place {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+/* ---------- Today: this week + today's goal ---------- */
+
+.home-today {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  background: var(--ios-cell);
+}
+
+.week {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0 0 14px;
+  list-style: none;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.week-dot {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: #fff;
+}
+
+.week-day.is-active .week-dot {
+  background: var(--ios-orange);
+}
+
+/* Today, not learned yet: a dashed ring waiting to be lit. */
+.week-day.is-today:not(.is-active) .week-dot {
+  background: none;
+  box-shadow: none;
+  outline: 2px dashed color-mix(in srgb, var(--ios-orange) 70%, transparent);
+  outline-offset: -2px;
+}
+
+.week-letter {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+.week-day.is-today .week-letter {
+  color: var(--ios-label);
+  font-weight: 700;
+}
+
+.goal-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.goal-caption strong {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.goal-extra {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.goal-track {
+  position: relative;
+  height: 6px;
+  margin: 0 9px;
+  border-radius: 3px;
+  background: var(--ios-fill);
+}
+
+.goal-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 3px;
+  background: var(--ios-orange);
+}
+
+/* A knob at the tip of the bar. */
+.goal-body {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-orange);
+  color: #fdf6d8;
+  box-shadow: 0 0 0 2.5px var(--ios-cell);
+  transform: translate(-50%, -50%);
+}
+
+.goal-body.is-moon {
+  background: #5e5ce6;
+  box-shadow: 0 0 0 2.5px var(--ios-cell);
+}
+
+/* ---------- Cards ---------- */
+
+/* Up Next */
+@property --u {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #34c759;
+}
+
+.upnext {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 18px 20px;
+  border: none;
+  border-radius: 16px;
+  background: var(--u);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.upnext:active:not(:disabled) {
+  opacity: 0.85;
+}
+
+.upnext:disabled {
+  cursor: default;
+}
+
+.upnext.is-muted {
+  min-height: 130px;
+}
+
+.upnext-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+}
+
+.upnext-kicker span {
+  letter-spacing: 0;
+}
+
+.upnext-title {
+  margin-top: 8px;
+  max-width: calc(100% - 80px);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.upnext-bn {
+  font-size: 17px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.upnext-meta {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.upnext-progress {
+  align-self: stretch;
+  height: 5px;
+  margin-top: 14px;
+  margin-right: 80px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+}
+
+.upnext-progress span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: #fff;
+}
+
+.upnext-play {
+  position: absolute;
+  right: 20px;
+  bottom: 22px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  padding-left: 3px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--u);
+}
+
+.is-muted .upnext-play {
+  padding-left: 0;
+}
+
+/* ---------- Path section ---------- */
+
+.home-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 10px 4px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.home-section-title small {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+
+/* Anek Bangla at 700 looks heavy next to Inter, so Bangla headings sit one step lighter. */
+.home-greeting [lang='bn'],
+.home-section-title [lang='bn'] {
+  font-weight: 600;
+}

@@ -1,0 +1,654 @@
+/* The learning path as a night sky (তারার পথ). */
+
+.sky {
+  --sky-top: #141b4d;
+  --sky-mid: #2b2f7a;
+  --sky-low: #4a3f93;
+  --dust: rgba(255, 255, 255, 0.75);
+  position: relative;
+  /* Full-bleed: the sky runs edge to edge. */
+  width: calc(100% + 32px);
+  margin: 8px -16px 0;
+  overflow: hidden;
+  border-radius: 28px 28px 0 0;
+  background:
+    radial-gradient(120% 40% at 80% 0%, rgba(120, 140, 255, 0.25), transparent 70%),
+    linear-gradient(180deg, var(--sky-top), var(--sky-mid) 55%, var(--sky-low));
+}
+
+@media (prefers-color-scheme: dark) {
+  .sky {
+    --sky-top: #070b24;
+    --sky-mid: #10164a;
+    --sky-low: #231d5c;
+  }
+}
+
+.sky-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sky-dust {
+  fill: var(--dust);
+  opacity: 0.6;
+}
+
+.sky-dust.is-twinkle {
+  animation: sky-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes sky-twinkle {
+  50% {
+    opacity: 0.1;
+  }
+}
+
+/* Constellation lines */
+.sky-line {
+  stroke-linecap: round;
+}
+
+.sky-line.is-lit {
+  stroke: color-mix(in srgb, var(--u) 70%, white);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 3px var(--u));
+}
+
+.sky-line.is-next {
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 1.8;
+  stroke-dasharray: 5 6;
+  animation: sky-dash 1.6s linear infinite;
+}
+
+.sky-line.is-dim {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1.4;
+  stroke-dasharray: 2 6;
+}
+
+/* The hop from one unit to the next is always faint. */
+.sky-line.is-between {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1;
+  stroke-dasharray: 1 7;
+  filter: none;
+  animation: none;
+}
+
+@keyframes sky-dash {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+/* A shooting star every few seconds. */
+.sky-shooting {
+  position: absolute;
+  top: 6%;
+  left: -20%;
+  width: 90px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #fff);
+  opacity: 0;
+  transform: rotate(18deg);
+  animation: sky-shoot 9s 2s ease-in infinite;
+}
+
+@keyframes sky-shoot {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(18deg);
+  }
+  3% {
+    opacity: 1;
+  }
+  12% {
+    opacity: 0;
+    transform: translate(420px, 140px) rotate(18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(420px, 140px) rotate(18deg);
+  }
+}
+
+/* Unit signs on the sky: dark glass so they sit inside the night. */
+.sky .usign {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
+    0 14px 30px -16px rgba(0, 0, 0, 0.5);
+}
+
+.sky .usign-text small {
+  color: color-mix(in srgb, var(--u) 60%, white);
+}
+
+.sky .usign-text span,
+.sky .usign-count {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sky .usign-guide {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+/* ---------- Stars ---------- */
+
+.star {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+
+.star.is-open {
+  z-index: 6;
+}
+
+.star-btn {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.35s var(--spring);
+}
+
+.star-btn:active {
+  transform: scale(0.88);
+}
+
+.star-btn:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+/* Finished: a star in the unit's color with a soft glow. */
+.star-done .star-btn {
+  background: radial-gradient(circle, color-mix(in srgb, var(--u) 55%, transparent) 0%, transparent 68%);
+  color: color-mix(in srgb, var(--u) 45%, white);
+  filter: drop-shadow(0 0 6px var(--u));
+}
+
+/* Next: a big white star that twinkles, with a ring rippling out. */
+.star-current .star-btn {
+  width: 76px;
+  height: 76px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, transparent 66%);
+  color: #fff;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+.star-current .star-btn svg {
+  animation: star-twinkle 2.2s ease-in-out infinite;
+}
+
+.star-current .star-btn::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: star-ripple 2s ease-out infinite;
+}
+
+@keyframes star-twinkle {
+  50% {
+    transform: scale(1.15) rotate(10deg);
+  }
+}
+
+@keyframes star-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* Locked: a small dim dot (the button stays big enough to tap). */
+.star-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+@keyframes star-bob {
+  50% {
+    transform: translateX(-50%) translateY(-3px);
+  }
+}
+
+/* The lesson card opens right under the star. */
+.star .rpop {
+  top: calc(100% + 6px);
+}
+
+/* ---------- Details: moon, star names, rays, start button, constellation signs ---------- */
+
+.sky-moon-glow {
+  fill: rgba(253, 246, 216, 0.12);
+}
+
+.sky-moon-body {
+  fill: #fdf6d8;
+}
+
+/* Finished stars twinkle, each on its own beat. */
+.star-done .star-btn svg {
+  animation: star-twinkle 3s var(--tw) ease-in-out infinite;
+}
+
+/* Locked: a faint outline star. */
+.star-locked .star-btn {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 62%);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* The lesson's name under its star, like a star's name on a sky chart. */
+.star-name {
+  position: absolute;
+  top: calc(100% - 6px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: 150px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.star-name small {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.star-locked .star-name {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.star-locked .star-name small {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Soft light rays turning slowly behind the next star. */
+.star-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255, 255, 255, 0.16) 0 6deg, transparent 6deg 30deg);
+  -webkit-mask-image: radial-gradient(circle, #000 18%, transparent 68%);
+  mask-image: radial-gradient(circle, #000 18%, transparent 68%);
+  animation: star-spin 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes star-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* One-tap start button under the next star, in the unit's color. */
+.star-start {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 16px 6px 6px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--u) 78%, white), var(--u) 65%);
+  color: #fff;
+  text-align: left;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 4px color-mix(in srgb, var(--u) 25%, transparent),
+    0 12px 24px -10px rgba(0, 0, 0, 0.55);
+  transform: translateX(-50%);
+  cursor: pointer;
+  animation: star-bob 2s ease-in-out infinite;
+}
+
+.star-start:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.star-start:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 3px;
+}
+
+.star-start-play {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding-left: 2px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--u);
+}
+
+.star-start-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.star-start-text strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.star-start-text small {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* Constellation sign: unit name with one little star per lesson. */
+.csign {
+  position: absolute;
+  z-index: 3;
+  width: min(86%, 320px);
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 10px 10px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.16),
+    0 0 40px -10px color-mix(in srgb, var(--u) 60%, transparent),
+    0 14px 30px -16px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%);
+}
+
+.csign-num {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--u) 72%, white), var(--u));
+  color: #fff;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 18px -2px var(--u);
+}
+
+.csign-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.csign-text small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--u) 55%, white);
+}
+
+.csign-text strong {
+  font-size: clamp(15px, 4.4vw, 16px);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.csign-stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.csign-stars .is-lit {
+  color: #ffd60a;
+  filter: drop-shadow(0 0 3px rgba(255, 214, 10, 0.7));
+}
+
+.csign-stars span {
+  margin-left: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.csign-guide {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring);
+}
+
+.csign-guide:active {
+  transform: scale(0.88);
+}
+
+.csign.is-complete .csign-num {
+  background: linear-gradient(145deg, #ffe37a, #ffb800);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0 20px -2px #ffb800;
+}
+
+/* ---------- More details: planets, village, summary, trophies, sparkles ---------- */
+
+.sky {
+  --ground: #070a22;
+}
+
+/* Planets */
+.sky-planet {
+  animation: sky-drift 14s ease-in-out infinite alternate;
+}
+
+.sky-planet-ringed .sky-planet-body {
+  fill: #e8c58a;
+}
+
+.sky-planet-ring {
+  fill: none;
+  stroke: rgba(255, 236, 200, 0.7);
+  stroke-width: 1.6;
+}
+
+.sky-planet-red .sky-planet-body {
+  fill: #ff7a59;
+}
+
+.sky-planet-spot {
+  fill: rgba(255, 255, 255, 0.35);
+}
+
+@keyframes sky-drift {
+  to {
+    transform: translate(6px, -8px);
+  }
+}
+
+/* Village at the bottom of the sky. */
+.sky-village-land {
+  fill: var(--ground);
+}
+
+.sky-village-trunk {
+  fill: none;
+  stroke: var(--ground);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+
+.sky-village-frond {
+  fill: none;
+  stroke: var(--ground);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+}
+
+.sky-village-window {
+  fill: #ffcf6e;
+  filter: drop-shadow(0 0 3px #ffb84d);
+  animation: sky-window 4s ease-in-out infinite;
+}
+
+@keyframes sky-window {
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.sky-end {
+  position: absolute;
+  left: 50%;
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+/* "★ 3/23 stars lit" at the top of the sky. */
+.sky-summary {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 0 0 0.5px rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.sky-summary svg {
+  color: #ffd60a;
+  filter: drop-shadow(0 0 3px rgba(255, 214, 10, 0.7));
+}
+
+/* A second shooting star on a different beat. */
+.sky-shooting.is-late {
+  top: 46%;
+  animation-delay: 6.5s;
+  animation-duration: 11s;
+}
+
+/* Trophy star at the end of each unit: gold once earned. */
+.star.is-final.star-done .star-btn {
+  background: radial-gradient(circle, rgba(255, 200, 40, 0.55) 0%, transparent 68%);
+  color: #ffe37a;
+  filter: drop-shadow(0 0 8px #ffb800);
+}
+
+.star.is-final.star-locked .star-btn {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Tiny sparkles around finished stars. */
+.star-done .star-btn::before,
+.star-done .star-btn::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #fff;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: star-sparkle 2.6s var(--tw) ease-in-out infinite;
+}
+
+.star-done .star-btn::before {
+  top: 6px;
+  right: 6px;
+}
+
+.star-done .star-btn::after {
+  bottom: 8px;
+  left: 7px;
+  width: 5px;
+  height: 5px;
+  animation-delay: calc(var(--tw) + 1.3s);
+}
+
+@keyframes star-sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full-bleed version for Android (maskable) and iOS: the launcher crops the corners itself,
+       so the art sits inside the middle 80% safe zone. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5be07f"/>
+      <stop offset="1" stop-color="#34c759"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#g)"/>
+  <g transform="translate(51.2 51.2) scale(0.8)">
+    <path d="M179 115h154a77 77 0 0 1 77 77v90a77 77 0 0 1-77 77H230l-70 58v-63a77 77 0 0 1-58-74v-88a77 77 0 0 1 77-77z" fill="#fff"/>
+    <path d="M301 173h-90v128h90M211 237h77" fill="none" stroke="#248a3d" stroke-width="33" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

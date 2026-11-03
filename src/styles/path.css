@@ -1,0 +1,234 @@
+/* Pieces shared by every learning-path design: unit sign, lesson card, section heading, practice button. */
+
+/* ---------- Unit sign  ---------- */
+
+.usign {
+  position: absolute;
+  z-index: 3;
+  width: min(84%, 320px);
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 9px 9px 11px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--ios-cell) 78%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  backdrop-filter: blur(20px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    inset 0 0 0 0.5px var(--glass-edge),
+    0 14px 30px -16px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%);
+}
+
+.usign-num {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--u);
+  color: #fff;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.usign-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.usign-text small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--u);
+}
+
+.usign-text strong {
+  font-size: clamp(15px, 4.4vw, 16px);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.usign-text span {
+  font-size: 12px;
+  color: var(--ios-secondary);
+}
+
+.usign-bar {
+  height: 4px;
+  max-width: 140px;
+  margin-top: 6px;
+  border-radius: 2px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+
+.usign-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--u);
+  transition: width 0.6s var(--ease);
+}
+
+.usign-count {
+  flex: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ios-secondary);
+}
+
+.usign-guide {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--u) 15%, transparent);
+  color: var(--u);
+  cursor: pointer;
+  transition: transform 0.3s var(--spring);
+}
+
+.usign-guide:active {
+  transform: scale(0.88);
+}
+
+/* ---------- Lesson card (popover) ---------- */
+
+.rpop {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 50%;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px 16px;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--ios-cell) 95%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    inset 0 0 0 0.5px var(--glass-edge),
+    0 22px 40px -18px rgba(0, 0, 0, 0.45);
+  transform: translateX(calc(-50% + var(--shift)));
+  animation: rpop-in 0.25s var(--ease) both;
+}
+
+.rpop::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: calc(50% - var(--shift) - 7px);
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+@keyframes rpop-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-50% + var(--shift))) translateY(-6px) scale(0.92);
+  }
+}
+
+.rpop strong {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.rpop-bn {
+  font-size: 15px;
+  color: var(--ios-secondary);
+}
+
+.rpop small {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ios-secondary);
+}
+
+.rpop-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--ios-secondary);
+}
+
+.rpop-go {
+  margin-top: 12px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border: none;
+  border-radius: 999px;
+  background: var(--tint, var(--ios-blue));
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.rpop-go:active {
+  opacity: 0.8;
+}
+
+.rpop-go small {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---------- Section head + practice ---------- */
+
+.home-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.home-section-head .home-section-title {
+  margin: 0 4px;
+  white-space: nowrap;
+}
+
+.practice-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-blue) 12%, transparent);
+  color: var(--ios-blue);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring);
+}
+
+.practice-btn:active {
+  transform: scale(0.94);
+}

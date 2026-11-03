@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <title>Card autofill test</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 48px 20px; background: #f3f5f9; color: #192338; font: 16px/1.5 system-ui, sans-serif; }
+    main { max-width: 520px; margin: 0 auto; padding: 32px; background: white; border: 1px solid #dde3ed; border-radius: 20px; box-shadow: 0 16px 48px #1923380a; }
+    .badge { display: inline-block; margin: 0 0 16px; padding: 4px 10px; background: #eaf1ff; color: #2455b8; border-radius: 20px; font-size: 13px; font-weight: 650; }
+    h1 { margin: 0 0 12px; font-size: 28px; letter-spacing: -.7px; }
+    p { margin: 0 0 20px; color: #556176; }
+    label { display: block; margin: 18px 0 6px; font-size: 14px; font-weight: 650; }
+    input { width: 100%; padding: 12px; border: 1px solid #b9c3d2; border-radius: 8px; background: white; color: #192338; font: inherit; }
+    input:focus-visible, button:focus-visible { outline: 3px solid #92b4ff; outline-offset: 2px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    button { padding: 12px 16px; border: 0; border-radius: 8px; background: #2455d6; color: white; font: inherit; font-weight: 650; cursor: pointer; }
+    button[type="reset"] { background: #edf0f6; color: #38445a; }
+    #result { margin-top: 20px; padding: 14px; background: #f3f5f9; border-radius: 8px; font-size: 14px; white-space: pre-line; }
+    details { margin-top: 24px; font-size: 14px; color: #556176; }
+    summary { cursor: pointer; color: #192338; font-weight: 650; }
+    ol { padding-left: 20px; }
+    li + li { margin-top: 8px; }
+    code { overflow-wrap: anywhere; }
+    .privacy { margin: 20px 0 0; font-size: 13px; }
+    @media (max-width: 420px) { main { padding: 24px 20px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="badge">Local test · No payment</span>
+    <h1>Test your card autofill</h1>
+    <p>In Chrome, click the card number field and choose a saved payment card. Complete any verification Chrome asks for.</p>
+
+    <form id="payment-form" autocomplete="on">
+      <label for="cc-name">Name on card</label>
+      <input id="cc-name" name="cc-name" type="text" autocomplete="cc-name" placeholder="Name as shown on your card">
+
+      <label for="cc-number">Card number</label>
+      <input id="cc-number" name="cc-number" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="Card number" spellcheck="false">
+
+      <div class="row">
+        <div>
+          <label for="cc-exp">Expiry date</label>
+          <input id="cc-exp" name="cc-exp" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY">
+        </div>
+        <div>
+          <label for="cc-csc">Security code</label>
+          <input id="cc-csc" name="cc-csc" type="password" inputmode="numeric" autocomplete="cc-csc" placeholder="CVV / CVC">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Check filled fields</button>
+        <button type="reset">Clear fields</button>
+      </div>
+    </form>
+
+    <div id="result" role="status" aria-live="polite">Choose a saved card, then check which fields were filled.</div>
+
+    <details>
+      <summary>No saved card suggestions?</summary>
+      <ol>
+        <li>Open <code>chrome://settings/payments</code> in Chrome and check that saving and filling payment methods is enabled and a card is saved.</li>
+        <li>Use your regular Chrome profile, then reload this page and click the card number field.</li>
+        <li>Card autofill needs HTTPS with a certificate trusted by Chrome. Plain HTTP (including localhost) can show the insecure connection warning. For this project's HTTPS test server, use <code>https://localhost:5443/card-autofill.html</code> after its certificate has been trusted.</li>
+      </ol>
+      <p>The browser controls whether it offers autofill. Security code autofill may require verification or manual entry. This tests Chrome card autofill, not a Google Pay checkout.</p>
+    </details>
+
+    <p class="privacy">This page does not send, log, or store your card details, and cannot charge your card. Chrome manages its own saved payment data.</p>
+  </main>
+
+  <script>
+    const form = document.getElementById('payment-form');
+    const result = document.getElementById('result');
+    const fields = [
+      ['cc-name', 'Name on card'],
+      ['cc-number', 'Card number'],
+      ['cc-exp', 'Expiry date'],
+      ['cc-csc', 'Security code'],
+    ];
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const statuses = fields.map(([id, label]) =>
+        `${label}: ${document.getElementById(id).value.trim() ? 'filled' : 'empty'}`
+      );
+      result.textContent = statuses.join('\n') + '\n\nIf Chrome filled these after you selected a saved card, autofill worked. This check only detects filled fields; it cannot distinguish autofill from typing or verify the card.';
+    });
+
+    form.addEventListener('reset', () => {
+      result.textContent = 'Fields cleared. Click the card number field to try again.';
+    });
+  </script>
+</body>
+</html>

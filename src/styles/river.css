@@ -1,0 +1,951 @@
+/* PARKED: the illustrated river journey (docs/STYLE_GUIDE.md §12). Not imported; add it to index.css to bring the river back. */
+
+.river {
+  --stop-ring: #ffffff;
+  position: relative;
+  /* Full-bleed: the landscape runs edge to edge. */
+  width: calc(100% + 32px);
+  margin: 8px -16px 0;
+}
+
+/* ---------- Landscape (SVG) ---------- */
+
+/* Day palette. Night (dark mode) swaps these for a moonlit version below. */
+.river {
+  --land-a: #a8d98a;
+  --land-b: #bfe6a3;
+  --patch-light: rgba(214, 240, 170, 0.55);
+  --patch-dark: rgba(120, 180, 95, 0.32);
+  --tuft: #97cc76;
+  --shadow: rgba(20, 60, 20, 0.18);
+  --sand: #f2e4ba;
+  --water: #5fc3ef;
+  --deep: #2f9bd8;
+  --foam: rgba(255, 255, 255, 0.88);
+  --current: rgba(255, 255, 255, 0.35);
+  --ripple: rgba(255, 255, 255, 0.85);
+  --leaf: #3fa45a;
+  --leaf-dark: #2f8a49;
+  --leaf-hi: #6cc77f;
+  --trunk: #8a5a35;
+  --frond: #2e9b4f;
+  --wall: #edd3a6;
+  --wall-white: #fbfbfb;
+  --wall-cream: #f3e7cf;
+  --roof-thatch: #b98a4e;
+  --roof-tin: #8fa3b5;
+  --roof-red: #e0533d;
+  --door: #7a4a26;
+  --window: #8fd0f5;
+  --window-glow: none;
+  --field-edge: #93c564;
+  --field: #d2eba0;
+  --field-row: #a6cd6a;
+  --hay: #e6c35c;
+  --wood: #b98654;
+  --wood-dark: #6b4424;
+  --stone: #cfc6b4;
+  --stone-dark: #a89f8c;
+  --reed: #4c8f3c;
+  --cattail: #8a5a35;
+  --bird: #2b3a4a;
+  --glint: transparent;
+  --firefly: transparent;
+  --lamp: #ffd27a;
+  --lamp-glow: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  .river {
+    --stop-ring: #1c1c1e;
+    --land-a: #1d3a28;
+    --land-b: #24472f;
+    --patch-light: rgba(70, 120, 80, 0.3);
+    --patch-dark: rgba(8, 24, 14, 0.4);
+    --tuft: #2f5a3a;
+    --shadow: rgba(0, 0, 0, 0.35);
+    --sand: #5c5038;
+    --water: #134a73;
+    --deep: #0a2c4a;
+    --foam: rgba(190, 220, 255, 0.35);
+    --current: rgba(190, 220, 255, 0.2);
+    --ripple: rgba(190, 220, 255, 0.45);
+    --leaf: #24603a;
+    --leaf-dark: #1a4a2c;
+    --leaf-hi: #3a7d4f;
+    --trunk: #4d3420;
+    --frond: #245e37;
+    --wall: #7c654a;
+    --wall-white: #8b8f96;
+    --wall-cream: #85796a;
+    --roof-thatch: #5e4529;
+    --roof-tin: #4b5866;
+    --roof-red: #7a3428;
+    --door: #3a2414;
+    --window: #ffcf6e;
+    --window-glow: drop-shadow(0 0 2.5px #ffb84d);
+    --field-edge: #2c5233;
+    --field: #3a6a40;
+    --field-row: #2f5a35;
+    --hay: #8a7436;
+    --wood: #6e5034;
+    --wood-dark: #3d2816;
+    --stone: #6b665c;
+    --stone-dark: #4d493f;
+    --reed: #2f5f2c;
+    --cattail: #4d3420;
+    --bird: #c9d6e6;
+    --glint: rgba(255, 244, 200, 0.55);
+    --firefly: #f6ff8a;
+    --lamp: #ffd27a;
+    --lamp-glow: rgba(255, 200, 90, 0.35);
+  }
+}
+
+.sc {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28px, #000 calc(100% - 70px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 28px, #000 calc(100% - 70px), transparent 100%);
+}
+
+.sc-land-a {
+  stop-color: var(--land-a);
+}
+
+.sc-land-b {
+  stop-color: var(--land-b);
+}
+
+.sc-patch-light {
+  fill: var(--patch-light);
+}
+
+.sc-patch-dark {
+  fill: var(--patch-dark);
+}
+
+.sc-tuft {
+  fill: none;
+  stroke: var(--tuft);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.sc-shadow {
+  fill: var(--shadow);
+}
+
+/* River */
+.sc-sand {
+  fill: var(--sand);
+}
+
+.sc-water {
+  fill: var(--water);
+}
+
+.sc-deep {
+  fill: none;
+  stroke: var(--deep);
+  stroke-width: 52;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.42;
+}
+
+.sc-current {
+  fill: none;
+  stroke: var(--current);
+  stroke-width: 1.4;
+  stroke-dasharray: 3 18;
+  stroke-linecap: round;
+  animation: sc-flow 3.2s linear infinite;
+}
+
+.sc-foam {
+  fill: none;
+  stroke: var(--foam);
+  stroke-width: 1.6;
+  stroke-dasharray: 12 7;
+  stroke-linecap: round;
+  animation: sc-flow 6s linear infinite;
+}
+
+@keyframes sc-flow {
+  to {
+    stroke-dashoffset: -42;
+  }
+}
+
+.sc-ripple {
+  fill: none;
+  stroke: var(--ripple);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.sc-ripple-wrap {
+  animation: sc-ripple 4.5s var(--delay) ease-in-out infinite both;
+}
+
+@keyframes sc-ripple {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(-3px) scaleX(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(2px) scaleX(1);
+  }
+}
+
+.sc-sparkle {
+  fill: #ffffff;
+}
+
+.sc-sparkle-wrap {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sc-twinkle 2.8s var(--delay) ease-in-out infinite both;
+}
+
+@keyframes sc-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Moonlight shimmer (only visible at night). */
+.sc-glint {
+  fill: var(--glint);
+}
+
+.sc-glint-wrap {
+  animation: sc-shimmer 3.6s var(--delay) ease-in-out infinite both;
+}
+
+@keyframes sc-shimmer {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scaleX(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.15);
+  }
+}
+
+.sc-hyacinth {
+  fill: #4caf50;
+}
+
+.sc-hyacinth-dark {
+  fill: #2e8b3e;
+}
+
+.sc-hyacinth-flower {
+  fill: #c7a6ff;
+}
+
+.sc-reed {
+  fill: none;
+  stroke: var(--reed);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.sc-cattail {
+  fill: var(--cattail);
+}
+
+.sc-stone {
+  fill: var(--stone);
+}
+
+.sc-stone-dark {
+  fill: var(--stone-dark);
+}
+
+.sc-duck {
+  fill: #ffffff;
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 0.4;
+}
+
+.sc-beak {
+  fill: #ff9500;
+}
+
+.sc-ducks-wrap {
+  animation: sc-swim 12s ease-in-out infinite alternate;
+}
+
+@keyframes sc-swim {
+  to {
+    transform: translate(16px, 6px);
+  }
+}
+
+.sc-nouka {
+  fill: var(--wood-dark);
+}
+
+.sc-nouka-roof {
+  fill: var(--roof-thatch);
+}
+
+.sc-fisher {
+  fill: #3a2a1a;
+}
+
+.sc-fisher-line {
+  fill: none;
+  stroke: #3a2a1a;
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+
+.sc-fishing-boat-wrap {
+  animation: sc-rock 4s ease-in-out infinite;
+}
+
+@keyframes sc-rock {
+  50% {
+    transform: rotate(4deg) translateY(-1px);
+  }
+}
+
+/* Trees, huts, fields, animals */
+.sc-trunk {
+  fill: var(--trunk);
+}
+
+.sc-leaf {
+  fill: var(--leaf);
+}
+
+.sc-leaf-dark {
+  fill: var(--leaf-dark);
+}
+
+.sc-leaf-hi {
+  fill: var(--leaf-hi);
+}
+
+.sc-palm-trunk {
+  fill: none;
+  stroke: var(--trunk);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.sc-frond {
+  fill: none;
+  stroke: var(--frond);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.sc-coconut {
+  fill: var(--wood-dark);
+}
+
+.sc-wall {
+  fill: var(--wall);
+}
+
+.sc-wall-shade {
+  fill: rgba(0, 0, 0, 0.08);
+}
+
+.sc-wall-white {
+  fill: var(--wall-white);
+}
+
+.sc-wall-cream {
+  fill: var(--wall-cream);
+}
+
+.sc-roof-thatch {
+  fill: var(--roof-thatch);
+}
+
+.sc-thatch-line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.22);
+  stroke-width: 0.8;
+}
+
+.sc-roof-tin {
+  fill: var(--roof-tin);
+}
+
+.sc-roof-red {
+  fill: var(--roof-red);
+}
+
+.sc-door {
+  fill: var(--door);
+}
+
+/* Windows are sky-blue glass by day and warm lamplight at night. */
+.sc-window {
+  fill: var(--window);
+  filter: var(--window-glow);
+}
+
+.sc-field-edge {
+  fill: var(--field-edge);
+}
+
+.sc-field {
+  fill: var(--field);
+}
+
+.sc-field-row {
+  fill: none;
+  stroke: var(--field-row);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.sc-hay {
+  fill: var(--hay);
+}
+
+.sc-hay-line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.18);
+  stroke-width: 0.8;
+}
+
+.sc-hay-pole {
+  stroke: var(--wood-dark);
+  stroke-width: 1.2;
+}
+
+.sc-cow {
+  fill: #fdfaf4;
+}
+
+.sc-cow-patch {
+  fill: #8a5a35;
+}
+
+.sc-cow-leg,
+.sc-cow-tail {
+  fill: none;
+  stroke: #6b4424;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.sc-pond-rim {
+  fill: var(--field-edge);
+}
+
+.sc-pond {
+  fill: var(--water);
+}
+
+.sc-flower-pink {
+  fill: #ff6b8b;
+}
+
+.sc-flower-yellow {
+  fill: #ffd60a;
+}
+
+/* Jetties and their lanterns */
+.sc-dock-shadow {
+  fill: rgba(0, 30, 60, 0.25);
+}
+
+.sc-dock-post {
+  fill: var(--wood-dark);
+}
+
+.sc-dock-deck {
+  fill: var(--wood);
+}
+
+.sc-dock-plank {
+  stroke: var(--wood-dark);
+  stroke-width: 0.7;
+  opacity: 0.6;
+}
+
+.sc-lamp-post {
+  stroke: var(--wood-dark);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.sc-lamp {
+  fill: var(--lamp);
+  stroke: var(--wood-dark);
+  stroke-width: 0.6;
+}
+
+.sc-lamp-glow {
+  fill: var(--lamp-glow);
+  animation: sc-lamp 3s ease-in-out infinite;
+}
+
+@keyframes sc-lamp {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Bridges */
+.sc-bridge-shadow {
+  fill: rgba(0, 30, 60, 0.25);
+}
+
+.sc-bridge-pier {
+  fill: var(--stone);
+}
+
+.sc-bridge-deck-edge {
+  fill: none;
+  stroke: color-mix(in srgb, var(--u) 75%, #3a2414);
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+
+.sc-bridge-deck {
+  fill: none;
+  stroke: color-mix(in srgb, var(--wood) 55%, #fff4dc);
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.sc-bridge-post,
+.sc-bridge-rail {
+  fill: none;
+  stroke: var(--wood-dark);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* Landmarks */
+.sc-fence,
+.sc-stall-pole {
+  fill: none;
+  stroke: var(--wood);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.sc-cloth-a {
+  fill: #5ac8fa;
+}
+
+.sc-cloth-b {
+  fill: #ff9500;
+}
+
+.sc-stall-table {
+  fill: var(--wood);
+}
+
+.sc-awning {
+  fill: #ffffff;
+}
+
+.sc-awning-stripe {
+  stroke: #ff3b30;
+  stroke-width: 3.4;
+}
+
+.sc-fruit-orange {
+  fill: #ff9500;
+}
+
+.sc-fruit-green {
+  fill: #34c759;
+}
+
+.sc-fruit-red {
+  fill: #ff3b30;
+}
+
+.sc-fruit-yellow {
+  fill: #ffcc00;
+}
+
+.sc-basket {
+  fill: var(--roof-thatch);
+}
+
+.sc-tower {
+  fill: var(--wall-cream);
+}
+
+.sc-tower-shade {
+  fill: rgba(0, 0, 0, 0.08);
+}
+
+.sc-clock {
+  fill: #ffffff;
+  stroke: var(--wood-dark);
+  stroke-width: 1;
+}
+
+.sc-clock-hand {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.sc-flagpole {
+  stroke: #8e8e93;
+  stroke-width: 1.2;
+}
+
+.sc-flag-green {
+  fill: #006a4e;
+}
+
+.sc-flag-red {
+  fill: #f42a41;
+}
+
+.sc-rail {
+  fill: none;
+  stroke: #8a8f99;
+  stroke-width: 1.2;
+}
+
+.sc-sleeper {
+  stroke: var(--wood-dark);
+  stroke-width: 1.6;
+}
+
+.sc-train {
+  fill: #007aff;
+}
+
+.sc-engine {
+  fill: #ff3b30;
+}
+
+.sc-train-stripe {
+  stroke: #ffffff;
+  stroke-width: 1.2;
+}
+
+.sc-wheel {
+  fill: #2c2c2e;
+}
+
+/* Birds by day, fireflies by night */
+.sc-bird {
+  fill: none;
+  stroke: var(--bird);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.sc-flock {
+  animation: sc-fly var(--dur) var(--delay) linear infinite;
+}
+
+@keyframes sc-fly {
+  from {
+    transform: translate(-60px, 0);
+  }
+  to {
+    transform: translate(420px, -40px);
+  }
+}
+
+.sc-fireflies circle {
+  fill: var(--firefly);
+  filter: drop-shadow(0 0 2px var(--firefly));
+  animation: sc-firefly 4s ease-in-out infinite;
+}
+
+@keyframes sc-firefly {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(3px, -4px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Birds are asleep at night. */
+  .sc-birds {
+    display: none;
+  }
+}
+
+/* ---------- Stops (lessons on the jetties) ---------- */
+
+.rstop {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+}
+
+.rstop.is-open {
+  z-index: 7;
+}
+
+.rstop-btn {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.35s var(--spring);
+}
+
+.rstop-btn:active {
+  transform: scale(0.9);
+}
+
+.rstop-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ios-blue) 50%, transparent);
+  outline-offset: 4px;
+}
+
+.rstop-done .rstop-btn,
+.rstop-current .rstop-btn {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--u) 72%, white), var(--u) 55%, color-mix(in srgb, var(--u) 82%, black));
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 0 4px var(--stop-ring),
+    0 12px 22px -10px rgba(0, 0, 0, 0.45);
+}
+
+.rstop-current .rstop-btn {
+  width: 68px;
+  height: 68px;
+}
+
+/* A ring that keeps rippling out from the current lesson. */
+.rstop-current .rstop-btn::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: rstop-ripple 1.9s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes rstop-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.rstop-locked .rstop-btn {
+  background: color-mix(in srgb, var(--ios-cell) 72%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  backdrop-filter: blur(14px) saturate(180%);
+  color: var(--ios-secondary);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    0 0 0 3px color-mix(in srgb, var(--stop-ring) 70%, transparent),
+    0 8px 16px -8px rgba(0, 0, 0, 0.35);
+}
+
+.rstop-tag {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--ios-cell);
+  color: var(--u);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.35);
+  transform: translateX(-50%);
+  animation: rstop-bob 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.rstop-tag::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+  border-bottom-color: var(--ios-cell);
+}
+
+@keyframes rstop-bob {
+  50% {
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+
+/* ---------- Ship (লঞ্চ) ---------- */
+
+.ship {
+  position: absolute;
+  z-index: 4;
+  width: 78px;
+  transform: translate(-50%, -78%);
+  transition:
+    left 2.2s var(--ease),
+    top 2.2s var(--ease);
+  pointer-events: none;
+}
+
+.ship-body {
+  position: relative;
+  transform: scaleX(var(--face));
+  transition: transform 0.6s var(--ease);
+}
+
+.ship-svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  transform-origin: 50% 85%;
+  filter: drop-shadow(0 5px 5px rgba(0, 30, 60, 0.28));
+  animation: ship-bob 3.4s ease-in-out infinite;
+}
+
+@keyframes ship-bob {
+  0%,
+  100% {
+    transform: rotate(-2.5deg) translateY(0);
+  }
+  50% {
+    transform: rotate(2.5deg) translateY(-2px);
+  }
+}
+
+.ship-wake {
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.ship-hull {
+  fill: #24435f;
+}
+
+.ship-stripe {
+  fill: #ff3b30;
+}
+
+.ship-deck {
+  fill: #ffffff;
+}
+
+.ship-deck-upper {
+  fill: #eef1f5;
+}
+
+.ship-window {
+  fill: #5ac8fa;
+}
+
+.ship-chimney {
+  fill: #ff9500;
+}
+
+.ship-chimney-top {
+  fill: #2c2c2e;
+}
+
+.ship-flagpole {
+  stroke: #6e6e73;
+  stroke-width: 1;
+}
+
+.ship-flag {
+  fill: #006a4e;
+}
+
+.ship-flag-sun {
+  fill: #f42a41;
+}
+
+/* Puffs of smoke from the chimney. */
+.ship-smoke {
+  position: absolute;
+  top: 0;
+  left: 39%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  animation: ship-smoke 2.7s ease-out infinite;
+}
+
+.ship-smoke:nth-child(2) {
+  animation-delay: 0.9s;
+}
+
+.ship-smoke:nth-child(3) {
+  animation-delay: 1.8s;
+}
+
+@keyframes ship-smoke {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-14px, -26px) scale(2);
+  }
+}
+
+/* ---------- End of the river ---------- */
+
+.river-mouth {
+  position: absolute;
+  z-index: 3;
+  margin: 18px 0 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-cell) 80%, transparent);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    inset 0 0 0 0.5px var(--glass-edge);
+  color: var(--ios-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+

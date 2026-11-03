@@ -1,0 +1,485 @@
+/* Lesson screens (docs/STYLE_GUIDE.md): Duolingo's color and flow, Apple's cleanness, tinted by the unit's color (--u). */
+
+.lesson {
+  --u: var(--ios-blue);
+  /* Everything you can tap takes the unit's color. */
+  --tint: var(--u);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ios-bg);
+  color: var(--ios-label);
+}
+
+/* The main button takes the unit's color too. */
+.lesson .cta:not(.cta-green):not(.cta-red) {
+  --c: var(--u);
+}
+
+/* ---------- Top bar ---------- */
+
+.lesson-top {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: calc(12px + env(safe-area-inset-top)) 20px 6px;
+}
+
+/* Like the close button on an iOS sheet. */
+.lesson-close {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.lesson-close:active {
+  opacity: 0.6;
+}
+
+.lesson-progress {
+  flex: 1;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+
+.lesson-progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--u);
+  transition: width 0.6s var(--spring);
+
+}
+
+.lesson-pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson-pill svg {
+  color: var(--ios-red);
+}
+
+.lesson-pill.is-practice svg {
+  color: var(--ios-secondary);
+}
+
+/* ---------- Question ---------- */
+
+.lesson-body {
+  flex: 1;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 14px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: lesson-in 0.35s var(--ease) both;
+}
+
+@keyframes lesson-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+/* iOS "Title 1" with a footnote-style English line under it. */
+.instruction {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.instruction span {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.instruction small {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ios-secondary);
+}
+
+.lesson-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 18px;
+  flex: 1;
+}
+
+.redo-tag {
+  align-self: flex-start;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ios-orange);
+}
+
+/* A wrong answer turns what you chose red and shakes it, like a wrong passcode. */
+.lesson-body.is-wrong .selected {
+  --tint: var(--ios-red);
+}
+
+.lesson-body.is-wrong .selected,
+.lesson-body.is-wrong .answer-line,
+.lesson-body.is-wrong .type-input,
+.lesson-body.is-wrong .blank {
+  animation: shake 0.4s ease;
+}
+
+/* ---------- Bottom bar and result panel ---------- */
+
+.lesson-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  padding: 12px 20px calc(16px + env(safe-area-inset-bottom));
+  background: var(--ios-bg);
+}
+
+.lesson-foot-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* After checking, a lightly tinted panel rises from the bottom edge. */
+.lesson-foot.is-right,
+.lesson-foot.is-wrong {
+  padding-top: 18px;
+  border-radius: 24px 24px 0 0;
+  background: color-mix(in srgb, var(--ios-green) 13%, var(--ios-cell));
+  animation: foot-up 0.35s var(--ease) both;
+}
+
+.lesson-foot.is-wrong {
+  background: color-mix(in srgb, var(--ios-red) 11%, var(--ios-cell));
+}
+
+@keyframes foot-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.feedback-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin-top: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-green);
+  color: #fff;
+  animation: icon-pop 0.45s 0.1s var(--spring) both;
+}
+
+.feedback-icon svg {
+  width: 20px;
+  height: 20px;
+
+}
+
+.is-wrong .feedback-icon {
+  background: var(--ios-red);
+}
+
+.feedback-text {
+  min-width: 0;
+}
+
+.feedback-text h3 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+
+}
+
+.is-right .feedback-text h3 {
+  color: var(--ios-green);
+}
+
+.is-wrong .feedback-text h3 {
+  color: var(--ios-red);
+}
+
+.feedback-text h3 small {
+  margin-left: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ios-secondary);
+}
+
+.feedback-text p {
+  margin: 4px 0 0;
+  font-size: 17px;
+}
+
+/* The right answer under the result, with a speaker to hear it again. */
+.feedback-answer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.feedback-answer .speak {
+  width: 34px;
+  height: 34px;
+}
+
+.is-right .feedback-answer .speak {
+  background: var(--ios-green);
+}
+
+.is-wrong .feedback-answer .speak {
+  background: var(--ios-red);
+}
+
+.feedback-answer > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.feedback-en {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.feedback-meaning {
+  font-size: 15px;
+  color: var(--ios-secondary);
+}
+
+/* "3 right in a row" as a small caption above the result. */
+.feedback-text .combo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 2px;
+  color: var(--ios-orange);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---------- Finish and out-of-hearts screens ---------- */
+
+.done-screen {
+  --u: var(--ios-blue);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: calc(48px + env(safe-area-inset-top)) max(20px, calc((100% - 440px) / 2)) calc(20px + env(safe-area-inset-bottom));
+  background: var(--ios-bg);
+  color: var(--ios-label);
+}
+
+.done-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.done-screen h1 {
+  margin: 14px 0 0;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.done-sub {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ios-secondary);
+}
+
+.done-sub strong {
+  font-weight: 600;
+  color: var(--ios-label);
+}
+
+.done-mark {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--u);
+  color: #fff;
+  animation: done-in 0.5s var(--ease) both;
+}
+
+@keyframes done-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* iOS inset grouped list. */
+.done-list {
+  width: 100%;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 12px;
+  background: var(--ios-cell);
+  overflow: hidden;
+  text-align: left;
+  animation: done-up 0.45s 0.15s var(--ease) both;
+}
+
+@keyframes done-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.done-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 16px;
+  font-size: 17px;
+}
+
+/* Hairline between rows, starting after the icon. */
+.done-row + .done-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 58px;
+  right: 0;
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.done-icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: #fff;
+}
+
+.done-row span[lang] {
+  flex: 1;
+}
+
+.done-row strong {
+  font-weight: 400;
+  color: var(--ios-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.done-note {
+  margin: 8px 16px 0;
+  align-self: stretch;
+  font-size: 13px;
+  text-align: left;
+  color: var(--ios-secondary);
+}
+
+.done-screen > .cta {
+  max-width: 440px;
+  margin: 20px auto 0;
+}
+
+/* Out of hearts: centered content with the refilling heart. */
+.done-screen.is-hearts {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.done-screen.is-hearts .cta-stack {
+  margin-top: 28px;
+}
+
+.hearts-out {
+  margin-bottom: 8px;
+}
+
+.refill {
+  width: 96px;
+  height: 96px;
+  overflow: visible;
+}
+
+.refill-empty {
+  fill: var(--ios-fill);
+  stroke: var(--ios-red);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.refill-full {
+  fill: var(--ios-red);
+}
+
+.refill-level {
+  transition: y 1s var(--ease), height 1s var(--ease);
+}
+
+/* A light sheen along the top of the progress fill. */
+.lesson-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  right: 6px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+@keyframes icon-pop {
+  from {
+    transform: scale(0.3);
+  }
+}

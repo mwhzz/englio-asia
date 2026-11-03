@@ -1,0 +1,652 @@
+/* Letters page: A–Z grid in three writing styles, the letter page with tracing, and the letter games. */
+
+.lt,
+.gr {
+  min-height: 100dvh;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(18px + env(safe-area-inset-top)) 16px calc(116px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--ios-label);
+}
+
+.lt-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.lt-controls .pf-segmented:first-child {
+  flex: 1;
+}
+
+.lt-case {
+  flex: none;
+  width: 122px;
+}
+
+/* Narrow phones: the style and case controls get a row each. */
+@media (max-width: 400px) {
+  .lt-controls {
+    flex-direction: column;
+  }
+  .lt-case {
+    width: auto;
+  }
+}
+
+.lt-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0 4px;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.lt-progress-bar {
+  flex: none;
+  width: 64px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+
+.lt-progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--ios-green);
+  transition: width 0.5s var(--ease);
+}
+
+/* A small orange swatch for "vowel" in the legend. */
+.lt-key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ios-orange) 22%, var(--ios-cell));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ios-orange) 60%, transparent);
+}
+
+/* ---------- The grid ---------- */
+
+.lt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 420px) {
+  .lt-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.lt-tile {
+  position: relative;
+  aspect-ratio: 1 / 1.12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border: none;
+  border-radius: 16px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  cursor: pointer;
+  transition: transform 0.25s var(--spring);
+  animation: lt-in 0.4s var(--ease) both;
+}
+
+.lt-tile:active {
+  transform: scale(0.93);
+}
+
+@keyframes lt-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+.lt-tile.is-vowel {
+  background: color-mix(in srgb, var(--ios-orange) 12%, var(--ios-cell));
+  color: color-mix(in srgb, var(--ios-orange) 70%, var(--ios-label));
+}
+
+.lt-glyph {
+  font-family: var(--lf);
+  font-size: clamp(24px, 7.6vw, 32px);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.lt-glyph.is-both {
+  font-size: clamp(20px, 6.4vw, 27px);
+
+}
+
+.lt-tile small {
+  font-size: 11px;
+  color: var(--ios-secondary);
+}
+
+.lt-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-green);
+  color: #fff;
+}
+
+/* ---------- Full-screen pages (letter, game, grammar topic) ---------- */
+
+.lp,
+.lg,
+.gt {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ios-bg);
+  color: var(--ios-label);
+  animation: lp-in 0.35s var(--ease) both;
+}
+
+@keyframes lp-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+
+.lp-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background: color-mix(in srgb, var(--ios-bg) 85%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+.lp-back {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  cursor: pointer;
+}
+
+.lp-bar-title {
+  flex: 1;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ios-secondary);
+}
+
+.lp-done {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-tertiary);
+  transition: background 0.3s, color 0.3s;
+}
+
+.lp-done.is-on {
+  background: var(--ios-green);
+  color: #fff;
+  animation: pill-pop 0.5s var(--spring);
+}
+
+.lp-body {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 6px 16px calc(28px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* The letter, large. */
+.lp-hero {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 28px;
+  padding: 22px 16px 40px;
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--ios-blue) 18%, transparent), transparent 60%),
+    color-mix(in srgb, var(--ios-blue) 8%, var(--ios-cell));
+  color: color-mix(in srgb, var(--ios-blue) 75%, var(--ios-label));
+  animation: hero-in 0.45s var(--ease) both;
+}
+
+.lp.is-vowel .lp-hero {
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--ios-orange) 22%, transparent), transparent 60%),
+    color-mix(in srgb, var(--ios-orange) 10%, var(--ios-cell));
+  color: color-mix(in srgb, var(--ios-orange) 75%, var(--ios-label));
+}
+
+.lp-big {
+  font-size: 108px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.lp-big.is-small {
+  font-size: 92px;
+  opacity: 0.8;
+}
+
+.lp-say {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.lp-say-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 16px;
+  background: var(--ios-cell);
+  color: var(--ios-blue);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.25s var(--spring);
+}
+
+.lp-say-btn:active {
+  transform: scale(0.96);
+}
+
+.lp-say-btn > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-say-btn small {
+  font-size: 12px;
+  color: var(--ios-secondary);
+}
+
+.lp-say-btn strong {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ios-label);
+}
+
+.lp-section h2 {
+  margin: 0 0 8px;
+  padding: 0 4px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.lp-words {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 14px;
+  background: var(--ios-cell);
+  overflow: hidden;
+}
+
+.lp-words li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.lp-words li:first-child {
+  border-top: none;
+}
+
+.lp-words .speak {
+  background: color-mix(in srgb, var(--ios-blue) 12%, transparent);
+  color: var(--ios-blue);
+}
+
+.lp-word {
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-word strong {
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.lp-word mark {
+  padding: 0 1px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ios-orange) 25%, transparent);
+  color: inherit;
+  font-weight: 700;
+}
+
+.lp-word small {
+  font-size: 14px;
+  color: var(--ios-secondary);
+}
+
+.lp-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lp-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 999px;
+  background: var(--ios-cell);
+  color: var(--ios-blue);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lp-nav-btn:disabled {
+  visibility: hidden;
+}
+
+.lp-nav-btn.is-next svg {
+  transform: rotate(180deg);
+}
+
+/* ---------- Tracing ---------- */
+
+.trace {
+  --trace-line: rgba(60, 60, 67, 0.25);
+  --trace-base: rgba(255, 59, 48, 0.55);
+  --trace-ghost: rgba(0, 122, 255, 0.14);
+  --trace-ink: #007aff;
+  border-radius: 18px;
+  background: var(--ios-cell);
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .trace {
+    --trace-line: rgba(235, 235, 245, 0.22);
+    --trace-base: rgba(255, 69, 58, 0.6);
+    --trace-ghost: rgba(10, 132, 255, 0.22);
+    --trace-ink: #0a84ff;
+  }
+}
+
+/* Chosen in settings: dark even when the phone is in light mode. */
+:root[data-theme='dark'] .trace {
+  --trace-line: rgba(235, 235, 245, 0.22);
+  --trace-base: rgba(255, 69, 58, 0.6);
+  --trace-ghost: rgba(10, 132, 255, 0.22);
+  --trace-ink: #0a84ff;
+}
+
+.trace-canvas {
+  display: block;
+  width: 100%;
+  height: 210px;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.trace-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px 10px 14px;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.trace-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.trace-clear:disabled {
+  opacity: 0.4;
+}
+
+/* ---------- Games ---------- */
+
+.lg-progress {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+
+.lg-progress span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ios-green);
+  transition: width 0.4s var(--ease);
+}
+
+.lg-score {
+  flex: none;
+  min-width: 36px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-green) 15%, transparent);
+  color: var(--ios-green);
+  font-weight: 700;
+}
+
+.lg-body {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 10px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  animation: lesson-in 0.35s var(--ease) both;
+}
+
+.lg-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.lg-prompt {
+  min-height: 190px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--ios-green) 22%, transparent), transparent 60%),
+    color-mix(in srgb, var(--ios-green) 10%, var(--ios-cell));
+  color: color-mix(in srgb, var(--ios-green) 70%, var(--ios-label));
+}
+
+.lg-letter {
+  font-size: 110px;
+  line-height: 1.1;
+}
+
+.lg-listen {
+  width: 104px;
+  height: 104px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-green);
+  color: #fff;
+  box-shadow: 0 0 0 10px color-mix(in srgb, var(--ios-green) 16%, transparent);
+  cursor: pointer;
+}
+
+.lg-seq {
+  display: flex;
+  gap: 10px;
+}
+
+.lg-seq > span {
+  width: 60px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font-size: 38px;
+}
+
+.lg-seq .is-gap {
+  background: none;
+  outline: 2px dashed color-mix(in srgb, var(--ios-green) 60%, transparent);
+  outline-offset: -2px;
+  color: var(--ios-green);
+}
+
+.lg-seq .is-gap.is-filled {
+  background: var(--ios-green);
+  outline: none;
+  color: #fff;
+  animation: pick-pop 0.35s var(--spring);
+}
+
+.lg-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.lg-option {
+  height: 84px;
+  border: none;
+  border-radius: 18px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font-size: 40px;
+  cursor: pointer;
+  transition:
+    transform 0.25s var(--spring),
+    background 0.2s,
+    opacity 0.2s;
+}
+
+.lg-option:active {
+  transform: scale(0.95);
+}
+
+.lg-option.is-right {
+  background: var(--ios-green);
+  color: #fff;
+  animation: pick-pop 0.35s var(--spring);
+}
+
+.lg-option.is-wrong {
+  background: var(--ios-red);
+  color: #fff;
+  animation: shake 0.4s;
+}
+
+.lg-option.is-dim {
+  opacity: 0.4;
+}
+
+.lg-done {
+  max-width: 440px;
+  margin: 12vh auto 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.lg-done-mark {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ios-green);
+  color: #fff;
+  animation: done-in 0.5s var(--ease) both;
+}
+
+.lg-done h1 {
+  margin: 12px 0 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.lg-done p {
+  margin: 0;
+  font-size: 17px;
+  color: var(--ios-secondary);
+}
+
+/* Shared by the letters and grammar pages. */
+@keyframes pill-pop {
+  40% {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes fb-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

@@ -1,0 +1,505 @@
+/* Grammar topic courses: the course card on a topic, the course page, and a course lesson. */
+
+.gr-course {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--u) 15%, transparent);
+  color: var(--u);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* The "full course" card on a topic page. */
+.gt-course {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: none;
+  border-radius: 18px;
+  background: var(--u);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.25s var(--spring);
+}
+
+.gt-course:active {
+  transform: scale(0.98);
+}
+
+.gt-course-icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.gt-course-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.gt-course-text strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.gt-course-text small {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.gt-course .cp-bar {
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.gt-course .cp-bar span {
+  background: #fff;
+}
+
+.gt-course-go {
+  flex: none;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--u);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cp-bar {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--u) 18%, transparent);
+  overflow: hidden;
+}
+
+.cp-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--u);
+  transition: width 0.5s var(--ease);
+}
+
+.gt-hero .cp-bar {
+  margin-top: 14px;
+}
+
+/* ---------- Course page (above the topic page it opens from) ---------- */
+
+.cp {
+  z-index: 45;
+}
+
+.cl-num {
+  flex: none;
+  min-width: 36px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--u, var(--ios-blue)) 14%, transparent);
+  color: var(--u, var(--ios-blue));
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cp-row:disabled {
+  cursor: default;
+}
+
+.cp-num {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--u) 15%, transparent);
+  color: var(--u);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cp-row.is-done .cp-num {
+  background: var(--u);
+  color: #fff;
+}
+
+.cp-row.is-locked .cp-num {
+  background: var(--ios-fill);
+  color: var(--ios-tertiary);
+}
+
+.cp-row.is-locked .pf-row-text {
+  opacity: 0.5;
+}
+
+.cp-row.is-next {
+  background: color-mix(in srgb, var(--u) 8%, var(--ios-cell));
+}
+
+.cp-go {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--u);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---------- One course lesson (above the course page) ---------- */
+
+.cl {
+  z-index: 50;
+}
+
+.cl .lg-progress span {
+  background: var(--u, var(--ios-green));
+}
+
+.cl-teach {
+  gap: 14px;
+}
+
+.cl-kicker {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--u);
+}
+
+.cl .lg-title small {
+  display: block;
+  margin-top: 2px;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ios-secondary);
+}
+
+.cl .cta {
+  --c: var(--u);
+}
+
+.cq {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cq-prompt {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.cq-card {
+  margin: 0;
+  padding: 22px 18px;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--u) 22%, transparent), transparent 60%),
+    color-mix(in srgb, var(--u) 10%, var(--ios-cell));
+  text-align: center;
+}
+
+.cq-word-card {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.cq-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* A choice question's sentence is plain text, not word chips. */
+p.cq-sentence:not(:has(button)) {
+  display: block;
+}
+
+.cq-card u {
+  text-decoration-color: var(--u);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+  font-weight: 700;
+}
+
+.cq-word {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 10px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--spring),
+    background 0.2s,
+    opacity 0.2s;
+}
+
+.cq-word:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.cq-word:disabled {
+  cursor: default;
+}
+
+.cq-word.is-right {
+  background: var(--ios-green);
+  color: #fff;
+}
+
+.cq-word.is-wrong {
+  background: var(--ios-red);
+  color: #fff;
+  animation: shake 0.4s;
+}
+
+.cq-word.is-dim {
+  opacity: 0.45;
+}
+
+.cq-plain {
+  padding: 4px 2px;
+  color: var(--ios-tertiary);
+}
+
+.cq-hint {
+  margin: -6px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--ios-tertiary);
+}
+
+.cq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cq-options.is-pair {
+  flex-direction: row;
+}
+
+.cq-options.is-pair .gq-option {
+  flex: 1;
+  justify-content: center;
+}
+
+.cq-options .gq-option {
+  background: var(--ios-cell);
+}
+
+/* A question fills the screen with its answers at the bottom, where the thumb is. After answering,
+   the reason comes up from the bottom as a sheet and the answers move up above it. */
+.cl-ask {
+  box-sizing: border-box;
+  min-height: calc(100dvh - 56px - env(safe-area-inset-top));
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  transition: padding-bottom 0.3s var(--ease);
+}
+
+.cl-ask.is-answered {
+  padding-bottom: calc(196px + env(safe-area-inset-bottom));
+}
+
+.cl-ask .cq {
+  flex: 1;
+}
+
+.cl-ask .cq-options {
+  margin-top: auto;
+}
+
+.cl-ask .gq-why {
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 520px;
+  max-height: 60dvh;
+  overflow-y: auto;
+  margin: 0 auto;
+  padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.1);
+  animation: cl-sheet 0.32s var(--ease) both;
+}
+
+.cl-ask .gq-why.is-right {
+  background: color-mix(in srgb, var(--ios-green) 12%, var(--ios-cell));
+}
+
+.cl-ask .gq-why.is-wrong {
+  background: color-mix(in srgb, var(--ios-red) 10%, var(--ios-cell));
+}
+
+.cl-ask .gq-why p {
+  font-size: 16px;
+}
+
+.cl-ask .gq-why .cta {
+  height: 52px;
+}
+
+@keyframes cl-sheet {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-ask .gq-why {
+    animation: none;
+  }
+}
+
+/* ---------- My words ---------- */
+
+.wd-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wd-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 16px;
+}
+
+.wd-row + .wd-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 64px;
+  right: 0;
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.wd-row .speak {
+  width: 34px;
+  height: 34px;
+  background: color-mix(in srgb, var(--u) 14%, transparent);
+  color: var(--u);
+}
+
+.wd-row.is-new .pf-row-text {
+  opacity: 0.55;
+}
+
+.wd-tag {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-pink) 15%, transparent);
+  color: var(--ios-pink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---------- Stories ---------- */
+
+.sc {
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ios-orange) 35%, transparent);
+}
+
+.sc-icon {
+  background: var(--ios-orange);
+}
+
+.st {
+  z-index: 46;
+}
+
+.st-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.st-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  animation: chat-in 0.35s var(--ease) both;
+}
+
+.st-line .speak {
+  width: 34px;
+  height: 34px;
+  margin-top: 6px;
+  background: color-mix(in srgb, var(--u) 14%, transparent);
+  color: var(--u);
+}
+
+.st-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 16px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Spoken lines sit in a tinted bubble with the speaker's name. */
+.st-line.is-said .st-text {
+  background: color-mix(in srgb, var(--u) 10%, var(--ios-cell));
+  border-radius: 16px 16px 16px 6px;
+}
+
+.st-who {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--u);
+}
+
+.st-bn {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 0.5px solid var(--ios-separator);
+  font-size: 15px;
+  color: var(--ios-secondary);
+}
+
+.st-next {
+  --c: var(--u);
+}
