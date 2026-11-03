@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Story } from '../types';
 import { adminApi, Unauthorized } from './adminApi';
 import { EMPTY_STORY, fieldsToStory, storyToFields, type StoryFields } from './storyForm';
+import { openPreview } from '../preview/draft';
 import { slug } from './topicForm';
 import { go } from './useHashRoute';
 
@@ -88,6 +89,9 @@ export function StoryEditor({ id, onUnauthorized }: { id: string; onUnauthorized
         {error && <p className="ad-error">{error}</p>}
         <div className="ad-row">
           <button className="ad-btn is-primary">{isNew ? 'Create story' : 'Save'}</button>
+          <button type="button" className="ad-btn" onClick={() => openPreview({ kind: 'story', story: fieldsToStory(fields) })}>
+            Preview in app ↗
+          </button>
           {saved && <span className="ad-muted">Saved.</span>}
         </div>
       </form>

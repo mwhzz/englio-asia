@@ -10,6 +10,10 @@ The look and feel set during **onboarding** (finished and approved). Every new s
 
 > **Lesson look (after "mix of Duolingo + Apple").** Each exercise opens with a **hero card** in the unit's color (soft gradient, two faint circles, an "Aa" watermark) that grows to fill the free space, with a tag on top (kind of question · প্রশ্ন ৩/১২). Answers are separate white cards with a radio circle; picked = unit-color wash + ring + small pop. The unit's color is the lesson's tint (CTA, selection, progress). The result panel is lightly tinted green/red and shows the right answer in English + Bangla with a speaker. **No emoji in exercises** (the user found them ugly). Kinds: select, match, translate, listen, choice, type, fill, **gaps** (several blanks, one bank), **grammar** (rule card + pick the correct sentence, reason shown after), **dialog** (chat bubbles, pick your reply), **dictate** (hear and type). English inside Bangla text goes through `MixedText`, which sets it in Inter, tinted and semibold (a bare "I" otherwise looks like "।"); all-English text is left plain. Full-screen pages (letter, game, topic) render into `<body>` above the tab bar. The tab bar has four tabs: শেখো · অক্ষর · ব্যাকরণ · প্রোফাইল.
 
+> **Thumb reach (user feedback).** On any question screen the answers sit at the bottom of the screen, where the thumb is, and the explanation after answering comes up from the bottom as a sheet (`.cl-ask` in `grammarCourse.css`). Never stack the answers right under the question at the top.
+
+> **Home path background.** Each unit on the path has a soft glow in its color and faint line drawings beside the stops, themed by the unit's title (`features/path/trail/doodles.ts`; a hand and a speech bubble for greetings, a house for family…). They sit on the side the curve leaves free. Keep them faint (about 34% of the unit color); they're background, not content.
+
 ## 1. Principles
 
 1. **Duolingo's structure, Apple's look.** Take Duolingo's flow: one question per screen, progress at the top, one big action at the bottom, a lesson path. Draw it in **Apple's iOS 26 "Liquid Glass" style** with **Apple system colors**.

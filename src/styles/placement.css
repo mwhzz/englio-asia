@@ -197,3 +197,32 @@
   font-size: 13px;
   color: var(--ios-red);
 }
+
+/* ---------- No English voice on this phone ---------- */
+
+.vh {
+  cursor: default;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ios-blue) 35%, transparent);
+}
+
+.vh:active {
+  transform: none;
+}
+
+.vh-icon {
+  background: var(--ios-blue);
+}
+
+.vh-close {
+  flex: none;
+  align-self: flex-start;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  cursor: pointer;
+}

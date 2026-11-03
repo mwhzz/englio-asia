@@ -11,7 +11,7 @@
 }
 
 .logo-word {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
   font-weight: 800;
   letter-spacing: -0.035em;
   color: var(--text);

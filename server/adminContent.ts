@@ -170,6 +170,28 @@ export function createItem(db: DatabaseSync, { params, body }: Request) {
   });
 }
 
+/** Adds many items of one kind at once (pasted from a spreadsheet); if any row is wrong, none are added. */
+export function createItems(db: DatabaseSync, { params, body }: Request) {
+  const kind = text(body, 'kind');
+  const rows = (body as Row | null)?.rows;
+  if (!Array.isArray(rows) || !rows.length) throw new HttpError(400, '"rows" must be a non-empty list');
+  if (rows.length > 500) throw new HttpError(400, 'At most 500 rows at a time');
+  const items = rows.map((data, i) => {
+    try {
+      return validateItem(kind, data);
+    } catch (error) {
+      throw new HttpError(400, `Row ${i + 1}: ${(error as Error).message}`);
+    }
+  });
+  return changed(db, () => {
+    if (!db.prepare('SELECT 1 FROM lessons WHERE id = ?').get(params.id)) throw new HttpError(404, 'No such lesson');
+    const insert = db.prepare('INSERT INTO items (lesson_id, kind, position, data) VALUES (?, ?, ?, ?)');
+    let position = nextPosition(db, 'items', 'WHERE lesson_id = ?', params.id);
+    for (const data of items) insert.run(params.id, kind, position++, JSON.stringify(data));
+    return { added: items.length };
+  });
+}
+
 export function updateItem(db: DatabaseSync, { params, body }: Request) {
   const row = db.prepare('SELECT kind FROM items WHERE id = ?').get(Number(params.id)) as { kind: string } | undefined;
   if (!row) throw new HttpError(404, 'No such item');

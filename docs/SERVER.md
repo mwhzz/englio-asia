@@ -13,9 +13,10 @@ npm run seed                 # once: creates server/englio.db with all built-in 
 ADMIN_TOKEN='<long random secret>' PORT=8787 npm run server
 ```
 
-- **`ADMIN_TOKEN`**: make it long and random, for example from `openssl rand -hex 24`. The default `englio-admin` is only for development.
+- **`ADMIN_TOKEN`**: make it long and random, for example from `openssl rand -hex 24`. The default `englio-admin` is only for development. Whoever has it is the **owner**. Give other people their own token from the admin panel's **Team** page (editors can change content only; every change is listed under **Activity**).
 - Keep the server running with `pm2` or a systemd service, and put **Caddy** or **nginx** in front for HTTPS, e.g. `api.yourdomain.com → localhost:8787`.
-- `DB_PATH` sets where the database file is kept (default `server/englio.db`).
+- **`TRUST_PROXY=1`**: set this when Caddy, nginx or Cloudflare is in front. Without it, every request seems to come from the proxy, and the rate limits (300 requests per 5 minutes per address; 10 backup-code tries and 20 wrong admin tokens per 15 minutes) would hit everyone at once.
+- `DB_PATH` sets where the database file is kept (default `server/englio.db`), and `MEDIA_DIR` where uploaded pictures and recordings go (default `server/media/`).
 
 ## 2. Host the app
 
@@ -27,10 +28,11 @@ Upload `dist/` to any static host (Cloudflare Pages, Netlify, Vercel). It has to
 
 ## 3. Back up the database
 
-Everything (content, learners, reminders, analytics) is the single SQLite file. Copy it safely once a day:
+Everything (content, learners, reminders, analytics) is the single SQLite file, plus the uploaded pictures and recordings in `server/media/`. Copy both once a day:
 
 ```bash
 sqlite3 server/englio.db ".backup '/backups/englio-$(date +%F).db'"
+rsync -a server/media/ /backups/media/
 ```
 
 Keep a copy off the server too, e.g. on Backblaze B2 or Google Drive, and delete copies older than about 30 days.
@@ -57,6 +59,8 @@ It only notifies learners at their chosen hour (in their own time zone) on days 
 
 - **District league** (`GET /api/leaderboard`): the week's totals are counted once and reused for 5 minutes, so heavy traffic is cheap.
 - **Analytics** (`POST /api/events`): anonymous daily counts only (no device id). The admin dashboard shows the last 30 days.
-- **Delete my data** (`DELETE /api/users/:id`): the app's settings page calls this. The Play Store asks for it.
+- **Delete my data** (`DELETE /api/users/:id`): the app's settings page calls this. People without the app can use `delete.html` with their backup code (`POST /api/delete-by-code`). The Play Store asks for both.
+- **Backup codes** (`POST /api/users/:id/code`, `POST /api/restore`): a learner's 10-character code brings their progress to a new phone. This is the "account" until there's a real login.
+- **Fair play**: a learner's own progress is stored as the app sends it, but the league and the admin's XP numbers count at most 600 XP a day and ignore future dates, so a hand-edited phone can't top the league.
 - **Scaling**: one server with SQLite comfortably handles tens of thousands of daily learners. Beyond that, move the same tables to Postgres and run several API servers behind a load balancer.
-- **Not built yet** (needs paid services, so it's your call): login with a phone number via SMS OTP, or with Google. Today a learner is a random id on the device, so a new phone means a fresh start.
+- **Not built yet** (needs paid services, so it's your call): login with a phone number via SMS OTP, or with Google. Until then, a learner moves to a new phone with their backup code (Profile → Settings → ব্যাকআপ কোড).

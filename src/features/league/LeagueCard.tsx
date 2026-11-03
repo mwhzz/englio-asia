@@ -28,14 +28,14 @@ export function LeagueCard() {
   return (
     <>
       <button
-        className="rc lc home-rise"
+        className="rc lgc home-rise"
         style={{ animationDelay: '210ms' }}
         onClick={() => {
           haptic();
           setOpen(true);
         }}
       >
-        <span className="rc-icon lc-icon" aria-hidden="true">
+        <span className="rc-icon lgc-icon" aria-hidden="true">
           <Glyph name="trophy" size={20} />
         </span>
         <span className="rc-text">

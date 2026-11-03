@@ -73,6 +73,13 @@ const SCHEMA = `
     time_zone TEXT NOT NULL
   );
 
+  -- Backup codes: type one on a new phone to bring your progress over (or to delete it from the web).
+  CREATE TABLE IF NOT EXISTS restore_codes (
+    code TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    created_at TEXT NOT NULL
+  );
+
   -- Anonymous daily counts from the apps (lesson starts and finishes, missed exercises).
   CREATE TABLE IF NOT EXISTS events (
     day TEXT NOT NULL,
@@ -80,6 +87,24 @@ const SCHEMA = `
     key TEXT NOT NULL,
     n INTEGER NOT NULL,
     PRIMARY KEY (day, name, key)
+  );
+
+  -- Admin team members (the owner is ADMIN_TOKEN) and a log of every change made in the admin panel.
+  CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('owner', 'editor')),
+    token_hash TEXT NOT NULL UNIQUE,
+    created_at TEXT NOT NULL,
+    last_used TEXT
+  );
+  CREATE TABLE IF NOT EXISTS audit (
+    id INTEGER PRIMARY KEY,
+    at TEXT NOT NULL,
+    admin TEXT NOT NULL,
+    method TEXT NOT NULL,
+    path TEXT NOT NULL,
+    status INTEGER NOT NULL
   );
 
   CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);

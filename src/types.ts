@@ -2,6 +2,9 @@ export interface Vocab {
   en: string;
   bn: string;
   emoji: string;
+  /** Uploaded in the admin (file names served from /api/media/). */
+  image?: string;
+  audio?: string;
 }
 
 export interface Sentence {
@@ -9,6 +12,8 @@ export interface Sentence {
   bn: string;
   /** Other English answers that are also accepted. */
   alt: string[];
+  /** A recording uploaded in the admin, played instead of the phone's voice. */
+  audio?: string;
 }
 
 /** A fill-in-the-blank sentence; `text` contains exactly one `___`. */

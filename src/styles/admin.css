@@ -595,7 +595,7 @@ body {
 }
 
 .ad-code {
-  font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, 'Anek Bangla', monospace;
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, 'Anek Bangla Variable', 'Anek Bangla', monospace;
   tab-size: 2;
 }
 
@@ -609,4 +609,53 @@ body {
 .ad-bars em.ad-warn {
   color: #ff3b30;
   font-weight: 600;
+}
+
+/* ---------- Team ---------- */
+
+.ad-nav-me {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--ios-secondary);
+}
+
+.ad-token {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ios-green) 12%, transparent);
+}
+
+.ad-token code {
+  font: 600 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+  user-select: all;
+}
+
+.ad-token small {
+  color: var(--ios-secondary);
+}
+
+.ad-bulk {
+  margin-bottom: 12px;
+}
+
+.ad-media {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.ad-media img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.ad-media audio {
+  height: 34px;
 }

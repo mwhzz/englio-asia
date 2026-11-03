@@ -11,6 +11,8 @@ const counts = new Map<string, number>();
 let timer: ReturnType<typeof setTimeout> | null = null;
 
 export function track(name: EventName, key: string): void {
+  // The admin trying a draft isn't a learner.
+  if (location.hash.startsWith('#preview')) return;
   const id = `${name}\n${key.slice(0, 120)}`;
   counts.set(id, (counts.get(id) ?? 0) + 1);
   timer ??= setTimeout(flush, FLUSH_MS);

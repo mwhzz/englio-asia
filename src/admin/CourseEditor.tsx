@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { GrammarCourse } from '../data/grammarCourses/types';
 import { adminApi, Unauthorized } from './adminApi';
 import { COURSE_HELP, courseToText, textToCourse } from './courseText';
+import type { GrammarTopic } from '../types';
+import { openPreview } from '../preview/draft';
 import { go } from './useHashRoute';
 
 const STARTER = `# First steps | প্রথম ধাপ
@@ -43,6 +45,17 @@ export function CourseEditor({ topicId, onUnauthorized }: { topicId: string; onU
       const result = await adminApi<{ lessons: number }>('PUT', `/courses/${topicId}`, textToCourse(topicId, text!));
       setExists(true);
       setSaved(`Saved · ${result.lessons} lessons.`);
+    } catch (err) {
+      fail(err);
+    }
+  }
+
+  async function preview() {
+    setError(null);
+    try {
+      const course = textToCourse(topicId, text!);
+      const topic = await adminApi<GrammarTopic>('GET', `/grammar/${topicId}`);
+      openPreview({ kind: 'course', topic, course });
     } catch (err) {
       fail(err);
     }
@@ -97,6 +110,9 @@ export function CourseEditor({ topicId, onUnauthorized }: { topicId: string; onU
         {error && <p className="ad-error">{error}</p>}
         <div className="ad-row">
           <button className="ad-btn is-primary">{exists ? 'Save' : 'Create course'}</button>
+          <button type="button" className="ad-btn" onClick={preview}>
+            Preview in app ↗
+          </button>
           {exists && (
             <button type="button" className="ad-btn is-danger" onClick={remove}>
               Delete course

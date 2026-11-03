@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite';
+import { MAX_XP_PER_DAY } from './fairPlay.ts';
 
 /** How long one count of the week's XP is reused, so a million learners don't each rescan the table. */
 const CACHE_MS = 5 * 60 * 1000;
@@ -30,17 +31,18 @@ let cache: { at: number; since: string; rows: Row[] } | null = null;
 function weekRows(db: DatabaseSync, now: Date): { since: string; rows: Row[] } {
   if (cache && now.getTime() - cache.at < CACHE_MS) return cache;
   const since = dhakaDay(new Date(now.getTime() - 6 * 86_400_000));
+  // Each day counts at most MAX_XP_PER_DAY, and future days not at all (see fairPlay.ts).
   // `week_xp`, not `xp`: that name is already the users table's all-time XP column.
   const found = db
     .prepare(
-      `SELECT u.id, u.name, u.district_id AS district, SUM(j.value) AS week_xp
+      `SELECT u.id, u.name, u.district_id AS district, SUM(MIN(j.value, ${MAX_XP_PER_DAY})) AS week_xp
        FROM users u, json_each(u.progress, '$.xpByDay') j
-       WHERE j.key >= ?
+       WHERE j.key >= ? AND j.key <= ? AND j.type IN ('integer', 'real') AND j.value > 0
        GROUP BY u.id
        HAVING week_xp > 0
        ORDER BY week_xp DESC`,
     )
-    .all(since) as unknown as (Omit<Row, 'xp'> & { week_xp: number })[];
+    .all(since, dhakaDay(new Date(now.getTime() + 86_400_000))) as unknown as (Omit<Row, 'xp'> & { week_xp: number })[];
   const rows = found.map(({ week_xp, ...r }) => ({ ...r, xp: week_xp }));
   cache = { at: now.getTime(), since, rows };
   return cache;

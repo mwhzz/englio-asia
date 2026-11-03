@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Englio · তথ্য মুছে ফেলো</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        --bg: #f2f2f7;
+        --cell: #fff;
+        --label: #000;
+        --muted: rgba(60, 60, 67, 0.65);
+        --fill: rgba(120, 120, 128, 0.12);
+        --red: #ff3b30;
+        --green: #34c759;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #000;
+          --cell: #1c1c1e;
+          --label: #fff;
+          --muted: rgba(235, 235, 245, 0.6);
+          --fill: rgba(118, 118, 128, 0.24);
+          --red: #ff453a;
+          --green: #30d158;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--label);
+        font: 17px/1.6 'Anek Bangla', 'Inter', system-ui, sans-serif;
+      }
+      main {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 32px 16px 48px;
+      }
+      h1 {
+        margin: 0 0 16px;
+        font-size: 28px;
+        line-height: 1.25;
+      }
+      section {
+        margin: 0 0 14px;
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: var(--cell);
+      }
+      h2 {
+        margin: 0 0 6px;
+        font-size: 19px;
+      }
+      p,
+      ol {
+        margin: 0;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 15px;
+      }
+      input {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 12px 0;
+        padding: 14px;
+        border: none;
+        border-radius: 14px;
+        background: var(--fill);
+        color: var(--label);
+        text-align: center;
+        font: 600 22px ui-monospace, Menlo, Consolas, monospace;
+        letter-spacing: 0.08em;
+      }
+      button {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 999px;
+        background: var(--red);
+        color: #fff;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      #result {
+        margin-top: 12px;
+      }
+      #result.is-done {
+        color: var(--green);
+        font-weight: 600;
+      }
+      #result.is-error {
+        color: var(--red);
+      }
+      a {
+        color: var(--green);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Englio থেকে তোমার তথ্য মুছে ফেলো</h1>
+
+      <section>
+        <h2>অ্যাপ থেকে (সবচেয়ে সহজ)</h2>
+        <ol>
+          <li>Englio খুলে নিচের "প্রোফাইল" ট্যাবে যাও।</li>
+          <li>সেটিংসে "আমার সব তথ্য মুছে ফেলো" চাপো।</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>অ্যাপ ছাড়া, ব্যাকআপ কোড দিয়ে</h2>
+        <p class="muted">অ্যাপের সেটিংস → "ব্যাকআপ কোড"-এ তোমার কোডটা আছে। সেটা এখানে দিলে নাম, জেলা আর অগ্রগতি, সব আমাদের সার্ভার থেকে সাথে সাথে মুছে যাবে।</p>
+        <form id="form">
+          <input id="code" placeholder="ABCDE-23456" maxlength="13" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Backup code" />
+          <button id="go" disabled>সব মুছে ফেলো</button>
+        </form>
+        <p id="result" role="status"></p>
+      </section>
+
+      <section>
+        <h2>ফোন বা কোড হারিয়ে গেছে?</h2>
+        <p>লেখো <a href="mailto:privacy@example.com">privacy@example.com</a> ঠিকানায়: তোমার নাম আর জেলা জানাও, আমরা ৭ দিনের মধ্যে মুছে দেব।</p>
+      </section>
+
+      <p class="muted">
+        English: delete your Englio data in the app (Profile → Settings → "Delete my data"), here with your backup code, or by emailing us. Everything we
+        keep about you (name, district, class, progress) is erased; nothing is kept afterwards.
+      </p>
+    </main>
+    <script type="module" src="/src/delete/main.ts"></script>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { fromText, SCHEMAS, toText, type ItemData, type ItemKind } from './itemSchemas';
+import { MediaField } from './MediaField';
 
 interface Props {
   kind: ItemKind;
@@ -20,8 +21,10 @@ export function ItemForm({ kind, initial = {}, onSave, onCancel }: Props) {
     setSaving(true);
     setError(null);
     try {
-      // Keep fields the form doesn't show (like a word's old emoji).
-      await onSave({ ...initial, ...Object.fromEntries(schema.fields.map((f) => [f.key, fromText(f, values[f.key])])) });
+      // Keep fields the form doesn't show (like a word's old emoji); an empty picture or recording means none.
+      const data: ItemData = { ...initial, ...Object.fromEntries(schema.fields.map((f) => [f.key, fromText(f, values[f.key])])) };
+      for (const f of schema.fields) if ((f.type === 'image' || f.type === 'audio') && !data[f.key]) delete data[f.key];
+      await onSave(data);
     } catch (err) {
       setError((err as Error).message);
       setSaving(false);
@@ -33,7 +36,9 @@ export function ItemForm({ kind, initial = {}, onSave, onCancel }: Props) {
       {schema.fields.map((field) => (
         <label key={field.key} className="ad-field">
           <span>{field.label}</span>
-          {field.type === 'text' ? (
+          {field.type === 'image' || field.type === 'audio' ? (
+            <MediaField kind={field.type} value={values[field.key]} onChange={(file) => setValues({ ...values, [field.key]: file })} />
+          ) : field.type === 'text' ? (
             <input
               className="ad-input"
               lang={field.bn ? 'bn' : undefined}

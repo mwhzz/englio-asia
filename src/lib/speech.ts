@@ -1,24 +1,75 @@
-let voice: SpeechSynthesisVoice | null = null;
+import { recordingOf } from './media';
 
-function pickVoice(): SpeechSynthesisVoice | null {
-  const voices = speechSynthesis.getVoices();
-  return (
-    voices.find((v) => v.lang === 'en-US' && /Google|Samantha|Aria|Jenny|Natural/.test(v.name)) ??
-    voices.find((v) => v.lang === 'en-US') ??
-    voices.find((v) => v.lang.startsWith('en')) ??
-    null
-  );
+let voice: SpeechSynthesisVoice | null = null;
+let playing: HTMLAudioElement | null = null;
+
+/**
+ * How good a voice sounds: natural/neural voices (Edge, newer Android) and Google's or Apple's
+ * best English voices first, American before other English. Online voices don't work offline.
+ */
+function score(v: SpeechSynthesisVoice, online: boolean): number {
+  if (!v.lang.toLowerCase().startsWith('en')) return -1;
+  if (!online && !v.localService) return -1;
+  let s = v.lang === 'en-US' || v.lang === 'en_US' ? 3 : v.lang.startsWith('en-GB') ? 2 : 1;
+  if (/natural|neural|enhanced|premium/i.test(v.name)) s += 6;
+  if (/google/i.test(v.name)) s += 4;
+  if (/samantha|ava|allison|aria|jenny|guy|daniel|karen/i.test(v.name)) s += 3;
+  if (/compact|espeak/i.test(v.name)) s -= 3;
+  return s;
 }
 
-/** Reads English text aloud with the browser's built-in speech engine; null when there is none. */
-export function speak(text: string, slow = false): SpeechSynthesisUtterance | null {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
+function pickVoice(): SpeechSynthesisVoice | null {
+  const online = typeof navigator === 'undefined' || navigator.onLine;
+  let best: SpeechSynthesisVoice | null = null;
+  for (const v of speechSynthesis.getVoices()) if (score(v, online) >= 0 && (!best || score(v, online) > score(best, online))) best = v;
+  return best;
+}
+
+if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+  // Voices arrive late in Chrome, and online voices stop working offline: choose again when either changes.
+  speechSynthesis.addEventListener?.('voiceschanged', () => (voice = null));
+  window.addEventListener('online', () => (voice = null));
+  window.addEventListener('offline', () => (voice = null));
+}
+
+/**
+ * Reads English text aloud: the recording uploaded for it if there is one, else the browser's speech
+ * engine (also when the recording can't play, e.g. offline). `onEnd` runs when it has finished.
+ */
+export function speak(text: string, slow = false, onEnd?: () => void): void {
+  if (typeof window === 'undefined') return;
+  playing?.pause();
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  const recording = recordingOf(text);
+  if (recording) {
+    const audio = new Audio(recording);
+    audio.playbackRate = slow ? 0.7 : 1;
+    audio.onended = () => onEnd?.();
+    playing = audio;
+    audio.play().catch(() => playing === audio && speakAloud(text, slow, onEnd));
+    return;
+  }
+  speakAloud(text, slow, onEnd);
+}
+
+function speakAloud(text: string, slow: boolean, onEnd?: () => void): void {
+  if (!('speechSynthesis' in window)) return;
   voice ??= pickVoice();
-  speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-US';
   if (voice) utterance.voice = voice;
   utterance.rate = slow ? 0.6 : 0.95;
+  if (onEnd) utterance.onend = utterance.onerror = onEnd;
   speechSynthesis.speak(utterance);
-  return utterance;
+}
+
+/**
+ * Whether this phone can read English aloud. 'unknown' until the browser has listed its voices
+ * (some list none until asked), so only 'none' means it really can't.
+ */
+export function englishVoice(): 'yes' | 'none' | 'unknown' {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return 'none';
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) return 'unknown';
+  return voices.some((v) => v.lang.toLowerCase().startsWith('en')) ? 'yes' : 'none';
 }

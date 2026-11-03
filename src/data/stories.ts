@@ -68,7 +68,7 @@ export const BUNDLED_STORIES: Story[] = [
 ];
 
 /** The stories the app shows: the server's copy once loaded, else the built-in ones. */
-export let STORIES: Story[] = BUNDLED_STORIES;
+export let STORIES: Story[] = globalThis.englioServerContent?.stories ?? BUNDLED_STORIES;
 
 export function setStories(stories: Story[]): void {
   STORIES = stories;

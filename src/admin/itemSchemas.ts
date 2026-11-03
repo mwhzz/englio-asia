@@ -7,7 +7,7 @@ export type ItemData = Record<string, unknown>;
  * text = one line, area = a few lines, words = comma separated, lines = one per line,
  * dialog = one chat line per row, "them: English | বাংলা" or "you: English | বাংলা".
  */
-type FieldType = 'text' | 'area' | 'words' | 'lines' | 'dialog';
+type FieldType = 'text' | 'area' | 'words' | 'lines' | 'dialog' | 'image' | 'audio';
 
 export interface Field {
   key: string;
@@ -32,8 +32,10 @@ export const SCHEMAS: Record<ItemKind, Schema> = {
     fields: [
       { key: 'en', label: 'English', type: 'text' },
       { key: 'bn', label: 'Bangla', type: 'text', bn: true },
+      { key: 'image', label: 'Picture (optional)', type: 'image', hint: 'Shown on the question card. PNG, JPG or WebP under 1 MB; square works best.' },
+      { key: 'audio', label: 'Recorded pronunciation (optional)', type: 'audio', hint: 'Played instead of the phone’s voice. MP3 or M4A under 2 MB.' },
     ],
-    summary: (d) => `${d.en} — ${d.bn}`,
+    summary: (d) => `${d.en} — ${d.bn}${d.image ? ' · picture' : ''}${d.audio ? ' · audio' : ''}`,
   },
   sentence: {
     title: 'Sentences',
@@ -42,8 +44,9 @@ export const SCHEMAS: Record<ItemKind, Schema> = {
       { key: 'en', label: 'English', type: 'text' },
       { key: 'bn', label: 'Bangla', type: 'text', bn: true },
       { key: 'alt', label: 'Other correct answers', type: 'lines', hint: 'Optional. One per line.' },
+      { key: 'audio', label: 'Recording (optional)', type: 'audio', hint: 'Played instead of the phone’s voice. MP3 or M4A under 2 MB.' },
     ],
-    summary: (d) => `${d.en} — ${d.bn}`,
+    summary: (d) => `${d.en} — ${d.bn}${d.audio ? ' · audio' : ''}`,
   },
   fill: {
     title: 'Fill in the blank',

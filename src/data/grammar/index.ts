@@ -7,9 +7,9 @@ import { INTERMEDIATE } from './intermediate.ts';
 export const BUNDLED_GRAMMAR: GrammarTopic[] = [...BEGINNER, ...INTERMEDIATE, ...ADVANCED];
 
 /** The topics the app is showing: the server's copy once loaded, else the built-in ones. */
-export let GRAMMAR: GrammarTopic[] = BUNDLED_GRAMMAR;
+export let GRAMMAR: GrammarTopic[] = globalThis.englioServerContent?.grammar ?? BUNDLED_GRAMMAR;
 
-/** Switches to another copy of the topics; call before the app renders. */
+/** Switches to another copy of the topics (tests; the app sets englioServerContent in main.tsx). */
 export function setGrammar(topics: GrammarTopic[]): void {
   GRAMMAR = topics;
 }

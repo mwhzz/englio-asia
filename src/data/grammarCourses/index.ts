@@ -7,7 +7,7 @@ export const BUNDLED_COURSES: Record<string, GrammarCourse> = {
 };
 
 /** Step-by-step courses, by grammar topic id. Topics without one show only their topic page. */
-export let COURSES: Record<string, GrammarCourse> = BUNDLED_COURSES;
+export let COURSES: Record<string, GrammarCourse> = globalThis.englioServerContent?.courses ?? BUNDLED_COURSES;
 
 export function setCourses(courses: Record<string, GrammarCourse>): void {
   COURSES = courses;

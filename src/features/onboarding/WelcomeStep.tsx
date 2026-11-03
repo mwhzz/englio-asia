@@ -1,6 +1,7 @@
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { Logo } from '../../components/Logo';
 import { ObButton } from './ObButton';
+import { RestoreSheet } from './RestoreSheet';
 
 interface Props {
   mapSlot: (el: HTMLDivElement | null) => void;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function WelcomeStep({ mapSlot, onNext }: Props) {
+  const [restoring, setRestoring] = useState(false);
   return (
     <div className="ob-screen ob-welcome">
       <header className="ob-brand ob-rise">
@@ -31,7 +33,11 @@ export function WelcomeStep({ mapSlot, onNext }: Props) {
         <ObButton onClick={onNext}>
           <span lang="bn">শুরু করো</span>
         </ObButton>
+        <button className="ob-restore" onClick={() => setRestoring(true)}>
+          <span lang="bn">আগে শিখেছ? অগ্রগতি ফিরিয়ে আনো</span>
+        </button>
       </div>
+      {restoring && <RestoreSheet onClose={() => setRestoring(false)} />}
     </div>
   );
 }

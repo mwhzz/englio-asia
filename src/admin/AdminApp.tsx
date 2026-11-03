@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Logo } from '../components/Logo';
-import { clearToken, getToken } from './adminApi';
+import { ActivityPage } from './ActivityPage';
+import { adminApi, clearToken, getToken } from './adminApi';
 import { ContentPage } from './ContentPage';
 import { CourseEditor } from './CourseEditor';
 import { Dashboard } from './Dashboard';
@@ -9,27 +10,37 @@ import { LessonPage } from './LessonPage';
 import { Login } from './Login';
 import { StoriesAdmin } from './StoriesAdmin';
 import { StoryEditor } from './StoryEditor';
+import { TeamPage } from './TeamPage';
 import { TopicEditor } from './TopicEditor';
 import { UserPage } from './UserPage';
 import { UsersPage } from './UsersPage';
 import { go, useHashRoute } from './useHashRoute';
 
+/** The menu; the last three are for owners only (editors work on content). */
 const NAV = [
-  ['dashboard', 'Dashboard'],
-  ['content', 'Lessons'],
-  ['grammar', 'Grammar'],
-  ['stories', 'Stories'],
-  ['users', 'Learners'],
+  ['dashboard', 'Dashboard', false],
+  ['content', 'Lessons', false],
+  ['grammar', 'Grammar', false],
+  ['stories', 'Stories', false],
+  ['users', 'Learners', true],
+  ['team', 'Team', true],
+  ['activity', 'Activity', true],
 ] as const;
 
 /** The admin panel: sign in with the token, then dashboard, lessons, grammar, stories and learners. */
 export function AdminApp() {
   const [signedIn, setSignedIn] = useState(() => !!getToken());
   const [page = 'dashboard', id = ''] = useHashRoute();
+  const [me, setMe] = useState<{ name: string; role: 'owner' | 'editor' } | null>(null);
   const signOut = useCallback(() => {
     clearToken();
     setSignedIn(false);
+    setMe(null);
   }, []);
+
+  useEffect(() => {
+    if (signedIn) adminApi<{ name: string; role: 'owner' | 'editor' }>('GET', '/me').then(setMe, signOut);
+  }, [signedIn, signOut]);
 
   if (!signedIn) return <Login onDone={() => setSignedIn(true)} />;
 
@@ -40,12 +51,17 @@ export function AdminApp() {
         <span className="ad-brand">
           <Logo size={30} /> <small>Admin</small>
         </span>
-        {NAV.map(([key, label]) => (
+        {NAV.filter(([, , ownerOnly]) => !ownerOnly || me?.role === 'owner').map(([key, label]) => (
           <button key={key} className={`ad-nav-item${section === key ? ' is-on' : ''}`} onClick={() => go(key)}>
             {label}
           </button>
         ))}
         <span className="ad-nav-gap" />
+        {me && (
+          <span className="ad-nav-me">
+            {me.name} · {me.role}
+          </span>
+        )}
         <a className="ad-nav-item" href="./" target="_blank" rel="noreferrer">
           Open app ↗
         </a>
@@ -68,6 +84,10 @@ export function AdminApp() {
           <StoriesAdmin onUnauthorized={signOut} />
         ) : page === 'story' ? (
           <StoryEditor key={id} id={id} onUnauthorized={signOut} />
+        ) : page === 'team' ? (
+          <TeamPage onUnauthorized={signOut} />
+        ) : page === 'activity' ? (
+          <ActivityPage onUnauthorized={signOut} />
         ) : page === 'users' ? (
           <UsersPage onUnauthorized={signOut} />
         ) : page === 'user' ? (

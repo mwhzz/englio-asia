@@ -90,7 +90,7 @@ describe('grammar', () => {
 
 describe('users', () => {
   it('saves and returns a learner’s progress', async () => {
-    const progress = { profile: { name: 'Test', districtId: 'dhaka', classId: 'class-8', joinedAt: '2026-11-01' }, xp: 42, completed: { 'u1-l1': 1 } };
+    const progress = { profile: { name: 'Test', districtId: 'dhaka', classId: 'class-8', joinedAt: '2026-11-01' }, xp: 42, xpByDay: { '2026-11-01': 42 }, completed: { 'u1-l1': 1 } };
     expect((await call('PUT', '/api/users/test-user-1', { progress })).status).toBe(200);
     expect((await call('GET', '/api/users/test-user-1')).json.progress).toEqual(progress);
     const list = (await admin('GET', '/api/admin/users?q=Test')).json;
@@ -122,6 +122,19 @@ describe('admin', () => {
 
     await admin('DELETE', `/api/admin/units/${unit.id}`);
     expect((await admin('GET', `/api/admin/lessons/${lesson.id}`)).status).toBe(404);
+  });
+
+  it('adds many items at once, or none when a row is wrong', async () => {
+    const lessonId = (await call('GET', '/api/course')).json.units[0].lessons[0].id;
+    const count = async () => (await admin('GET', `/api/admin/lessons/${lessonId}`)).json.items.filter((i: { kind: string }) => i.kind === 'vocab').length;
+    const before = await count();
+    const bad = await admin('POST', `/api/admin/lessons/${lessonId}/items/bulk`, { kind: 'vocab', rows: [{ en: 'pen', bn: 'কলম' }, { en: 'cup' }] });
+    expect(bad.status).toBe(400);
+    expect(bad.json.error).toContain('Row 2');
+    expect(await count()).toBe(before);
+    const ok = await admin('POST', `/api/admin/lessons/${lessonId}/items/bulk`, { kind: 'vocab', rows: [{ en: 'pen', bn: 'কলম' }, { en: 'cup', bn: 'কাপ' }] });
+    expect(ok.json).toEqual({ added: 2 });
+    expect(await count()).toBe(before + 2);
   });
 
   it('refuses content the app could not use', async () => {

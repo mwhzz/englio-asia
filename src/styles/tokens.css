@@ -24,8 +24,8 @@
   --locked-dark: #c7c7cc;
 
   --radius: 16px;
-  --font: 'Inter', 'Anek Bangla', -apple-system, system-ui, 'Segoe UI', sans-serif;
-  --font-bn: 'Anek Bangla', 'Inter', system-ui, sans-serif;
+  --font: 'Inter Variable', 'Inter', 'Anek Bangla Variable', 'Anek Bangla', -apple-system, system-ui, 'Segoe UI', sans-serif;
+  --font-bn: 'Anek Bangla Variable', 'Anek Bangla', 'Inter Variable', 'Inter', system-ui, sans-serif;
   color-scheme: light;
 }
 

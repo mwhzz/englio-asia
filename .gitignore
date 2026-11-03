@@ -6,3 +6,12 @@ dist
 # Local database (npm run seed)
 server/*.db
 server/*.db-*
+
+# Uploaded pictures and recordings (back them up with the database)
+server/media/
+
+# End-to-end test runs (npm run e2e)
+e2e/.e2e.db*
+e2e/.media/
+test-results/
+playwright-report/

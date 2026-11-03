@@ -51,7 +51,7 @@
   overflow: hidden;
   background: var(--ob-bg);
   color: var(--ob-label);
-  font-family: 'Inter', 'Anek Bangla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter Variable', 'Inter', 'Anek Bangla Variable', 'Anek Bangla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
@@ -499,7 +499,7 @@
 .bdmap-lift text {
   text-anchor: middle;
   dominant-baseline: central;
-  font-family: 'Anek Bangla', sans-serif;
+  font-family: 'Anek Bangla Condensed', 'Anek Bangla Variable', 'Anek Bangla', sans-serif;
   font-stretch: 85%;
   font-weight: 600;
   fill: var(--ob-label-ink);
@@ -1083,7 +1083,7 @@
   place-items: center;
   border-radius: 50%;
   color: var(--ob-label);
-  font-family: 'Anek Bangla', sans-serif;
+  font-family: 'Anek Bangla Variable', 'Anek Bangla', sans-serif;
   font-size: 7cqw;
   font-weight: 600;
   pointer-events: none;
@@ -1337,7 +1337,7 @@
 .bdmap-bubble text {
   text-anchor: middle;
   dominant-baseline: central;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter Variable', 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 700;
   fill: #0b0b0f;

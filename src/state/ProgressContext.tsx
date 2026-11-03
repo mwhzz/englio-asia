@@ -4,7 +4,7 @@ import { DEFAULT_PROGRESS, type Progress } from '../lib/progress';
 import { setSoundEnabled } from '../lib/sounds';
 import { useProgressSync } from './useProgressSync';
 
-const STORAGE_KEY = 'englio-progress-v1';
+export const STORAGE_KEY = 'englio-progress-v1';
 
 interface ProgressApi {
   progress: Progress;
@@ -23,24 +23,26 @@ function load(): Progress {
   return DEFAULT_PROGRESS;
 }
 
-export function ProgressProvider({ children }: { children: ReactNode }) {
-  const [progress, setProgress] = useState(() => regenHearts(load(), Date.now()));
+/** `memoryOnly`: fresh progress that is never saved or synced (the admin's preview tab). */
+export function ProgressProvider({ children, memoryOnly = false }: { children: ReactNode; memoryOnly?: boolean }) {
+  const [progress, setProgress] = useState(() => (memoryOnly ? DEFAULT_PROGRESS : regenHearts(load(), Date.now())));
 
   useEffect(() => {
     setSoundEnabled(progress.soundOn);
+    if (memoryOnly) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
     } catch {
       // Progress just won't persist in this browser.
     }
-  }, [progress]);
+  }, [progress, memoryOnly]);
 
   useEffect(() => {
     const timer = setInterval(() => setProgress((p) => regenHearts(p, Date.now())), 15_000);
     return () => clearInterval(timer);
   }, []);
 
-  useProgressSync(progress);
+  useProgressSync(progress, !memoryOnly);
 
   return <ProgressCtx.Provider value={{ progress, update: setProgress }}>{children}</ProgressCtx.Provider>;
 }

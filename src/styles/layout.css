@@ -8,3 +8,40 @@
   inset: 0;
   background: var(--bg);
 }
+
+/* ---------- Admin preview tab ---------- */
+
+.pv-banner {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  top: env(safe-area-inset-top);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 3px 3px 10px;
+  border-radius: 0 0 12px 12px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.pv-restart {
+  padding: 2px 9px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pv-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--ios-secondary);
+}

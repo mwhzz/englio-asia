@@ -38,6 +38,13 @@ describe('leaderboard', () => {
     expect(board.myDistrictRank).toBe(1);
   });
 
+  it('caps a hand-edited day and ignores future days', () => {
+    const d = db();
+    saveProgress(d, 'device-0009', { profile: { name: 'Cheat', districtId: 'sylhet' }, xpByDay: { '2026-11-03': 99999, '2026-12-25': 5000 }, completed: {} });
+    const sylhet = leaderboard(d, 'sylhet', null, NOW).learners.find((l) => l.name === 'Cheat');
+    expect(sylhet?.xp).toBe(600);
+  });
+
   it('never sends device ids', () => {
     expect(JSON.stringify(leaderboard(db(), 'dhaka', 'device-0001', NOW))).not.toContain('device-');
   });

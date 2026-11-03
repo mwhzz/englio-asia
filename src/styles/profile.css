@@ -645,3 +645,52 @@ a.pf-row {
   color: inherit;
   text-decoration: none;
 }
+
+/* ---------- Backup code ---------- */
+
+.bk {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bk h2 {
+  margin: 0;
+}
+
+.bk-code,
+.bk-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  text-align: center;
+  font: 600 26px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.bk-input:focus {
+  outline: 3px solid color-mix(in srgb, var(--ios-blue) 45%, transparent);
+}
+
+.bk-error {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ios-red);
+}
+
+.ob-restore {
+  display: block;
+  margin: 14px auto 0;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  color: var(--ios-blue);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}

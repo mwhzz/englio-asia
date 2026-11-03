@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { API_BASE } from '../lib/api';
 import type { Progress } from '../lib/progress';
 
-const DEVICE_KEY = 'englio-device-id';
+export const DEVICE_KEY = 'englio-device-id';
 /** Wait for a quiet moment so a lesson's many small changes go up as one request. */
 const DEBOUNCE_MS = 3000;
 
@@ -21,9 +21,9 @@ export function deviceId(): string {
 }
 
 /** Sends progress to the server a few seconds after it changes, once onboarding is done. Failures are ignored. */
-export function useProgressSync(progress: Progress): void {
+export function useProgressSync(progress: Progress, enabled = true): void {
   useEffect(() => {
-    if (!progress.profile) return;
+    if (!enabled || !progress.profile) return;
     const timer = setTimeout(() => {
       fetch(`${API_BASE}/users/${deviceId()}`, {
         method: 'PUT',
@@ -35,5 +35,5 @@ export function useProgressSync(progress: Progress): void {
       });
     }, DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [progress]);
+  }, [progress, enabled]);
 }

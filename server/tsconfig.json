@@ -14,5 +14,5 @@
     "noUnusedParameters": true,
     "types": ["node"]
   },
-  "include": ["."]
+  "include": [".", "../src/data/serverContent.d.ts"]
 }

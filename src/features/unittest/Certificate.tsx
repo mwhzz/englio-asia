@@ -25,7 +25,7 @@ export const Certificate = forwardRef<SVGSVGElement, Props>(function Certificate
 ) {
   const when = new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   const sans = "Inter, 'Segoe UI', Roboto, Arial, sans-serif";
-  const bangla = "'Anek Bangla', 'Noto Sans Bengali', 'Nirmala UI', 'Vrinda', sans-serif";
+  const bangla = "'Anek Bangla Variable', 'Anek Bangla', 'Noto Sans Bengali', 'Nirmala UI', 'Vrinda', sans-serif";
 
   return (
     <svg ref={ref} className="cert" viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-label={`Certificate for ${name}`}>

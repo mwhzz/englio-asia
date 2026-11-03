@@ -7,6 +7,7 @@ import { ReviewCard } from './ReviewCard';
 import { LessonTrail } from '../path/trail/LessonTrail';
 import { HomeHeader } from './HomeHeader';
 import { UpNextCard } from './UpNextCard';
+import { VoiceHint } from './VoiceHint';
 
 interface Props {
   onStart: (lessonId: string) => void;
@@ -34,6 +35,7 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
         <div className="home-rise" style={{ animationDelay: '140ms' }}>
           <UpNextCard onStart={onStart} onPractice={onPractice} />
         </div>
+        <VoiceHint />
         <ReviewCard onStart={onReview} />
         {anyDone && <StoriesCard />}
         {anyDone && <LeagueCard />}

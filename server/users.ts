@@ -1,5 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite';
 import type { Progress } from '../src/lib/progress.ts';
+import { fairTotalXp, fairXpByDay } from './fairPlay.ts';
 import { HttpError } from './http.ts';
 
 const ID = /^[A-Za-z0-9-]{8,64}$/;
@@ -13,6 +14,10 @@ export function checkUserId(id: string): string {
 export function saveProgress(db: DatabaseSync, id: string, progress: unknown, now = new Date()): void {
   if (!progress || typeof progress !== 'object') throw new HttpError(400, '"progress" must be an object');
   const p = progress as Partial<Progress>;
+  // The learner's own progress is kept exactly as sent; the XP column others see (admin rankings)
+  // only counts what a real learner could have earned (see fairPlay.ts).
+  const previous = db.prepare('SELECT xp FROM users WHERE id = ?').get(id) as { xp: number } | undefined;
+  const fairXp = fairTotalXp(p.xp, fairXpByDay(p.xpByDay, now), previous?.xp ?? 0);
   const num = (x: unknown) => (typeof x === 'number' && Number.isFinite(x) ? Math.max(0, Math.round(x)) : 0);
   db.prepare(
     `INSERT INTO users (id, name, district_id, class_id, xp, streak, lessons_done, joined_at, last_seen, progress)
@@ -26,7 +31,7 @@ export function saveProgress(db: DatabaseSync, id: string, progress: unknown, no
     p.profile?.name?.slice(0, 60) ?? null,
     p.profile?.districtId ?? null,
     p.profile?.classId ?? null,
-    num(p.xp),
+    fairXp,
     num(p.streak),
     Object.keys(p.completed ?? {}).length,
     p.profile?.joinedAt ?? null,

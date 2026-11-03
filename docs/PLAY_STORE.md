@@ -11,6 +11,7 @@ Englio is a PWA, so the Android app is a thin **Trusted Web Activity (TWA)** wra
 | `public/privacy.html` | privacy policy (Bangla, with an English summary). **Change the contact email in it.** |
 | `public/.well-known/assetlinks.json` | proves the website and the app belong together. **Fill in the fingerprint (step 3).** |
 | Settings → "আমার সব তথ্য মুছে ফেলো" | in-app data deletion, which Google requires |
+| `delete.html` | deleting data without the app (backup code or email), the web link Google also asks for. **Change the email in it.** |
 
 ## Steps
 
@@ -26,6 +27,7 @@ Englio is a PWA, so the Android app is a thin **Trusted Web Activity (TWA)** wra
 5. **Store listing**: short and full description (Bangla and English), at least 2 phone screenshots, a 512×512 icon (`public/icon-512.png`), and a 1024×500 feature graphic.
 6. **App content forms**:
    - Privacy policy URL: `https://yourdomain.com/privacy.html`
+   - Data deletion URL: `https://yourdomain.com/delete.html`
    - Data safety: *collected*: name and app activity (learning progress), *for*: app functionality and analytics, *not shared*, *not sold*, *deletion*: in the app. No location, contacts, phone number or email.
    - Target audience: if you include children under 13, Google's Families policy applies (no ads SDKs, which Englio doesn't have anyway).
    - Content rating questionnaire: Education, no violence and so on.

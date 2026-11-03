@@ -1,5 +1,15 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
+/** A handler's answer that is a file (a picture or recording), not JSON. */
+export class FileReply {
+  data: Buffer;
+  type: string;
+  constructor(data: Buffer, type: string) {
+    this.data = data;
+    this.type = type;
+  }
+}
+
 /** Thrown by a handler to answer with an error status. */
 export class HttpError extends Error {
   status: number;
@@ -16,6 +26,8 @@ export interface Request {
   params: Record<string, string>;
   headers: IncomingMessage['headers'];
   body: unknown;
+  /** Who is calling an admin route. */
+  admin?: { name: string; role: 'owner' | 'editor' };
 }
 
 export type Handler = (req: Request) => unknown;
@@ -24,8 +36,12 @@ export interface Route {
   method: string;
   pattern: string;
   handler: Handler;
-  /** Needs the admin token. */
-  admin?: boolean;
+  /** Needs an admin token; 'owner' routes (learners' data, the team, the log) aren't open to editors. */
+  admin?: boolean | 'owner';
+  /** Guessable on purpose (a backup code): allowed only a few tries per address. */
+  strict?: boolean;
+  /** Takes the raw body (an upload) up to this many bytes, instead of JSON. */
+  raw?: number;
 }
 
 /** Matches "/api/lessons/:id" against a path; returns the params or null. */
@@ -43,17 +59,23 @@ export function matchPath(pattern: string, path: string): Record<string, string>
 
 const MAX_BODY = 1_000_000;
 
-export async function readJson(req: IncomingMessage): Promise<unknown> {
+/** The request body as bytes, refusing more than `max`. */
+export async function readBody(req: IncomingMessage, max = MAX_BODY): Promise<Buffer> {
   const chunks: Buffer[] = [];
   let size = 0;
   for await (const chunk of req) {
     size += (chunk as Buffer).length;
-    if (size > MAX_BODY) throw new HttpError(413, 'Body too large');
+    if (size > max) throw new HttpError(413, 'Body too large');
     chunks.push(chunk as Buffer);
   }
-  if (!size) return null;
+  return Buffer.concat(chunks);
+}
+
+export async function readJson(req: IncomingMessage): Promise<unknown> {
+  const body = await readBody(req);
+  if (!body.length) return null;
   try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+    return JSON.parse(body.toString('utf8'));
   } catch {
     throw new HttpError(400, 'Body is not valid JSON');
   }

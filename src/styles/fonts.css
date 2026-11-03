@@ -1,0 +1,16 @@
+/* The app's two fonts, shipped with it (not from Google Fonts) so they also work offline.
+   Only the character sets a page uses are downloaded (Latin, Bengali). Anek Bangla comes with
+   just its weight axis here (156 KB instead of 448 KB for Bengali); the width axis is only needed
+   for the narrow labels on the onboarding map, so that file is a separate font loaded only there. */
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/anek-bangla/wght.css';
+
+@font-face {
+  font-family: 'Anek Bangla Condensed';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  font-stretch: 75% 125%;
+  src: url('../../node_modules/@fontsource-variable/anek-bangla/files/anek-bangla-bengali-wdth-normal.woff2') format('woff2-variations');
+  unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1;
+}

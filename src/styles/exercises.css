@@ -776,6 +776,11 @@
   padding-top: 6px;
 }
 
+/* Room for the listening rings, which grow past the button. */
+.mic-area .mic {
+  margin: 10px 0;
+}
+
 .mic {
   position: relative;
   width: 88px;
@@ -850,4 +855,14 @@
   color: var(--ios-secondary);
   font-size: 15px;
   cursor: pointer;
+}
+
+/* A word's picture (uploaded in the admin) on the question card. */
+.prompt-pic {
+  width: min(40vw, 150px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  margin-bottom: 8px;
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }

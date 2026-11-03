@@ -4,6 +4,9 @@ import { ItemForm } from './ItemForm';
 import { KIND_ORDER, SCHEMAS, type ItemData, type ItemKind } from './itemSchemas';
 import { useAdminData } from './useAdminData';
 import { go } from './useHashRoute';
+import { openPreview } from '../preview/draft';
+import { BulkAdd } from './BulkAdd';
+import { BULK } from './bulkRows';
 
 interface Item {
   id: number;
@@ -80,6 +83,9 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
           >
             Rename
           </button>
+          <button className="ad-btn" onClick={() => openPreview({ kind: 'lesson', lessonId: lesson.id })} title="Runs the lesson as saved">
+            Preview in app ↗
+          </button>
         </header>
       )}
 
@@ -92,10 +98,29 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
               <h2>
                 {schema.title} <span lang="bn">{schema.titleBn}</span> <em>{items.length}</em>
               </h2>
-              <button className="ad-btn is-small" onClick={() => setEditing(`new:${kind}`)}>
-                + Add
-              </button>
+              <span className="ad-row">
+                {BULK[kind] && (
+                  <button className="ad-btn is-small" onClick={() => setEditing(`bulk:${kind}`)}>
+                    + Paste many
+                  </button>
+                )}
+                <button className="ad-btn is-small" onClick={() => setEditing(`new:${kind}`)}>
+                  + Add
+                </button>
+              </span>
             </div>
+
+            {editing === `bulk:${kind}` && (
+              <BulkAdd
+                lessonId={id}
+                kind={kind}
+                onCancel={() => setEditing(null)}
+                onDone={() => {
+                  setEditing(null);
+                  reload();
+                }}
+              />
+            )}
 
             {editing === `new:${kind}` && (
               <ItemForm

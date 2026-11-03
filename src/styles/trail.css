@@ -24,6 +24,7 @@
 
 .trail-stops {
   position: relative;
+  isolation: isolate;
 }
 
 .trail-line {
@@ -372,4 +373,48 @@
   color: #fff;
   font-size: 14px;
   font-weight: 600;
+}
+
+/* ---------- Background detail: a soft glow and line drawings in the unit's color ---------- */
+
+.trail-stops::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -20px -16px;
+  background: radial-gradient(55% 45% at 50% 50%, color-mix(in srgb, var(--u) 11%, transparent), transparent 72%);
+  pointer-events: none;
+}
+
+.trail-doodles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.trail-doodle {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  fill: none;
+  stroke: color-mix(in srgb, var(--u) 34%, transparent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(var(--tilt));
+  animation: doodle-bob 6s ease-in-out var(--d) infinite;
+}
+
+@keyframes doodle-bob {
+  50% {
+    transform: rotate(var(--tilt)) translateY(-5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trail-doodle {
+    animation: none;
+  }
 }

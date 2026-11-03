@@ -3,7 +3,7 @@ export type LetterCase = 'both' | 'upper' | 'lower';
 
 /** The three ways of writing a letter, and the font each uses (handwriting fonts are Google's school "Playwrite" family). */
 export const STYLES: { id: LetterStyle; bn: string; en: string; family: string }[] = [
-  { id: 'print', bn: 'ছাপা', en: 'Print', family: 'Inter' },
+  { id: 'print', bn: 'ছাপা', en: 'Print', family: 'Inter Variable' },
   { id: 'hand', bn: 'হাতের লেখা', en: 'Handwriting', family: 'Playwrite DE Grund' },
   { id: 'cursive', bn: 'টানা লেখা', en: 'Cursive', family: 'Playwrite US Trad' },
 ];

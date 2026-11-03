@@ -22,7 +22,7 @@ interface Props {
 
 export function LessonRunner({ lessonId, review = false, onExit, onPractice }: Props) {
   const { progress, update } = useProgress();
-  const [exercises] = useState(() => (lessonId ? buildLesson(lessonId, { speak: canListen() }) : review ? buildReview(progress) : buildPractice(progress.completed)));
+  const [exercises] = useState(() => (lessonId ? buildLesson(lessonId, { speak: canListen() && navigator.onLine }) : review ? buildReview(progress) : buildPractice(progress.completed)));
   const [result, setResult] = useState<LessonResult | null>(null);
   useEffect(() => {
     if (lessonId) track('lesson_start', lessonId);

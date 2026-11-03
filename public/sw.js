@@ -7,6 +7,21 @@ self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim(
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
+  // Google's handwriting fonts (letters page) never change: keep them after the first download.
+  if (request.method === 'GET' && (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com')) {
+    event.respondWith(
+      caches.match(request).then(
+        (hit) =>
+          hit ||
+          fetch(request).then((response) => {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(request, copy));
+            return response;
+          }),
+      ),
+    );
+    return;
+  }
   // The admin panel's data must always be live, never a cached copy.
   if (request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.includes('/api/admin')) return;
   event.respondWith(

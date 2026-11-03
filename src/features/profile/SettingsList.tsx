@@ -5,6 +5,7 @@ import { haptic } from '../../lib/haptics';
 import { DAILY_GOALS } from '../../lib/progress';
 import { savedTheme, setTheme, type Theme } from '../../lib/theme';
 import { useProgress } from '../../state/ProgressContext';
+import { BackupCode } from './BackupCode';
 import { DeleteAccount } from './DeleteAccount';
 import { InstallRow } from './InstallRow';
 import { RedoSetup } from './RedoSetup';
@@ -14,7 +15,7 @@ import { ResetProgress } from './ResetProgress';
 /** Settings as an iOS inset grouped list: daily goal, sound, then the profile actions. */
 export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
   const { progress, update } = useProgress();
-  const [sheet, setSheet] = useState<'redo' | 'reset' | 'delete' | null>(null);
+  const [sheet, setSheet] = useState<'redo' | 'reset' | 'delete' | 'backup' | null>(null);
   const [theme, chooseTheme] = useState<Theme>(savedTheme);
 
   return (
@@ -112,6 +113,16 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
 
       <div className="pf-list">
         <InstallRow />
+        <button className="pf-row" onClick={() => setSheet('backup')}>
+          <span className="pf-icon" style={{ background: 'var(--ios-blue)' }}>
+            <Glyph name="lock" size={16} />
+          </span>
+          <span className="pf-row-text">
+            <span lang="bn">ব্যাকআপ কোড</span>
+            <small lang="bn">ফোন বদলালেও অগ্রগতি সাথে থাকবে</small>
+          </span>
+          <Glyph name="chevron" size={16} className="pf-chevron" />
+        </button>
         <button className="pf-row" onClick={onPlacement}>
           <span className="pf-icon" style={{ background: 'var(--ios-orange)' }}>
             <Glyph name="target" size={17} />
@@ -168,6 +179,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
       {sheet === 'redo' && <RedoSetup onClose={() => setSheet(null)} />}
       {sheet === 'reset' && <ResetProgress onClose={() => setSheet(null)} />}
       {sheet === 'delete' && <DeleteAccount onClose={() => setSheet(null)} />}
+      {sheet === 'backup' && <BackupCode onClose={() => setSheet(null)} />}
     </section>
   );
 }

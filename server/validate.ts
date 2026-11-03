@@ -1,4 +1,5 @@
 import { HttpError } from './http.ts';
+import { MEDIA_FILE } from './media.ts';
 
 export const ITEM_KINDS = ['vocab', 'sentence', 'fill', 'gaps', 'grammar', 'dialog'] as const;
 export type ItemKind = (typeof ITEM_KINDS)[number];
@@ -22,6 +23,15 @@ function list(o: Obj, key: string, min = 0): string[] {
 
 const blanks = (s: string) => s.split('___').length - 1;
 
+/** An optional uploaded file (see media.ts): kept only if it names one. */
+function media(o: Obj, key: 'image' | 'audio'): Obj {
+  const v = o[key];
+  if (v == null || v === '') return {};
+  if (typeof v !== 'string' || !MEDIA_FILE.test(v)) throw new HttpError(400, `"${key}" must be an uploaded file`);
+  if (key === 'image' ? !/\.(png|jpg|webp)$/.test(v) : !/\.(mp3|m4a|webm|ogg)$/.test(v)) throw new HttpError(400, `"${key}" is the wrong kind of file`);
+  return { [key]: v };
+}
+
 /**
  * Checks one content item and returns it cleaned up (trimmed, only known fields),
  * so everything in the database can be turned into exercises the app can solve.
@@ -33,9 +43,9 @@ export function validateItem(kind: string, data: unknown): Obj {
 
   switch (kind as ItemKind) {
     case 'vocab':
-      return { en: str(o, 'en'), bn: str(o, 'bn'), emoji: str(o, 'emoji', true) };
+      return { en: str(o, 'en'), bn: str(o, 'bn'), emoji: str(o, 'emoji', true), ...media(o, 'image'), ...media(o, 'audio') };
     case 'sentence':
-      return { en: str(o, 'en'), bn: str(o, 'bn'), alt: list(o, 'alt') };
+      return { en: str(o, 'en'), bn: str(o, 'bn'), alt: list(o, 'alt'), ...media(o, 'audio') };
     case 'fill': {
       const out = { text: str(o, 'text'), answer: str(o, 'answer'), options: list(o, 'options', 2), bn: str(o, 'bn') };
       if (blanks(out.text) !== 1) throw new HttpError(400, 'The text needs exactly one ___');

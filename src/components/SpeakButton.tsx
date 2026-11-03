@@ -21,12 +21,11 @@ export function SpeakButton({ text, slow = false, big = false, auto = false }: P
   const play = useCallback(() => {
     const id = ++run.current;
     const stop = () => id === run.current && setPlaying(false);
-    const utterance = speak(text, slow);
+    speak(text, slow, stop);
     setPlaying(true);
     // Some browsers never fire `end`, so stop the waves after a rough reading time too.
     clearTimeout(timer.current);
     timer.current = window.setTimeout(stop, 1200 + text.length * (slow ? 140 : 80));
-    if (utterance) utterance.onend = utterance.onerror = stop;
   }, [text, slow]);
 
   useEffect(() => {

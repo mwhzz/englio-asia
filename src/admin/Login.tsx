@@ -22,7 +22,7 @@ export function Login({ onDone }: { onDone: () => void }) {
     <form className="ad-login" onSubmit={submit}>
       <Logo size={44} />
       <h1>Admin</h1>
-      <p className="ad-muted">Enter the admin token (ADMIN_TOKEN on the server).</p>
+      <p className="ad-muted">Enter your admin token: ADMIN_TOKEN on the server, or the one the owner gave you.</p>
       <input className="ad-input" type="password" value={token} onChange={(e) => setValue(e.target.value)} placeholder="Admin token" autoFocus />
       {error && <p className="ad-error">{error}</p>}
       <button className="ad-btn is-primary" disabled={!token.trim()}>
