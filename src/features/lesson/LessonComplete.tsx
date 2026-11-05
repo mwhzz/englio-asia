@@ -45,7 +45,7 @@ export function LessonComplete({ result, accent, onContinue }: { result: LessonR
         <p className="done-sub">{sub}</p>
 
         <ul className="done-list">
-          <Row icon="bolt" color="var(--ios-orange)" label="XP পেয়েছ" value={`+${toBanglaDigits(xp)}`} />
+          <Row icon="gem" color="var(--ios-orange)" label="XP পেয়েছ" value={`+${toBanglaDigits(xp)}`} />
           <Row icon="target" color="var(--ios-green)" label="সঠিক উত্তর" value={`${toBanglaDigits(accuracy)}%`} />
           <Row icon="clock" color="var(--ios-blue)" label="সময়" value={formatTime(result.seconds)} />
           {result.streakUp && <Row icon="flame" color="var(--ios-red)" label="টানা দিন" value={toBanglaDigits(result.streak)} />}

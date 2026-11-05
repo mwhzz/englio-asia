@@ -1,4 +1,5 @@
 import { useState, type MouseEvent } from 'react';
+import { Glyph } from '../../components/Glyph';
 import { MixedText } from '../../components/MixedText';
 import { haptic } from '../../lib/haptics';
 import { speak } from '../../lib/speech';
@@ -81,7 +82,10 @@ export function SentenceDrop({ text, bn, bank, disabled, onChange }: Props) {
           ))}
         </p>
         <p className="drop-meaning" lang="bn">
-          <MixedText text={bn} />
+          <Glyph name="chat" size={16} />
+          <span>
+            <MixedText text={bn} />
+          </span>
         </p>
       </div>
       <div className="drop-bank">

@@ -4,9 +4,9 @@ import { haptic } from '../../lib/haptics';
 export type Tab = 'learn' | 'speak' | 'grammar' | 'profile';
 
 const TABS: { id: Tab; icon: GlyphName; bn: string }[] = [
-  { id: 'learn', icon: 'home', bn: 'শেখো' },
-  { id: 'speak', icon: 'mic', bn: 'শোনা-বলা' },
-  { id: 'grammar', icon: 'book', bn: 'ব্যাকরণ' },
+  { id: 'learn', icon: 'path', bn: 'শেখো' },
+  { id: 'speak', icon: 'chat', bn: 'শোনা-বলা' },
+  { id: 'grammar', icon: 'letters', bn: 'ব্যাকরণ' },
   { id: 'profile', icon: 'person', bn: 'প্রোফাইল' },
 ];
 

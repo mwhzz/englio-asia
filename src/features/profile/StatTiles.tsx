@@ -26,7 +26,7 @@ export function StatTiles() {
       bn: 'দিনের স্ট্রিক',
       en: progress.streakFreezes ? `Day streak · ${progress.streakFreezes} freeze` : 'Day streak',
     },
-    { icon: 'bolt', color: '#ffb800', value: toBanglaDigits(progress.xp), bn: 'মোট XP', en: 'Total XP' },
+    { icon: 'gem', color: '#ffb800', value: toBanglaDigits(progress.xp), bn: 'মোট XP', en: 'Total XP' },
     { icon: 'book', color: 'var(--ios-green)', value: `${toBanglaDigits(done.length)}/${toBanglaDigits(ALL_LESSONS.length)}`, bn: 'লেসন শেষ', en: 'Lessons' },
     { icon: 'star', color: 'var(--ios-blue)', value: toBanglaDigits(words), bn: 'শেখা শব্দ', en: 'Words learned' },
   ];

@@ -2,9 +2,12 @@
    a dashed slot for each blank, and raised word tiles below that glide into the slots. */
 
 .drop-card {
+  /* Takes all the room there is, so the word tiles sit just above the button, under the thumb. */
+  max-height: none;
   flex-direction: column;
   justify-content: center;
-  gap: 14px;
+  align-items: center;
+  gap: 18px;
   text-align: center;
 }
 
@@ -47,6 +50,7 @@
   font-weight: 700;
   box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--tint) 70%, transparent);
   cursor: pointer;
+  animation: slot-pop 0.35s var(--spring) both;
 }
 
 .slot:disabled {
@@ -64,10 +68,22 @@
   background: var(--ios-red);
 }
 
+/* The meaning, in a soft pill under the sentence. */
 .drop-meaning {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ios-cell) 70%, transparent);
   font-size: 17px;
   color: var(--ios-secondary);
+}
+
+.drop-meaning svg {
+  flex: none;
+  color: color-mix(in srgb, var(--u) 70%, var(--ios-secondary));
 }
 
 .drop-bank {
@@ -81,14 +97,14 @@
 .drop-tile {
   display: inline-flex;
   align-items: center;
-  min-height: 54px;
-  padding: 0 22px;
+  min-height: 58px;
+  padding: 0 24px;
   border: 2px solid var(--ios-separator);
-  border-radius: 16px;
+  border-radius: 18px;
   background: var(--ios-cell);
   color: var(--ios-label);
   font-family: var(--font);
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 600;
   box-shadow: 0 3px 0 var(--ios-separator);
   cursor: pointer;
@@ -114,6 +130,15 @@
   color: transparent;
 }
 
+@keyframes slot-pop {
+  0% {
+    transform: scale(0.85);
+  }
+  60% {
+    transform: scale(1.06);
+  }
+}
+
 @keyframes slot-wait {
   50% {
     background: color-mix(in srgb, var(--tint) 18%, var(--ios-cell));
@@ -121,7 +146,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slot.is-next {
+  .slot.is-next,
+  .slot.filled {
     animation: none;
   }
 }

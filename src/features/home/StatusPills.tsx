@@ -17,7 +17,7 @@ export function StatusPills() {
         {streak}
       </span>
       <span className="home-pill pill-xp" title="Total XP" aria-label={`${progress.xp} XP`}>
-        <Glyph name="bolt" size={15} />
+        <Glyph name="gem" size={15} />
         {progress.xp}
       </span>
       <span
