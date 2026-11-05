@@ -5,15 +5,14 @@
 //  2. builds and runs every test (stops if anything fails, so nothing broken goes online);
 //  3. raises the version in package.json (patch 1.0.0→1.0.1 for fixes, minor →1.1.0 for features, major →2.0.0),
 //     dates the changelog entry, commits, tags vX.Y.Z and pushes to GitHub;
-//  4. runs deploy/update.sh on the server over SSH (it asks for the server password) and checks the site answers.
+//  4. waits until the site runs the new version (the server deploys new commits on main by itself, see deploy/autodeploy.sh).
 //
-// --dry-run does the checks and tests and prints what would happen, changing nothing.
-// The server and site can be changed with DEPLOY_HOST (default root@165.22.253.84) and DEPLOY_URL (default https://webpstudio.com).
+// --dry-run does the checks and tests and prints what would happen, changing nothing. --no-deploy doesn't wait for the site.
+// The site to check can be changed with DEPLOY_URL (default https://webpstudio.com).
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dateChangelog, nextVersion } from './releaseVersion.mjs';
 
-const HOST = process.env.DEPLOY_HOST ?? 'root@165.22.253.84';
 const URL_ = (process.env.DEPLOY_URL ?? 'https://webpstudio.com').replace(/\/$/, '');
 const BRANCH = 'main';
 
@@ -73,7 +72,7 @@ run('npm', ['test'], 'Unit tests');
 if (!skipE2e) run('npm', ['run', 'e2e'], 'Browser tests');
 
 if (dry) {
-  console.log(`\n✓ Dry run passed. A real run would release v${version}, push it, and deploy to ${HOST}.`);
+  console.log(`\n✓ Dry run passed. A real run would release v${version} and push it; the server then deploys it.`);
   process.exit(0);
 }
 
@@ -92,12 +91,21 @@ changedFiles = false; // committed: from here a failure leaves the commit in pla
 run('git', ['tag', '-a', `v${version}`, '-m', `Englio ${version}`], 'Tag');
 run('git', ['push', '--follow-tags', 'origin', BRANCH], 'Push to GitHub');
 
-// 4. Deploy
+// 4. The server deploys new commits on main by itself within a minute or two (deploy/autodeploy.sh); wait until it's live.
 if (noDeploy) {
-  console.log(`\n✓ v${version} is on GitHub. Deploy it with: ssh ${HOST} "bash /opt/englio/deploy/update.sh"`);
+  console.log(`
+✓ v${version} is on GitHub; the server will put it online by itself.`);
   process.exit(0);
 }
-run('ssh', [HOST, 'bash /opt/englio/deploy/update.sh'], `Deploy to ${HOST}`);
-const health = await fetch(`${URL_}/api/health`).then((r) => r.ok).catch(() => false);
-if (!health) stop(`v${version} was deployed, but ${URL_}/api/health doesn't answer. Check: ssh ${HOST} "journalctl -u englio-api -n 50"`);
-console.log(`\n✓ Englio ${version} is live at ${URL_}`);
+console.log(`
+▶ Waiting for ${URL_} to run v${version} (the server builds and tests it first; about 2 minutes)`);
+for (let i = 0; i < 40; i++) {
+  await new Promise((done) => setTimeout(done, 15_000));
+  const live = await fetch(`${URL_}/api/health`).then((r) => r.json()).catch(() => null);
+  if (live?.version === version) {
+    console.log(`
+✓ Englio ${version} is live at ${URL_}`);
+    process.exit(0);
+  }
+}
+stop(`v${version} is on GitHub, but ${URL_} isn't running it after 10 minutes. See why on the server: journalctl -t englio-deploy -n 80`);

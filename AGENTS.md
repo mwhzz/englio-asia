@@ -44,7 +44,7 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 - **Android version:** `versionCode` (integer, +1 on every Play upload) and `versionName` in `android/app/build.gradle`, and the same in `android/twa-manifest.json`. Change them **only** when a new APK/AAB is built.
 - The version is baked into the app at build time (`src/lib/version.ts`), shown at the bottom of Profile, and sent with crash reports, so a report says which version broke.
 - **While working:** add a plain-words line under `## Unreleased` in `CHANGELOG.md` for anything a learner or admin would notice.
-- **Releasing** (from `main`, everything committed): `npm run release -- patch|minor|major`. It checks the changelog has notes, builds, runs unit and browser tests (stops on any failure), bumps `package.json`, dates the changelog entry, commits `Release vX.Y.Z`, tags `vX.Y.Z`, pushes, runs `deploy/update.sh` on the server over SSH (asks for the server password) and checks `/api/health`. Flags: `--dry-run` (checks and tests only, changes nothing), `--skip-e2e`, `--no-deploy`. Code: `scripts/release.mjs`, `scripts/releaseVersion.mjs`.
+- **Releasing** (from `main`, everything committed): `npm run release -- patch|minor|major`. It checks the changelog has notes, builds, runs unit and browser tests (stops on any failure), bumps `package.json`, dates the changelog entry, commits `Release vX.Y.Z`, tags `vX.Y.Z`, pushes, then waits until `/api/health` on the site reports the new version (the server deploys it by itself). Flags: `--dry-run` (checks and tests only, changes nothing), `--skip-e2e`, `--no-deploy` (don't wait). Code: `scripts/release.mjs`, `scripts/releaseVersion.mjs`.
 - To undo a bad release: check out the previous tag's code on a branch, fix forward, and release a new patch (don't move or delete published tags).
 
 ## Git
@@ -66,14 +66,14 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 | Secrets and settings (admin token, push keys, domain) | `/etc/englio.env` (root:englio, 640). Don't print the token into logs or chat unless the owner asks |
 | API service | `systemctl status englio-api`, logs `journalctl -u englio-api -f` |
 | Web server (HTTPS, static files, `/api` proxy) | Caddy, `/etc/caddy/Caddyfile` |
-| Hourly reminders, nightly backup (03:30) | `/etc/cron.d/englio`; logs `journalctl -t englio-reminders`, `-t englio-backup` |
+| Auto-deploy (every minute), hourly reminders, nightly backup (03:30) | `/etc/cron.d/englio`; logs `journalctl -t englio-deploy`, `-t englio-reminders`, `-t englio-backup` |
 | Backups (14 days) | `/var/backups/englio` (root only) |
 | Downloadable APK for testers | `/opt/englio/public/englio.apk` → `https://<domain>/englio.apk` (server only, not in git) |
 
 ### Deploying a change
 
-- The server runs `main` from GitHub (`/opt/englio` is a git clone of the public repo). **Normal deploy = `npm run release`** (see Versions). To deploy by hand: push to `main`, then on the server `sudo bash /opt/englio/deploy/update.sh` (pulls, installs, builds, restarts; learners' data is untouched). `update.sh --no-pull` rebuilds what's there without pulling.
-- After deploying, check: `curl https://<domain>/api/health` returns `{"ok":true}`, the app opens without console errors.
+- **Auto-deploy: every push to `main` goes live by itself.** Every minute the server (`deploy/autodeploy.sh`) checks GitHub; on a new commit it runs `deploy/update.sh`, which builds into `dist-next`, runs `npm test`, and only then swaps it in and restarts the API. If the build or tests fail, the code goes back to the previous commit, the live site is untouched, and that commit isn't retried (push a fix). Log: `journalctl -t englio-deploy -n 80`. So **never push untested or half-done work to `main`**: work on a branch and merge when it's ready. By hand on the server: `sudo bash /opt/englio/deploy/update.sh` (`--no-pull` to rebuild what's there).
+- After deploying, check: `curl https://<domain>/api/health` returns `{"ok":true,"version":"<new version>"}`, and the app opens without console errors.
 - Test a reminder right away: `cd /opt/englio && set -a && . /etc/englio.env && set +a && node server/sendReminders.ts --test <device id>` (device id from admin → Learners).
 
 ### Moving to the final domain

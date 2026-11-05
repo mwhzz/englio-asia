@@ -115,8 +115,9 @@ $DOMAIN {
 }
 EOF
 
-echo "==> Hourly reminders and a nightly backup"
+echo "==> Auto-deploy from GitHub (every minute), hourly reminders and a nightly backup"
 cat > /etc/cron.d/englio <<EOF
+* * * * * root flock -n /run/englio-deploy.lock bash $APP_DIR/deploy/autodeploy.sh 2>&1 | logger -t englio-deploy
 5 * * * * englio set -a; . $ENV_FILE; set +a; cd $APP_DIR && node server/sendReminders.ts 2>&1 | logger -t englio-reminders
 30 3 * * * root bash $APP_DIR/deploy/backup.sh 2>&1 | logger -t englio-backup
 EOF

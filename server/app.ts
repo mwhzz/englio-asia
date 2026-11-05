@@ -24,11 +24,12 @@ import { deletePush, savePush } from './reminders.ts';
 import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
 import * as team from './team.ts';
 import { checkUserId, loadProgress, saveProgress } from './users.ts';
+import { SERVER_VERSION } from './version.ts';
 
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
 function routes(db: DatabaseSync): Route[] {
   return [
-    { method: 'GET', pattern: '/api/health', handler: () => ({ ok: true }) },
+    { method: 'GET', pattern: '/api/health', handler: () => ({ ok: true, version: SERVER_VERSION }) },
 
     // ---- The app ----
     {

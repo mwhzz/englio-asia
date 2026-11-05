@@ -6,6 +6,9 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Pushing to GitHub's main now updates the site by itself within about 2 minutes. A build or test failure leaves the live site as it was.
+- `npm run release` no longer needs the server password: it waits until the site runs the new version.
+
 ## 1.0.1 (2026-11-06)
 
 - The app is white (light) by default, even when the phone is in dark mode. Dark, or following the phone, can still be picked in Profile → থিম.

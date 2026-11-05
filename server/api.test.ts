@@ -7,7 +7,7 @@ import { createApi } from './app.ts';
 import { openDb } from './db.ts';
 import { seedBoard, seedCourse, seedCourses, seedGrammar, seedStories, seedUsers, seedWriting } from './seed.ts';
 import { BUNDLED_WRITING } from '../src/data/writing/tasks.ts';
-import { mkdtempSync } from 'node:fs';
+import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -49,6 +49,11 @@ beforeAll(async () => {
 afterAll(() => new Promise<void>((done) => server.close(() => done())));
 
 describe('course', () => {
+  it('reports the running version on /api/health, so a deploy can be checked', async () => {
+    const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { version: string };
+    expect((await call('GET', '/api/health')).json).toEqual({ ok: true, version });
+  });
+
   it('serves the seeded course in the same shape as the built-in one', async () => {
     const { status, json } = await call('GET', '/api/course');
     expect(status).toBe(200);
