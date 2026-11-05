@@ -12,6 +12,8 @@ The look and feel set during **onboarding** (finished and approved). Every new s
 
 > **Tabs (2026-11-03).** শেখো · শোনা-বলা · ব্যাকরণ · প্রোফাইল. The letters (অক্ষর) tab was removed at the user's request; listening and speaking replaced it.
 
+> **Brand (2026-11-06).** App icon and logo are in `brand/` (see its README): the app icon is a bold "e.", the logo mark is the learning path; blue night `#2F3BD8` with a yellow dot, black-lime in dark mode. The app's UI colours (green CTAs, unit colours) are unchanged for now.
+
 > **Icons (2026-11-06).** Englio draws its own icons (`src/components/Glyph.tsx`); they must not look like a system set (the old SF Symbols look-alikes were rejected). Rounded 2 px outlines on a 24 px grid, and in most icons one small solid dot, like the speech bubble in the logo. Tabs: শেখো = a winding path with lesson stops, শোনা-বলা = a speech bubble with sound, ব্যাকরণ = "Aa", প্রোফাইল = a smiling face. XP is a gem (not a lightning bolt). Check a new icon at 16, 22 and 32 px.
 
 > **Thumb reach (user feedback).** On any question screen the answers sit at the bottom of the screen, where the thumb is, and the explanation after answering comes up from the bottom as a sheet (`.cl-ask` in `grammarCourse.css`). Never stack the answers right under the question at the top.
@@ -97,7 +99,7 @@ On the map they are mixed into a neutral base: `color-mix(in srgb, var(--div) 30
 
 ### Brand
 
-The logo tile is green (`#5be07f → #34c759`, bottom edge `#248a3d`). The wordmark is "Engl**io**", with "io" in green. Component: `src/components/Logo.tsx`.
+The logo is the learning-path mark on a blue night tile (`#2F3BD8`, yellow goal dot `#FFC93C`; black `#141A2E` with a lime dot `#C6F432` in dark mode), then the word "Englio" followed by a dot in the dot colour. The app icon is the "e." mark. Component: `src/components/Logo.tsx`; files and rules: `brand/README.md`.
 
 ---
 

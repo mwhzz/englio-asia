@@ -1,15 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Full-bleed version for Android (maskable) and iOS: the launcher crops the corners itself,
-       so the art sits inside the middle 80% safe zone. -->
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#5be07f"/>
-      <stop offset="1" stop-color="#34c759"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" fill="url(#g)"/>
-  <g transform="translate(51.2 51.2) scale(0.8)">
-    <path d="M179 115h154a77 77 0 0 1 77 77v90a77 77 0 0 1-77 77H230l-70 58v-63a77 77 0 0 1-58-74v-88a77 77 0 0 1 77-77z" fill="#fff"/>
-    <path d="M301 173h-90v128h90M211 237h77" fill="none" stroke="#248a3d" stroke-width="33" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Full-bleed app icon for Android (maskable) and iOS: the launcher cuts its own shape (circle, squircle…),
+       so the art is shrunk into the middle 80% safe zone. -->
+  <rect width="100" height="100" fill="#2F3BD8"/>
+  <g transform="translate(10 10) scale(0.8)">
+    <path d="M28 50h44a22 22 0 1 0-6.44 15.56" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="76" cy="76" r="6.6" fill="#FFC93C"/>
   </g>
 </svg>

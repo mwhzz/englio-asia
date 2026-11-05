@@ -24,6 +24,7 @@ npm run build    # type-checks app and server, then builds dist/
 - **Thumb reach:** answers and buttons sit at the bottom of the screen; feedback comes up as a bottom sheet (`components/Modal.tsx`).
 - **Tabs** are শেখো · শোনা-বলা · ব্যাকরণ · প্রোফাইল. The letters tab was removed on purpose; don't bring it back.
 - New content kinds must be validated by the server (`server/validate.ts`) so the app can always solve them, and have tests.
+- **Brand:** app icon = the "e." (B), logo mark = the learning path (D), never merged; blue night `#2F3BD8` + yellow dot `#FFC93C`, dark = black `#141A2E` + lime `#C6F432`. Files and rules: `brand/README.md`; redraw PNGs with `PW=@playwright/test node scripts/make-icons.cjs`.
 - Bangla text in the UI, English learning content inside it via `MixedText`.
 
 ## How updates reach users (important)

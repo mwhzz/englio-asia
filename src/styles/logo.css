@@ -1,13 +1,51 @@
+/* The Englio logo (components/Logo.tsx). Brand colours: blue night #2F3BD8 with a yellow dot #FFC93C;
+   on dark screens, black-lime #141A2E with a lime dot #C6F432 (see brand/README.md). */
+
 .logo {
+  --logo-tile: #2f3bd8;
+  --logo-dot: #ffc93c;
   display: inline-flex;
   align-items: center;
   gap: 0.36em;
   line-height: 1;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .logo {
+    --logo-tile: #141a2e;
+    --logo-dot: #c6f432;
+  }
+}
+
+:root[data-theme='dark'] .logo {
+  --logo-tile: #141a2e;
+  --logo-dot: #c6f432;
+}
+
 .logo-mark {
   flex: none;
-  filter: drop-shadow(0 4px 8px rgba(36, 138, 61, 0.25));
+  filter: drop-shadow(0 4px 8px rgba(47, 59, 216, 0.25));
+}
+
+.logo-tile {
+  fill: var(--logo-tile);
+}
+
+.logo-goal {
+  fill: var(--logo-dot);
+}
+
+/* On dark screens the dark tile gets a thin edge so it doesn't melt into the background. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .logo-tile {
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 1.5;
+  }
+}
+
+:root[data-theme='dark'] .logo-tile {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.5;
 }
 
 .logo-word {
@@ -17,6 +55,12 @@
   color: var(--text);
 }
 
-.logo-word span {
-  color: var(--primary);
+/* The full stop after the word, in the dot colour. */
+.logo-dot {
+  display: inline-block;
+  width: 0.19em;
+  height: 0.19em;
+  margin-left: 0.06em;
+  border-radius: 50%;
+  background: var(--logo-dot);
 }

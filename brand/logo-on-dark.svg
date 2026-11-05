@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 100">
+  <!-- Englio logo for dark backgrounds: black-lime mark with a thin edge, white word, lime dot. -->
+  <rect x="0.75" y="0.75" width="98.5" height="98.5" rx="22" fill="#141A2E" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
+  <path d="M31 71c6-9 18-8 26-14s8-15 12-22" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="0.1 11"/>
+  <circle cx="26" cy="77" r="8" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+  <circle cx="73" cy="26" r="11" fill="#C6F432"/>
+  <text x="124" y="72" font-family="Inter, 'Inter Variable', system-ui, sans-serif" font-size="68" font-weight="800" letter-spacing="-2" fill="#FFFFFF">Englio</text>
+  <circle cx="331" cy="65.5" r="6.5" fill="#C6F432"/>
+</svg>
