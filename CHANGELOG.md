@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.6.0 (2026-11-06)
+
 - Admin: a শব্দ page with every word of a language in one list: add a word to any lesson (meaning, emoji, picture, pronunciation), and record or upload each word's pronunciation right there. Search, filter by unit, or show only words without audio.
 - Admin: an অডিও page with everything the app reads aloud (words, sentences, blanks, dialogues, stories, grammar examples), how much has a recording, and per line: listen, record with the microphone, upload, remove. Upload many files at once, named after their text.
 - One recording per text plays everywhere that text is spoken, in every language's course, instead of the phone's voice.
