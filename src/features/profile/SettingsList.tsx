@@ -64,14 +64,14 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           <span className="pf-row-main">
             <span className="pf-row-text">
               <span lang="bn">থিম</span>
-              <small lang="bn">আলো, অন্ধকার, না ফোনের মতো</small>
+              <small lang="bn">সাদা, কালো, না ফোনের মতো</small>
             </span>
             <span className="pf-segmented" role="radiogroup" aria-label="Appearance">
               {(
                 [
-                  ['auto', 'অটো'],
                   ['light', 'লাইট'],
                   ['dark', 'ডার্ক'],
+                  ['auto', 'অটো'],
                 ] as const
               ).map(([id, bn]) => (
                 <button

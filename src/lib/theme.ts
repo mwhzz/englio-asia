@@ -2,12 +2,13 @@ export type Theme = 'auto' | 'light' | 'dark';
 
 const KEY = 'englio-theme';
 
+/** The learner's choice; light (white) unless they picked dark or "follow the phone" in Settings. */
 export function savedTheme(): Theme {
   try {
     const t = localStorage.getItem(KEY);
-    return t === 'light' || t === 'dark' ? t : 'auto';
+    return t === 'dark' || t === 'auto' ? t : 'light';
   } catch {
-    return 'auto';
+    return 'light';
   }
 }
 
@@ -21,8 +22,7 @@ export function applyTheme(theme: Theme): void {
 export function setTheme(theme: Theme): void {
   applyTheme(theme);
   try {
-    if (theme === 'auto') localStorage.removeItem(KEY);
-    else localStorage.setItem(KEY, theme);
+    localStorage.setItem(KEY, theme);
   } catch {
     // Applied for now; not remembered.
   }
