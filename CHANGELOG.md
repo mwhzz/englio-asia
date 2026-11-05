@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.1.0 (2026-11-06)
+
 - New "put the word in the sentence" questions: the sentence is shown large with a dashed slot, and the word tiles below glide into it (tap a placed word to send it back). Fill-in-the-blank and fill-in-the-gaps both work this way now.
 - New words come back inside a sentence from the lesson ("Our house is ___."), so learners see how each word is used, not only what it means. 22 of the 23 lessons get these.
 
