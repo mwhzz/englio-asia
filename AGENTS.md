@@ -42,12 +42,15 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 
 - **App (web) version:** `version` in `package.json`, [semver](https://semver.org): patch `x.y.Z` for fixes, minor `x.Y.0` for new features, major `X.0.0` for big changes. Currently `0.1.0`. The first public launch is `1.0.0`.
 - **Android version:** `versionCode` (integer, +1 on every Play upload) and `versionName` in `android/app/build.gradle`, and the same in `android/twa-manifest.json`. Change them **only** when a new APK/AAB is built.
-- Every release adds a dated entry to `CHANGELOG.md` (newest first, a line or two per change, in plain words), is committed, and gets a git tag `vX.Y.Z`.
-- Planned, not built yet: an `npm run release -- patch|minor|major` command that tests, bumps the version, updates the changelog, commits, tags, pushes and deploys, and the version number shown at the bottom of Profile. Ask the owner before building it.
+- The version is baked into the app at build time (`src/lib/version.ts`), shown at the bottom of Profile, and sent with crash reports, so a report says which version broke.
+- **While working:** add a plain-words line under `## Unreleased` in `CHANGELOG.md` for anything a learner or admin would notice.
+- **Releasing** (from `main`, everything committed): `npm run release -- patch|minor|major`. It checks the changelog has notes, builds, runs unit and browser tests (stops on any failure), bumps `package.json`, dates the changelog entry, commits `Release vX.Y.Z`, tags `vX.Y.Z`, pushes, runs `deploy/update.sh` on the server over SSH (asks for the server password) and checks `/api/health`. Flags: `--dry-run` (checks and tests only, changes nothing), `--skip-e2e`, `--no-deploy`. Code: `scripts/release.mjs`, `scripts/releaseVersion.mjs`.
+- To undo a bad release: check out the previous tag's code on a branch, fix forward, and release a new patch (don't move or delete published tags).
 
 ## Git
 
-- Commit or push **only when the owner asks**. Work on a branch, not `main`.
+- GitHub: `https://github.com/mwhzz/englio-asia` (**public**, so anything committed is visible to everyone).
+- Commit or push **only when the owner asks**. Do work on a branch and merge it into `main` when it's ready; `main` is what gets released and what the server runs.
 - Never commit secrets: no `.env`, no tokens, no passwords, no `*.jks`/keystore, nothing from `../englio-keys/`. `android/.gitignore` already ignores builds and keys.
 - `.gitattributes` keeps `*.sh` with LF line endings (they run on Linux). Keep it that way.
 
@@ -69,7 +72,7 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 
 ### Deploying a change
 
-- **Right now** the server has no `.git`: the code was uploaded as a tarball because a lot of work wasn't committed yet. To deploy, pack the working tree **without** `node_modules`, `dist`, `.git`, `.card-autofill.local`, `test-results`, `playwright-report`, `server/*.db*`, `server/media`, `e2e/.e2e.db*`, `e2e/.media`, `public/card-autofill.html`, `boibondhu-shop.html`, `scripts/*card-autofill*` (these are unrelated or private). Upload and unpack it over `/opt/englio`, then run `sudo bash /opt/englio/deploy/update.sh --no-pull`.
+- **Right now** the server has no `.git`: the code was uploaded as a tarball because a lot of work wasn't committed yet. To deploy, pack the working tree **without** `node_modules`, `dist`, `.git`, `.card-autofill.local` (private, unrelated), `test-results`, `playwright-report`, `server/*.db*`, `server/media`, `e2e/.e2e.db*`, `e2e/.media`. Upload and unpack it over `/opt/englio`, then run `sudo bash /opt/englio/deploy/update.sh --no-pull`.
 - **Once the code is on GitHub** (the planned setup): clone it into `/opt/englio` (with a read-only deploy key if the repo is private), then every deploy is just `sudo bash /opt/englio/deploy/update.sh`, which pulls, installs, builds and restarts. Learners' data is untouched.
 - After deploying, check: `curl https://<domain>/api/health` returns `{"ok":true}`, the app opens without console errors.
 - Test a reminder right away: `cd /opt/englio && set -a && . /etc/englio.env && set +a && node server/sendReminders.ts --test <device id>` (device id from admin → Learners).

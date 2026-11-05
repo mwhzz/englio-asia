@@ -1,5 +1,6 @@
 import { LearnerCard } from '../../components/card/LearnerCard';
 import { findClassLevel } from '../../data/classLevels';
+import { APP_VERSION } from '../../lib/version';
 import { useProgress } from '../../state/ProgressContext';
 import { BadgesGrid } from './BadgesGrid';
 import { CourseProgress } from './CourseProgress';
@@ -52,7 +53,7 @@ export default function ProfileView({ onPlacement }: { onPlacement: () => void }
         <SettingsList onPlacement={onPlacement} />
       </div>
 
-      <p className="pf-foot">Englio · Made for Bangla speakers</p>
+      <p className="pf-foot">Englio {APP_VERSION} · Made for Bangla speakers</p>
     </div>
   );
 }

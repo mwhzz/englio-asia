@@ -24,7 +24,7 @@ ADMIN_TOKEN='<long random secret>' PORT=8787 npm run server
 VITE_API_URL=https://api.yourdomain.com/api VITE_VAPID_PUBLIC_KEY=<public key from step 4> npm run build
 ```
 
-Upload `dist/` to any static host (Cloudflare Pages, Netlify, Vercel). It has to be HTTPS, because the service worker, install and notifications only work over HTTPS. `public/card-autofill.html` is an unrelated test page; delete it from `public/` before building if it shouldn't go online.
+Upload `dist/` to any static host (Cloudflare Pages, Netlify, Vercel). It has to be HTTPS, because the service worker, install and notifications only work over HTTPS.
 
 ## 3. Back up the database
 

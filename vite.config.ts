@@ -1,6 +1,10 @@
 /// <reference types="vitest/config" />
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import { readFileSync } from 'node:fs';
+
+/** The app version (package.json), shown in Profile and sent with error reports (src/lib/version.ts). */
+const VERSION = (JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as { version: string }).version;
 
 /** Writes offline-files.json: the app's built files, which "download for offline" keeps (see public/sw.js); not the admin, nor font subsets the app never shows. */
 function offlineFiles(): Plugin {
@@ -19,6 +23,7 @@ function offlineFiles(): Plugin {
 // In dev, /api goes to the API server (npm run server).
 export default defineConfig({
   base: './',
+  define: { __APP_VERSION__: JSON.stringify(VERSION) },
   plugins: [react(), offlineFiles()],
   build: {
     rollupOptions: {

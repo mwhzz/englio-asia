@@ -8,10 +8,10 @@ Englio is a PWA, so the Android app is a thin **Trusted Web Activity (TWA)** wra
 | --- | --- |
 | `public/manifest.webmanifest` | name, colors, PNG and maskable icons |
 | `public/icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png` | made from `icon.svg` / `icon-maskable.svg` by `scripts/make-icons.cjs` |
-| `public/privacy.html` | privacy policy (Bangla, with an English summary). **Change the contact email in it.** |
+| `public/privacy.html` | privacy policy (Bangla, with an English summary). Contact: zawadzarirkhan@gmail.com. |
 | `public/.well-known/assetlinks.json` | proves the website and the app belong together. **Fill in the fingerprint (step 3).** |
 | Settings → "আমার সব তথ্য মুছে ফেলো" | in-app data deletion, which Google requires |
-| `delete.html` | deleting data without the app (backup code or email), the web link Google also asks for. **Change the email in it.** |
+| `delete.html` | deleting data without the app (backup code or email), the web link Google also asks for. Contact: zawadzarirkhan@gmail.com. |
 
 ## Steps
 
