@@ -101,6 +101,26 @@ describe('course', () => {
     expect((await admin('DELETE', '/api/admin/languages/ar')).status).toBe(200);
   });
 
+  it('lists every word and every spoken text, and keeps one recording per text for the whole app', async () => {
+    const words = (await admin('GET', '/api/admin/words')).json;
+    expect(words[0]).toMatchObject({ en: 'hello', lessonId: 'u1-l1', unit: 'First Steps', lesson: 'Greetings' });
+
+    const spoken = (await admin('GET', '/api/admin/audio')).json as { text: string; kinds: string[]; audio: string | null }[];
+    const kinds = new Set(spoken.flatMap((s) => s.kinds));
+    for (const k of ['word', 'sentence', 'fill', 'dialog', 'story', 'example']) expect(kinds, k).toContain(k);
+    expect(new Set(spoken.map((s) => s.text.toLowerCase())).size).toBe(spoken.length);
+
+    const file = 'a'.repeat(64) + '.webm';
+    expect((await admin('PUT', '/api/admin/audio', { text: 'Hello', file: 'nope.exe' })).status).toBe(400);
+    expect((await admin('PUT', '/api/admin/audio', { text: '  Hello ', file })).status).toBe(200);
+    expect((await call('GET', '/api/course')).json.audio).toMatchObject({ hello: file });
+    expect((await admin('GET', '/api/admin/words')).json[0].audio).toBe(file);
+
+    expect((await admin('DELETE', '/api/admin/audio?text=hello')).status).toBe(200);
+    expect((await call('GET', '/api/course')).json.audio).not.toHaveProperty('hello');
+    expect((await admin('DELETE', '/api/admin/audio?text=hello')).status).toBe(404);
+  });
+
   it('serves the seeded course in the same shape as the built-in one', async () => {
     const { status, json } = await call('GET', '/api/course');
     expect(status).toBe(200);

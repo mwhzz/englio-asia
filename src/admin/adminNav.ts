@@ -16,6 +16,8 @@ export const NAV: { group?: string; items: NavItem[] }[] = [
     items: [
       { page: 'languages', label: 'ভাষা', icon: 'globe' },
       { page: 'content', label: 'লেসন', icon: 'path' },
+      { page: 'words', label: 'শব্দ', icon: 'bookmark' },
+      { page: 'audio', label: 'অডিও', icon: 'speaker' },
       { page: 'grammar', label: 'ব্যাকরণ', icon: 'letters' },
       { page: 'stories', label: 'গল্প', icon: 'book' },
       { page: 'board', label: 'বোর্ড প্রস্তুতি', icon: 'trophy' },

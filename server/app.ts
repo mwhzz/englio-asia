@@ -26,6 +26,7 @@ import * as team from './team.ts';
 import { checkUserId, loadProgress, saveProgress } from './users.ts';
 import { SERVER_VERSION } from './version.ts';
 import { readSettings, saveSettings } from './settings.ts';
+import { deleteClip, listSpoken, listWords, readClips, setClip } from './adminAudio.ts';
 import { createLanguage, deleteLanguage, langOf, listLanguages, liveLanguages, updateLanguage } from './languages.ts';
 
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
@@ -52,6 +53,8 @@ function routes(db: DatabaseSync): Route[] {
           board: lang === 'bn' ? readBoard(db) : [],
           writing: readWriting(db, lang),
           settings: readSettings(db),
+          // Recordings by English text (adminAudio.ts), played instead of the phone's voice.
+          audio: readClips(db),
         };
       },
     },
@@ -124,6 +127,10 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/admin/team', admin: 'owner', handler: (r) => team.addMember(db, r) },
     { method: 'DELETE', pattern: '/api/admin/team/:id', admin: 'owner', handler: (r) => team.removeMember(db, r) },
     { method: 'GET', pattern: '/api/admin/activity', admin: 'owner', handler: (r) => team.activity(db, r) },
+    { method: 'GET', pattern: '/api/admin/words', admin: true, handler: (r) => listWords(db, langOf(db, r.query.get('lang'))) },
+    { method: 'GET', pattern: '/api/admin/audio', admin: true, handler: (r) => listSpoken(db, langOf(db, r.query.get('lang'))) },
+    { method: 'PUT', pattern: '/api/admin/audio', admin: true, handler: (r) => setClip(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/audio', admin: true, handler: (r) => deleteClip(db, r) },
     { method: 'GET', pattern: '/api/admin/languages', admin: true, handler: () => listLanguages(db) },
     { method: 'POST', pattern: '/api/admin/languages', admin: 'owner', handler: (r) => createLanguage(db, r) },
     { method: 'PUT', pattern: '/api/admin/languages/:code', admin: 'owner', handler: (r) => updateLanguage(db, r) },

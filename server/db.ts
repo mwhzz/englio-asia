@@ -186,6 +186,14 @@ const SCHEMA = `
 
   CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 
+  -- Recordings of English text (by its normalised text), from the admin's Words and Audio pages.
+  CREATE TABLE IF NOT EXISTS audio_clips (
+    key TEXT PRIMARY KEY,
+    text TEXT NOT NULL,
+    file TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+
   -- The learners' own languages the course is made for (the app and the meanings are in it). Bangla first.
   CREATE TABLE IF NOT EXISTS languages (
     code TEXT PRIMARY KEY,

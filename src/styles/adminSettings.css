@@ -360,3 +360,136 @@ p.ad-warn {
   border-radius: 4px;
   background: var(--ios-green);
 }
+
+/* ---------- Words and audio ---------- */
+
+.ad-audio {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.ad-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-blue);
+  cursor: pointer;
+}
+
+.ad-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ad-icon-btn.is-danger {
+  color: var(--ios-red);
+}
+
+.ad-icon-btn.is-recording {
+  background: var(--ios-red);
+  color: #fff;
+  animation: ad-rec 1.2s ease-in-out infinite;
+}
+
+@keyframes ad-rec {
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--ios-red) 25%, transparent);
+  }
+}
+
+.ad-rec {
+  color: var(--ios-red);
+  font-weight: 600;
+}
+
+.ad-filters {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ad-filters .ad-input {
+  flex: 1 1 200px;
+  width: auto;
+}
+
+.ad-words td {
+  vertical-align: middle;
+}
+
+.ad-word-pic {
+  width: 44px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.ad-word-pic img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.ad-row-actions {
+  white-space: nowrap;
+}
+
+.ad-row-actions .ad-btn + .ad-btn {
+  margin-left: 6px;
+}
+
+.ad-spoken .ad-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ad-file-btn {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* On a phone the word list turns into cards: picture, word and meaning, lesson, then the recording and actions. */
+@media (max-width: 760px) {
+  .ad-words thead {
+    display: none;
+  }
+  .ad-words,
+  .ad-words tbody {
+    display: block;
+  }
+  .ad-words tr {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
+    align-items: center;
+    gap: 6px 10px;
+    padding: 12px 0;
+    border-top: 0.5px solid var(--ios-separator);
+  }
+  .ad-words td {
+    display: block;
+    padding: 0;
+    border: none;
+  }
+  .ad-words .ad-word-pic {
+    grid-row: span 2;
+    width: auto;
+  }
+  .ad-words td:nth-child(4) {
+    grid-column: 2 / -1;
+    font-size: 13px;
+  }
+  .ad-words td:nth-child(5) {
+    grid-column: 1 / 3;
+  }
+  .ad-words td:nth-child(6) {
+    grid-column: 3;
+    justify-self: end;
+  }
+}

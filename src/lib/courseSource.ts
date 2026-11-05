@@ -21,6 +21,8 @@ export interface Content {
   writing?: WritingTask[];
   /** The owner's switches from the admin's Settings page (data/appSettings.ts). */
   settings?: unknown;
+  /** Recordings by English text, from the admin's Words and Audio pages. */
+  audio?: Record<string, string>;
 }
 
 interface Cached extends Content {

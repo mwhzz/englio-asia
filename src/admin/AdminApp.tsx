@@ -24,6 +24,8 @@ import { UserPage } from './UserPage';
 import { UsersPage } from './UsersPage';
 import { go, useHashRoute } from './useHashRoute';
 import { LanguagesPage } from './LanguagesPage';
+import { WordsPage } from './WordsPage';
+import { AudioPage } from './AudioPage';
 
 /** The admin panel: sign in with the token, then dashboard, lessons, grammar, stories and learners. */
 export function AdminApp() {
@@ -99,6 +101,10 @@ export function AdminApp() {
           <ReportsPage onUnauthorized={signOut} />
         ) : page === 'errors' ? (
           <ErrorsPage onUnauthorized={signOut} />
+        ) : page === 'words' ? (
+          <WordsPage onUnauthorized={signOut} />
+        ) : page === 'audio' ? (
+          <AudioPage onUnauthorized={signOut} />
         ) : page === 'languages' ? (
           <LanguagesPage owner={me?.role === 'owner'} />
         ) : page === 'settings' ? (

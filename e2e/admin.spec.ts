@@ -153,3 +153,28 @@ test('the owner adds a language (empty, in draft) and the content pages switch t
   await page.locator('.ad-lang', { hasText: 'Arabic' }).getByRole('button', { name: 'মুছে ফেলো' }).click();
   await expect(page.locator('.ad-lang', { hasText: 'Arabic' })).toHaveCount(0);
 });
+
+test('the admin adds a word with its recording, and uploads many recordings named after their text', async ({ page }) => {
+  await page.goto('/admin.html');
+  await page.getByPlaceholder(/token/i).fill(ADMIN_TOKEN);
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await adminGo(page, 'শব্দ');
+  await page.getByRole('button', { name: '+ নতুন শব্দ' }).click();
+  await page.getByLabel('কোন লেসনে').selectOption({ label: 'Greetings' });
+  await page.getByLabel('ইংরেজি শব্দ').fill('welcome');
+  await page.getByLabel(/অর্থ/).fill('স্বাগতম');
+  await page.locator('form .ad-audio input[type=file]').setInputFiles({ name: 'w.mp3', mimeType: 'audio/mpeg', buffer: Buffer.from('ID3 fake welcome') });
+  await expect(page.locator('form .ad-audio').getByRole('button', { name: 'Play' })).toBeVisible();
+  await page.getByRole('button', { name: 'শব্দ যোগ করো' }).click();
+  await expect(page.locator('tr', { hasText: 'welcome' }).getByRole('button', { name: 'Play' })).toBeVisible();
+
+  await adminGo(page, 'অডিও');
+  await page.locator('.ad-file-btn input[type=file]').setInputFiles([
+    { name: 'Good morning, teacher.mp3', mimeType: 'audio/mpeg', buffer: Buffer.from('ID3 fake gm') },
+    { name: 'nothing like this.mp3', mimeType: 'audio/mpeg', buffer: Buffer.from('ID3 fake x') },
+  ]);
+  await expect(page.getByText(/১টা ফাইল বসেছে। মেলেনি: nothing like this.mp3/)).toBeVisible();
+
+  const course = await page.request.get('http://localhost:8799/api/course').then((r) => r.json());
+  expect(Object.keys(course.audio)).toEqual(expect.arrayContaining(['welcome', 'good morning, teacher.']));
+});

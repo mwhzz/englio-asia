@@ -18,7 +18,7 @@ async function start() {
   const content = await loadCourse();
   if (content) {
     setCourse(content.units);
-    registerRecordings(content.units);
+    registerRecordings(content.units, content.audio);
   }
   setAppSettings(content?.settings);
   // Read later by the grammar, course and story modules (see data/serverContent.d.ts).
