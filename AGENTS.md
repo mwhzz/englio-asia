@@ -72,8 +72,7 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 
 ### Deploying a change
 
-- **Right now** the server has no `.git`: the code was uploaded as a tarball because a lot of work wasn't committed yet. To deploy, pack the working tree **without** `node_modules`, `dist`, `.git`, `.card-autofill.local` (private, unrelated), `test-results`, `playwright-report`, `server/*.db*`, `server/media`, `e2e/.e2e.db*`, `e2e/.media`. Upload and unpack it over `/opt/englio`, then run `sudo bash /opt/englio/deploy/update.sh --no-pull`.
-- **Once the code is on GitHub** (the planned setup): clone it into `/opt/englio` (with a read-only deploy key if the repo is private), then every deploy is just `sudo bash /opt/englio/deploy/update.sh`, which pulls, installs, builds and restarts. Learners' data is untouched.
+- The server runs `main` from GitHub (`/opt/englio` is a git clone of the public repo). **Normal deploy = `npm run release`** (see Versions). To deploy by hand: push to `main`, then on the server `sudo bash /opt/englio/deploy/update.sh` (pulls, installs, builds, restarts; learners' data is untouched). `update.sh --no-pull` rebuilds what's there without pulling.
 - After deploying, check: `curl https://<domain>/api/health` returns `{"ok":true}`, the app opens without console errors.
 - Test a reminder right away: `cd /opt/englio && set -a && . /etc/englio.env && set +a && node server/sendReminders.ts --test <device id>` (device id from admin → Learners).
 

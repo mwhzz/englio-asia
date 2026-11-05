@@ -81,7 +81,17 @@ cd /opt/englio && set -a && . /etc/englio.env && set +a && node server/sendRemin
 
 ## ৭. নতুন ভার্সন অনলাইনে দেওয়া
 
-কম্পিউটারে কোড বদলে GitHub-এ push করো, তারপর সার্ভারে:
+**সহজ উপায় (এটাই ব্যবহার করো):** `CHANGELOG.md`-এ "## Unreleased"-এর নিচে এক-দুই লাইনে লেখো কী বদলালে, সব commit করো, `main` branch-এ থেকে চালাও:
+
+```bash
+npm run release -- patch     # ছোট ঠিক করা (1.0.0 → 1.0.1)
+npm run release -- minor     # নতুন ফিচার (1.0.0 → 1.1.0)
+npm run release -- major     # বড় বদল (1.0.0 → 2.0.0)
+```
+
+এটা নিজে নিজে সব টেস্ট চালায় (কিছু ভাঙলে থেমে যায়), ভার্সন বাড়ায়, GitHub-এ push করে, সার্ভারে আপডেট দেয় (সার্ভারের পাসওয়ার্ড চাইবে) আর সাইট ঠিক আছে কি না দেখে। আগে শুধু চেক করতে চাইলে `npm run release -- patch --dry-run`।
+
+**হাতে করতে চাইলে:** GitHub-এ `main`-এ push করো, তারপর সার্ভারে:
 
 ```bash
 sudo bash /opt/englio/deploy/update.sh

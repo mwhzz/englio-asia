@@ -6,7 +6,7 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
-## 1.0.0 (2026-11-05)
+## 1.0.0 (2026-11-06)
 
 First release, live on the demo domain and as an installable Android app.
 

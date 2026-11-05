@@ -61,7 +61,7 @@ if (git('rev-list', '--count', `HEAD..origin/${BRANCH}`) !== '0') stop(`GitHub h
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const version = nextVersion(pkg.version, kind);
-const day = new Date().toISOString().slice(0, 10);
+const day = new Date().toLocaleDateString('en-CA'); // today's local date, YYYY-MM-DD
 const changelog = dateChangelog(readFileSync('CHANGELOG.md', 'utf8'), version, day);
 if (!changelog) stop('CHANGELOG.md has nothing under "## Unreleased". Write a line or two about what changed first.');
 
