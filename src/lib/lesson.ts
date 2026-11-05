@@ -2,6 +2,7 @@ import { ALL_LESSONS } from '../data/course';
 import type { Exercise, ExerciseBody, Fill, Lesson, Sentence, Vocab } from '../types';
 import { tokens } from './answer';
 import { sample, shuffle, uniqueBy } from './random';
+import { wordInSentence } from './wordInSentence';
 
 // One sentence exercise per sentence, cycling through these kinds.
 const SENTENCE_KINDS = ['translate', 'listen', 'translate', 'choice', 'type'] as const;
@@ -80,6 +81,11 @@ function generate(
     rest.push(sentenceExercise(SENTENCE_KINDS[i % SENTENCE_KINDS.length], sentence, sentencePool));
   });
   for (const fill of sample(fills, 2)) rest.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
+  // New words again, now inside a sentence of the lesson: "Our house is ___." (at most two).
+  const inSentences = intro
+    .map((ex) => (ex.kind === 'select' ? wordInSentence(ex.word, shuffle(sentences), vocabPool) : null))
+    .filter((fill): fill is Fill => fill !== null);
+  for (const fill of inSentences.slice(0, 2)) rest.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
   rest.push(...extraExercises(extras, sentences, speak));
 
   return [...intro, ...shuffle(rest)].map((ex, i) => ({ ...ex, id: `ex${i}` }));

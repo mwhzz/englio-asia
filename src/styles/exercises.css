@@ -240,8 +240,7 @@
 
 .pair,
 .tile,
-.row,
-.segment {
+.row {
   border: none;
   background: var(--ios-cell);
   color: var(--ios-label);
@@ -259,30 +258,26 @@
 
 .pair:active:not(:disabled),
 .tile:active:not(:disabled),
-.row:active:not(:disabled),
-.segment:active:not(:disabled) {
+.row:active:not(:disabled) {
   transform: scale(0.96);
 }
 
 .pair:disabled,
 .tile:disabled,
-.row:disabled,
-.segment:disabled {
+.row:disabled {
   cursor: default;
 }
 
 .pair:focus-visible,
 .tile:focus-visible,
-.row:focus-visible,
-.segment:focus-visible {
+.row:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--tint) 45%, transparent);
   outline-offset: 2px;
 }
 
 /* Picked: filled lightly with the tint, a ring, and a small pop. */
 .pair.selected,
-.row.selected,
-.segment.selected {
+.row.selected {
   background: color-mix(in srgb, var(--tint) 13%, var(--ios-cell));
   color: color-mix(in srgb, var(--tint) 80%, var(--ios-label));
   box-shadow:
@@ -347,22 +342,6 @@
 .row.selected .row-check {
   background: var(--tint);
   box-shadow: none;
-}
-
-/* ---------- Fill in the blank: word pills ---------- */
-
-.segmented {
-  display: flex;
-  gap: 10px;
-}
-
-.segment {
-  flex: 1;
-  min-width: 0;
-  height: 52px;
-  border-radius: 16px;
-  font-size: 17px;
-  font-weight: 600;
 }
 
 /* ---------- Match pairs ---------- */
@@ -500,97 +479,6 @@
 .type-input:focus {
   outline: none;
   box-shadow: inset 0 0 0 2px var(--tint);
-}
-
-/* ---------- Fill in the blank ---------- */
-
-.fill-card {
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  text-align: center;
-}
-
-.fill-sentence {
-  margin: 0;
-  font-size: clamp(22px, 6.4vw, 26px);
-  font-weight: 600;
-  line-height: 1.7;
-}
-
-.blank {
-  display: inline-block;
-  min-width: 84px;
-  margin: 0 6px;
-  border-bottom: 3px dashed color-mix(in srgb, var(--u) 45%, transparent);
-  text-align: center;
-}
-
-.blank.filled {
-  border-bottom-style: solid;
-  border-color: var(--tint);
-  color: color-mix(in srgb, var(--tint) 80%, var(--ios-label));
-  animation: blank-in 0.3s var(--spring) both;
-}
-
-@keyframes blank-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-}
-
-.hint {
-  margin: 0;
-  font-size: 16px;
-  color: var(--ios-secondary);
-}
-
-/* ---------- Fill in the gaps: blanks in the sentence, one shared word bank ---------- */
-
-.gaps-card {
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  text-align: center;
-}
-
-.gaps-text {
-  margin: 0;
-  font-size: clamp(20px, 5.8vw, 24px);
-  font-weight: 600;
-  line-height: 2;
-}
-
-.gap {
-  display: inline-block;
-  min-width: 72px;
-  height: 38px;
-  margin: 0 5px;
-  padding: 0 12px;
-  border: none;
-  border-bottom: 3px dashed color-mix(in srgb, var(--u) 40%, transparent);
-  border-radius: 10px 10px 0 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  vertical-align: middle;
-  line-height: 1;
-}
-
-/* The blank the next word goes into. */
-.gap.is-next {
-  border-bottom-color: var(--tint);
-  background: color-mix(in srgb, var(--tint) 8%, transparent);
-}
-
-.gap.filled {
-  border-bottom-style: solid;
-  border-bottom-color: var(--tint);
-  background: color-mix(in srgb, var(--tint) 14%, var(--ios-cell));
-  color: color-mix(in srgb, var(--tint) 80%, var(--ios-label));
-  cursor: pointer;
-  animation: blank-in 0.3s var(--spring) both;
 }
 
 /* ---------- Grammar: the rule on the card ---------- */

@@ -147,7 +147,7 @@
 .lesson-body.is-wrong .selected,
 .lesson-body.is-wrong .answer-line,
 .lesson-body.is-wrong .type-input,
-.lesson-body.is-wrong .blank {
+.lesson-body.is-wrong .slot.filled {
   animation: shake 0.4s ease;
 }
 

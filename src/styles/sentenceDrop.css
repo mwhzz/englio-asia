@@ -1,0 +1,127 @@
+/* "Put the word in the sentence" (features/exercises/SentenceDrop.tsx): the sentence large on the card,
+   a dashed slot for each blank, and raised word tiles below that glide into the slots. */
+
+.drop-card {
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.drop-sentence {
+  margin: 0;
+  font-family: var(--font);
+  font-size: clamp(24px, 7vw, 30px);
+  font-weight: 600;
+  line-height: 1.9;
+}
+
+.slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  height: 46px;
+  margin: 0 2px;
+  padding: 0 16px;
+  border: 2px dashed color-mix(in srgb, var(--u) 50%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ios-cell) 55%, transparent);
+  color: inherit;
+  font: inherit;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* The slot the next word goes into breathes gently. */
+.slot.is-next {
+  border-color: var(--tint);
+  background: color-mix(in srgb, var(--tint) 10%, var(--ios-cell));
+  animation: slot-wait 1.8s ease-in-out infinite;
+}
+
+.slot.filled {
+  border: 2px solid var(--tint);
+  background: var(--tint);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--tint) 70%, transparent);
+  cursor: pointer;
+}
+
+.slot:disabled {
+  cursor: default;
+}
+
+.slot:focus-visible,
+.drop-tile:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--tint) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.lesson-body.is-wrong .slot.filled {
+  border-color: var(--ios-red);
+  background: var(--ios-red);
+}
+
+.drop-meaning {
+  margin: 0;
+  font-size: 17px;
+  color: var(--ios-secondary);
+}
+
+.drop-bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* A raised tile: pressing it pushes it down. */
+.drop-tile {
+  display: inline-flex;
+  align-items: center;
+  min-height: 54px;
+  padding: 0 22px;
+  border: 2px solid var(--ios-separator);
+  border-radius: 16px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font-family: var(--font);
+  font-size: 19px;
+  font-weight: 600;
+  box-shadow: 0 3px 0 var(--ios-separator);
+  cursor: pointer;
+  transition:
+    transform 0.15s var(--ease),
+    box-shadow 0.15s var(--ease);
+}
+
+.drop-tile:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--ios-separator);
+}
+
+.drop-tile:disabled {
+  cursor: default;
+}
+
+/* Where a used word was: a dashed outline the same size, so nothing below jumps. */
+.drop-tile.is-used {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+  color: transparent;
+}
+
+@keyframes slot-wait {
+  50% {
+    background: color-mix(in srgb, var(--tint) 18%, var(--ios-cell));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot.is-next {
+    animation: none;
+  }
+}
