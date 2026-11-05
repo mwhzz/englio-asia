@@ -3,6 +3,7 @@ import { readCourses, readGrammar } from './course.ts';
 import { bumpContentVersion, transaction } from './db.ts';
 import { HttpError, type Request } from './http.ts';
 import { validateTopic } from './validateTopic.ts';
+import { idIn, langOf } from './languages.ts';
 
 const changed = <T,>(db: DatabaseSync, fn: () => T): T =>
   transaction(db, () => {
@@ -12,9 +13,9 @@ const changed = <T,>(db: DatabaseSync, fn: () => T): T =>
   });
 
 /** Every topic with the few fields the admin list shows. */
-export function listTopics(db: DatabaseSync) {
-  const courses = readCourses(db);
-  return readGrammar(db).map((t) => ({
+export function listTopics(db: DatabaseSync, lang = 'bn') {
+  const courses = readCourses(db, lang);
+  return readGrammar(db, lang).map((t) => ({
     id: t.id,
     level: t.level,
     title: t.title,
@@ -32,11 +33,13 @@ export function getTopic(db: DatabaseSync, { params }: Request) {
 }
 
 export function createTopic(db: DatabaseSync, { body }: Request) {
-  const topic = validateTopic(body);
+  const lang = langOf(db, (body as { lang?: string } | null)?.lang);
+  const given = validateTopic(body);
+  const topic = { ...given, id: idIn(lang, given.id) };
   return changed(db, () => {
     if (db.prepare('SELECT 1 FROM grammar WHERE id = ?').get(topic.id)) throw new HttpError(409, `A topic with id "${topic.id}" already exists`);
     const { p } = db.prepare('SELECT COALESCE(MAX(position), -1) + 1 AS p FROM grammar').get() as { p: number };
-    db.prepare('INSERT INTO grammar (id, position, data) VALUES (?, ?, ?)').run(topic.id, p, JSON.stringify(topic));
+    db.prepare('INSERT INTO grammar (id, lang, position, data) VALUES (?, ?, ?, ?)').run(topic.id, lang, p, JSON.stringify(topic));
     return { id: topic.id };
   });
 }
@@ -61,7 +64,7 @@ export function deleteTopic(db: DatabaseSync, { params }: Request) {
 export function moveTopic(db: DatabaseSync, { params, body }: Request) {
   const dir = (body as { dir?: number } | null)?.dir === -1 ? -1 : 1;
   return changed(db, () => {
-    const ids = (db.prepare('SELECT id FROM grammar ORDER BY position, id').all() as { id: string }[]).map((r) => r.id);
+    const ids = (db.prepare('SELECT id FROM grammar WHERE lang = (SELECT lang FROM grammar WHERE id = ?) ORDER BY position, id').all(params.id) as { id: string }[]).map((r) => r.id);
     const i = ids.indexOf(params.id);
     if (i < 0) throw new HttpError(404, 'No such topic');
     const j = i + dir;

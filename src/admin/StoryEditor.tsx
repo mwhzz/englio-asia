@@ -5,10 +5,12 @@ import { EMPTY_STORY, fieldsToStory, storyToFields, type StoryFields } from './s
 import { openPreview } from '../preview/draft';
 import { slug } from './topicForm';
 import { go } from './useHashRoute';
+import { useAdminLang } from './useAdminLang';
 
 /** Write or edit one short story; the server checks it before saving. */
 export function StoryEditor({ id, onUnauthorized }: { id: string; onUnauthorized: () => void }) {
   const isNew = id === 'new';
+  const lang = useAdminLang();
   const [fields, setFields] = useState<StoryFields | null>(isNew ? EMPTY_STORY : null);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -33,7 +35,7 @@ export function StoryEditor({ id, onUnauthorized }: { id: string; onUnauthorized
     try {
       const story = fieldsToStory(fields!);
       if (isNew) {
-        await adminApi('POST', '/stories', story);
+        await adminApi('POST', '/stories', { ...story, lang });
         go('story', story.id);
       } else {
         await adminApi('PUT', `/stories/${id}`, story);

@@ -4,6 +4,8 @@ import { KIND_ORDER, SCHEMAS } from './itemSchemas';
 import { UnitForm, type Tip, type UnitDraft } from './UnitForm';
 import { useAdminData } from './useAdminData';
 import { go } from './useHashRoute';
+import { LanguagePicker } from './LanguagePicker';
+import { useAdminLang } from './useAdminLang';
 
 interface UnitRow {
   id: string;
@@ -18,7 +20,8 @@ const NEW_UNIT: UnitDraft = { title: '', titleBn: '', color: '#007aff', tips: []
 
 /** Every unit and its lessons: add, rename, reorder, delete; open a lesson to edit its content. */
 export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) {
-  const { data: units, error, reload } = useAdminData<UnitRow[]>('/units', onUnauthorized);
+  const lang = useAdminLang();
+  const { data: units, error, reload } = useAdminData<UnitRow[]>(`/units?lang=${lang}`, onUnauthorized);
   const [editing, setEditing] = useState<string | null>(null);
 
   if (error) return <p className="ad-error">{error}</p>;
@@ -45,7 +48,13 @@ export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) 
           + New unit
         </button>
       </header>
+      <LanguagePicker />
       <p className="ad-muted">Changes reach the app the next time it opens.</p>
+      {units.length === 0 && editing !== 'new' && (
+        <p className="ad-empty" lang="bn">
+          এই ভাষায় এখনো কোনো ইউনিট নেই। "+ New unit" দিয়ে শুরু করো।
+        </p>
+      )}
 
       {editing === 'new' && (
         <div className="ad-card">
@@ -53,7 +62,7 @@ export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) 
             initial={NEW_UNIT}
             onCancel={() => setEditing(null)}
             onSave={async (unit) => {
-              await adminApi('POST', '/units', unit);
+              await adminApi('POST', '/units', { ...unit, lang });
               setEditing(null);
               reload();
             }}

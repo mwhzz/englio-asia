@@ -6,6 +6,7 @@ import type { Level } from '../src/types.ts';
 import { readWriting } from './course.ts';
 import { bumpContentVersion, transaction } from './db.ts';
 import { HttpError, type Request } from './http.ts';
+import { idIn, langOf } from './languages.ts';
 
 type Obj = Record<string, unknown>;
 const ID = /^[a-z0-9-]{2,60}$/;
@@ -56,8 +57,8 @@ export function validateWriting(body: unknown): WritingTask {
   };
 }
 
-export function listWriting(db: DatabaseSync) {
-  return readWriting(db).map((t) => ({ id: t.id, kind: t.kind, levels: t.levels, title: t.title, titleBn: t.titleBn, minWords: t.minWords }));
+export function listWriting(db: DatabaseSync, lang = 'bn') {
+  return readWriting(db, lang).map((t) => ({ id: t.id, kind: t.kind, levels: t.levels, title: t.title, titleBn: t.titleBn, minWords: t.minWords }));
 }
 
 export function getWriting(db: DatabaseSync, { params }: Request) {
@@ -67,11 +68,13 @@ export function getWriting(db: DatabaseSync, { params }: Request) {
 }
 
 export function createWriting(db: DatabaseSync, { body }: Request) {
-  const task = validateWriting(body);
+  const lang = langOf(db, (body as { lang?: string } | null)?.lang);
+  const given = validateWriting(body);
+  const task = { ...given, id: idIn(lang, given.id) };
   return changed(db, () => {
     if (db.prepare('SELECT 1 FROM writing_tasks WHERE id = ?').get(task.id)) throw new HttpError(409, `A task with id "${task.id}" already exists`);
     const { p } = db.prepare('SELECT COALESCE(MAX(position), -1) + 1 AS p FROM writing_tasks').get() as { p: number };
-    db.prepare('INSERT INTO writing_tasks (id, position, data) VALUES (?, ?, ?)').run(task.id, p, JSON.stringify(task));
+    db.prepare('INSERT INTO writing_tasks (id, lang, position, data) VALUES (?, ?, ?, ?)').run(task.id, lang, p, JSON.stringify(task));
     return { id: task.id };
   });
 }
@@ -96,7 +99,7 @@ export function deleteWriting(db: DatabaseSync, { params }: Request) {
 export function moveWriting(db: DatabaseSync, { params, body }: Request) {
   const dir = (body as { dir?: number } | null)?.dir === -1 ? -1 : 1;
   return changed(db, () => {
-    const ids = (db.prepare('SELECT id FROM writing_tasks ORDER BY position, id').all() as { id: string }[]).map((r) => r.id);
+    const ids = (db.prepare('SELECT id FROM writing_tasks WHERE lang = (SELECT lang FROM writing_tasks WHERE id = ?) ORDER BY position, id').all(params.id) as { id: string }[]).map((r) => r.id);
     const i = ids.indexOf(params.id);
     if (i < 0) throw new HttpError(404, 'No such task');
     const j = i + dir;

@@ -14,6 +14,7 @@ export const NAV: { group?: string; items: NavItem[] }[] = [
   {
     group: 'কনটেন্ট',
     items: [
+      { page: 'languages', label: 'ভাষা', icon: 'globe' },
       { page: 'content', label: 'লেসন', icon: 'path' },
       { page: 'grammar', label: 'ব্যাকরণ', icon: 'letters' },
       { page: 'stories', label: 'গল্প', icon: 'book' },

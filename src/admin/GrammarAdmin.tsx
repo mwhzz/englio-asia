@@ -3,6 +3,8 @@ import type { GrammarLevel } from '../types';
 import { adminApi } from './adminApi';
 import { useAdminData } from './useAdminData';
 import { go } from './useHashRoute';
+import { LanguagePicker } from './LanguagePicker';
+import { useAdminLang } from './useAdminLang';
 
 interface TopicRow {
   id: string;
@@ -16,7 +18,8 @@ interface TopicRow {
 
 /** Every grammar topic by level: open one to edit it, add a new one, reorder or delete. */
 export function GrammarAdmin({ onUnauthorized }: { onUnauthorized: () => void }) {
-  const { data: topics, error, reload } = useAdminData<TopicRow[]>('/grammar', onUnauthorized);
+  const lang = useAdminLang();
+  const { data: topics, error, reload } = useAdminData<TopicRow[]>(`/grammar?lang=${lang}`, onUnauthorized);
   if (error) return <p className="ad-error">{error}</p>;
   if (!topics) return <p className="ad-muted">Loading…</p>;
 
@@ -35,6 +38,7 @@ export function GrammarAdmin({ onUnauthorized }: { onUnauthorized: () => void })
           + New topic
         </button>
       </header>
+      <LanguagePicker />
       <p className="ad-muted">{topics.length} topics. Changes reach the app the next time it opens.</p>
 
       {LEVELS.map((level) => {

@@ -5,6 +5,7 @@ import { adminApi, Unauthorized } from './adminApi';
 import { EMPTY_TOPIC, fromFields, slug, toFields, type TopicFields } from './topicForm';
 import { openPreview } from '../preview/draft';
 import { go } from './useHashRoute';
+import { useAdminLang } from './useAdminLang';
 
 type TextKey = Exclude<keyof TopicFields, 'level'>;
 
@@ -23,6 +24,7 @@ const FIELDS: { key: TextKey; label: string; rows?: number; hint?: string; bn?: 
 /** Write or edit one grammar topic as plain text fields; the server checks it before saving. */
 export function TopicEditor({ id, onUnauthorized }: { id: string; onUnauthorized: () => void }) {
   const isNew = id === 'new';
+  const lang = useAdminLang();
   const [fields, setFields] = useState<TopicFields | null>(isNew ? EMPTY_TOPIC : null);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -47,7 +49,7 @@ export function TopicEditor({ id, onUnauthorized }: { id: string; onUnauthorized
     try {
       const topic = fromFields(fields!);
       if (isNew) {
-        await adminApi('POST', '/grammar', topic);
+        await adminApi('POST', '/grammar', { ...topic, lang });
         go('topic', topic.id);
       } else {
         await adminApi('PUT', `/grammar/${id}`, topic);

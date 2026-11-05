@@ -4,6 +4,7 @@ import { HttpError, text, type Request } from './http.ts';
 import { validateItem } from './validate.ts';
 import { LEVELS } from '../src/lib/levelCourse.ts';
 import type { Level } from '../src/types.ts';
+import { idIn, langOf } from './languages.ts';
 
 type Row = Record<string, unknown>;
 
@@ -49,8 +50,8 @@ function changed<T>(db: DatabaseSync, fn: () => T): T {
 }
 
 /** Every unit with its lessons and how many items of each kind they have. */
-export function listUnits(db: DatabaseSync) {
-  const units = db.prepare('SELECT id, title, title_bn, color, tips, levels FROM units ORDER BY position').all() as Row[];
+export function listUnits(db: DatabaseSync, lang = 'bn') {
+  const units = db.prepare('SELECT id, title, title_bn, color, tips, levels FROM units WHERE lang = ? ORDER BY position').all(lang) as Row[];
   const lessons = db.prepare('SELECT id, unit_id, title, title_bn FROM lessons ORDER BY position').all() as Row[];
   const counts = db.prepare('SELECT lesson_id, kind, COUNT(*) AS n FROM items GROUP BY lesson_id, kind').all() as Row[];
   return units.map((u) => ({
@@ -73,11 +74,13 @@ export function listUnits(db: DatabaseSync) {
 
 export function createUnit(db: DatabaseSync, { body }: Request) {
   return changed(db, () => {
-    const n = (db.prepare('SELECT COUNT(*) AS n FROM units').get() as { n: number }).n;
-    let id = `u${n + 1}`;
+    const lang = langOf(db, (body as { lang?: string } | null)?.lang);
+    const n = (db.prepare('SELECT COUNT(*) AS n FROM units WHERE lang = ?').get(lang) as { n: number }).n;
+    let id = idIn(lang, `u${n + 1}`);
     while (db.prepare('SELECT 1 FROM units WHERE id = ?').get(id)) id = `${id}x`;
-    db.prepare('INSERT INTO units (id, position, title, title_bn, color, tips, levels) VALUES (?, ?, ?, ?, ?, ?, ?)').run(
+    db.prepare('INSERT INTO units (id, lang, position, title, title_bn, color, tips, levels) VALUES (?, ?, ?, ?, ?, ?, ?, ?)').run(
       id,
+      lang,
       nextPosition(db, 'units'),
       text(body, 'title'),
       text(body, 'titleBn'),
@@ -110,8 +113,8 @@ export function deleteUnit(db: DatabaseSync, { params }: Request) {
 export function moveRow(db: DatabaseSync, table: 'units' | 'lessons', { params, body }: Request) {
   const dir = (body as Row | null)?.dir === -1 ? -1 : 1;
   return changed(db, () => {
-    const scope = table === 'lessons' ? 'WHERE unit_id = (SELECT unit_id FROM lessons WHERE id = ?)' : '';
-    const ids = (db.prepare(`SELECT id FROM ${table} ${scope} ORDER BY position`).all(...(scope ? [params.id] : [])) as Row[]).map(
+    const scope = table === 'lessons' ? 'WHERE unit_id = (SELECT unit_id FROM lessons WHERE id = ?)' : 'WHERE lang = (SELECT lang FROM units WHERE id = ?)';
+    const ids = (db.prepare(`SELECT id FROM ${table} ${scope} ORDER BY position`).all(params.id) as Row[]).map(
       (r) => r.id as string,
     );
     const i = ids.indexOf(params.id);

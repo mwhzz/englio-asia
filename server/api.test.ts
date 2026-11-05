@@ -75,6 +75,32 @@ describe('course', () => {
     await admin('PUT', '/api/admin/settings', { features: current.features, lockedUnits: [], plus: current.plus });
   });
 
+  it('adds a language empty and in draft, keeps its content apart, and only removes it when empty', async () => {
+    expect((await admin('POST', '/api/admin/languages', { code: 'Arabic!', name: 'Arabic', native: 'العربية', dir: 'rtl' })).status).toBe(400);
+    const added = await admin('POST', '/api/admin/languages', { code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl' });
+    expect(added.json).toEqual({ code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl', status: 'draft' });
+    expect((await admin('POST', '/api/admin/languages', { code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl' })).status).toBe(409);
+
+    const unit = await admin('POST', '/api/admin/units', { lang: 'ar', title: 'First steps', titleBn: 'الخطوات الأولى', color: '#34c759' });
+    expect(unit.json.id).toBe('ar-u1');
+    expect((await admin('GET', '/api/admin/units?lang=ar')).json.map((u: { id: string }) => u.id)).toEqual(['ar-u1']);
+    expect((await admin('GET', '/api/admin/units')).json.some((u: { id: string }) => u.id === 'ar-u1')).toBe(false);
+
+    const ar = (await call('GET', '/api/course?lang=ar')).json;
+    expect(ar.lang).toBe('ar');
+    expect(ar.units.map((u: { id: string }) => u.id)).toEqual(['ar-u1']);
+    expect(ar.board).toEqual([]);
+    expect((await call('GET', '/api/course')).json.languages.map((l: { code: string }) => l.code)).toEqual(['bn']);
+    expect((await call('GET', '/api/course?lang=xx')).status).toBe(404);
+
+    const list = (await admin('GET', '/api/admin/languages')).json;
+    expect(list.find((l: { code: string }) => l.code === 'ar')).toMatchObject({ units: 1, lessons: 0, status: 'draft' });
+    expect((await admin('DELETE', '/api/admin/languages/ar')).status).toBe(409);
+    expect((await admin('DELETE', '/api/admin/languages/bn')).status).toBe(400);
+    await admin('DELETE', '/api/admin/units/ar-u1');
+    expect((await admin('DELETE', '/api/admin/languages/ar')).status).toBe(200);
+  });
+
   it('serves the seeded course in the same shape as the built-in one', async () => {
     const { status, json } = await call('GET', '/api/course');
     expect(status).toBe(200);

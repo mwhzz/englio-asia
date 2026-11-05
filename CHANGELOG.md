@@ -6,6 +6,10 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Admin: a new ভাষা page to add the learners' own languages (Arabic, Urdu, Hindi, Japanese and others in one tap, or any other by code). A new language starts empty and in draft (only the admin sees it); it can go live once it has content, and the page shows how much is there and how much is translated.
+- Admin: the Lessons, Grammar and Stories pages have a language bar on top; what you add goes into the chosen language. Each language's content is kept apart (its ids start with its code, like ar-u1). SSC/HSC board prep stays Bangla only.
+- The app still shows the Bangla course; choosing a language in the app comes in a later release.
+
 ## 1.4.0 (2026-11-06)
 
 - Admin: a new সেটিংস page for the owner. Switch features on or off (hearts, league, stories, board prep, শোনা-বলা, reminders, buying Plus), choose which units are free and which need Englio Plus, and set the Plus price and days. Apps pick it up the next time they open, no new APK.

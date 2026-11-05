@@ -1,6 +1,8 @@
 import { adminApi } from './adminApi';
 import { useAdminData } from './useAdminData';
 import { go } from './useHashRoute';
+import { LanguagePicker } from './LanguagePicker';
+import { useAdminLang } from './useAdminLang';
 
 interface StoryRow {
   id: string;
@@ -13,7 +15,8 @@ interface StoryRow {
 
 /** Every short story: open one to edit it, add a new one, reorder or delete. */
 export function StoriesAdmin({ onUnauthorized }: { onUnauthorized: () => void }) {
-  const { data: stories, error, reload } = useAdminData<StoryRow[]>('/stories', onUnauthorized);
+  const lang = useAdminLang();
+  const { data: stories, error, reload } = useAdminData<StoryRow[]>(`/stories?lang=${lang}`, onUnauthorized);
   if (error) return <p className="ad-error">{error}</p>;
   if (!stories) return <p className="ad-muted">Loading…</p>;
 
@@ -32,6 +35,7 @@ export function StoriesAdmin({ onUnauthorized }: { onUnauthorized: () => void })
           + New story
         </button>
       </header>
+      <LanguagePicker />
       <p className="ad-muted">{stories.length} stories. Learners see them on the home page after their first lesson.</p>
 
       <section className="ad-card">

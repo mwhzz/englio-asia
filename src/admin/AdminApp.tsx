@@ -23,6 +23,7 @@ import { TopicEditor } from './TopicEditor';
 import { UserPage } from './UserPage';
 import { UsersPage } from './UsersPage';
 import { go, useHashRoute } from './useHashRoute';
+import { LanguagesPage } from './LanguagesPage';
 
 /** The admin panel: sign in with the token, then dashboard, lessons, grammar, stories and learners. */
 export function AdminApp() {
@@ -98,6 +99,8 @@ export function AdminApp() {
           <ReportsPage onUnauthorized={signOut} />
         ) : page === 'errors' ? (
           <ErrorsPage onUnauthorized={signOut} />
+        ) : page === 'languages' ? (
+          <LanguagesPage owner={me?.role === 'owner'} />
         ) : page === 'settings' ? (
           <SettingsPage onUnauthorized={signOut} />
         ) : page === 'team' ? (

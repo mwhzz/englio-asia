@@ -29,7 +29,8 @@ function random(seed: number) {
 /** Replaces all course content with `units`. */
 export function seedCourse(db: DatabaseSync, units: Unit[] = BUNDLED_COURSE): void {
   transaction(db, () => {
-    db.exec('DELETE FROM items; DELETE FROM lessons; DELETE FROM units;');
+    // Only the Bangla course is built in; other languages' content (made in the admin) is kept.
+    db.exec("DELETE FROM units WHERE lang = 'bn';");
     const unit = db.prepare('INSERT INTO units (id, position, title, title_bn, color, tips, levels) VALUES (?, ?, ?, ?, ?, ?, ?)');
     const lesson = db.prepare('INSERT INTO lessons (id, unit_id, position, title, title_bn) VALUES (?, ?, ?, ?, ?)');
     const item = db.prepare('INSERT INTO items (lesson_id, kind, position, data) VALUES (?, ?, ?, ?)');
@@ -56,7 +57,7 @@ export function seedCourse(db: DatabaseSync, units: Unit[] = BUNDLED_COURSE): vo
 /** Replaces all grammar topics with `topics`. */
 export function seedGrammar(db: DatabaseSync, topics: GrammarTopic[] = BUNDLED_GRAMMAR): void {
   transaction(db, () => {
-    db.exec('DELETE FROM grammar');
+    db.exec("DELETE FROM grammar WHERE lang = 'bn'");
     const insert = db.prepare('INSERT INTO grammar (id, position, data) VALUES (?, ?, ?)');
     topics.forEach((t, i) => insert.run(t.id, i, JSON.stringify(t)));
     bumpContentVersion(db);
@@ -66,7 +67,7 @@ export function seedGrammar(db: DatabaseSync, topics: GrammarTopic[] = BUNDLED_G
 /** Replaces all grammar courses with `courses`. */
 export function seedCourses(db: DatabaseSync, courses: Record<string, GrammarCourse> = BUNDLED_COURSES): void {
   transaction(db, () => {
-    db.exec('DELETE FROM grammar_courses');
+    db.exec("DELETE FROM grammar_courses WHERE topic_id NOT IN (SELECT id FROM grammar WHERE lang <> 'bn')");
     const insert = db.prepare('INSERT INTO grammar_courses (topic_id, data) VALUES (?, ?)');
     for (const [topicId, course] of Object.entries(courses)) insert.run(topicId, JSON.stringify(course));
     bumpContentVersion(db);
@@ -76,7 +77,7 @@ export function seedCourses(db: DatabaseSync, courses: Record<string, GrammarCou
 /** Replaces all stories with `stories`. */
 export function seedStories(db: DatabaseSync, stories: Story[] = BUNDLED_STORIES): void {
   transaction(db, () => {
-    db.exec('DELETE FROM stories');
+    db.exec("DELETE FROM stories WHERE lang = 'bn'");
     const insert = db.prepare('INSERT INTO stories (id, position, data) VALUES (?, ?, ?)');
     stories.forEach((s, i) => insert.run(s.id, i, JSON.stringify(s)));
     bumpContentVersion(db);
@@ -96,7 +97,7 @@ export function seedBoard(db: DatabaseSync, topics: BoardTopic[] = BUNDLED_BOARD
 /** Replaces all writing tasks with `tasks`. */
 export function seedWriting(db: DatabaseSync, tasks: WritingTask[] = BUNDLED_WRITING): void {
   transaction(db, () => {
-    db.exec('DELETE FROM writing_tasks');
+    db.exec("DELETE FROM writing_tasks WHERE lang = 'bn'");
     const insert = db.prepare('INSERT INTO writing_tasks (id, position, data) VALUES (?, ?, ?)');
     tasks.forEach((t, i) => insert.run(t.id, i, JSON.stringify(t)));
     bumpContentVersion(db);

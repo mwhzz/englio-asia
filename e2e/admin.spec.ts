@@ -129,3 +129,27 @@ test('the owner switches a feature off and makes a unit Plus-only, and the app f
   });
   expect(res.ok()).toBe(true);
 });
+
+test('the owner adds a language (empty, in draft) and the content pages switch to it', async ({ page }) => {
+  await page.goto('/admin.html');
+  await page.getByPlaceholder(/token/i).fill(ADMIN_TOKEN);
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await adminGo(page, 'ভাষা');
+  await page.getByRole('button', { name: 'العربية' }).click();
+  await page.getByRole('button', { name: 'ভাষা যোগ করো' }).click();
+  const arabic = page.locator('.ad-lang', { hasText: 'Arabic' });
+  await expect(arabic.getByText('খসড়া')).toBeVisible();
+  await expect(arabic.getByRole('button', { name: 'চালু করো' })).toBeDisabled();
+
+  await arabic.getByRole('button', { name: 'কনটেন্ট দেখো' }).click();
+  await expect(page.getByRole('radio', { name: /العربية/ })).toHaveAttribute('aria-checked', 'true');
+  await expect(page.getByText('এই ভাষায় এখনো কোনো ইউনিট নেই')).toBeVisible();
+
+  // Back to Bangla and remove the empty language, for the other tests.
+  await page.getByRole('radio', { name: 'বাংলা' }).click();
+  await expect(page.getByText('First Steps')).toBeVisible();
+  await adminGo(page, 'ভাষা');
+  page.once('dialog', (d) => d.accept());
+  await page.locator('.ad-lang', { hasText: 'Arabic' }).getByRole('button', { name: 'মুছে ফেলো' }).click();
+  await expect(page.locator('.ad-lang', { hasText: 'Arabic' })).toHaveCount(0);
+});

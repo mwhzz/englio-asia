@@ -185,6 +185,16 @@ const SCHEMA = `
   );
 
   CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+
+  -- The learners' own languages the course is made for (the app and the meanings are in it). Bangla first.
+  CREATE TABLE IF NOT EXISTS languages (
+    code TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    native TEXT NOT NULL,
+    dir TEXT NOT NULL DEFAULT 'ltr',
+    status TEXT NOT NULL DEFAULT 'draft',
+    position INTEGER NOT NULL
+  );
 `;
 
 /** Opens (and if needed creates) the database. */
@@ -201,6 +211,11 @@ function migrate(db: DatabaseSync): void {
   const has = (table: string, column: string) =>
     (db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).some((c) => c.name === column);
   if (!has('units', 'levels')) db.exec(`ALTER TABLE units ADD COLUMN levels TEXT NOT NULL DEFAULT '[]'`);
+  // Content belongs to a language (the learner's own); everything made before languages existed is Bangla.
+  for (const table of ['units', 'grammar', 'stories', 'writing_tasks']) {
+    if (!has(table, 'lang')) db.exec(`ALTER TABLE ${table} ADD COLUMN lang TEXT NOT NULL DEFAULT 'bn'`);
+  }
+  db.prepare(`INSERT OR IGNORE INTO languages (code, name, native, dir, status, position) VALUES ('bn', 'Bangla', 'বাংলা', 'ltr', 'live', 0)`).run();
 }
 
 /** A number that changes whenever the content does, so apps can skip downloading an unchanged course. */

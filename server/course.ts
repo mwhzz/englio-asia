@@ -41,8 +41,8 @@ function levelsOf(json: string): Pick<Unit, 'levels'> {
 }
 
 /** The whole course from the database, in the same shape as the app's built-in course. */
-export function readCourse(db: DatabaseSync): Unit[] {
-  const units = db.prepare('SELECT * FROM units ORDER BY position').all() as unknown as UnitRow[];
+export function readCourse(db: DatabaseSync, lang = 'bn'): Unit[] {
+  const units = db.prepare('SELECT * FROM units WHERE lang = ? ORDER BY position').all(lang) as unknown as UnitRow[];
   const lessons = db.prepare('SELECT * FROM lessons ORDER BY position').all() as unknown as LessonRow[];
   const items = db.prepare('SELECT lesson_id, kind, data FROM items ORDER BY position, id').all() as unknown as ItemRow[];
 
@@ -68,20 +68,20 @@ export function readCourse(db: DatabaseSync): Unit[] {
 }
 
 /** Every grammar topic, in order. */
-export function readGrammar(db: DatabaseSync): GrammarTopic[] {
-  const rows = db.prepare('SELECT data FROM grammar ORDER BY position, id').all() as unknown as { data: string }[];
+export function readGrammar(db: DatabaseSync, lang = 'bn'): GrammarTopic[] {
+  const rows = db.prepare('SELECT data FROM grammar WHERE lang = ? ORDER BY position, id').all(lang) as unknown as { data: string }[];
   return rows.map((r) => JSON.parse(r.data));
 }
 
 /** Every grammar course, by topic id, for topics that still exist. */
-export function readCourses(db: DatabaseSync): Record<string, GrammarCourse> {
-  const rows = db.prepare('SELECT c.topic_id, c.data FROM grammar_courses c JOIN grammar g ON g.id = c.topic_id').all() as unknown as { topic_id: string; data: string }[];
+export function readCourses(db: DatabaseSync, lang = 'bn'): Record<string, GrammarCourse> {
+  const rows = db.prepare('SELECT c.topic_id, c.data FROM grammar_courses c JOIN grammar g ON g.id = c.topic_id WHERE g.lang = ?').all(lang) as unknown as { topic_id: string; data: string }[];
   return Object.fromEntries(rows.map((r) => [r.topic_id, JSON.parse(r.data)]));
 }
 
 /** Every story, in order. */
-export function readStories(db: DatabaseSync): Story[] {
-  const rows = db.prepare('SELECT data FROM stories ORDER BY position, id').all() as unknown as { data: string }[];
+export function readStories(db: DatabaseSync, lang = 'bn'): Story[] {
+  const rows = db.prepare('SELECT data FROM stories WHERE lang = ? ORDER BY position, id').all(lang) as unknown as { data: string }[];
   return rows.map((r) => JSON.parse(r.data));
 }
 
@@ -92,7 +92,7 @@ export function readBoard(db: DatabaseSync): BoardTopic[] {
 }
 
 /** Every writing task, in order. */
-export function readWriting(db: DatabaseSync): WritingTask[] {
-  const rows = db.prepare('SELECT data FROM writing_tasks ORDER BY position, id').all() as unknown as { data: string }[];
+export function readWriting(db: DatabaseSync, lang = 'bn'): WritingTask[] {
+  const rows = db.prepare('SELECT data FROM writing_tasks WHERE lang = ? ORDER BY position, id').all(lang) as unknown as { data: string }[];
   return rows.map((r) => JSON.parse(r.data));
 }
