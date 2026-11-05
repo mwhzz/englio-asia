@@ -6,6 +6,9 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Fix: since 1.5.0 the app downloaded the whole course every time it opened, instead of only when it changed. Fixed for the apps already on phones too.
+- Draft languages are no longer served to the public course; only live ones are.
+
 ## 1.6.0 (2026-11-06)
 
 - Admin: a শব্দ page with every word of a language in one list: add a word to any lesson (meaning, emoji, picture, pronunciation), and record or upload each word's pronunciation right there. Search, filter by unit, or show only words without audio.

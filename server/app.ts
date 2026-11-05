@@ -27,7 +27,7 @@ import { checkUserId, loadProgress, saveProgress } from './users.ts';
 import { SERVER_VERSION } from './version.ts';
 import { readSettings, saveSettings } from './settings.ts';
 import { deleteClip, listSpoken, listWords, readClips, setClip } from './adminAudio.ts';
-import { createLanguage, deleteLanguage, langOf, listLanguages, liveLanguages, updateLanguage } from './languages.ts';
+import { createLanguage, deleteLanguage, isLive, langOf, listLanguages, liveLanguages, updateLanguage } from './languages.ts';
 
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
 function routes(db: DatabaseSync): Route[] {
@@ -41,6 +41,8 @@ function routes(db: DatabaseSync): Route[] {
       // ?lang= picks the learner's language (Bangla when missing, as older apps don't send it).
       handler: ({ query }) => {
         const lang = langOf(db, query.get('lang'));
+        // Draft languages are only for the admin, not the public course.
+        if (!isLive(db, lang)) throw new HttpError(404, `No language "${lang}"`);
         return {
           version: contentVersion(db),
           lang,
@@ -217,7 +219,9 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
 
       // The course only changes when the admin edits it, so apps can ask "has it changed?" cheaply.
       if (url.pathname === '/api/course') {
-        const etag = `"course-${contentVersion(db)}-${url.searchParams.get('lang') || 'bn'}"`;
+        // Bangla keeps the original tag, which the apps already in people's phones send back.
+        const lang = url.searchParams.get('lang') || 'bn';
+        const etag = lang === 'bn' ? `"course-${contentVersion(db)}"` : `"course-${contentVersion(db)}-${lang}"`;
         if (req.headers['if-none-match'] === etag) return send(res, 304, undefined, { etag });
         return send(res, 200, route.handler({ method: 'GET', path: url.pathname, query: url.searchParams, params, headers: req.headers, body: null }), {
           etag,

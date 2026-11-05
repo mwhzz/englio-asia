@@ -86,11 +86,15 @@ describe('course', () => {
     expect((await admin('GET', '/api/admin/units?lang=ar')).json.map((u: { id: string }) => u.id)).toEqual(['ar-u1']);
     expect((await admin('GET', '/api/admin/units')).json.some((u: { id: string }) => u.id === 'ar-u1')).toBe(false);
 
+    // A draft language isn't served to the public; live, it is.
+    expect((await call('GET', '/api/course?lang=ar')).status).toBe(404);
+    await admin('PUT', '/api/admin/languages/ar', { status: 'live' });
     const ar = (await call('GET', '/api/course?lang=ar')).json;
     expect(ar.lang).toBe('ar');
     expect(ar.units.map((u: { id: string }) => u.id)).toEqual(['ar-u1']);
     expect(ar.board).toEqual([]);
-    expect((await call('GET', '/api/course')).json.languages.map((l: { code: string }) => l.code)).toEqual(['bn']);
+    expect((await call('GET', '/api/course')).json.languages.map((l: { code: string }) => l.code)).toEqual(['bn', 'ar']);
+    await admin('PUT', '/api/admin/languages/ar', { status: 'draft' });
     expect((await call('GET', '/api/course?lang=xx')).status).toBe(404);
 
     const list = (await admin('GET', '/api/admin/languages')).json;
@@ -119,6 +123,12 @@ describe('course', () => {
     expect((await admin('DELETE', '/api/admin/audio?text=hello')).status).toBe(200);
     expect((await call('GET', '/api/course')).json.audio).not.toHaveProperty('hello');
     expect((await admin('DELETE', '/api/admin/audio?text=hello')).status).toBe(404);
+  });
+
+  it('answers 304 to the tag apps already send, so an unchanged course is never downloaded again', async () => {
+    const { json } = await call('GET', '/api/course');
+    const res = await fetch(`${base}/api/course`, { headers: { 'if-none-match': `"course-${json.version}"` } });
+    expect(res.status).toBe(304);
   });
 
   it('serves the seeded course in the same shape as the built-in one', async () => {

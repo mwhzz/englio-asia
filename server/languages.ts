@@ -27,6 +27,9 @@ export function langOf(db: DatabaseSync, value: string | null | undefined): stri
   return code;
 }
 
+/** Whether learners may see this language's course. */
+export const isLive = (db: DatabaseSync, code: string) => row(db, code)?.status === 'live';
+
 /** Every language, with how much content it has and, for the others, how much is translated from Bangla. */
 export function listLanguages(db: DatabaseSync) {
   const languages = db.prepare('SELECT code, name, native, dir, status FROM languages ORDER BY position, code').all() as unknown as Language[];
