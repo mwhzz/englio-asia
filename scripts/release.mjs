@@ -28,11 +28,21 @@ function stop(message) {
   process.exit(1);
 }
 
+/** Set once the version files are changed: a failure before the commit then puts them back. */
+let changedFiles = false;
+
 /** Runs a command with its output shown; stops the release if it fails. */
 function run(cmd, cmdArgs, what) {
   console.log(`\n▶ ${what}`);
-  const r = spawnSync(cmd, cmdArgs, { stdio: 'inherit', shell: process.platform === 'win32' });
-  if (r.status !== 0) stop(`${what} failed. Nothing was released.`);
+  // npm is a .cmd script on Windows and needs a shell; everything else runs directly, so arguments with spaces stay whole.
+  const r = spawnSync(cmd, cmdArgs, { stdio: 'inherit', shell: cmd === 'npm' && process.platform === 'win32' });
+  if (r.status === 0) return;
+  if (changedFiles) {
+    spawnSync('git', ['reset', '-q']);
+    spawnSync('git', ['checkout', '--', 'package.json', 'package-lock.json', 'CHANGELOG.md']);
+    stop(`${what} failed. The version change was undone; nothing was released.`);
+  }
+  stop(`${what} failed. Nothing was released.`);
 }
 
 /** A git command's output (trimmed). */
@@ -68,6 +78,7 @@ if (dry) {
 }
 
 // 3. Version, changelog, commit, tag, push
+changedFiles = true;
 pkg.version = version;
 writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
 const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'));
@@ -77,6 +88,7 @@ writeFileSync('package-lock.json', `${JSON.stringify(lock, null, 2)}\n`);
 writeFileSync('CHANGELOG.md', changelog);
 run('git', ['add', 'package.json', 'package-lock.json', 'CHANGELOG.md'], 'Stage the version');
 run('git', ['commit', '-q', '-m', `Release v${version}`], 'Commit');
+changedFiles = false; // committed: from here a failure leaves the commit in place, to push or fix by hand
 run('git', ['tag', '-a', `v${version}`, '-m', `Englio ${version}`], 'Tag');
 run('git', ['push', '--follow-tags', 'origin', BRANCH], 'Push to GitHub');
 
