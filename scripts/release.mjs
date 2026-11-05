@@ -99,13 +99,19 @@ if (noDeploy) {
 }
 console.log(`
 ▶ Waiting for ${URL_} to run v${version} (the server builds and tests it first; usually under a minute)`);
-for (let i = 0; i < 40; i++) {
-  await new Promise((done) => setTimeout(done, 15_000));
-  const live = await fetch(`${URL_}/api/health`).then((r) => r.json()).catch(() => null);
-  if (live?.version === version) {
-    console.log(`
-✓ Englio ${version} is live at ${URL_}`);
-    process.exit(0);
+/** Whether the site reports `version` within 10 minutes. */
+async function waitUntilLive() {
+  for (let i = 0; i < 40; i++) {
+    await new Promise((done) => setTimeout(done, 15_000));
+    const live = await fetch(`${URL_}/api/health`).then((r) => r.json()).catch(() => null);
+    if (live?.version === version) return true;
   }
+  return false;
 }
-stop(`v${version} is on GitHub, but ${URL_} isn't running it after 10 minutes. See why on the server: journalctl -t englio-deploy -n 80`);
+// Ends on its own rather than with process.exit(), which can trip Node on Windows while the request is closing.
+if (await waitUntilLive()) {
+  console.log(`
+✓ Englio ${version} is live at ${URL_}`);
+} else {
+  stop(`v${version} is on GitHub, but ${URL_} isn't running it after 10 minutes. See why on the server: journalctl -u englio-deploy -n 80 (history: /var/lib/englio/deploys.log)`);
+}
