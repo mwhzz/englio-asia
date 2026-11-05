@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.2.0 (2026-11-06)
+
 - Englio's own icons everywhere: rounded outlines with a small dot, like the logo's speech bubble. New tab icons (a path, a speech bubble, "Aa", a smiling face), and XP is now a gem.
 - "Put the word in the sentence" looks better: the meaning sits in a soft pill, a placed word pops in, and the bigger word tiles sit right above the button, under the thumb.
 
