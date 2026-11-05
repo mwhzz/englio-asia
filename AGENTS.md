@@ -98,6 +98,16 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 - **Site ↔ app link:** `public/.well-known/assetlinks.json` lists the upload key's SHA-256. After the first Play upload, **add** Play's *App signing key* SHA-256 (Play Console → Setup → App signing) to the same list and deploy; otherwise the Play version shows a browser bar.
 - Play Store steps, forms and policies: `docs/PLAY_STORE.md`. Englio Plus (bKash) stays hidden in the app until bKash keys are set on the server; Google requires Play Billing for digital goods sold inside a Play app, so keep it hidden in the Play version.
 
+## Review agents
+
+Three read-only reviewers live in `.claude/agents/` (Claude Code picks them up; with other tools, give the agent that file as its brief). Run them before a release or launch, and after big changes:
+
+- `language-auditor`: can a new learner language be added and reach learners using only the admin? Lists what's missing.
+- `learner-tester`: uses the app end to end as a new learner on a phone-sized browser (own throwaway server) and reports bugs, dead ends and missing features.
+- `admin-ops-auditor`: can the owner run the app at scale (e.g. 1,000 new learners a day, many complaints) with the admin as it is? Lists missing data, workflows and server risks.
+
+They never edit files, push, or touch the live server. Their findings are collected in `docs/GAPS.md`.
+
 ## Docs
 
 `README.md` (overview and layout) · `docs/STYLE_GUIDE.md` (design) · `docs/SERVER.md` (server settings) · `docs/DEPLOY_BN.md` (deploy guide in Bangla) · `docs/PLAY_STORE.md` (publishing). Update the relevant doc when you change how something works.
