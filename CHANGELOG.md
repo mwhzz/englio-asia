@@ -6,6 +6,9 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Arabic starter course in the admin (draft, not shown to learners): 3 units (First Steps, Family, Food & Drink), 6 lessons and 3 grammar topics (am/is/are, a/an/the, pronouns), written for Arabic speakers' usual mistakes. Needs a native speaker's check before going live.
+- `server/importLanguage.ts` adds a language's starter content from a JSON file, with the admin's checks.
+
 ## 1.5.0 (2026-11-06)
 
 - Admin: a new ভাষা page to add the learners' own languages (Arabic, Urdu, Hindi, Japanese and others in one tap, or any other by code). A new language starts empty and in draft (only the admin sees it); it can go live once it has content, and the page shows how much is there and how much is translated.

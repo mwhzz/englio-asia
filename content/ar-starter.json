@@ -1,0 +1,377 @@
+{
+  "language": { "code": "ar", "name": "Arabic", "native": "العربية", "dir": "rtl" },
+  "units": [
+    {
+      "title": "First Steps",
+      "titleBn": "الخطوات الأولى",
+      "color": "#34c759",
+      "tips": [
+        {
+          "title": "Greetings",
+          "body": "تُقال \"Hello\" في أي وقت من اليوم. أما \"Good morning\" فتُقال في الصباح فقط، و\"Goodbye\" عند الوداع.",
+          "examples": ["Hello, how are you?", "Good morning, teacher."]
+        },
+        {
+          "title": "am / is / are",
+          "body": "مع I نستخدم am، ومع he / she / it نستخدم is، ومع you / we / they نستخدم are. وتُكتب I (أنا) دائمًا بحرف كبير.",
+          "examples": ["I am a student.", "She is my friend.", "You are kind."]
+        },
+        {
+          "title": "A verb in every sentence",
+          "body": "في العربية نقول \"هو معلم\" بلا فعل، لكن الجملة الإنجليزية تحتاج دائمًا إلى فعل. لذلك نقول He is a teacher وليس He a teacher.",
+          "examples": ["He is a teacher.", "The book is new."]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Greetings",
+          "titleBn": "التحيات",
+          "vocab": [
+            { "en": "hello", "bn": "مرحبًا", "emoji": "🙋" },
+            { "en": "good morning", "bn": "صباح الخير", "emoji": "🌅" },
+            { "en": "thank you", "bn": "شكرًا", "emoji": "🙏" },
+            { "en": "goodbye", "bn": "مع السلامة", "emoji": "👋" },
+            { "en": "sorry", "bn": "آسف", "emoji": "😔" },
+            { "en": "yes", "bn": "نعم", "emoji": "✅" },
+            { "en": "no", "bn": "لا", "emoji": "❌" }
+          ],
+          "sentences": [
+            { "en": "Hello, how are you?", "bn": "مرحبًا، كيف حالك؟", "alt": [] },
+            { "en": "I am fine.", "bn": "أنا بخير.", "alt": ["I am well.", "I am good."] },
+            { "en": "Thank you very much.", "bn": "شكرًا جزيلًا.", "alt": ["Thanks a lot."] },
+            { "en": "Good morning, teacher.", "bn": "صباح الخير يا أستاذ.", "alt": [] },
+            { "en": "Goodbye, see you later.", "bn": "مع السلامة، أراك لاحقًا.", "alt": [] }
+          ],
+          "fills": [
+            { "text": "Good ___!", "answer": "morning", "options": ["morning", "thanks", "sorry"], "bn": "صباح الخير!" },
+            { "text": "Thank ___ very much.", "answer": "you", "options": ["you", "me", "I"], "bn": "شكرًا جزيلًا." }
+          ],
+          "gaps": [
+            { "text": "Good ___, teacher. How ___ you?", "answers": ["morning", "are"], "extra": ["is", "night"], "bn": "صباح الخير يا أستاذ. كيف حالك؟" }
+          ],
+          "grammar": [
+            {
+              "rule": "تُكتب I (أنا) في الإنجليزية دائمًا بحرف كبير.",
+              "correct": "I am fine.",
+              "wrong": ["i am fine.", "I is fine."],
+              "why": "I تُكتب دائمًا بحرف كبير، ونستخدم معها am."
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Sara",
+              "lines": [
+                { "who": "them", "en": "Hello! How are you?", "bn": "مرحبًا! كيف حالك؟" },
+                { "who": "you", "en": "I am fine, thank you.", "bn": "أنا بخير، شكرًا." }
+              ],
+              "wrong": ["Goodbye, teacher.", "I am a book."]
+            }
+          ]
+        },
+        {
+          "title": "Introductions",
+          "titleBn": "التعارف",
+          "vocab": [
+            { "en": "name", "bn": "اسم", "emoji": "🏷️" },
+            { "en": "student", "bn": "طالب", "emoji": "🎒" },
+            { "en": "teacher", "bn": "معلّم", "emoji": "🧑‍🏫" },
+            { "en": "friend", "bn": "صديق", "emoji": "🤝" },
+            { "en": "doctor", "bn": "طبيب", "emoji": "🩺" },
+            { "en": "from", "bn": "من", "emoji": "📍" }
+          ],
+          "sentences": [
+            { "en": "My name is Sara.", "bn": "اسمي سارة.", "alt": [] },
+            { "en": "I am a student.", "bn": "أنا طالب.", "alt": ["I'm a student."] },
+            { "en": "She is my friend.", "bn": "هي صديقتي.", "alt": ["She's my friend."] },
+            { "en": "He is a teacher.", "bn": "هو معلّم.", "alt": ["He's a teacher."] },
+            { "en": "What is your name?", "bn": "ما اسمك؟", "alt": ["What's your name?"] }
+          ],
+          "fills": [
+            { "text": "I ___ a student.", "answer": "am", "options": ["am", "is", "are"], "bn": "أنا طالب." },
+            { "text": "She ___ my friend.", "answer": "is", "options": ["is", "am", "are"], "bn": "هي صديقتي." }
+          ],
+          "grammar": [
+            {
+              "rule": "في العربية نقول \"هو معلّم\" بلا فعل، أما في الإنجليزية فلا بد من is.",
+              "correct": "He is a teacher.",
+              "wrong": ["He a teacher.", "He are a teacher."],
+              "why": "الجملة الإنجليزية تحتاج دائمًا إلى فعل، ومع he نستخدم is."
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Omar",
+              "lines": [
+                { "who": "them", "en": "Hi, what is your name?", "bn": "أهلًا، ما اسمك؟" },
+                { "who": "you", "en": "My name is Sara.", "bn": "اسمي سارة." }
+              ],
+              "wrong": ["I am fine.", "Good night."]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Family",
+      "titleBn": "العائلة",
+      "color": "#af52de",
+      "tips": [
+        {
+          "title": "my / your / his / her",
+          "body": "my تعني ضمير المتكلم (أمي = my mother)، وyour للمخاطب، وhis للغائب المذكر، وher للغائبة. وتأتي هذه الكلمات قبل الاسم دائمًا.",
+          "examples": ["my mother", "his brother", "her sister"]
+        },
+        {
+          "title": "have / has",
+          "body": "نقول I / you / we / they have، ونقول he / she has. وتعني \"لدي\" أو \"عنده\".",
+          "examples": ["I have one sister.", "She has two brothers."]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "My family",
+          "titleBn": "عائلتي",
+          "vocab": [
+            { "en": "mother", "bn": "أم", "emoji": "👩" },
+            { "en": "father", "bn": "أب", "emoji": "👨" },
+            { "en": "sister", "bn": "أخت", "emoji": "👧" },
+            { "en": "brother", "bn": "أخ", "emoji": "👦" },
+            { "en": "baby", "bn": "طفل رضيع", "emoji": "👶" },
+            { "en": "family", "bn": "عائلة", "emoji": "👪" }
+          ],
+          "sentences": [
+            { "en": "This is my mother.", "bn": "هذه أمي.", "alt": [] },
+            { "en": "My father is a doctor.", "bn": "أبي طبيب.", "alt": [] },
+            { "en": "I have one sister.", "bn": "لدي أخت واحدة.", "alt": [] },
+            { "en": "My brother is tall.", "bn": "أخي طويل.", "alt": [] },
+            { "en": "We are a happy family.", "bn": "نحن عائلة سعيدة.", "alt": [] }
+          ],
+          "fills": [
+            { "text": "This ___ my mother.", "answer": "is", "options": ["is", "am", "are"], "bn": "هذه أمي." },
+            { "text": "I ___ one sister.", "answer": "have", "options": ["have", "has", "am"], "bn": "لدي أخت واحدة." }
+          ]
+        },
+        {
+          "title": "Describing people",
+          "titleBn": "وصف الناس",
+          "vocab": [
+            { "en": "tall", "bn": "طويل", "emoji": "⬆️" },
+            { "en": "short", "bn": "قصير", "emoji": "⬇️" },
+            { "en": "young", "bn": "شاب / صغير السن", "emoji": "🧑" },
+            { "en": "old", "bn": "كبير في السن", "emoji": "👴" },
+            { "en": "kind", "bn": "طيّب", "emoji": "😊" },
+            { "en": "happy", "bn": "سعيد", "emoji": "😄" }
+          ],
+          "sentences": [
+            { "en": "My grandmother is old.", "bn": "جدتي كبيرة في السن.", "alt": [] },
+            { "en": "He is very kind.", "bn": "هو طيّب جدًا.", "alt": [] },
+            { "en": "She is tall and young.", "bn": "هي طويلة وشابة.", "alt": [] },
+            { "en": "They are happy.", "bn": "هم سعداء.", "alt": [] },
+            { "en": "My brother is short.", "bn": "أخي قصير.", "alt": [] }
+          ],
+          "fills": [
+            { "text": "They ___ happy.", "answer": "are", "options": ["are", "is", "am"], "bn": "هم سعداء." },
+            { "text": "He is very ___.", "answer": "kind", "options": ["kind", "old", "short"], "bn": "هو طيّب جدًا." }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Food & Drink",
+      "titleBn": "الطعام والشراب",
+      "color": "#ff9500",
+      "tips": [
+        {
+          "title": "a / an",
+          "body": "نستخدم a قبل الكلمة التي تبدأ بصوت ساكن (a cup)، ونستخدم an قبل الكلمة التي تبدأ بصوت متحرك (an egg, an apple).",
+          "examples": ["an egg", "a cup of tea"]
+        },
+        {
+          "title": "likes / drinks",
+          "body": "مع he / she / it في المضارع البسيط نضيف s إلى الفعل: she likes، he drinks.",
+          "examples": ["She likes bread.", "He drinks milk."]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Everyday food",
+          "titleBn": "طعام كل يوم",
+          "vocab": [
+            { "en": "rice", "bn": "أرز", "emoji": "🍚" },
+            { "en": "bread", "bn": "خبز", "emoji": "🍞" },
+            { "en": "water", "bn": "ماء", "emoji": "💧" },
+            { "en": "milk", "bn": "حليب", "emoji": "🥛" },
+            { "en": "egg", "bn": "بيضة", "emoji": "🥚" },
+            { "en": "apple", "bn": "تفاحة", "emoji": "🍎" }
+          ],
+          "sentences": [
+            { "en": "I eat rice every day.", "bn": "آكل الأرز كل يوم.", "alt": [] },
+            { "en": "I drink water.", "bn": "أشرب الماء.", "alt": [] },
+            { "en": "She likes bread.", "bn": "هي تحب الخبز.", "alt": [] },
+            { "en": "This apple is red.", "bn": "هذه التفاحة حمراء.", "alt": [] },
+            { "en": "Do you want milk?", "bn": "هل تريد حليبًا؟", "alt": [] }
+          ],
+          "fills": [
+            { "text": "I ___ water.", "answer": "drink", "options": ["drink", "eat", "drinks"], "bn": "أشرب الماء." },
+            { "text": "She ___ bread.", "answer": "likes", "options": ["likes", "like", "liking"], "bn": "هي تحب الخبز." }
+          ],
+          "grammar": [
+            {
+              "rule": "مع he / she / it في المضارع البسيط نضيف s إلى الفعل.",
+              "correct": "She likes bread.",
+              "wrong": ["She like bread.", "She liking bread."],
+              "why": "مع she نقول likes بإضافة s."
+            }
+          ]
+        },
+        {
+          "title": "At a restaurant",
+          "titleBn": "في المطعم",
+          "vocab": [
+            { "en": "tea", "bn": "شاي", "emoji": "🍵" },
+            { "en": "coffee", "bn": "قهوة", "emoji": "☕" },
+            { "en": "juice", "bn": "عصير", "emoji": "🧃" },
+            { "en": "menu", "bn": "قائمة الطعام", "emoji": "📋" },
+            { "en": "hungry", "bn": "جائع", "emoji": "😋" },
+            { "en": "please", "bn": "من فضلك", "emoji": "🙏" }
+          ],
+          "sentences": [
+            { "en": "I am hungry.", "bn": "أنا جائع.", "alt": ["I'm hungry."] },
+            { "en": "A cup of tea, please.", "bn": "كوب شاي من فضلك.", "alt": [] },
+            { "en": "Can I see the menu?", "bn": "هل يمكنني رؤية قائمة الطعام؟", "alt": [] },
+            { "en": "I want orange juice.", "bn": "أريد عصير برتقال.", "alt": [] },
+            { "en": "The coffee is hot.", "bn": "القهوة ساخنة.", "alt": [] }
+          ],
+          "fills": [
+            { "text": "A cup of ___, please.", "answer": "tea", "options": ["tea", "menu", "hungry"], "bn": "كوب شاي من فضلك." },
+            { "text": "I ___ hungry.", "answer": "am", "options": ["am", "is", "are"], "bn": "أنا جائع." }
+          ],
+          "dialogs": [
+            {
+              "with": "Ali",
+              "lines": [
+                { "who": "them", "en": "What would you like?", "bn": "ماذا تريد؟" },
+                { "who": "you", "en": "A cup of tea, please.", "bn": "كوب شاي من فضلك." }
+              ],
+              "wrong": ["I am a teacher.", "Good night."]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "grammar": [
+    {
+      "id": "be-verbs",
+      "level": "beginner",
+      "title": "Be Verbs: am, is, are",
+      "titleBn": "فعل الكون: am, is, are",
+      "summary": "الفعل الذي يربط الفاعل بصفته أو حاله",
+      "explain": [
+        "في العربية نقول \"أنا طالب\" و\"هو سعيد\" بلا فعل. أما في الإنجليزية فلا بد من فعل يربط الكلمتين، وهو am أو is أو are، ويعني تقريبًا \"يكون\".",
+        "نستخدم am مع I، وis مع he وshe وit والاسم المفرد، وare مع you وwe وthey والاسم الجمع."
+      ],
+      "formulas": [
+        { "label": "مثبت", "parts": ["Subject", "am / is / are", "Rest"] },
+        { "label": "منفي", "parts": ["Subject", "am / is / are + not", "Rest"] },
+        { "label": "سؤال", "parts": ["Am / Is / Are", "Subject", "Rest?"] }
+      ],
+      "table": [
+        ["الفاعل", "الفعل", "مثال"],
+        ["I", "am", "I am happy."],
+        ["he / she / it", "is", "She is a doctor."],
+        ["you / we / they", "are", "They are friends."]
+      ],
+      "examples": [
+        { "en": "I am a student.", "bn": "أنا طالب." },
+        { "en": "He is at home.", "bn": "هو في البيت." },
+        { "en": "We are not tired.", "bn": "نحن لسنا متعبين." },
+        { "en": "Are you ready?", "bn": "هل أنت مستعد؟" }
+      ],
+      "mistakes": [
+        { "wrong": "He a teacher.", "right": "He is a teacher.", "note": "الجملة الإنجليزية تحتاج إلى فعل، فلا نحذف is." },
+        { "wrong": "They is happy.", "right": "They are happy.", "note": "مع they نستخدم are." },
+        { "wrong": "I is fine.", "right": "I am fine.", "note": "مع I نستخدم am دائمًا." }
+      ],
+      "quiz": [
+        { "question": "اختر الجملة الصحيحة:", "correct": "She is my sister.", "wrong": ["She my sister.", "She are my sister."], "why": "مع she نستخدم is، ولا نحذف الفعل." },
+        { "question": "We ___ students.", "correct": "are", "wrong": ["is", "am"], "why": "مع we نستخدم are." },
+        { "question": "كيف نسأل \"هل هو طبيب؟\"", "correct": "Is he a doctor?", "wrong": ["He is a doctor?", "Are he a doctor?"], "why": "في السؤال يأتي is قبل الفاعل، ومع he نستخدم is." }
+      ]
+    },
+    {
+      "id": "articles",
+      "level": "beginner",
+      "title": "Articles: a, an, the",
+      "titleBn": "أدوات التعريف والتنكير: a, an, the",
+      "summary": "متى نقول a ومتى an ومتى the",
+      "explain": [
+        "a وan تعنيان \"واحد\" من شيء غير محدد، مثل التنوين في العربية (كتابٌ = a book). نستخدم a قبل الصوت الساكن وan قبل الصوت المتحرك.",
+        "the تشبه \"ال\" التعريف، ونستخدمها مع شيء محدد يعرفه السامع. لكن انتبه: في العربية نقول \"أحب القهوة\" بـ\"ال\"، أما في الإنجليزية فنقول I like coffee بلا the عندما نتكلم عن الشيء بشكل عام."
+      ],
+      "formulas": [
+        { "label": "شيء غير محدد", "parts": ["a / an", "Singular noun"] },
+        { "label": "شيء محدد", "parts": ["the", "Noun"] }
+      ],
+      "table": [
+        ["الأداة", "متى", "مثال"],
+        ["a", "قبل صوت ساكن", "a book, a car"],
+        ["an", "قبل صوت متحرك", "an apple, an hour"],
+        ["the", "شيء محدد معروف", "the sun, the book on the table"]
+      ],
+      "examples": [
+        { "en": "I have a car.", "bn": "لدي سيارة." },
+        { "en": "She eats an apple.", "bn": "هي تأكل تفاحة." },
+        { "en": "The book on the table is mine.", "bn": "الكتاب الذي على الطاولة لي." },
+        { "en": "I like coffee.", "bn": "أحب القهوة." }
+      ],
+      "mistakes": [
+        { "wrong": "I like the coffee.", "right": "I like coffee.", "note": "عند الكلام عن الشيء بشكل عام لا نستخدم the." },
+        { "wrong": "She is a engineer.", "right": "She is an engineer.", "note": "engineer تبدأ بصوت متحرك، فنستخدم an." },
+        { "wrong": "He is doctor.", "right": "He is a doctor.", "note": "مع المهنة المفردة نستخدم a أو an." }
+      ],
+      "quiz": [
+        { "question": "I eat ___ egg every day.", "correct": "an", "wrong": ["a", "the"], "why": "egg تبدأ بصوت متحرك، فنستخدم an." },
+        { "question": "اختر الجملة الصحيحة:", "correct": "I like tea.", "wrong": ["I like the tea.", "I like a tea."], "why": "عند الكلام عن الشاي بشكل عام لا نستخدم أداة." },
+        { "question": "My father is ___ teacher.", "correct": "a", "wrong": ["an", "the"], "why": "teacher تبدأ بصوت ساكن، ومع المهنة المفردة نستخدم a." }
+      ]
+    },
+    {
+      "id": "personal-pronouns",
+      "level": "beginner",
+      "title": "Personal Pronouns",
+      "titleBn": "الضمائر الشخصية",
+      "summary": "I, you, he, she, it, we, they",
+      "explain": [
+        "الضمائر تحل محل الأسماء. في الإنجليزية you واحدة للمذكر والمؤنث والمفرد والجمع، فهي تعني أنتَ وأنتِ وأنتم وأنتن.",
+        "ليس في العربية ضمير مثل it: نستخدم it مع الأشياء والحيوانات (الكتاب = it)، بينما he للرجل وshe للمرأة. وthey للجمع، سواء كانوا أشخاصًا أو أشياء."
+      ],
+      "formulas": [{ "label": "الضمير فاعلًا", "parts": ["Pronoun", "Verb", "Rest"] }],
+      "table": [
+        ["الضمير", "المعنى"],
+        ["I", "أنا"],
+        ["you", "أنتَ / أنتِ / أنتم / أنتن"],
+        ["he", "هو (لرجل)"],
+        ["she", "هي (لامرأة)"],
+        ["it", "هو / هي (لشيء أو حيوان)"],
+        ["we", "نحن"],
+        ["they", "هم / هن"]
+      ],
+      "examples": [
+        { "en": "This is my bag. It is new.", "bn": "هذه حقيبتي. إنها جديدة." },
+        { "en": "Ali is my friend. He is kind.", "bn": "علي صديقي. هو طيّب." },
+        { "en": "You are my teachers.", "bn": "أنتم معلّميّ." },
+        { "en": "The cats are hungry. They want milk.", "bn": "القطط جائعة. إنها تريد حليبًا." }
+      ],
+      "mistakes": [
+        { "wrong": "The book is new. She is red.", "right": "The book is new. It is red.", "note": "للأشياء نستخدم it، لا he ولا she." },
+        { "wrong": "My mother he is a doctor.", "right": "My mother is a doctor.", "note": "لا نكرر الضمير بعد الاسم." }
+      ],
+      "quiz": [
+        { "question": "I have a phone. ___ is black.", "correct": "It", "wrong": ["He", "She"], "why": "الهاتف شيء، فنستخدم it." },
+        { "question": "Sara and Omar are here. ___ are friends.", "correct": "They", "wrong": ["We", "He"], "why": "لشخصين غيرنا نستخدم they." },
+        { "question": "ما معنى you؟", "correct": "أنتَ أو أنتِ أو أنتم", "wrong": ["أنتَ فقط", "هم"], "why": "you في الإنجليزية للمذكر والمؤنث والمفرد والجمع." }
+      ]
+    }
+  ]
+}
