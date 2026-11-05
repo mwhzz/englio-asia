@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '../../components/Modal';
 import { restoreFrom } from '../../lib/backup';
+import { AccountSheet } from '../account/AccountSheet';
 
 const ERRORS: Record<number, string> = {
   404: 'এই কোডটা মিলল না। অক্ষরগুলো আরেকবার দেখে নাও।',
@@ -13,6 +14,8 @@ export function RestoreSheet({ onClose }: { onClose: () => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const ready = code.replace(/[^a-z0-9]/gi, '').length === 10;
+  const [byPhone, setByPhone] = useState(false);
+  if (byPhone) return <AccountSheet progress={null} onClose={onClose} />;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,7 +34,7 @@ export function RestoreSheet({ onClose }: { onClose: () => void }) {
       <form className="bk" onSubmit={submit}>
         <h2 lang="bn">আগের অগ্রগতি ফিরিয়ে আনো</h2>
         <p className="muted" lang="bn">
-          পুরোনো ফোনের প্রোফাইল → সেটিংস → "ব্যাকআপ কোড"-এ যে কোডটা আছে, সেটা এখানে লেখো।
+          পুরোনো ফোনের প্রোফাইল → সেটিংস → "ব্যাকআপ কোড"-এ যে কোডটা আছে, সেটা এখানে লেখো। এই ফোনে যা শিখেছ, সেটাও থেকে যাবে।
         </p>
         <input
           className="bk-input"
@@ -53,6 +56,9 @@ export function RestoreSheet({ onClose }: { onClose: () => void }) {
         <div className="cta-stack">
           <button className="cta" disabled={!ready || busy}>
             <span lang="bn">{busy ? 'আনছে…' : 'ফিরিয়ে আনো'}</span>
+          </button>
+          <button type="button" className="cta-text" onClick={() => setByPhone(true)}>
+            <span lang="bn">ফোন নম্বর বা Google দিয়ে ঢোকো</span>
           </button>
           <button type="button" className="cta-text" onClick={onClose}>
             <span lang="bn">বাতিল</span>

@@ -16,6 +16,9 @@
       try {
         var t = localStorage.getItem('englio-theme');
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        // …and the text size (src/lib/textSize.ts).
+        var z = localStorage.getItem('englio-text-size');
+        if (z === 'large' || z === 'larger') document.documentElement.dataset.textSize = z;
       } catch (e) {}
     </script>
   </head>

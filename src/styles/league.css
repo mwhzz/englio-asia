@@ -186,3 +186,77 @@
     animation: none;
   }
 }
+
+.lgp-tabs {
+  align-self: stretch;
+}
+
+.lgp-week {
+  margin: -4px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+/* ---------- Friends league ---------- */
+
+.fr-code-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fr-code-value {
+  font: 700 26px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.12em;
+}
+
+.fr-share {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-orange) 16%, transparent);
+  color: var(--ios-orange);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fr-add {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.fr-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  font: 600 17px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.fr-add .cta {
+  flex: none;
+  width: auto;
+  padding: 0 18px;
+  --c: var(--ios-orange);
+}
+
+.fr-remove {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 16px;
+  cursor: pointer;
+}

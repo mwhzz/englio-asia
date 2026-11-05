@@ -5,11 +5,13 @@ import { SpeakButton } from '../../components/SpeakButton';
 import { COURSE } from '../../data/course';
 import { toBanglaDigits } from '../../lib/bangla';
 import { useProgress } from '../../state/ProgressContext';
+import { useBackButton } from '../../lib/backButton';
 
 type Show = 'learned' | 'all';
 
 /** Every word in the course by unit: the learned ones (from finished lessons) or all, searchable in English or Bangla. */
 export function WordsPage({ onClose }: { onClose: () => void }) {
+  useBackButton(onClose);
   const { progress } = useProgress();
   const [query, setQuery] = useState('');
   const [show, setShow] = useState<Show>('learned');

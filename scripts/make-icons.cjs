@@ -10,6 +10,8 @@ const ICONS = [
   ['icon.svg', 512, 'icon-512.png'],
   ['icon-maskable.svg', 512, 'icon-maskable-512.png'],
   ['icon-maskable.svg', 180, 'apple-touch-icon.png'],
+  // Notification badge (Android shows it in one color in the status bar).
+  ['icon-badge.svg', 96, 'icon-badge-96.png'],
 ];
 
 (async () => {

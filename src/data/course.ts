@@ -1,4 +1,5 @@
-import type { Dialog, DialogLine, Fill, Gaps, Grammar, Lesson, Sentence, Unit, Vocab } from '../types';
+import { unitsForLevel } from '../lib/levelCourse.ts';
+import type { Dialog, DialogLine, Fill, Gaps, Grammar, Lesson, Level, Sentence, Unit, Vocab } from '../types';
 
 const v = (en: string, bn: string, emoji: string): Vocab => ({ en, bn, emoji });
 const s = (en: string, bn: string, ...alt: string[]): Sentence => ({ en, bn, alt });
@@ -911,12 +912,25 @@ export const BUNDLED_COURSE: Unit[] = [
 
 const flatten = (units: Unit[]) => units.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })));
 
-/** The course the app is using: the server's copy once loaded (see lib/courseSource.ts), else the built-in one. */
+/** Every unit: the server's copy once loaded (see lib/courseSource.ts), else the built-in one. */
+let FULL_COURSE: Unit[] = BUNDLED_COURSE;
+let shownLevel: Level | undefined;
+
+/** The units on this learner's path (their level's, see applyLevel), and their lessons. */
 export let COURSE: Unit[] = BUNDLED_COURSE;
 export let ALL_LESSONS = flatten(COURSE);
 
 /** Switches the app to another copy of the course; call before the app renders. */
 export function setCourse(units: Unit[]): void {
-  COURSE = units;
-  ALL_LESSONS = flatten(units);
+  FULL_COURSE = units;
+  COURSE = unitsForLevel(units, shownLevel);
+  ALL_LESSONS = flatten(COURSE);
+}
+
+/** Shows only the units for `level` (see lib/levelCourse.ts). Cheap to call again with the same level. */
+export function applyLevel(level: Level | undefined): void {
+  if (level === shownLevel) return;
+  shownLevel = level;
+  COURSE = unitsForLevel(FULL_COURSE, level);
+  ALL_LESSONS = flatten(COURSE);
 }

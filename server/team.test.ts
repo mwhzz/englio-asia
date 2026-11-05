@@ -56,3 +56,14 @@ describe('admin team', () => {
     expect(log.some((e) => e.method === 'GET')).toBe(false);
   });
 });
+
+describe('app errors', () => {
+  it('groups the same crash from many phones and lets the admin clear it', async () => {
+    const crash = { message: 'x is undefined', stack: 'TypeError: x is undefined\n    at Lesson (app.js:1:2)', where: 'lesson' };
+    for (let i = 0; i < 3; i++) await fetch(`${base}/api/errors`, { method: 'POST', body: JSON.stringify(crash) });
+    const list = (await owner('GET', '/api/admin/errors')).json as { id: string; n: number; message: string }[];
+    expect(list).toEqual([expect.objectContaining({ message: 'x is undefined', n: 3 })]);
+    await owner('DELETE', `/api/admin/errors/${list[0].id}`);
+    expect((await owner('GET', '/api/admin/errors')).json).toEqual([]);
+  });
+});

@@ -6,6 +6,7 @@ import { haptic } from '../../lib/haptics';
 import { listenOnce } from '../../lib/listen';
 import type { ExerciseOf } from '../../types';
 import type { ExerciseProps } from './props';
+import { SpokenWords } from './SpokenWords';
 
 const MIC_BLOCKED: Record<string, string> = {
   'not-allowed': 'মাইক্রোফোনের অনুমতি দাও (ব্রাউজারের ঠিকানার পাশের চিহ্নে চাপ দাও)।',
@@ -55,9 +56,13 @@ export function SpeakExercise({ ex, disabled, onChange }: ExerciseProps<Exercise
           </span>
           <Glyph name="mic" size={34} />
         </button>
-        <p className={`mic-heard${heard ? ' has-text' : ''}`} aria-live="polite">
-          {heard || (listening ? <span lang="bn">শুনছি… বলো</span> : <span lang="bn">মাইকে চাপ দিয়ে বাক্যটা বলো</span>)}
-        </p>
+        {heard && !listening ? (
+          <SpokenWords target={ex.sentence.en} heard={heard} />
+        ) : (
+          <p className={`mic-heard${heard ? ' has-text' : ''}`} aria-live="polite">
+            {heard || (listening ? <span lang="bn">শুনছি… বলো</span> : <span lang="bn">মাইকে চাপ দিয়ে বাক্যটা বলো</span>)}
+          </p>
+        )}
         {error && (
           <p className="mic-error" lang="bn">
             {error}

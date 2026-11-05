@@ -13,7 +13,8 @@ const SCHEMA = `
     title TEXT NOT NULL,
     title_bn TEXT NOT NULL,
     color TEXT NOT NULL,
-    tips TEXT NOT NULL DEFAULT '[]'
+    tips TEXT NOT NULL DEFAULT '[]',
+    levels TEXT NOT NULL DEFAULT '[]'
   );
   CREATE TABLE IF NOT EXISTS lessons (
     id TEXT PRIMARY KEY,
@@ -41,6 +42,17 @@ const SCHEMA = `
   -- Step-by-step grammar courses, one per topic (JSON in data), and short stories.
   CREATE TABLE IF NOT EXISTS grammar_courses (
     topic_id TEXT PRIMARY KEY,
+    data TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS board_topics (
+    id TEXT PRIMARY KEY,
+    position INTEGER NOT NULL,
+    data TEXT NOT NULL
+  );
+  -- Writing practice (paragraphs, letters, applications…), each task as JSON in data.
+  CREATE TABLE IF NOT EXISTS writing_tasks (
+    id TEXT PRIMARY KEY,
+    position INTEGER NOT NULL,
     data TEXT NOT NULL
   );
   CREATE TABLE IF NOT EXISTS stories (
@@ -71,6 +83,46 @@ const SCHEMA = `
     subscription TEXT NOT NULL,
     hour INTEGER NOT NULL,
     time_zone TEXT NOT NULL
+  );
+
+  -- Friends: a shareable code per learner, and who follows whom (both ways).
+  CREATE TABLE IF NOT EXISTS friend_codes (
+    code TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS friends (
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    friend_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, friend_id)
+  );
+
+  -- Real accounts: a phone number or Google account linked to a learner, and the sign-in codes sent by SMS.
+  CREATE TABLE IF NOT EXISTS accounts (
+    kind TEXT NOT NULL CHECK (kind IN ('phone', 'google')),
+    subject TEXT NOT NULL,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    label TEXT,
+    PRIMARY KEY (kind, subject)
+  );
+  CREATE TABLE IF NOT EXISTS otp_codes (
+    phone TEXT PRIMARY KEY,
+    code_hash TEXT NOT NULL,
+    expires_at INTEGER NOT NULL,
+    tries INTEGER NOT NULL
+  );
+
+  -- Englio Plus: bKash payments, and until when each learner has it.
+  CREATE TABLE IF NOT EXISTS payments (
+    payment_id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    amount REAL NOT NULL,
+    status TEXT NOT NULL,
+    trx_id TEXT,
+    created_at TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS premium (
+    user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    until TEXT NOT NULL
   );
 
   -- Backup codes: type one on a new phone to bring your progress over (or to delete it from the web).
@@ -107,6 +159,31 @@ const SCHEMA = `
     status INTEGER NOT NULL
   );
 
+  -- "This question is wrong" reports from learners.
+  CREATE TABLE IF NOT EXISTS reports (
+    id INTEGER PRIMARY KEY,
+    at TEXT NOT NULL,
+    place TEXT NOT NULL,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    note TEXT NOT NULL,
+    done INTEGER NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS reports_open ON reports(done, place, question);
+
+  -- App crashes reported by phones, one row per distinct error.
+  CREATE TABLE IF NOT EXISTS app_errors (
+    id TEXT PRIMARY KEY,
+    message TEXT NOT NULL,
+    stack TEXT NOT NULL,
+    place TEXT NOT NULL,
+    agent TEXT NOT NULL,
+    first_at TEXT NOT NULL,
+    last_at TEXT NOT NULL,
+    n INTEGER NOT NULL
+  );
+
   CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 `;
 
@@ -115,7 +192,15 @@ export function openDb(path = DB_PATH): DatabaseSync {
   const db = new DatabaseSync(path);
   db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
   db.exec(SCHEMA);
+  migrate(db);
   return db;
+}
+
+/** Columns added after the first release, for databases made before them. */
+function migrate(db: DatabaseSync): void {
+  const has = (table: string, column: string) =>
+    (db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).some((c) => c.name === column);
+  if (!has('units', 'levels')) db.exec(`ALTER TABLE units ADD COLUMN levels TEXT NOT NULL DEFAULT '[]'`);
 }
 
 /** A number that changes whenever the content does, so apps can skip downloading an unchanged course. */

@@ -4,6 +4,10 @@ import { DISTRICTS } from '../src/data/districts.ts';
 import { BUNDLED_GRAMMAR } from '../src/data/grammar/index.ts';
 import { BUNDLED_COURSES } from '../src/data/grammarCourses/index.ts';
 import { BUNDLED_STORIES } from '../src/data/stories.ts';
+import { BUNDLED_BOARD } from '../src/data/board/index.ts';
+import type { BoardTopic } from '../src/data/board/types.ts';
+import { BUNDLED_WRITING } from '../src/data/writing/tasks.ts';
+import type { WritingTask } from '../src/data/writing/types.ts';
 import type { GrammarCourse } from '../src/data/grammarCourses/types.ts';
 import type { GrammarTopic, Story, Unit } from '../src/types.ts';
 import { bumpContentVersion, transaction } from './db.ts';
@@ -26,11 +30,11 @@ function random(seed: number) {
 export function seedCourse(db: DatabaseSync, units: Unit[] = BUNDLED_COURSE): void {
   transaction(db, () => {
     db.exec('DELETE FROM items; DELETE FROM lessons; DELETE FROM units;');
-    const unit = db.prepare('INSERT INTO units (id, position, title, title_bn, color, tips) VALUES (?, ?, ?, ?, ?, ?)');
+    const unit = db.prepare('INSERT INTO units (id, position, title, title_bn, color, tips, levels) VALUES (?, ?, ?, ?, ?, ?, ?)');
     const lesson = db.prepare('INSERT INTO lessons (id, unit_id, position, title, title_bn) VALUES (?, ?, ?, ?, ?)');
     const item = db.prepare('INSERT INTO items (lesson_id, kind, position, data) VALUES (?, ?, ?, ?)');
     units.forEach((u, ui) => {
-      unit.run(u.id, ui, u.title, u.titleBn, u.color, JSON.stringify(u.tips));
+      unit.run(u.id, ui, u.title, u.titleBn, u.color, JSON.stringify(u.tips), JSON.stringify(u.levels ?? []));
       u.lessons.forEach((l, li) => {
         lesson.run(l.id, u.id, li, l.title, l.titleBn);
         const rows: [string, unknown[]][] = [
@@ -75,6 +79,26 @@ export function seedStories(db: DatabaseSync, stories: Story[] = BUNDLED_STORIES
     db.exec('DELETE FROM stories');
     const insert = db.prepare('INSERT INTO stories (id, position, data) VALUES (?, ?, ?)');
     stories.forEach((s, i) => insert.run(s.id, i, JSON.stringify(s)));
+    bumpContentVersion(db);
+  });
+}
+
+/** Replaces all board practice topics with `topics`. */
+export function seedBoard(db: DatabaseSync, topics: BoardTopic[] = BUNDLED_BOARD): void {
+  transaction(db, () => {
+    db.exec('DELETE FROM board_topics');
+    const insert = db.prepare('INSERT INTO board_topics (id, position, data) VALUES (?, ?, ?)');
+    topics.forEach((t, i) => insert.run(t.id, i, JSON.stringify(t)));
+    bumpContentVersion(db);
+  });
+}
+
+/** Replaces all writing tasks with `tasks`. */
+export function seedWriting(db: DatabaseSync, tasks: WritingTask[] = BUNDLED_WRITING): void {
+  transaction(db, () => {
+    db.exec('DELETE FROM writing_tasks');
+    const insert = db.prepare('INSERT INTO writing_tasks (id, position, data) VALUES (?, ?, ?)');
+    tasks.forEach((t, i) => insert.run(t.id, i, JSON.stringify(t)));
     bumpContentVersion(db);
   });
 }

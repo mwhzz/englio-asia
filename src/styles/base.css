@@ -80,3 +80,18 @@ button:disabled {
     transition: none !important;
   }
 }
+
+/* Larger text (Settings → লেখার সাইজ, src/lib/textSize.ts): everything is drawn bigger, so nothing overlaps. */
+html[data-text-size='large'] body {
+  zoom: 1.12;
+}
+
+html[data-text-size='larger'] body {
+  zoom: 1.25;
+}
+
+.ts-glyph {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+}

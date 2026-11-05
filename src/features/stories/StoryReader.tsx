@@ -11,6 +11,8 @@ import { track } from '../../lib/track';
 import { useProgress } from '../../state/ProgressContext';
 import type { Story } from '../../types';
 import { TopicQuiz } from '../grammar/TopicQuiz';
+import { useBackButton } from '../../lib/backButton';
+import { TapText } from '../../components/TapText';
 
 const STORY_XP = 10;
 
@@ -19,6 +21,7 @@ const STORY_XP = 10;
  * and after the last line come a few questions. Finishing them the first time gives XP.
  */
 export function StoryReader({ story, onClose }: { story: Story; onClose: () => void }) {
+  useBackButton(onClose);
   const { progress, update } = useProgress();
   const [shown, setShown] = useState(1);
   const [meaning, setMeaning] = useState<number | null>(null);
@@ -62,7 +65,7 @@ export function StoryReader({ story, onClose }: { story: Story; onClose: () => v
             {story.titleBn}
           </p>
           <p className="gt-summary" lang="bn">
-            লাইনে চাপ দিলে বাংলা মানে দেখবে
+            লাইনে চাপ দিলে বাংলা মানে, কোনো শব্দে চাপ দিলে সেই শব্দের মানে
           </p>
         </div>
 
@@ -72,7 +75,9 @@ export function StoryReader({ story, onClose }: { story: Story; onClose: () => v
               <SpeakButton text={line.en} />
               <button className="st-text" onClick={() => setMeaning(meaning === i ? null : i)}>
                 {line.who && <small className="st-who">{line.who}</small>}
-                <span>{line.en}</span>
+                <span>
+                  <TapText text={line.en} />
+                </span>
                 {meaning === i && (
                   <span className="st-bn" lang="bn">
                     {line.bn}
@@ -97,7 +102,7 @@ export function StoryReader({ story, onClose }: { story: Story; onClose: () => v
         ) : (
           <section className="gt-card">
             <h2 lang="bn">গল্পটা বুঝেছ?</h2>
-            <TopicQuiz quiz={story.quiz} onPassed={finish} passedText={read ? 'দারুণ! আবারও সব ঠিক।' : `দারুণ! গল্প শেষ · +${toBanglaDigits(STORY_XP)} XP`} />
+            <TopicQuiz quiz={story.quiz} title={story.title} where={`story:${story.id}`} color={story.color} onPassed={finish} passedText={read ? 'দারুণ! আবারও সব ঠিক।' : `দারুণ! গল্প শেষ · +${toBanglaDigits(STORY_XP)} XP`} />
           </section>
         )}
         <div ref={end} />

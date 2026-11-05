@@ -1,5 +1,6 @@
 import { Glyph } from '../../../components/Glyph';
 import type { CourseQuestion } from './makeQuestions';
+import { MixedText } from '../../../components/MixedText';
 
 interface Props {
   q: CourseQuestion;
@@ -59,17 +60,20 @@ export function QuestionView({ q, picked, onPick }: Props) {
   return (
     <div className="cq">
       <h1 className="cq-prompt" lang="bn">
-        {q.prompt}
+        <MixedText text={q.prompt} />
       </h1>
-      <p className={`cq-card${q.card.includes(' ') ? ' cq-sentence' : ' cq-word-card'}`}>
-        <Card text={q.card} mark={q.mark} />
-      </p>
+      {q.card && (
+        <p className={`cq-card${q.card.includes(' ') ? ' cq-sentence' : ' cq-word-card'}`}>
+          <Card text={q.card} mark={q.mark} />
+        </p>
+      )}
       <div className={`cq-options${yesNo ? ' is-pair' : ''}`}>
         {q.options.map((option) => {
           const state = picked === null ? '' : option === q.answer ? ' is-right' : option === picked ? ' is-wrong' : ' is-dim';
           return (
             <button key={option} className={`gq-option${state}`} disabled={picked !== null} onClick={() => onPick(option)}>
-              <span lang="bn">{option}</span>
+              {/* English answers in the English font, Bangla ones in the Bangla font. */}
+              <span lang={/[ঀ-৿]/.test(option) ? 'bn' : 'en'}>{option}</span>
               {picked !== null && option === q.answer && <Glyph name="check" size={16} />}
               {picked === option && option !== q.answer && <Glyph name="close" size={14} />}
             </button>

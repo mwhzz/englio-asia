@@ -1,5 +1,6 @@
 import type { Exercise } from '../../types';
 import { ChoiceExercise } from './ChoiceExercise';
+import { HearExercise } from './HearExercise';
 import { DialogExercise } from './DialogExercise';
 import { DictateExercise } from './DictateExercise';
 import { FillExercise } from './FillExercise';
@@ -24,6 +25,8 @@ export function ExerciseView({ ex, disabled, onChange }: ExerciseProps<Exercise>
       return <TilesExercise ex={ex} disabled={disabled} onChange={onChange} />;
     case 'choice':
       return <ChoiceExercise ex={ex} disabled={disabled} onChange={onChange} />;
+    case 'hear':
+      return <HearExercise ex={ex} disabled={disabled} onChange={onChange} />;
     case 'type':
       return <TypeExercise ex={ex} disabled={disabled} onChange={onChange} />;
     case 'fill':

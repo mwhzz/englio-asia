@@ -6,6 +6,7 @@ import { toBanglaDigits } from '../../lib/bangla';
 import { useProgress } from '../../state/ProgressContext';
 import type { Story } from '../../types';
 import { StoryReader } from './StoryReader';
+import { useBackButton } from '../../lib/backButton';
 
 /** The home page's "read a story" card, opening the list of stories and then a story. */
 export function StoriesCard() {
@@ -13,6 +14,7 @@ export function StoriesCard() {
   const [list, setList] = useState(false);
   const [story, setStory] = useState<Story | null>(null);
   const read = progress.storiesRead ?? [];
+  useBackButton(() => setList(false), list);
   if (!STORIES.length) return null;
 
   return (

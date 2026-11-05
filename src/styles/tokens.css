@@ -82,8 +82,9 @@
   --ios-bg: #f2f2f7;
   --ios-cell: #ffffff;
   --ios-label: #000000;
-  --ios-secondary: rgba(60, 60, 67, 0.6);
-  --ios-tertiary: rgba(60, 60, 67, 0.3);
+  /* A little darker than iOS (0.6 / 0.3) so small Bangla text stays readable in sunlight. */
+  --ios-secondary: rgba(60, 60, 67, 0.72);
+  --ios-tertiary: rgba(60, 60, 67, 0.5);
   --ios-fill: rgba(120, 120, 128, 0.12);
   --ios-separator: rgba(60, 60, 67, 0.29);
   --ios-blue: #007aff;
@@ -103,8 +104,8 @@
     --ios-bg: #000000;
     --ios-cell: #1c1c1e;
     --ios-label: #ffffff;
-    --ios-secondary: rgba(235, 235, 245, 0.6);
-    --ios-tertiary: rgba(235, 235, 245, 0.3);
+    --ios-secondary: rgba(235, 235, 245, 0.7);
+    --ios-tertiary: rgba(235, 235, 245, 0.46);
     --ios-fill: rgba(118, 118, 128, 0.24);
     --ios-separator: rgba(84, 84, 88, 0.65);
     --ios-blue: #0a84ff;
@@ -123,8 +124,8 @@
   --ios-bg: #000000;
   --ios-cell: #1c1c1e;
   --ios-label: #ffffff;
-  --ios-secondary: rgba(235, 235, 245, 0.6);
-  --ios-tertiary: rgba(235, 235, 245, 0.3);
+  --ios-secondary: rgba(235, 235, 245, 0.7);
+  --ios-tertiary: rgba(235, 235, 245, 0.46);
   --ios-fill: rgba(118, 118, 128, 0.24);
   --ios-separator: rgba(84, 84, 88, 0.65);
   --ios-blue: #0a84ff;

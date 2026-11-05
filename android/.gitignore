@@ -1,0 +1,8 @@
+# Built and signed apps (android/release) and Gradle's own files. The signing key lives outside the repo.
+release/
+.gradle/
+app/build/
+build/
+local.properties
+*.jks
+*.keystore

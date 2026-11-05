@@ -426,7 +426,9 @@
 
 .bdmap-intro .bdmap-tilt {
   padding: 0 4%;
-  transform: rotateX(26deg) rotateZ(-4deg) scale(0.9);
+  /* The tilt makes the map look shorter, so it's drawn a little larger to fill its space (it used to sit
+     small among the text on phones and laptops alike). */
+  transform: rotateX(26deg) rotateZ(-4deg) scale(1.08);
   transition-delay: 0.9s;
 }
 
@@ -1437,4 +1439,54 @@
 
 .ob-hint small {
   font-size: 13px;
+}
+
+/* ---------- Welcome on wide screens (tablets, laptops) ----------
+   Stacked, the map only gets the height left over after the text and buttons, so on a wide but
+   short window it ends up small next to big text. Side by side, the map gets the full height. */
+@media (min-width: 720px) and (min-aspect-ratio: 1/1) {
+  .ob-screen.ob-welcome {
+    max-width: 1040px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto auto 1fr;
+    grid-template-areas:
+      'brand brand'
+      'map .'
+      'map copy'
+      'map cta'
+      'map .';
+    column-gap: 48px;
+    row-gap: 24px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .ob-welcome .ob-brand {
+    grid-area: brand;
+    justify-content: flex-start;
+  }
+
+  .ob-screen.ob-welcome > .ob-map-slot {
+    grid-area: map;
+    margin: 0;
+    min-height: 420px;
+  }
+
+  .ob-welcome .ob-copy {
+    grid-area: copy;
+    text-align: left;
+  }
+
+  .ob-welcome .ob-copy + div {
+    grid-area: cta;
+  }
+
+  .ob-welcome .ob-title {
+    font-size: clamp(34px, 4vw, 48px);
+  }
+
+  .ob-welcome .ob-restore {
+    margin-left: 0;
+  }
 }

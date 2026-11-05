@@ -6,6 +6,7 @@ export const INSTRUCTIONS: Record<Exercise['kind'], { en: string; bn: string }> 
   translate: { en: 'Write this in English', bn: 'ইংরেজিতে সাজিয়ে লেখো' },
   listen: { en: 'Tap what you hear', bn: 'যা শুনছ তা সাজাও' },
   choice: { en: 'What does this mean?', bn: 'এর মানে কী?' },
+  hear: { en: 'Listen and choose the meaning', bn: 'শুনে মানে বাছো' },
   type: { en: 'Type this in English', bn: 'ইংরেজিতে টাইপ করো' },
   fill: { en: 'Fill in the blank', bn: 'শূন্যস্থান পূরণ করো' },
   gaps: { en: 'Fill in the gaps', bn: 'খালি জায়গাগুলো পূরণ করো' },

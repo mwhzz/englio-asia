@@ -4,6 +4,7 @@ import { findDistrict } from '../../data/districts';
 import { toBanglaDigits } from '../../lib/bangla';
 import { haptic } from '../../lib/haptics';
 import { fetchLeague, type League } from '../../lib/league';
+import { isLowData } from '../../lib/offline';
 import { useProgress } from '../../state/ProgressContext';
 import { LeaguePage } from './LeaguePage';
 
@@ -16,6 +17,7 @@ export function LeagueCard() {
 
   useEffect(() => {
     let live = true;
+    if (isLowData()) return;
     fetchLeague(districtId).then((l) => live && setLeague(l));
     return () => {
       live = false;

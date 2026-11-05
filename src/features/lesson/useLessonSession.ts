@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { grade } from '../../lib/grade';
 import { loseHeart } from '../../lib/hearts';
 import { noteMistake, noteRight, reviewKey } from '../../lib/review';
@@ -7,6 +7,7 @@ import { speak } from '../../lib/speech';
 import { track } from '../../lib/track';
 import { useProgress } from '../../state/ProgressContext';
 import type { Exercise, Grade } from '../../types';
+import { isPlus } from '../../lib/premium';
 
 export interface LessonStats {
   mistakes: number;
@@ -14,15 +15,32 @@ export interface LessonStats {
   seconds: number;
 }
 
-/** The lesson's state machine: answer → check → feedback → next exercise. */
-export function useLessonSession(exercises: Exercise[], practice: boolean, onFinish: (stats: LessonStats) => void) {
+/** Where an unfinished lesson stopped, to carry on from (see lib/lessonResume.ts). */
+export interface SessionState {
+  queue: Exercise[];
+  index: number;
+  solved: number;
+  mistakes: number;
+}
+
+/**
+ * The lesson's state machine: answer → check → feedback → next exercise. It can start from a saved
+ * `resume` state, and reports its state after each answered exercise through `onSave`.
+ */
+export function useLessonSession(
+  exercises: Exercise[],
+  practice: boolean,
+  onFinish: (stats: LessonStats) => void,
+  resume?: SessionState | null,
+  onSave?: (state: SessionState) => void,
+) {
   const { progress, update } = useProgress();
-  const [queue, setQueue] = useState(exercises);
-  const [index, setIndex] = useState(0);
+  const [queue, setQueue] = useState(resume?.queue ?? exercises);
+  const [index, setIndex] = useState(resume?.index ?? 0);
   const [answer, setAnswer] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<Grade | null>(null);
-  const [solved, setSolved] = useState(0);
-  const [mistakes, setMistakes] = useState(0);
+  const [solved, setSolved] = useState(resume?.solved ?? 0);
+  const [mistakes, setMistakes] = useState(resume?.mistakes ?? 0);
   /** Right answers in a row. */
   const [combo, setCombo] = useState(0);
   const [startedAt] = useState(() => Date.now());
@@ -44,7 +62,8 @@ export function useLessonSession(exercises: Exercise[], practice: boolean, onFin
       setCombo(0);
       // Missed exercises come back at the end, like flash cards.
       setQueue((q) => [...q, { ...exercise, id: `${exercise.id}r` }]);
-      if (!practice) update((p) => loseHeart(p, Date.now()));
+      // Englio Plus learners have unlimited hearts.
+      if (!practice && !isPlus()) update((p) => loseHeart(p, Date.now()));
     } else {
       playSound('correct');
       setSolved((s) => s + 1);
@@ -56,6 +75,11 @@ export function useLessonSession(exercises: Exercise[], practice: boolean, onFin
       setTimeout(() => speak(result.solution), 350);
     }
   }
+
+  // After each move on, so a lesson cut off halfway can carry on from here.
+  useEffect(() => {
+    if (solved + mistakes > 0) onSave?.({ queue, index, solved, mistakes });
+  }, [index]);
 
   function next() {
     if (!practice && progress.hearts <= 0) {

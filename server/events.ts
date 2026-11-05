@@ -2,7 +2,7 @@ import type { DatabaseSync } from 'node:sqlite';
 import { transaction } from './db.ts';
 import { HttpError } from './http.ts';
 
-const NAMES = new Set(['lesson_start', 'lesson_done', 'mistake', 'story_done', 'course_done']);
+const NAMES = new Set(['lesson_start', 'lesson_done', 'mistake', 'story_done', 'course_done', 'reminder_ask']);
 const MAX_EVENTS = 200;
 
 const today = (now: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dhaka' }).format(now);

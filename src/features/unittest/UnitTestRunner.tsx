@@ -8,9 +8,11 @@ import { applyTest, buildUnitTest, PASS_SCORE, TEST_SIZE, TEST_XP, testScore } f
 import { useProgress } from '../../state/ProgressContext';
 import { LessonView } from '../lesson/LessonView';
 import { CertificateView } from './CertificateView';
+import { useBackButton } from '../../lib/backButton';
 
 /** A unit's final test: an intro, fifteen questions (no hearts lost), then the score and, on a pass, the certificate. */
 export function UnitTestRunner({ unitId, onExit }: { unitId: string; onExit: () => void }) {
+  useBackButton(onExit);
   const { update } = useProgress();
   const unitIndex = COURSE.findIndex((u) => u.id === unitId);
   const unit = COURSE[unitIndex];
@@ -28,6 +30,7 @@ export function UnitTestRunner({ unitId, onExit }: { unitId: string; onExit: () 
         exercises={exercises}
         practice
         accent={unit.color}
+        where={`unit-test:${unitId}`}
         onQuit={onExit}
         onPractice={onExit}
         onFinish={(stats) => {

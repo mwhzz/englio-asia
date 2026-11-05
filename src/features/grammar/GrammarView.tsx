@@ -5,6 +5,7 @@ import { COURSES, lessonsOf } from '../../data/grammarCourses';
 import { toBanglaDigits } from '../../lib/bangla';
 import { useProgress } from '../../state/ProgressContext';
 import type { GrammarLevel, GrammarTopic } from '../../types';
+import { BoardCard } from '../board/BoardCard';
 import { searchTopics } from './searchTopics';
 import { TopicPage } from './TopicPage';
 
@@ -59,6 +60,8 @@ export default function GrammarView() {
         <h1 lang="bn">ব্যাকরণ</h1>
         <small>Grammar</small>
       </header>
+
+      <BoardCard />
 
       <label className="gr-search">
         <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">

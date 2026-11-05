@@ -5,9 +5,11 @@ import { MixedText } from '../../components/MixedText';
 import { SpeakButton } from '../../components/SpeakButton';
 import { toBanglaDigits } from '../../lib/bangla';
 import type { Unit } from '../../types';
+import { useBackButton } from '../../lib/backButton';
 
 /** A unit's grammar tips, full screen like a grammar topic: Bangla explanations with spoken English examples. */
 export function Guidebook({ unit, onClose }: { unit: Unit; onClose: () => void }) {
+  useBackButton(onClose);
   return createPortal(
     <div className="gt" role="dialog" aria-label={`${unit.title} guidebook`} style={{ '--u': unit.color } as CSSProperties}>
       <header className="lp-bar">

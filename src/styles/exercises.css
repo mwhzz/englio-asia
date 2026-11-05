@@ -866,3 +866,191 @@
   border-radius: 22px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
+
+/* ---------- "সমস্যা জানাও" ---------- */
+
+.rp-btn {
+  flex: none;
+  padding: 6px 4px;
+  border: none;
+  background: none;
+  color: var(--ios-secondary);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.rp-sent {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.rp {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rp h2 {
+  margin: 0;
+}
+
+.rp-q {
+  margin: 0;
+  font-size: 14px;
+}
+
+.rp-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rp-reason {
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rp-reason.is-on {
+  box-shadow: inset 0 0 0 2px var(--ios-blue);
+  font-weight: 600;
+}
+
+.rp-note {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  font: inherit;
+  font-size: 15px;
+  resize: none;
+}
+
+.qz-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qz-actions .cta {
+  flex: 1;
+}
+
+/* What the learner said, word by word (SpokenWords). */
+.said {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.said-words {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 6px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.said-words .is-ok {
+  color: var(--ios-green);
+}
+
+.said-words .is-miss {
+  color: var(--ios-red);
+  text-decoration: underline wavy;
+  text-underline-offset: 5px;
+}
+
+.said-score {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.said-score.is-good {
+  color: var(--ios-green);
+  font-weight: 600;
+}
+
+/* Listening only (HearExercise): the speakers, and the sentence once answered. */
+.hear-card {
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.hear-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hear-text {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.hear-text span {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ios-secondary);
+}
+
+/* Tap a word for its meaning (TapText). */
+.tap-word {
+  cursor: pointer;
+  border-radius: 4px;
+  text-decoration: underline dotted color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 4px;
+}
+
+.tap-word:active {
+  background: color-mix(in srgb, var(--ios-blue) 18%, transparent);
+}
+
+.tap-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.tap-sheet-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 28px;
+}
+
+.tap-sheet p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.tap-sheet small {
+  font-size: 14px;
+  color: var(--ios-secondary);
+}
+
+.tap-sheet .tap-unknown {
+  font-size: 15px;
+  color: var(--ios-secondary);
+}

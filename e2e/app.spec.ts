@@ -16,7 +16,7 @@ test('home shows the next lesson, stories and league, and every tab opens', asyn
   await expect(page.locator('.trail-doodle').first()).toBeAttached();
 
   await openTab(page, 2);
-  await expect(page.locator('.lt-grid')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'শোনা ও বলা' })).toBeVisible();
   await openTab(page, 3);
   await expect(page.getByText('Parts of Speech').first()).toBeVisible();
   await openTab(page, 4);
@@ -57,4 +57,38 @@ test('the app loads nothing from other sites (works offline once installed)', as
   await signIn(page);
   await page.waitForLoadState('networkidle');
   expect(outside).toEqual([]);
+});
+
+test('the listening tab runs a round that hides the sentence until answered', async ({ page }) => {
+  await signIn(page);
+  await openTab(page, 2);
+  await page.getByText('শোনার অনুশীলন').click();
+  await expect(page.getByText('শুনে মানে বাছো')).toBeVisible();
+  await expect(page.locator('.hear-text')).toContainText('মন দিয়ে শোনো');
+  await page.locator('.lesson-stage .row').first().click();
+  await page.locator('.lesson-foot .cta').click();
+  await expect(page.locator('.hear-text')).not.toContainText('মন দিয়ে শোনো');
+});
+
+test('Back closes a page instead of leaving the app, and asks before quitting a lesson', async ({ page }) => {
+  await signIn(page);
+  await page.locator('.sc').click();
+  await expect(page.locator('.gt')).toBeVisible();
+  await page.goBack();
+  await expect(page.locator('.gt')).toHaveCount(0);
+  await expect(page.locator('.home-greeting')).toBeVisible();
+
+  // Closed with its own button, then Back: the learner is still in the app (on another tab, Back goes home).
+  await page.locator('.sc').click();
+  await page.locator('.gt .lp-back').click();
+  await openTab(page, 3);
+  await page.goBack();
+  await expect(page.locator('.home-greeting')).toBeVisible();
+
+  await page.locator('.upnext').click();
+  await page.locator('.lesson-stage .row').first().click();
+  await page.locator('.lesson-foot .cta').click();
+  await page.goBack();
+  await expect(page.locator('.sheet')).toBeVisible();
+  await expect(page.locator('.lesson-body')).toBeVisible();
 });

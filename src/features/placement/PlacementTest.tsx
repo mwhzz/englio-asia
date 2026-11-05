@@ -9,12 +9,14 @@ import { playSound } from '../../lib/sounds';
 import { useProgress } from '../../state/ProgressContext';
 import { ExerciseView } from '../exercises/ExerciseView';
 import { INSTRUCTIONS } from '../exercises/instructions';
+import { useBackButton } from '../../lib/backButton';
 
 /**
  * The level test: two questions per unit, easiest first, stopping at the first unit with a mistake.
  * It doesn't say right or wrong as it goes (it's a test, not a lesson), then suggests where to start.
  */
 export function PlacementTest({ onDone }: { onDone: () => void }) {
+  useBackButton(onDone);
   const { update } = useProgress();
   const [rounds] = useState(() => buildPlacement(COURSE));
   const [phase, setPhase] = useState<'intro' | 'ask' | 'result'>('intro');

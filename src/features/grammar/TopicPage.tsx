@@ -10,6 +10,8 @@ import { useProgress } from '../../state/ProgressContext';
 import type { GrammarTopic } from '../../types';
 import { CoursePage } from './course/CoursePage';
 import { TopicQuiz } from './TopicQuiz';
+import { useBackButton } from '../../lib/backButton';
+import { TapText } from '../../components/TapText';
 
 interface Props {
   topic: GrammarTopic;
@@ -24,6 +26,7 @@ interface Props {
 
 /** One grammar topic, full screen: explanation, patterns, table, examples, common mistakes and a quiz. */
 export function TopicPage({ topic, next, learned, saved, onLearned, onSaved, onGo, onClose }: Props) {
+  useBackButton(onClose);
   const level = levelOf(topic.level);
   const { progress } = useProgress();
   const course = COURSES[topic.id];
@@ -145,7 +148,9 @@ export function TopicPage({ topic, next, learned, saved, onLearned, onSaved, onG
               <li key={e.en}>
                 <SpeakButton text={e.en.split(' → ').pop()!} />
                 <span>
-                  <strong>{e.en}</strong>
+                  <strong>
+                    <TapText text={e.en} />
+                  </strong>
                   <small lang="bn">
                     <MixedText text={e.bn} />
                   </small>
@@ -180,7 +185,7 @@ export function TopicPage({ topic, next, learned, saved, onLearned, onSaved, onG
 
         <section className="gt-card">
           <h2 lang="bn">যাচাই করো</h2>
-          <TopicQuiz key={topic.id} quiz={topic.quiz} onPassed={() => onLearned(true)} />
+          <TopicQuiz key={topic.id} quiz={topic.quiz} title={topic.title} where={`topic:${topic.id}`} color={level.color} onPassed={() => onLearned(true)} />
         </section>
 
         <div className="gt-foot">

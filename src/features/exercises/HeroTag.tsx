@@ -8,6 +8,7 @@ const LABELS: Record<Exercise['kind'], string> = {
   translate: 'অনুবাদ',
   listen: 'শোনো',
   choice: 'মানে বোঝো',
+  hear: 'শুনে বোঝো',
   type: 'লেখো',
   fill: 'শব্দ বসাও',
   gaps: 'শূন্যস্থান',

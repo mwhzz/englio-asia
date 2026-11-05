@@ -1,4 +1,6 @@
+import type { BoardTopic } from '../data/board/types';
 import type { GrammarCourse } from '../data/grammarCourses/types';
+import type { WritingTask } from '../data/writing/types';
 import type { GrammarTopic, Story, Unit } from '../types';
 import { API_BASE } from './api';
 
@@ -13,6 +15,10 @@ export interface Content {
   /** Step-by-step grammar courses by topic id, and the short stories (missing from older servers). */
   courses?: Record<string, GrammarCourse>;
   stories?: Story[];
+  /** SSC/HSC board practice topics. */
+  board?: BoardTopic[];
+  /** Writing practice tasks. */
+  writing?: WritingTask[];
 }
 
 interface Cached extends Content {
@@ -70,6 +76,19 @@ interface CourseLessonLike {
   kinds?: unknown;
 }
 
+/** Board topics with their questions. */
+export function isBoard(topics: unknown): topics is BoardTopic[] {
+  return Array.isArray(topics) && topics.every((t) => typeof t?.id === 'string' && Array.isArray(t.exam) && Array.isArray(t.questions) && t.questions.length > 0);
+}
+
+/** Writing tasks with a task and a model answer. */
+export function isWriting(tasks: unknown): tasks is WritingTask[] {
+  return (
+    Array.isArray(tasks) &&
+    tasks.every((t) => typeof t?.id === 'string' && typeof t.prompt === 'string' && typeof t.model === 'string' && Array.isArray(t.hints) && Array.isArray(t.phrases))
+  );
+}
+
 /** Stories with their lines and questions. */
 export function isStories(stories: unknown): stories is Story[] {
   return Array.isArray(stories) && stories.every((s) => typeof s?.id === 'string' && Array.isArray(s.lines) && s.lines.length > 0 && Array.isArray(s.quiz));
@@ -107,6 +126,8 @@ export async function loadCourse(): Promise<Content | null> {
       if (!isGrammar(body.grammar)) delete body.grammar;
       if (!isCourses(body.courses)) delete body.courses;
       if (!isStories(body.stories)) delete body.stories;
+      if (!isBoard(body.board)) delete body.board;
+      if (!isWriting(body.writing)) delete body.writing;
       writeCache(body);
       return body;
     })

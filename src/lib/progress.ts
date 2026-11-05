@@ -39,6 +39,11 @@ export interface Progress {
   storiesRead: string[];
   /** Daily reminder: on or off, and the local hour (0–23) to send it if the learner hasn't practised yet. */
   reminder: { on: boolean; hour: number };
+  /** Best score (0–100) in each SSC/HSC board practice topic, by topic id. */
+  boardScores: Record<string, number>;
+  /** When this copy last changed, and when the learner last reset it (ms); used to merge two phones' copies. */
+  savedAt: number;
+  resetAt: number;
 }
 
 export const MAX_HEARTS = 5;
@@ -67,6 +72,9 @@ export const DEFAULT_PROGRESS: Progress = {
   streakFreezes: 0,
   storiesRead: [],
   reminder: { on: false, hour: 20 },
+  boardScores: {},
+  savedAt: 0,
+  resetAt: 0,
 };
 
 /** Records a finished lesson (or a practice session when `lessonId` is null). */

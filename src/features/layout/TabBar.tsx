@@ -1,11 +1,11 @@
 import { Glyph, type GlyphName } from '../../components/Glyph';
 import { haptic } from '../../lib/haptics';
 
-export type Tab = 'learn' | 'letters' | 'grammar' | 'profile';
+export type Tab = 'learn' | 'speak' | 'grammar' | 'profile';
 
 const TABS: { id: Tab; icon: GlyphName; bn: string }[] = [
   { id: 'learn', icon: 'home', bn: 'শেখো' },
-  { id: 'letters', icon: 'letters', bn: 'অক্ষর' },
+  { id: 'speak', icon: 'mic', bn: 'শোনা-বলা' },
   { id: 'grammar', icon: 'book', bn: 'ব্যাকরণ' },
   { id: 'profile', icon: 'person', bn: 'প্রোফাইল' },
 ];

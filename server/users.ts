@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite';
+import { mergeProgress } from '../src/lib/mergeProgress.ts';
 import type { Progress } from '../src/lib/progress.ts';
 import { fairTotalXp, fairXpByDay } from './fairPlay.ts';
 import { HttpError } from './http.ts';
@@ -10,13 +11,17 @@ export function checkUserId(id: string): string {
   return id;
 }
 
-/** Saves the progress an app sends, copying the fields the admin lists and sorts by. */
-export function saveProgress(db: DatabaseSync, id: string, progress: unknown, now = new Date()): void {
+/**
+ * Saves the progress an app sends, merged with the copy already here (another phone may have added to
+ * it; see lib/mergeProgress.ts), and returns the merged copy for the app to take. Also copies the fields
+ * the admin lists and sorts by.
+ */
+export function saveProgress(db: DatabaseSync, id: string, progress: unknown, now = new Date()): unknown {
   if (!progress || typeof progress !== 'object') throw new HttpError(400, '"progress" must be an object');
-  const p = progress as Partial<Progress>;
-  // The learner's own progress is kept exactly as sent; the XP column others see (admin rankings)
-  // only counts what a real learner could have earned (see fairPlay.ts).
-  const previous = db.prepare('SELECT xp FROM users WHERE id = ?').get(id) as { xp: number } | undefined;
+  const stored = db.prepare('SELECT xp, progress FROM users WHERE id = ?').get(id) as { xp: number; progress: string } | undefined;
+  const p = (stored ? mergeProgress(JSON.parse(stored.progress), progress as Progress) : progress) as Partial<Progress>;
+  // The XP column others see (admin rankings) only counts what a real learner could have earned (see fairPlay.ts).
+  const previous = stored;
   const fairXp = fairTotalXp(p.xp, fairXpByDay(p.xpByDay, now), previous?.xp ?? 0);
   const num = (x: unknown) => (typeof x === 'number' && Number.isFinite(x) ? Math.max(0, Math.round(x)) : 0);
   db.prepare(
@@ -36,8 +41,9 @@ export function saveProgress(db: DatabaseSync, id: string, progress: unknown, no
     Object.keys(p.completed ?? {}).length,
     p.profile?.joinedAt ?? null,
     now.toISOString(),
-    JSON.stringify(progress),
+    JSON.stringify(p),
   );
+  return p;
 }
 
 export function loadProgress(db: DatabaseSync, id: string): unknown {

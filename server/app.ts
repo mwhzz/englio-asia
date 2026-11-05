@@ -5,12 +5,20 @@ import * as courses from './adminCourses.ts';
 import * as grammar from './adminGrammar.ts';
 import * as stories from './adminStories.ts';
 import * as people from './adminUsers.ts';
-import { readCourse, readCourses, readGrammar, readStories } from './course.ts';
+import * as board from './adminBoard.ts';
+import * as writing from './adminWriting.ts';
+import { coverage } from './coverage.ts';
+import { readBoard, readCourse, readCourses, readGrammar, readStories, readWriting } from './course.ts';
 import { contentVersion } from './db.ts';
-import { FileReply, HttpError, matchPath, readBody, readJson, send, type Route } from './http.ts';
+import { FileReply, HttpError, matchPath, readBody, readJson, Redirect, send, type Route } from './http.ts';
 import { clientIp, MINUTE, RateLimit } from './rateLimit.ts';
+import { clearError, listErrors, recordError } from './errors.ts';
+import { addReport, closeReports, listReports } from './reports.ts';
 import { analytics, recordEvents } from './events.ts';
-import { leaderboard } from './leaderboard.ts';
+import { accountsOf, signInGoogle, startPhone, verifyPhone } from './auth.ts';
+import { addFriend, friendsLeague, removeFriend } from './friends.ts';
+import { callback, checkout, premiumInfo, premiumOf } from './premium.ts';
+import { clearLeaderboardCache, leaderboard } from './leaderboard.ts';
 import { MAX_UPLOAD, readMedia, saveMedia } from './media.ts';
 import { deletePush, savePush } from './reminders.ts';
 import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
@@ -26,14 +34,22 @@ function routes(db: DatabaseSync): Route[] {
     {
       method: 'GET',
       pattern: '/api/course',
-      handler: () => ({ version: contentVersion(db), units: readCourse(db), grammar: readGrammar(db), courses: readCourses(db), stories: readStories(db) }),
+      handler: () => ({
+        version: contentVersion(db),
+        units: readCourse(db),
+        grammar: readGrammar(db),
+        courses: readCourses(db),
+        stories: readStories(db),
+        board: readBoard(db),
+        writing: readWriting(db),
+      }),
     },
     {
       method: 'PUT',
       pattern: '/api/users/:id',
       handler: ({ params, body }) => {
-        saveProgress(db, checkUserId(params.id), (body as { progress?: unknown } | null)?.progress);
-        return { ok: true };
+        // The answer is the merged progress, which the app takes (another phone may have added to it).
+        return { ok: true, progress: saveProgress(db, checkUserId(params.id), (body as { progress?: unknown } | null)?.progress) };
       },
     },
     { method: 'GET', pattern: '/api/users/:id', handler: ({ params }) => ({ progress: loadProgress(db, checkUserId(params.id)) }) },
@@ -46,9 +62,26 @@ function routes(db: DatabaseSync): Route[] {
         return { ok: true };
       },
     },
+    { method: 'POST', pattern: '/api/auth/phone/start', strict: true, handler: (r) => startPhone(db, r) },
+    { method: 'POST', pattern: '/api/auth/phone/verify', strict: true, handler: (r) => verifyPhone(db, r) },
+    { method: 'POST', pattern: '/api/auth/google', strict: true, handler: (r) => signInGoogle(db, r) },
+    { method: 'GET', pattern: '/api/users/:id/accounts', handler: (r) => accountsOf(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
+    { method: 'GET', pattern: '/api/premium/info', handler: () => premiumInfo() },
+    { method: 'GET', pattern: '/api/premium/callback', handler: (r) => callback(db, r) },
+    { method: 'GET', pattern: '/api/users/:id/premium', handler: ({ params }) => premiumOf(db, checkUserId(params.id)) },
+    { method: 'POST', pattern: '/api/users/:id/premium/checkout', strict: true, handler: (r) => checkout(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
+    { method: 'GET', pattern: '/api/users/:id/friends', handler: (r) => friendsLeague(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
+    { method: 'POST', pattern: '/api/users/:id/friends', strict: true, handler: (r) => addFriend(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
+    { method: 'DELETE', pattern: '/api/users/:id/friends/:code', handler: (r) => removeFriend(db, { ...r, params: { ...r.params, id: checkUserId(r.params.id) } }) },
     { method: 'POST', pattern: '/api/users/:id/code', handler: ({ params }) => ({ code: backupCode(db, checkUserId(params.id)) }) },
     { method: 'POST', pattern: '/api/restore', strict: true, handler: ({ body }) => restore(db, body) },
     { method: 'POST', pattern: '/api/delete-by-code', strict: true, handler: ({ body }) => deleteByCode(db, body) },
+    { method: 'POST', pattern: '/api/errors', handler: (r) => recordError(db, r) },
+    { method: 'POST', pattern: '/api/reports', handler: (r) => addReport(db, r) },
+    { method: 'GET', pattern: '/api/admin/reports', admin: true, handler: () => listReports(db) },
+    { method: 'POST', pattern: '/api/admin/reports/close', admin: true, handler: (r) => closeReports(db, r) },
+    { method: 'GET', pattern: '/api/admin/errors', admin: true, handler: () => listErrors(db) },
+    { method: 'DELETE', pattern: '/api/admin/errors/:id', admin: true, handler: (r) => clearError(db, r) },
     { method: 'GET', pattern: '/api/media/:file', handler: (r) => readMedia(r) },
     { method: 'POST', pattern: '/api/events', handler: ({ body }) => recordEvents(db, body) },
     {
@@ -106,6 +139,19 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'GET', pattern: '/api/admin/courses/:id', admin: true, handler: (r) => courses.getCourse(db, r) },
     { method: 'PUT', pattern: '/api/admin/courses/:id', admin: true, handler: (r) => courses.saveCourse(db, r) },
     { method: 'DELETE', pattern: '/api/admin/courses/:id', admin: true, handler: (r) => courses.deleteCourse(db, r) },
+    { method: 'GET', pattern: '/api/admin/board', admin: true, handler: () => board.listBoard(db) },
+    { method: 'POST', pattern: '/api/admin/board', admin: true, handler: (r) => board.createBoard(db, r) },
+    { method: 'GET', pattern: '/api/admin/board/:id', admin: true, handler: (r) => board.getBoard(db, r) },
+    { method: 'PUT', pattern: '/api/admin/board/:id', admin: true, handler: (r) => board.updateBoard(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/board/:id', admin: true, handler: (r) => board.deleteBoard(db, r) },
+    { method: 'POST', pattern: '/api/admin/board/:id/move', admin: true, handler: (r) => board.moveBoard(db, r) },
+    { method: 'GET', pattern: '/api/admin/coverage', admin: true, handler: () => coverage(db) },
+    { method: 'GET', pattern: '/api/admin/writing', admin: true, handler: () => writing.listWriting(db) },
+    { method: 'POST', pattern: '/api/admin/writing', admin: true, handler: (r) => writing.createWriting(db, r) },
+    { method: 'GET', pattern: '/api/admin/writing/:id', admin: true, handler: (r) => writing.getWriting(db, r) },
+    { method: 'PUT', pattern: '/api/admin/writing/:id', admin: true, handler: (r) => writing.updateWriting(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/writing/:id', admin: true, handler: (r) => writing.deleteWriting(db, r) },
+    { method: 'POST', pattern: '/api/admin/writing/:id/move', admin: true, handler: (r) => writing.moveWriting(db, r) },
     { method: 'GET', pattern: '/api/admin/stories', admin: true, handler: () => stories.listStories(db) },
     { method: 'POST', pattern: '/api/admin/stories', admin: true, handler: (r) => stories.createStory(db, r) },
     { method: 'GET', pattern: '/api/admin/stories/:id', admin: true, handler: (r) => stories.getStory(db, r) },
@@ -159,8 +205,14 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
       // Every admin change is written down (who, what, and whether it worked).
       const log = (status: number) => admin && req.method !== 'GET' && team.logChange(db, admin, req.method!, url.pathname, status);
       try {
-        const result = route.handler({ method: req.method!, path: url.pathname, query: url.searchParams, params, headers: req.headers, body, admin: admin ?? undefined });
+        const result = await route.handler({ method: req.method!, path: url.pathname, query: url.searchParams, params, headers: req.headers, body, admin: admin ?? undefined });
         log(200);
+        // A learner was removed: the league shouldn't show them for its next 5 minutes.
+        if ((req.method === 'DELETE' && /\/users\/[^/]+$/.test(url.pathname)) || url.pathname === '/api/delete-by-code') clearLeaderboardCache();
+        if (result instanceof Redirect) {
+          res.writeHead(302, { location: result.location });
+          return res.end();
+        }
         if (result instanceof FileReply) {
           res.writeHead(200, { 'content-type': result.type, 'cache-control': 'public, max-age=31536000, immutable', 'access-control-allow-origin': '*' });
           return res.end(result.data);

@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Logo } from '../components/Logo';
 import { ActivityPage } from './ActivityPage';
+import { BoardAdmin } from './BoardAdmin';
+import { BoardEditor } from './BoardEditor';
+import { ErrorsPage } from './ErrorsPage';
+import { ReportsPage } from './ReportsPage';
 import { adminApi, clearToken, getToken } from './adminApi';
 import { ContentPage } from './ContentPage';
 import { CourseEditor } from './CourseEditor';
@@ -22,6 +26,9 @@ const NAV = [
   ['content', 'Lessons', false],
   ['grammar', 'Grammar', false],
   ['stories', 'Stories', false],
+  ['board', 'Board prep', false],
+  ['reports', 'Reports', false],
+  ['errors', 'Errors', false],
   ['users', 'Learners', true],
   ['team', 'Team', true],
   ['activity', 'Activity', true],
@@ -44,7 +51,7 @@ export function AdminApp() {
 
   if (!signedIn) return <Login onDone={() => setSignedIn(true)} />;
 
-  const section = page === 'lesson' ? 'content' : page === 'user' ? 'users' : page === 'topic' || page === 'course' ? 'grammar' : page === 'story' ? 'stories' : page;
+  const section = page === 'lesson' ? 'content' : page === 'user' ? 'users' : page === 'topic' || page === 'course' ? 'grammar' : page === 'story' ? 'stories' : page === 'board-topic' ? 'board' : page;
   return (
     <div className="ad-shell">
       <nav className="ad-nav">
@@ -84,6 +91,14 @@ export function AdminApp() {
           <StoriesAdmin onUnauthorized={signOut} />
         ) : page === 'story' ? (
           <StoryEditor key={id} id={id} onUnauthorized={signOut} />
+        ) : page === 'board' ? (
+          <BoardAdmin onUnauthorized={signOut} />
+        ) : page === 'board-topic' ? (
+          <BoardEditor key={id} id={id} onUnauthorized={signOut} />
+        ) : page === 'reports' ? (
+          <ReportsPage onUnauthorized={signOut} />
+        ) : page === 'errors' ? (
+          <ErrorsPage onUnauthorized={signOut} />
         ) : page === 'team' ? (
           <TeamPage onUnauthorized={signOut} />
         ) : page === 'activity' ? (

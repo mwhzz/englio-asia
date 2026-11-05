@@ -133,11 +133,16 @@ export interface Tip {
   examples: string[];
 }
 
+/** Who a unit is for (the stages of data/classLevels.ts). */
+export type Level = 'primary' | 'secondary' | 'higher' | 'university' | 'other';
+
 export interface Unit {
   id: string;
   title: string;
   titleBn: string;
   color: string;
+  /** The levels that see this unit on their path; missing or empty means everyone. */
+  levels?: Level[];
   tips: Tip[];
   lessons: Lesson[];
 }
@@ -148,6 +153,8 @@ export type ExerciseBody =
   | { kind: 'translate'; sentence: Sentence; tiles: string[] }
   | { kind: 'listen'; sentence: Sentence; tiles: string[] }
   | { kind: 'choice'; sentence: Sentence; options: string[] }
+  /** Listening only: hear the sentence (no text) and pick its Bangla meaning. */
+  | { kind: 'hear'; sentence: Sentence; options: string[] }
   | { kind: 'type'; sentence: Sentence }
   | { kind: 'fill'; fill: Fill }
   | { kind: 'gaps'; gaps: Gaps; bank: string[] }

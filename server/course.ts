@@ -1,6 +1,8 @@
 import type { DatabaseSync } from 'node:sqlite';
+import type { BoardTopic } from '../src/data/board/types.ts';
 import type { GrammarCourse } from '../src/data/grammarCourses/types.ts';
-import type { GrammarTopic, Lesson, Story, Unit } from '../src/types.ts';
+import type { WritingTask } from '../src/data/writing/types.ts';
+import type { GrammarTopic, Lesson, Level, Story, Unit } from '../src/types.ts';
 
 interface UnitRow {
   id: string;
@@ -8,6 +10,7 @@ interface UnitRow {
   title_bn: string;
   color: string;
   tips: string;
+  levels: string;
 }
 interface LessonRow {
   id: string;
@@ -31,6 +34,12 @@ const FIELD = {
   dialog: 'dialogs',
 } as const;
 
+/** A unit's levels, left out when it's for everyone (as in the built-in course). */
+function levelsOf(json: string): Pick<Unit, 'levels'> {
+  const levels = JSON.parse(json || '[]') as Level[];
+  return levels.length ? { levels } : {};
+}
+
 /** The whole course from the database, in the same shape as the app's built-in course. */
 export function readCourse(db: DatabaseSync): Unit[] {
   const units = db.prepare('SELECT * FROM units ORDER BY position').all() as unknown as UnitRow[];
@@ -52,6 +61,7 @@ export function readCourse(db: DatabaseSync): Unit[] {
     title: u.title,
     titleBn: u.title_bn,
     color: u.color,
+    ...levelsOf(u.levels),
     tips: JSON.parse(u.tips),
     lessons: lessons.filter((l) => l.unit_id === u.id).map((l) => byLesson.get(l.id)!),
   }));
@@ -72,5 +82,17 @@ export function readCourses(db: DatabaseSync): Record<string, GrammarCourse> {
 /** Every story, in order. */
 export function readStories(db: DatabaseSync): Story[] {
   const rows = db.prepare('SELECT data FROM stories ORDER BY position, id').all() as unknown as { data: string }[];
+  return rows.map((r) => JSON.parse(r.data));
+}
+
+/** Every SSC/HSC board practice topic, in order. */
+export function readBoard(db: DatabaseSync): BoardTopic[] {
+  const rows = db.prepare('SELECT data FROM board_topics ORDER BY position, id').all() as unknown as { data: string }[];
+  return rows.map((r) => JSON.parse(r.data));
+}
+
+/** Every writing task, in order. */
+export function readWriting(db: DatabaseSync): WritingTask[] {
+  const rows = db.prepare('SELECT data FROM writing_tasks ORDER BY position, id').all() as unknown as { data: string }[];
   return rows.map((r) => JSON.parse(r.data));
 }

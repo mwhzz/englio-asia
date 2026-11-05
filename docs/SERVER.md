@@ -55,7 +55,29 @@ npx web-push generate-vapid-keys          # gives a public and a private key
 
 It only notifies learners at their chosen hour (in their own time zone) on days they haven't earned XP yet, and it forgets subscriptions the phone has turned off.
 
-## 5. Things to know
+## 5. Sign-in with a phone number or Google
+
+The app's Settings → অ্যাকাউন্ট links a phone number (a 6-digit code by SMS) or Google account to a learner's progress.
+
+- **SMS**: set `SMS_API_URL` to your Bangladeshi SMS gateway's send URL, with `{to}` and `{text}` where the number and message go, e.g. `https://gateway.example/api/send?api_key=KEY&to={to}&msg={text}`. Without it the code is only printed in the server log (fine for development). Each code is valid for 10 minutes and 5 tries, and requests are rate-limited.
+- **Never set `OTP_DEV_ECHO=1` on a real server**: it returns the code in the response, and is only for the automated tests.
+- **Google**: create an OAuth "Web application" client in Google Cloud Console (authorized JavaScript origin: your app's address), then set `GOOGLE_CLIENT_ID` on the server and `VITE_GOOGLE_CLIENT_ID` (the same value) when building the app. The button only appears once it's set.
+
+## 6. Englio Plus (bKash)
+
+Plus gives unlimited hearts. It's off (and hidden in the app) until all of these are set:
+
+```
+BKASH_BASE_URL=https://tokenized.pay.bka.sh/v1.2.0-beta      # sandbox: https://tokenized.sandbox.bka.sh/v1.2.0-beta
+BKASH_APP_KEY=…  BKASH_APP_SECRET=…  BKASH_USERNAME=…  BKASH_PASSWORD=…   # from your bKash merchant (PGW) account
+PUBLIC_API_URL=https://api.yourdomain.com/api                # bKash sends the learner back to PUBLIC_API_URL/premium/callback
+APP_URL=https://yourdomain.com                               # …and the server then forwards them to the app
+PREMIUM_PRICE=99   PREMIUM_DAYS=30                           # optional: the plan
+```
+
+Get a merchant account with bKash's "Tokenized Checkout" (PGW). Test with their sandbox credentials first. A payment is only counted after the server confirms it with bKash ("execute"), and paying again adds days on top. Payments are in the `payments` table, and who has Plus until when is in `premium`.
+
+## 7. Things to know
 
 - **District league** (`GET /api/leaderboard`): the week's totals are counted once and reused for 5 minutes, so heavy traffic is cheap.
 - **Analytics** (`POST /api/events`): anonymous daily counts only (no device id). The admin dashboard shows the last 30 days.

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { regenHearts } from '../lib/hearts';
 import { DEFAULT_PROGRESS, type Progress } from '../lib/progress';
 import { setSoundEnabled } from '../lib/sounds';
@@ -42,9 +42,11 @@ export function ProgressProvider({ children, memoryOnly = false }: { children: R
     return () => clearInterval(timer);
   }, []);
 
-  useProgressSync(progress, !memoryOnly);
+  // Every change is stamped, so two phones' copies can be merged by which changed last.
+  const update = useCallback((fn: (p: Progress) => Progress) => setProgress((p) => ({ ...fn(p), savedAt: Date.now() })), []);
+  useProgressSync(progress, !memoryOnly, setProgress);
 
-  return <ProgressCtx.Provider value={{ progress, update: setProgress }}>{children}</ProgressCtx.Provider>;
+  return <ProgressCtx.Provider value={{ progress, update }}>{children}</ProgressCtx.Provider>;
 }
 
 export function useProgress(): ProgressApi {

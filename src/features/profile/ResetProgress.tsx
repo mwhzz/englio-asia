@@ -16,7 +16,8 @@ export function ResetProgress({ onClose }: { onClose: () => void }) {
         <button
           className="cta cta-red"
           onClick={() => {
-            update((p) => ({ ...DEFAULT_PROGRESS, profile: p.profile, dailyGoal: p.dailyGoal, soundOn: p.soundOn }));
+            // resetAt makes this reset win when merged with an older copy on the server (lib/mergeProgress.ts).
+            update((p) => ({ ...DEFAULT_PROGRESS, profile: p.profile, dailyGoal: p.dailyGoal, soundOn: p.soundOn, reminder: p.reminder, resetAt: Date.now() }));
             onClose();
           }}
         >

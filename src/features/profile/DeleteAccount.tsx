@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Modal } from '../../components/Modal';
 import { API_BASE } from '../../lib/api';
-import { deviceId } from '../../state/useProgressSync';
+import { STORAGE_KEY } from '../../state/ProgressContext';
+import { DEVICE_KEY, deviceId } from '../../state/useProgressSync';
 
 /** Asks first, then erases everything about this learner: on the server and on this device. */
 export function DeleteAccount({ onClose }: { onClose: () => void }) {
@@ -20,7 +21,8 @@ export function DeleteAccount({ onClose }: { onClose: () => void }) {
       return setFailed(true);
     }
     try {
-      localStorage.clear();
+      // Only this learner's data: the theme, the saved course and an admin's sign-in on this browser stay.
+      for (const key of [STORAGE_KEY, DEVICE_KEY, 'englio-voice-hint-off', 'englio-lesson-resume']) localStorage.removeItem(key);
     } catch {
       // Storage blocked: nothing was saved here anyway.
     }

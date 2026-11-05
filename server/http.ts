@@ -10,6 +10,14 @@ export class FileReply {
   }
 }
 
+/** A handler's answer that sends the browser somewhere else (e.g. back to the app after paying). */
+export class Redirect {
+  location: string;
+  constructor(location: string) {
+    this.location = location;
+  }
+}
+
 /** Thrown by a handler to answer with an error status. */
 export class HttpError extends Error {
   status: number;

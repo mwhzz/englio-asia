@@ -20,6 +20,7 @@ export function grade(ex: Exercise, answer: string): Grade {
     case 'match':
       return { result: 'correct', solution: '' };
     case 'choice':
+    case 'hear':
       return verdict(answer === ex.sentence.bn, ex.sentence.bn);
     case 'fill':
       return verdict(answer === ex.fill.answer, ex.fill.text.replace('___', ex.fill.answer));

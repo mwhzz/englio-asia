@@ -1,6 +1,8 @@
 import { toBanglaDigits } from '../../lib/bangla';
 import { useProgress } from '../../state/ProgressContext';
 import { weekReport } from '../../lib/weekReport';
+import { reportText, shareReport } from '../../lib/shareReport';
+import { haptic } from '../../lib/haptics';
 
 /** This week against last week: XP, lessons, minutes and active days, each with an up or down change. */
 export function WeeklyReport() {
@@ -20,6 +22,17 @@ export function WeeklyReport() {
         <h2>
           <span lang="bn">সাপ্তাহিক রিপোর্ট</span> <small>Weekly report</small>
         </h2>
+        {now.xp > 0 && (
+          <button
+            className="wr-share"
+            onClick={() => {
+              haptic();
+              shareReport(reportText(progress.profile?.name ?? 'আমি', now, before, progress.streak));
+            }}
+          >
+            <span lang="bn">শেয়ার করো</span>
+          </button>
+        )}
       </div>
       <ul className="wr">
         {rows.map(([label, a, b]) => {

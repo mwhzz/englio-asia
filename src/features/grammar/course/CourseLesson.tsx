@@ -13,6 +13,8 @@ import { track } from '../../../lib/track';
 import { useProgress } from '../../../state/ProgressContext';
 import { makeQuestions, type CourseQuestion } from './makeQuestions';
 import { QuestionView } from './QuestionView';
+import { useBackButton } from '../../../lib/backButton';
+import { ReportButton } from '../../report/ReportButton';
 
 const LESSON_XP = 10;
 
@@ -33,6 +35,7 @@ const rightAnswer = (q: CourseQuestion, picked: string | number) => (q.kind === 
  * A missed question comes back at the end, so the lesson ends with everything answered right.
  */
 export function CourseLesson({ lesson, number, earlier, finishesTopic, onNext, onClose }: Props) {
+  useBackButton(onClose);
   const { update } = useProgress();
   const [phase, setPhase] = useState<'teach' | 'ask' | 'done'>('teach');
   const [queue, setQueue] = useState(() => makeQuestions(lesson, earlier));
@@ -133,9 +136,12 @@ export function CourseLesson({ lesson, number, earlier, finishesTopic, onNext, o
                 <MixedText text={q.why} />
                 {!right && ' প্রশ্নটা শেষে আবার আসবে।'}
               </p>
-              <button className="cta" onClick={next}>
-                <span lang="bn">পরবর্তী</span>
-              </button>
+              <div className="qz-actions">
+                <ReportButton where={`course:${lesson.id}`} question={q.kind === 'tap' ? q.words.map((w) => w.word).join(' ') : `${q.prompt} ${q.card}`.trim()} answer={String(picked)} />
+                <button className="cta" onClick={next}>
+                  <span lang="bn">পরবর্তী</span>
+                </button>
+              </div>
             </div>
           )}
         </div>

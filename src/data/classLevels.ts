@@ -1,6 +1,7 @@
 import { toBanglaDigits } from '../lib/bangla';
+import type { Level } from '../types';
 
-export type StageId = 'primary' | 'secondary' | 'higher' | 'university' | 'other';
+export type StageId = Level;
 
 export interface Stage {
   id: StageId;

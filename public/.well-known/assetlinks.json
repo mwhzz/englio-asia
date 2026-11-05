@@ -4,7 +4,9 @@
     "target": {
       "namespace": "android_app",
       "package_name": "app.englio.twa",
-      "sha256_cert_fingerprints": ["REPLACE:WITH:YOUR:PLAY:APP:SIGNING:SHA256:FINGERPRINT"]
+      "sha256_cert_fingerprints": [
+        "4D:17:E2:D1:DC:E7:91:3B:4B:00:E4:84:8D:8E:89:2E:FE:CF:06:2F:84:CB:E6:BF:49:C3:41:80:2D:FE:EF:F7"
+      ]
     }
   }
 ]

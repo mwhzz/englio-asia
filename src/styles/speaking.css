@@ -1,0 +1,154 @@
+/* ---------- The শোনা ও বলা tab ---------- */
+
+.sl {
+  min-height: 100dvh;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(18px + env(safe-area-inset-top)) 16px calc(116px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sl-parts {
+  align-self: stretch;
+}
+
+.sl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sl-card:disabled {
+  opacity: 0.5;
+}
+
+.sl-tip {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sl-tip.is-warn {
+  background: color-mix(in srgb, var(--ios-orange) 12%, transparent);
+  color: var(--ios-label);
+}
+
+.sl .pf-list-title {
+  margin: 8px 0 0;
+}
+
+/* ---------- Conversation (the app says their lines, the learner says theirs) ---------- */
+
+.cv-page {
+  z-index: 46;
+}
+
+.cv-body {
+  gap: 12px;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom));
+}
+
+.cv-line {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 86%;
+  animation: hero-in 0.35s var(--ease) both;
+}
+
+.cv-line.is-you {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.cv-who {
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--ios-secondary);
+}
+
+.cv-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 18px 18px 18px 6px;
+  background: var(--ios-cell);
+}
+
+.cv-line.is-you .cv-bubble {
+  border-radius: 18px 18px 6px 18px;
+  background: color-mix(in srgb, var(--u) 12%, var(--ios-cell));
+}
+
+.cv-en {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.cv-bubble small {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.cv-bubble .said {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.cv-bubble .said-words {
+  justify-content: flex-start;
+  font-size: 15px;
+}
+
+.cv-turn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.cv-turn .mic {
+  margin: 10px 0;
+}
+
+.cv-turn .cta {
+  align-self: stretch;
+  --c: var(--u);
+}
+
+.cv-note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ios-secondary);
+  text-align: center;
+}
+
+.cv-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.cv-done h2,
+.cv-done p {
+  margin: 0;
+}
+
+.cv-done .cta {
+  align-self: stretch;
+  --c: var(--u);
+}

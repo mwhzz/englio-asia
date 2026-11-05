@@ -398,3 +398,80 @@
 .home-section-title [lang='bn'] {
   font-weight: 600;
 }
+
+/* Progress couldn't reach the server (offline): a quiet line, not an alarm. */
+.sync-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Streak about to break (StreakNudge). */
+.sn {
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ios-orange) 45%, transparent);
+  background: color-mix(in srgb, var(--ios-orange) 8%, var(--ios-cell));
+}
+
+.sn-icon,
+.sn-go {
+  background: var(--ios-orange);
+}
+
+/* What XP, streaks, hearts and review are (HowItWorks, first days only). */
+.hw {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--ios-cell);
+}
+
+.hw-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 17px;
+}
+
+.hw-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hw-list li {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ios-secondary);
+}
+
+.hw-list b {
+  color: var(--ios-label);
+}
+
+.hw-icon {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.hw-ok {
+  align-self: flex-end;
+}

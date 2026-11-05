@@ -4,7 +4,7 @@ import { API_BASE } from './api';
  * Anonymous counts for the admin's lesson funnel: which lessons are started and finished, and which
  * exercises are missed most. No device id is sent, and events are batched into one small request.
  */
-export type EventName = 'lesson_start' | 'lesson_done' | 'mistake' | 'story_done' | 'course_done';
+export type EventName = 'lesson_start' | 'lesson_done' | 'mistake' | 'story_done' | 'course_done' | 'reminder_ask';
 
 const FLUSH_MS = 30_000;
 const counts = new Map<string, number>();

@@ -7,9 +7,11 @@ import { toBanglaDigits } from '../../../lib/bangla';
 import { useProgress } from '../../../state/ProgressContext';
 import type { GrammarTopic } from '../../../types';
 import { CourseLesson } from './CourseLesson';
+import { useBackButton } from '../../../lib/backButton';
 
 /** A topic's course: every lesson by unit, done ones ticked, the next one ready, later ones locked. */
 export function CoursePage({ topic, course, onClose }: { topic: GrammarTopic; course: GrammarCourse; onClose: () => void }) {
+  useBackButton(onClose);
   const { progress } = useProgress();
   const lessons = lessonsOf(course);
   const done = new Set(progress.grammarLessonsDone ?? []);

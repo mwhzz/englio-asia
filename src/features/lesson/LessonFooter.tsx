@@ -5,6 +5,7 @@ import { SpeakButton } from '../../components/SpeakButton';
 import type { Exercise, Grade } from '../../types';
 import { answerOf } from './answerOf';
 import { ComboPill } from './ComboPill';
+import { ReportButton } from '../report/ReportButton';
 
 const PRAISE = [
   ['দারুণ!', 'Excellent!'],
@@ -20,12 +21,13 @@ interface Props {
   feedback: Grade | null;
   /** Right answers in a row, shown above the result from three on. */
   combo: number;
+  where: string;
   onCheck: () => void;
   onNext: () => void;
 }
 
 /** The bottom bar: a check button, then a panel with the result, the right answer (to hear again) and a continue button. */
-export function LessonFooter({ exercise, canCheck, feedback, combo, onCheck, onNext }: Props) {
+export function LessonFooter({ exercise, canCheck, feedback, combo, where, onCheck, onNext }: Props) {
   // A new phrase for each exercise, stable across re-renders.
   const praise = useMemo(() => PRAISE[Math.floor(Math.random() * PRAISE.length)], [exercise.id]);
   const wrong = feedback?.result === 'wrong';
@@ -60,6 +62,7 @@ export function LessonFooter({ exercise, canCheck, feedback, combo, onCheck, onN
                   </span>
                 </div>
               )}
+              <ReportButton where={`${where} · ${exercise.kind}`} question={right?.en ?? `${exercise.kind} ${exercise.id}`} />
             </div>
           </div>
         )}

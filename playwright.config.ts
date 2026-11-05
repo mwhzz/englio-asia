@@ -20,7 +20,7 @@ export default defineConfig({
     {
       // A throwaway database (and upload folder), deleted and seeded fresh for every run.
       command: `node -e "for (const f of ['e2e/.e2e.db', 'e2e/.e2e.db-wal', 'e2e/.e2e.db-shm', 'e2e/.media']) require('fs').rmSync(f, { recursive: true, force: true })" && node server/seedMain.ts && node server/main.ts`,
-      env: { DB_PATH: 'e2e/.e2e.db', MEDIA_DIR: 'e2e/.media', PORT: String(API), ADMIN_TOKEN: 'e2e-admin' },
+      env: { DB_PATH: 'e2e/.e2e.db', MEDIA_DIR: 'e2e/.media', PORT: String(API), ADMIN_TOKEN: 'e2e-admin', OTP_DEV_ECHO: '1' },
       url: `http://localhost:${API}/api/health`,
       reuseExistingServer: false,
     },

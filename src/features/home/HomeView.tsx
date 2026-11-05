@@ -1,12 +1,17 @@
 import { useProgress } from '../../state/ProgressContext';
 import { PracticeButton } from '../path/PracticeButton';
+import { BoardCard } from '../board/BoardCard';
 import { LeagueCard } from '../league/LeagueCard';
+import { boardYears } from '../../lib/board';
 import { PlacementCard } from '../placement/PlacementCard';
 import { StoriesCard } from '../stories/StoriesCard';
 import { ReviewCard } from './ReviewCard';
 import { LessonTrail } from '../path/trail/LessonTrail';
 import { HomeHeader } from './HomeHeader';
 import { UpNextCard } from './UpNextCard';
+import { HowItWorks } from './HowItWorks';
+import { StreakNudge } from './StreakNudge';
+import { SyncNote } from './SyncNote';
 import { VoiceHint } from './VoiceHint';
 
 interface Props {
@@ -27,16 +32,20 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
     <div className="home">
       <HomeHeader onProfile={onProfile} />
       <div className="home-body">
+        <SyncNote />
         {!anyDone && !progress.placementTaken && (
           <div className="home-rise" style={{ animationDelay: '100ms' }}>
             <PlacementCard onStart={onPlacement} />
           </div>
         )}
+        <StreakNudge onStart={onStart} />
         <div className="home-rise" style={{ animationDelay: '140ms' }}>
           <UpNextCard onStart={onStart} onPractice={onPractice} />
         </div>
+        {Object.keys(progress.completed).length < 3 && <HowItWorks />}
         <VoiceHint />
         <ReviewCard onStart={onReview} />
+        {boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
         {anyDone && <StoriesCard />}
         {anyDone && <LeagueCard />}
         <section className="home-path home-rise" style={{ animationDelay: '220ms' }}>

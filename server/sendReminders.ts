@@ -25,6 +25,22 @@ const webpush = (await import(WEB_PUSH).catch(() => {
 webpush.default.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 
 const db = openDb();
+
+// `node server/sendReminders.ts --test <learner id>`: sends one reminder to that learner right now, to check it arrives.
+const testId = process.argv[process.argv.indexOf('--test') + 1];
+if (process.argv.includes('--test')) {
+  const row = db
+    .prepare('SELECT p.subscription, u.name, u.streak FROM push_subs p JOIN users u ON u.id = p.user_id WHERE p.user_id = ?')
+    .get(testId ?? '') as { subscription: string; name: string | null; streak: number } | undefined;
+  if (!row) {
+    console.error(`No reminder is turned on for "${testId}". Turn it on in the app first (Profile → দৈনিক রিমাইন্ডার).`);
+    process.exit(1);
+  }
+  await webpush.default.sendNotification(JSON.parse(row.subscription), JSON.stringify(reminderMessage(row)));
+  console.log(`Test reminder sent to ${testId}.`);
+  process.exit(0);
+}
+
 let sent = 0;
 for (const r of dueReminders(db)) {
   try {

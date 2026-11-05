@@ -694,3 +694,62 @@ a.pf-row {
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Send the weekly report to a parent or teacher. */
+.wr-share {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-green) 14%, transparent);
+  color: var(--ios-green);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- Account (phone / Google sign-in) ---------- */
+
+.acc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.acc-input {
+  letter-spacing: 0.04em;
+}
+
+.acc-sent {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ios-secondary);
+}
+
+.acc-or {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.acc-google {
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+}
+
+/* ---------- Englio Plus ---------- */
+
+.plus-icon {
+  background: linear-gradient(160deg, #ff2d55, #af52de);
+}
+
+.plus-row:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.plus-cta {
+  --c: #e2136e;
+}

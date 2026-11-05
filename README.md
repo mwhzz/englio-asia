@@ -4,9 +4,11 @@ A Duolingo-style app for learning English, made for Bangla speakers (বাং�
 
 Bite-sized lessons on a path, 11 exercise types (including fill in the gaps, grammar, dialogues and dictation), an alphabet page (A–Z in print, handwriting and cursive, with tracing and three games), a grammar page (34 topics from parts of speech to SSC/HSC voice, narration and transformation, and a 35-lesson step-by-step course for Parts of Speech), hearts, XP, streaks with streak freezes, a daily goal, unit guidebooks, and spoken English through the browser's built-in text-to-speech.
 
-Also: a placement test, spaced review of missed words and sentences, a word list, a unit test with a shareable certificate after every unit, badges and a weekly report, speaking practice (speech recognition), short stories with questions, a district league, a daily reminder, light/dark/auto theme, a backup code to move progress to a new phone, and data deletion (in the app or on `delete.html`). It works offline and can be installed on a phone (PWA), or published on the Play Store (see `docs/PLAY_STORE.md`).
+Also: a placement test, spaced review of missed words and sentences, a word list, a unit test with a shareable certificate after every unit, badges and a weekly report, speaking practice (speech recognition), short stories with questions, a district league, a daily reminder, light/dark/auto theme, a backup code or a phone-number / Google sign-in to move progress to a new phone (two phones' progress is merged, never overwritten), and data deletion (in the app or on `delete.html`).
 
-**Going online:** see `docs/SERVER.md` (hosting, admin token, backups, push reminders).
+Also: **SSC/HSC board practice** (15 English 2nd Paper topics, 257 questions, model tests; editable in the admin), a **শোনা-বলা tab** (listening rounds, pronunciation scored word by word, acted-out conversations), tap any word in a story or example for its meaning, a friends league with a weekly reset (Saturday to Friday), a parent-friendly weekly report to share, "সমস্যা জানাও" reports and crash reports in the admin, lesson resume after the app closes, larger text, low-data mode and download-for-offline, Android Back button support, and Englio Plus (unlimited hearts) through bKash. It works offline and can be installed on a phone (PWA), or published on the Play Store (see `docs/PLAY_STORE.md`).
+
+**Going online:** `deploy/setup.sh` sets up a fresh Ubuntu server (app, API, HTTPS, reminders, backups) in one command; step by step in Bangla in `docs/DEPLOY_BN.md`. Details of each setting: `docs/SERVER.md`.
 
 ## Run
 

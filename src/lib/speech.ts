@@ -1,4 +1,5 @@
 import { recordingOf } from './media';
+import { isLowData } from './offline';
 
 let voice: SpeechSynthesisVoice | null = null;
 let playing: HTMLAudioElement | null = null;
@@ -40,7 +41,7 @@ export function speak(text: string, slow = false, onEnd?: () => void): void {
   if (typeof window === 'undefined') return;
   playing?.pause();
   if ('speechSynthesis' in window) speechSynthesis.cancel();
-  const recording = recordingOf(text);
+  const recording = isLowData() ? undefined : recordingOf(text);
   if (recording) {
     const audio = new Audio(recording);
     audio.playbackRate = slow ? 0.7 : 1;

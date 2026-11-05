@@ -659,3 +659,17 @@ body {
 .ad-media audio {
   height: 34px;
 }
+
+.ad-report-items {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+
+.ad-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}

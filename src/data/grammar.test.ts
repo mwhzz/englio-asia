@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { BUNDLED_GRAMMAR } from './grammar';
-import { LETTERS } from './letters';
 
 describe('grammar topics', () => {
   it('have unique ids', () => {
@@ -21,14 +20,3 @@ describe('grammar topics', () => {
   });
 });
 
-describe('letters', () => {
-  it('cover A to Z with example words', () => {
-    expect(LETTERS.map((l) => l.upper).join('')).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-    for (const l of LETTERS) {
-      expect(l.lower).toBe(l.upper.toLowerCase());
-      expect(l.words.length).toBeGreaterThanOrEqual(2);
-      for (const w of l.words) expect(w.en.toLowerCase()).toContain(l.lower);
-    }
-    expect(LETTERS.filter((l) => l.vowel).map((l) => l.upper)).toEqual(['A', 'E', 'I', 'O', 'U']);
-  });
-});

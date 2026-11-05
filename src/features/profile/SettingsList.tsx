@@ -5,12 +5,16 @@ import { haptic } from '../../lib/haptics';
 import { DAILY_GOALS } from '../../lib/progress';
 import { savedTheme, setTheme, type Theme } from '../../lib/theme';
 import { useProgress } from '../../state/ProgressContext';
+import { AccountRow } from '../account/AccountRow';
 import { BackupCode } from './BackupCode';
 import { DeleteAccount } from './DeleteAccount';
 import { InstallRow } from './InstallRow';
+import { OfflineRows } from './OfflineRows';
 import { RedoSetup } from './RedoSetup';
 import { ReminderRow } from './ReminderRow';
+import { TextSizeRow } from './TextSizeRow';
 import { ResetProgress } from './ResetProgress';
+import { PlusRow } from '../premium/PlusRow';
 
 /** Settings as an iOS inset grouped list: daily goal, sound, then the profile actions. */
 export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
@@ -32,7 +36,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           <span className="pf-row-main">
             <span className="pf-row-text">
               <span lang="bn">দৈনিক লক্ষ্য</span>
-              <small>Daily goal</small>
+              <small lang="bn">প্রতিদিন কত XP আনতে চাও</small>
             </span>
             <span className="pf-segmented" role="radiogroup" aria-label="Daily goal">
               {DAILY_GOALS.map((goal) => (
@@ -60,7 +64,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           <span className="pf-row-main">
             <span className="pf-row-text">
               <span lang="bn">থিম</span>
-              <small>Appearance</small>
+              <small lang="bn">আলো, অন্ধকার, না ফোনের মতো</small>
             </span>
             <span className="pf-segmented" role="radiogroup" aria-label="Appearance">
               {(
@@ -88,13 +92,15 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
         </div>
 
+        <TextSizeRow />
+
         <label className="pf-row">
           <span className="pf-icon" style={{ background: 'var(--ios-pink)' }}>
             <Glyph name="speaker" size={17} />
           </span>
           <span className="pf-row-text">
             <span lang="bn">শব্দ</span>
-            <small>Sound effects</small>
+            <small lang="bn">ঠিক-ভুলের আওয়াজ</small>
           </span>
           <input
             type="checkbox"
@@ -109,10 +115,13 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
         </label>
 
         <ReminderRow />
+        <OfflineRows />
       </div>
 
       <div className="pf-list">
         <InstallRow />
+        <AccountRow />
+        <PlusRow />
         <button className="pf-row" onClick={() => setSheet('backup')}>
           <span className="pf-icon" style={{ background: 'var(--ios-blue)' }}>
             <Glyph name="lock" size={16} />
@@ -129,7 +138,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
           <span className="pf-row-text">
             <span lang="bn">লেভেল টেস্ট</span>
-            <small>Find where to start</small>
+            <small lang="bn">কোন ইউনিট থেকে শুরু করবে, জেনে নাও</small>
           </span>
           <Glyph name="chevron" size={16} className="pf-chevron" />
         </button>
@@ -139,7 +148,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
           <span className="pf-row-text">
             <span lang="bn">প্রোফাইল বদলাও</span>
-            <small>District, name and class</small>
+            <small lang="bn">নাম, জেলা আর শ্রেণি</small>
           </span>
           <Glyph name="chevron" size={16} className="pf-chevron" />
         </button>
@@ -149,7 +158,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
           <span className="pf-row-text">
             <span lang="bn">অগ্রগতি মুছে ফেলো</span>
-            <small>Reset XP, streak and lessons</small>
+            <small lang="bn">XP, স্ট্রিক আর লেসন শূন্য থেকে শুরু</small>
           </span>
         </button>
       </div>
@@ -161,7 +170,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
           <span className="pf-row-text">
             <span lang="bn">প্রাইভেসি পলিসি</span>
-            <small>What we keep and why</small>
+            <small lang="bn">আমরা কী রাখি, কেন রাখি</small>
           </span>
           <Glyph name="chevron" size={16} className="pf-chevron" />
         </a>
@@ -171,7 +180,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
           <span className="pf-row-text">
             <span lang="bn">আমার সব তথ্য মুছে ফেলো</span>
-            <small>Delete my data from this phone and the server</small>
+            <small lang="bn">এই ফোন আর সার্ভার, দুই জায়গা থেকেই</small>
           </span>
         </button>
       </div>

@@ -45,3 +45,27 @@
   text-align: center;
   color: var(--ios-secondary);
 }
+
+/* ---------- Something broke ---------- */
+
+.crash {
+  max-width: 420px;
+  min-height: 70dvh;
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.crash h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.crash p {
+  margin: 0 0 12px;
+  color: var(--ios-secondary);
+}

@@ -2,6 +2,8 @@ import type { DatabaseSync } from 'node:sqlite';
 import { bumpContentVersion, transaction } from './db.ts';
 import { HttpError, text, type Request } from './http.ts';
 import { validateItem } from './validate.ts';
+import { LEVELS } from '../src/lib/levelCourse.ts';
+import type { Level } from '../src/types.ts';
 
 type Row = Record<string, unknown>;
 
@@ -26,6 +28,13 @@ function tips(body: unknown): string {
   );
 }
 
+/** Which levels see a unit; an empty list means everyone. */
+function levels(body: unknown): string {
+  const value = (body as Row | null)?.levels ?? [];
+  if (!Array.isArray(value) || value.some((l) => !LEVELS.includes(l as Level))) throw new HttpError(400, `"levels" must be a list of: ${LEVELS.join(', ')}`);
+  return JSON.stringify(LEVELS.filter((l) => value.includes(l)));
+}
+
 function nextPosition(db: DatabaseSync, table: 'units' | 'lessons' | 'items', where = '', ...args: string[]): number {
   const row = db.prepare(`SELECT COALESCE(MAX(position), -1) + 1 AS p FROM ${table} ${where}`).get(...args) as { p: number };
   return row.p;
@@ -41,7 +50,7 @@ function changed<T>(db: DatabaseSync, fn: () => T): T {
 
 /** Every unit with its lessons and how many items of each kind they have. */
 export function listUnits(db: DatabaseSync) {
-  const units = db.prepare('SELECT id, title, title_bn, color, tips FROM units ORDER BY position').all() as Row[];
+  const units = db.prepare('SELECT id, title, title_bn, color, tips, levels FROM units ORDER BY position').all() as Row[];
   const lessons = db.prepare('SELECT id, unit_id, title, title_bn FROM lessons ORDER BY position').all() as Row[];
   const counts = db.prepare('SELECT lesson_id, kind, COUNT(*) AS n FROM items GROUP BY lesson_id, kind').all() as Row[];
   return units.map((u) => ({
@@ -49,6 +58,7 @@ export function listUnits(db: DatabaseSync) {
     title: u.title,
     titleBn: u.title_bn,
     color: u.color,
+    levels: JSON.parse(u.levels as string),
     tips: JSON.parse(u.tips as string),
     lessons: lessons
       .filter((l) => l.unit_id === u.id)
@@ -66,13 +76,14 @@ export function createUnit(db: DatabaseSync, { body }: Request) {
     const n = (db.prepare('SELECT COUNT(*) AS n FROM units').get() as { n: number }).n;
     let id = `u${n + 1}`;
     while (db.prepare('SELECT 1 FROM units WHERE id = ?').get(id)) id = `${id}x`;
-    db.prepare('INSERT INTO units (id, position, title, title_bn, color, tips) VALUES (?, ?, ?, ?, ?, ?)').run(
+    db.prepare('INSERT INTO units (id, position, title, title_bn, color, tips, levels) VALUES (?, ?, ?, ?, ?, ?, ?)').run(
       id,
       nextPosition(db, 'units'),
       text(body, 'title'),
       text(body, 'titleBn'),
       color(body),
       tips(body),
+      levels(body),
     );
     return { id };
   });
@@ -81,8 +92,8 @@ export function createUnit(db: DatabaseSync, { body }: Request) {
 export function updateUnit(db: DatabaseSync, { params, body }: Request) {
   return changed(db, () => {
     const result = db
-      .prepare('UPDATE units SET title = ?, title_bn = ?, color = ?, tips = ? WHERE id = ?')
-      .run(text(body, 'title'), text(body, 'titleBn'), color(body), tips(body), params.id);
+      .prepare('UPDATE units SET title = ?, title_bn = ?, color = ?, tips = ?, levels = ? WHERE id = ?')
+      .run(text(body, 'title'), text(body, 'titleBn'), color(body), tips(body), levels(body), params.id);
     if (!result.changes) throw new HttpError(404, 'No such unit');
     return { ok: true };
   });

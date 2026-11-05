@@ -7,15 +7,16 @@ import type { StopState } from '../StopPopover';
 import { TrailUnit } from './TrailUnit';
 import { UnitRow } from './UnitRow';
 
-const ALL = COURSE.flatMap((u) => u.lessons);
-// Where each unit's first lesson sits in the whole course (for the entry stagger).
-const FIRST = COURSE.map((_, u) => COURSE.slice(0, u).reduce((n, unit) => n + unit.lessons.length, 0));
 /** Units past the current one that stay open; the rest fold into rows. */
 const OPEN_AHEAD = 1;
 
 /** The learning path on the plain page: one card per unit, its lessons on a soft curve. */
 export function LessonTrail({ onStart, onTest }: { onStart: (lessonId: string) => void; onTest: (unitId: string) => void }) {
   const { progress } = useProgress();
+  // COURSE depends on the learner's level, so it's read on each render (it's small).
+  const ALL = COURSE.flatMap((u) => u.lessons);
+  // Where each unit's first lesson sits in the path (for the entry stagger).
+  const FIRST = COURSE.map((_, u) => COURSE.slice(0, u).reduce((n, unit) => n + unit.lessons.length, 0));
   const [openId, setOpenId] = useState<string | null>(null);
   const [guide, setGuide] = useState<Unit | null>(null);
   const [unfolded, setUnfolded] = useState<string[]>([]);

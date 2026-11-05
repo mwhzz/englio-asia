@@ -2,6 +2,7 @@ import { Glyph } from '../../components/Glyph';
 import { minutesUntil, nextHeartAt } from '../../lib/hearts';
 import { currentStreak } from '../../lib/streak';
 import { useProgress } from '../../state/ProgressContext';
+import { isPlus } from '../../lib/premium';
 
 /** Streak, XP and hearts as small glass pills. */
 export function StatusPills() {
@@ -25,7 +26,7 @@ export function StatusPills() {
         aria-label={`${progress.hearts} hearts`}
       >
         <Glyph name="heart" size={15} />
-        {progress.hearts}
+        {isPlus() ? '∞' : progress.hearts}
       </span>
     </div>
   );

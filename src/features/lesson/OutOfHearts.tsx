@@ -3,6 +3,7 @@ import { minutesUntil, nextHeartAt } from '../../lib/hearts';
 import { useProgress } from '../../state/ProgressContext';
 import { useNow } from '../home/useNow';
 import { HeartRefill } from './HeartRefill';
+import { PlusOffer } from '../premium/PlusOffer';
 
 /** No hearts left: the next heart refills like a clock; practice earns one right away. */
 export function OutOfHearts({ onPractice, onQuit }: { onPractice: () => void; onQuit: () => void }) {
@@ -23,6 +24,7 @@ export function OutOfHearts({ onPractice, onQuit }: { onPractice: () => void; on
         <button className="cta" onClick={onPractice}>
           <span lang="bn">অনুশীলন করে হার্ট নাও</span>
         </button>
+        <PlusOffer />
         <button className="cta-text" onClick={onQuit}>
           <span lang="bn">এখন না</span>
         </button>

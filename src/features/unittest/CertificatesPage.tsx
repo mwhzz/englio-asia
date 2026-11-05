@@ -5,9 +5,11 @@ import { COURSE } from '../../data/course';
 import { toBanglaDigits } from '../../lib/bangla';
 import { useProgress } from '../../state/ProgressContext';
 import { CertificateView } from './CertificateView';
+import { useBackButton } from '../../lib/backButton';
 
 /** Every certificate earned so far, newest unit last, each ready to save or share. */
 export function CertificatesPage({ onClose }: { onClose: () => void }) {
+  useBackButton(onClose);
   const { progress } = useProgress();
   const earned = COURSE.map((unit, i) => ({ unit, i, test: progress.unitTests?.[unit.id] })).filter((x) => x.test);
 

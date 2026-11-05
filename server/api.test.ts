@@ -5,7 +5,14 @@ import { BUNDLED_COURSE } from '../src/data/course.ts';
 import { BUNDLED_GRAMMAR } from '../src/data/grammar/index.ts';
 import { createApi } from './app.ts';
 import { openDb } from './db.ts';
-import { seedCourse, seedCourses, seedGrammar, seedStories, seedUsers } from './seed.ts';
+import { seedBoard, seedCourse, seedCourses, seedGrammar, seedStories, seedUsers, seedWriting } from './seed.ts';
+import { BUNDLED_WRITING } from '../src/data/writing/tasks.ts';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
+import { BUNDLED_BOARD } from '../src/data/board/index.ts';
+import { validateBoard } from './adminBoard.ts';
 import { BUNDLED_COURSES } from '../src/data/grammarCourses/index.ts';
 import { BUNDLED_STORIES } from '../src/data/stories.ts';
 
@@ -31,6 +38,8 @@ beforeAll(async () => {
   seedGrammar(db);
   seedCourses(db);
   seedStories(db);
+  seedBoard(db);
+  seedWriting(db);
   seedUsers(db, 5);
   server = createApi(db, TOKEN);
   await new Promise<void>((done) => server.listen(0, done));
@@ -206,5 +215,100 @@ describe('deleting my data', () => {
     expect((await call('DELETE', `/api/users/${id}`)).status).toBe(200);
     expect((await call('GET', `/api/users/${id}`)).status).toBe(404);
     expect((await call('DELETE', `/api/users/${id}`)).status).toBe(404);
+  });
+});
+
+describe('board practice', () => {
+  it('serves the built-in topics, every one valid for the admin too', async () => {
+    const { json } = await call('GET', '/api/course');
+    expect(json.board.map((t: { id: string }) => t.id)).toEqual(BUNDLED_BOARD.map((t) => t.id));
+    for (const t of BUNDLED_BOARD) expect(validateBoard(t)).toEqual(t);
+  });
+
+  it('lets the admin add a topic, and refuses a broken one', async () => {
+    const q = (n: number) => ({ question: `শূন্যস্থান পূরণ করো: Test ${n} ___.`, correct: 'a', wrong: ['b', 'c'], why: 'কারণ।' });
+    const topic = { id: 'test-topic', exam: ['ssc'], title: 'Test', titleBn: 'টেস্ট', tip: 'মনে রাখো।', questions: [1, 2, 3, 4, 5].map(q) };
+    expect((await admin('POST', '/api/admin/board', { ...topic, exam: [] })).status).toBe(400);
+    expect((await admin('POST', '/api/admin/board', { ...topic, questions: [q(1)] })).status).toBe(400);
+    expect((await admin('POST', '/api/admin/board', topic)).status).toBe(200);
+    expect((await call('GET', '/api/course')).json.board.at(-1).id).toBe('test-topic');
+    expect((await admin('DELETE', '/api/admin/board/test-topic')).status).toBe(200);
+  });
+});
+
+describe('levels', () => {
+  it('saves which levels a unit is for, sends them with the course, and rejects unknown ones', async () => {
+    const unit = { title: 'SSC Writing', titleBn: 'এসএসসি লেখা', color: '#ff9500', tips: [], levels: ['higher', 'secondary'] };
+    expect((await admin('POST', '/api/admin/units', { ...unit, levels: ['grade-9'] })).status).toBe(400);
+    const { json } = await admin('POST', '/api/admin/units', unit);
+    const listed = (await admin('GET', '/api/admin/units')).json.find((u: { id: string }) => u.id === json.id);
+    expect(listed.levels).toEqual(['secondary', 'higher']);
+    const course = (await call('GET', '/api/course')).json.units;
+    expect(course.find((u: { id: string }) => u.id === json.id).levels).toEqual(['secondary', 'higher']);
+    // Units for everyone are sent without levels, like the built-in course.
+    expect(course[0]).not.toHaveProperty('levels');
+    await admin('PUT', `/api/admin/units/${json.id}`, { ...unit, levels: [] });
+    expect((await call('GET', '/api/course')).json.units.find((u: { id: string }) => u.id === json.id)).not.toHaveProperty('levels');
+    await admin('DELETE', `/api/admin/units/${json.id}`);
+  });
+
+  it('adds the levels column to a database made before it', () => {
+    const file = join(mkdtempSync(join(tmpdir(), 'englio-')), 'old.db');
+    const old = new DatabaseSync(file);
+    old.exec(`CREATE TABLE units (id TEXT PRIMARY KEY, position INTEGER NOT NULL, title TEXT NOT NULL, title_bn TEXT NOT NULL, color TEXT NOT NULL, tips TEXT NOT NULL DEFAULT '[]')`);
+    old.exec(`INSERT INTO units (id, position, title, title_bn, color) VALUES ('u1', 0, 'Old', 'পুরনো', '#000000')`);
+    old.close();
+    const db = openDb(file);
+    expect(db.prepare(`SELECT levels FROM units WHERE id = 'u1'`).get()).toEqual({ levels: '[]' });
+    db.close();
+  });
+});
+
+describe('writing practice', () => {
+  const task = { ...BUNDLED_WRITING[0], id: 'test-task', title: 'Test task' };
+
+  it('serves the seeded tasks with the course', async () => {
+    const { json } = await call('GET', '/api/course');
+    expect(json.writing.map((t: { id: string }) => t.id)).toEqual(BUNDLED_WRITING.map((t) => t.id));
+  });
+
+  it('checks a task before saving it', async () => {
+    expect((await admin('POST', '/api/admin/writing', { ...task, kind: 'poem' })).status).toBe(400);
+    expect((await admin('POST', '/api/admin/writing', { ...task, hints: [] })).status).toBe(400);
+    expect((await admin('POST', '/api/admin/writing', { ...task, model: ' ' })).status).toBe(400);
+    expect((await admin('POST', '/api/admin/writing', { ...task, minWords: 0 })).status).toBe(400);
+    expect((await admin('POST', '/api/admin/writing', { ...task, levels: ['class-9'] })).status).toBe(400);
+  });
+
+  it('lets the admin add, edit, reorder and delete a task', async () => {
+    expect((await admin('POST', '/api/admin/writing', task)).status).toBe(200);
+    expect((await admin('POST', '/api/admin/writing', task)).status).toBe(409);
+    await admin('PUT', '/api/admin/writing/test-task', { ...task, title: 'Renamed', levels: ['higher', 'primary'] });
+    expect((await admin('GET', '/api/admin/writing/test-task')).json).toEqual(expect.objectContaining({ title: 'Renamed', levels: ['primary', 'higher'] }));
+    await admin('POST', '/api/admin/writing/test-task/move', { dir: -1 });
+    const list = (await admin('GET', '/api/admin/writing')).json;
+    expect(list[list.length - 2].id).toBe('test-task');
+    expect((await call('GET', '/api/course')).json.writing.some((t: { id: string }) => t.id === 'test-task')).toBe(true);
+    await admin('DELETE', '/api/admin/writing/test-task');
+    expect((await admin('GET', '/api/admin/writing/test-task')).status).toBe(404);
+  });
+
+  it('is admin only', async () => {
+    expect((await call('POST', '/api/admin/writing', task)).status).toBe(401);
+  });
+});
+
+describe('content plan', () => {
+  it('counts the content for each level and lists what is missing', async () => {
+    const { status, json } = await admin('GET', '/api/admin/coverage');
+    expect(status).toBe(200);
+    const lessons = BUNDLED_COURSE.reduce((n, u) => n + u.lessons.length, 0);
+    // The built-in units are for everyone, so every level sees all of them.
+    expect(json.levels.map((l: { level: string }) => l.level)).toEqual(['primary', 'secondary', 'higher', 'university', 'other']);
+    for (const l of json.levels) expect(l).toEqual(expect.objectContaining({ lessons, ownLessons: 0 }));
+    expect(json.levels[0].writing).toBe(BUNDLED_WRITING.filter((t) => t.levels.includes('primary')).length);
+    expect(json.grammar.topics).toBe(BUNDLED_GRAMMAR.length);
+    expect(json.grammar.missingCourse.length).toBe(json.grammar.topics - json.grammar.withCourse);
+    expect(json.targets.lessons).toBeGreaterThan(0);
   });
 });

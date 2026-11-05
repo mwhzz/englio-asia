@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Glyph } from '../../components/Glyph';
 import { mediaUrl } from '../../lib/media';
+import { isLowData } from '../../lib/offline';
 import { speak } from '../../lib/speech';
 import type { ExerciseOf } from '../../types';
 import type { ExerciseProps } from './props';
@@ -11,7 +12,7 @@ export function SelectExercise({ ex, disabled, onChange }: ExerciseProps<Exercis
   return (
     <>
       <h2 className="prompt-card hero">
-        {ex.word.image && <img className="prompt-pic" src={mediaUrl(ex.word.image)} alt="" />}
+        {ex.word.image && !isLowData() && <img className="prompt-pic" src={mediaUrl(ex.word.image)} alt="" />}
         <small>Which one is</small>
         <strong lang="bn">{ex.word.bn}</strong>
       </h2>

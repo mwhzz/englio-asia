@@ -16,6 +16,7 @@ export function reviewKey(ex: Exercise): string | null {
     case 'translate':
     case 'listen':
     case 'choice':
+    case 'hear':
     case 'type':
     case 'dictate':
       return `s:${ex.sentence.en}`;
