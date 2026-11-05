@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.6.1 (2026-11-06)
+
 - Fix: since 1.5.0 the app downloaded the whole course every time it opened, instead of only when it changed. Fixed for the apps already on phones too.
 - Draft languages are no longer served to the public course; only live ones are.
 
