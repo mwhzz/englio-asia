@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.3.1 (2026-11-06)
+
 - Every icon in the app now has the same look: search, back, zoom, clear and the reminder bell were redrawn (the bell was an emoji). Flame, gem, heart, trophy and star get a soft fill of their own colour, and the selected tab shows a solid icon.
 
 ## 1.3.0 (2026-11-06)
