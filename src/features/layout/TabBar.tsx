@@ -25,7 +25,7 @@ export function TabBar({ tab, onChange }: { tab: Tab; onChange: (tab: Tab) => vo
               onChange(t.id);
             }}
           >
-            <Glyph name={t.icon} size={22} />
+            <Glyph name={t.icon} size={22} filled={tab === t.id} />
             <span lang="bn">{t.bn}</span>
           </button>
         ))}

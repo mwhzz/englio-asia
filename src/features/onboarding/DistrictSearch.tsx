@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DIVISIONS, searchDistricts, type DivisionId } from '../../data/districts';
 import { haptic } from '../../lib/haptics';
+import { Glyph } from '../../components/Glyph';
 
 interface Props {
   selectedId: string | null;
@@ -26,10 +27,7 @@ export function DistrictSearch({ selectedId, onPick, onClose }: Props) {
         <div className="ob-grabber" />
         <div className="ob-search-row">
           <label className="ob-search-field">
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2.4" />
-              <path d="m20 20-4-4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-            </svg>
+            <Glyph name="search" size={17} />
             <input
               type="search"
               autoFocus

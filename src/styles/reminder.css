@@ -1,8 +1,14 @@
 /* "Remind me every day?" sheet after the first lesson: a bell, then the hour as four big chips. */
 
 .ra-bell {
-  font-size: 44px;
-  line-height: 1;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--ios-orange) 16%, var(--ios-cell));
+  color: var(--ios-orange);
 }
 
 .ra-hours {

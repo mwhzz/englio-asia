@@ -2,6 +2,7 @@ import { useState, type CSSProperties, type FormEvent } from 'react';
 import { NAME_MAX, isValidName } from '../../lib/profile';
 import { LearnerCard } from '../../components/card/LearnerCard';
 import { ObButton } from './ObButton';
+import { Glyph } from '../../components/Glyph';
 
 interface Props {
   name: string;
@@ -49,9 +50,7 @@ export function NameStep({ name, districtId, onChange, onNext }: Props) {
           />
           {name && (
             <button type="button" className="ob-clear" onClick={() => onChange('')} aria-label="Clear name">
-              <svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true">
-                <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
-              </svg>
+              <Glyph name="close" size={13} />
             </button>
           )}
         </label>

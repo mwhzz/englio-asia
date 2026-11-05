@@ -64,10 +64,7 @@ export default function GrammarView() {
       <BoardCard />
 
       <label className="gr-search">
-        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
-          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2.2" />
-          <path d="M15.5 15.5 20 20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        </svg>
+        <Glyph name="search" size={18} />
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search: tense, article, voice…" aria-label="Search topics" />
         {query && (
           <button onClick={() => setQuery('')} aria-label="Clear search">

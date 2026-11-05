@@ -4,6 +4,7 @@ import { track } from '../../lib/track';
 import { markReminderAsked } from './askOnce';
 import { hourLabel } from './reminderHours';
 import { useReminder } from './useReminder';
+import { Glyph } from '../../components/Glyph';
 
 const CHOICES = [7, 12, 18, 20];
 
@@ -34,7 +35,7 @@ export function ReminderAsk({ onDone }: { onDone: () => void }) {
   return (
     <Modal onClose={later}>
       <span className="ra-bell" aria-hidden="true">
-        🔔
+        <Glyph name="bell" size={34} />
       </span>
       <h2 lang="bn">রোজ মনে করিয়ে দেব?</h2>
       <p className="muted" lang="bn">
