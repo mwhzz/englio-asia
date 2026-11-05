@@ -81,7 +81,7 @@ cd /opt/englio && set -a && . /etc/englio.env && set +a && node server/sendRemin
 
 ## ৭. নতুন ভার্সন অনলাইনে দেওয়া
 
-**GitHub-এর `main`-এ push করলেই সাইট নিজে আপডেট হয়ে যায়।** সার্ভার প্রতি মিনিটে GitHub দেখে; নতুন commit পেলে নিজেই build করে, টেস্ট চালায়, আর সব ঠিক থাকলে তবেই নতুনটা চালু করে (মোটামুটি ২ মিনিট)। build বা টেস্ট ফেল করলে সাইট আগের মতোই চলতে থাকে, ভাঙা কিছু অনলাইনে যায় না। তাই অর্ধেক কাজ `main`-এ push কোরো না, আলাদা branch-এ কাজ করে শেষ হলে `main`-এ আনো।
+**GitHub-এর `main`-এ push করলেই সাইট নিজে আপডেট হয়ে যায়, সাধারণত এক মিনিটের মধ্যে।** সার্ভার প্রতি ১৫ সেকেন্ডে GitHub দেখে; নতুন commit পেলে নিজেই build করে আর টেস্ট চালায়। সব ঠিক থাকলে তবেই চোখের পলকে (এক ধাপে) নতুন ভার্সনে চলে যায়, মাঝে কোনো ভাঙা মুহূর্ত থাকে না। build বা টেস্ট ফেল করলে কোনো আপডেট হয় না, সাইট আগের মতোই চলে, আর কারণটা লগে লেখা থাকে। তাই অর্ধেক কাজ `main`-এ push কোরো না, আলাদা branch-এ কাজ করে শেষ হলে `main`-এ আনো।
 
 **ভার্সন নম্বরসহ ঠিকঠাক release (এটাই ব্যবহার করো):** `CHANGELOG.md`-এ "## Unreleased"-এর নিচে এক-দুই লাইনে লেখো কী বদলালে, সব commit করো, `main` branch-এ থেকে চালাও:
 
@@ -93,7 +93,11 @@ npm run release -- major     # বড় বদল (1.0.0 → 2.0.0)
 
 এটা নিজের কম্পিউটারে সব টেস্ট চালায় (কিছু ভাঙলে থেমে যায়), ভার্সন বাড়ায়, GitHub-এ push করে, তারপর সাইটে নতুন ভার্সন চালু হওয়া পর্যন্ত অপেক্ষা করে। পাসওয়ার্ড লাগে না। আগে শুধু চেক করতে চাইলে `npm run release -- patch --dry-run`।
 
-**আপডেট কেন হলো না দেখতে:** সার্ভারে `journalctl -t englio-deploy -n 80`। হাতে আপডেট দিতে: `sudo bash /opt/englio/deploy/update.sh`।
+**লগ:**
+- কবে কোন আপডেট হলো (OK নাকি FAILED, কোন ধাপে): `cat /var/lib/englio/deploys.log`
+- কেন ফেল করল, পুরো লেখা: `journalctl -u englio-deploy -n 80`
+
+**ভুল কিছু চলে গেলে:** নিজের কম্পিউটারে `git revert <commit>` করে push করো, আগের অবস্থা আবার নিজে নিজে চালু হয়ে যাবে। হাতে আপডেট দিতে: `sudo bash /opt/englio/deploy/update.sh`।
 
 শিক্ষার্থীদের ডেটা যেমন আছে তেমনই থাকে। পরের বার অ্যাপ খুললেই সবাই নতুন ভার্সন পায়। Play Store-এর APK আবার বানাতে হয় না।
 
@@ -103,7 +107,7 @@ npm run release -- major     # বড় বদল (1.0.0 → 2.0.0)
 | --- | --- |
 | API চলছে কি না | `systemctl status englio-api` |
 | API-র লগ (লাইভ) | `journalctl -u englio-api -f` (বের হতে Ctrl+C) |
-| অটো-আপডেট হলো কি না | `journalctl -t englio-deploy -n 40` |
+| অটো-আপডেট হলো কি না | `cat /var/lib/englio/deploys.log` |
 | রিমাইন্ডার কতজনকে গেল | `journalctl -t englio-reminders -n 20` |
 | ব্যাকআপ হলো কি না | `ls -lh /var/backups/englio` |
 | API রিস্টার্ট | `sudo systemctl restart englio-api` |

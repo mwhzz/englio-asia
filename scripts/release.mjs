@@ -98,7 +98,7 @@ if (noDeploy) {
   process.exit(0);
 }
 console.log(`
-▶ Waiting for ${URL_} to run v${version} (the server builds and tests it first; about 2 minutes)`);
+▶ Waiting for ${URL_} to run v${version} (the server builds and tests it first; usually under a minute)`);
 for (let i = 0; i < 40; i++) {
   await new Promise((done) => setTimeout(done, 15_000));
   const live = await fetch(`${URL_}/api/health`).then((r) => r.json()).catch(() => null);

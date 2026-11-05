@@ -61,18 +61,19 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 
 | What | Where |
 | --- | --- |
-| Code | `/opt/englio` (built app in `/opt/englio/dist`) |
+| Code | `/opt/englio` (git clone of `main`); the live app is `/opt/englio/dist`, a symlink to the current build in `/opt/englio/releases/` |
 | Database and uploads | `/var/lib/englio/englio.db`, `/var/lib/englio/media/` |
 | Secrets and settings (admin token, push keys, domain) | `/etc/englio.env` (root:englio, 640). Don't print the token into logs or chat unless the owner asks |
 | API service | `systemctl status englio-api`, logs `journalctl -u englio-api -f` |
 | Web server (HTTPS, static files, `/api` proxy) | Caddy, `/etc/caddy/Caddyfile` |
-| Auto-deploy (every minute), hourly reminders, nightly backup (03:30) | `/etc/cron.d/englio`; logs `journalctl -t englio-deploy`, `-t englio-reminders`, `-t englio-backup` |
+| Auto-deploy (every 15 s) | `systemctl status englio-deploy.timer`; logs `journalctl -u englio-deploy`; history `/var/lib/englio/deploys.log` |
+| Hourly reminders, nightly backup (03:30) | `/etc/cron.d/englio`; logs `journalctl -t englio-reminders`, `-t englio-backup` |
 | Backups (14 days) | `/var/backups/englio` (root only) |
 | Downloadable APK for testers | `/opt/englio/public/englio.apk` → `https://<domain>/englio.apk` (server only, not in git) |
 
 ### Deploying a change
 
-- **Auto-deploy: every push to `main` goes live by itself.** Every minute the server (`deploy/autodeploy.sh`) checks GitHub; on a new commit it runs `deploy/update.sh`, which builds into `dist-next`, runs `npm test`, and only then swaps it in and restarts the API. If the build or tests fail, the code goes back to the previous commit, the live site is untouched, and that commit isn't retried (push a fix). Log: `journalctl -t englio-deploy -n 80`. So **never push untested or half-done work to `main`**: work on a branch and merge when it's ready. By hand on the server: `sudo bash /opt/englio/deploy/update.sh` (`--no-pull` to rebuild what's there).
+- **Auto-deploy: every push to `main` goes live by itself, usually within a minute.** A systemd timer (`englio-deploy.timer`) runs `deploy/autodeploy.sh` every 15 s; on a new commit it runs `deploy/update.sh`, which runs `npm ci` only if `package-lock.json` changed, builds into `dist-next`, runs `npm test`, moves the build to `releases/<time>-<commit>` and switches the live `dist` symlink to it in one atomic step (no half-built moment). The API restarts only when `server/` or the version changed. If anything fails, the code goes back to the previous commit, the live site is untouched, and that commit isn't retried (push a fix). **Logs:** `journalctl -u englio-deploy -n 80`; **history** (time, OK/FAILED(step), commit): `/var/lib/englio/deploys.log`. The last 3 builds are kept in `releases/`. So **never push untested or half-done work to `main`**: work on a branch and merge when it's ready. To undo a bad change: `git revert` it and push (it deploys like any commit). By hand on the server: `sudo bash /opt/englio/deploy/update.sh` (`--no-pull` to rebuild what's there).
 - After deploying, check: `curl https://<domain>/api/health` returns `{"ok":true,"version":"<new version>"}`, and the app opens without console errors.
 - Test a reminder right away: `cd /opt/englio && set -a && . /etc/englio.env && set +a && node server/sendReminders.ts --test <device id>` (device id from admin → Learners).
 

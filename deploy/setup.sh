@@ -115,9 +115,32 @@ $DOMAIN {
 }
 EOF
 
-echo "==> Auto-deploy from GitHub (every minute), hourly reminders and a nightly backup"
+echo "==> Auto-deploy: check GitHub every 15 seconds"
+cat > /etc/systemd/system/englio-deploy.service <<EOF
+[Unit]
+Description=Englio: deploy a new commit from GitHub
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash $APP_DIR/deploy/autodeploy.sh
+EOF
+cat > /etc/systemd/system/englio-deploy.timer <<EOF
+[Unit]
+Description=Englio: check GitHub for a new commit every 15 seconds
+
+[Timer]
+OnBootSec=30s
+OnUnitInactiveSec=15s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable --now englio-deploy.timer
+
+echo "==> Hourly reminders and a nightly backup"
 cat > /etc/cron.d/englio <<EOF
-* * * * * root flock -n /run/englio-deploy.lock bash $APP_DIR/deploy/autodeploy.sh 2>&1 | logger -t englio-deploy
 5 * * * * englio set -a; . $ENV_FILE; set +a; cd $APP_DIR && node server/sendReminders.ts 2>&1 | logger -t englio-reminders
 30 3 * * * root bash $APP_DIR/deploy/backup.sh 2>&1 | logger -t englio-backup
 EOF

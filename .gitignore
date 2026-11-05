@@ -18,3 +18,8 @@ playwright-report/
 
 # Tester APK, served from the server only (see AGENTS.md)
 public/englio.apk
+
+# Server-side builds (deploy/update.sh)
+dist-next/
+dist.tmp
+releases/

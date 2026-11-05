@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Run every minute by cron (see setup.sh): when GitHub's main has a new commit, deploys it with update.sh.
-# A commit that failed to deploy isn't retried every minute; the next new commit is tried as usual.
-# Log: journalctl -t englio-deploy
+# Run every 15 seconds by the englio-deploy timer (see setup.sh): when GitHub's main has a new commit,
+# deploys it with update.sh. A commit that failed to deploy isn't retried; the next new commit is tried as usual.
+# Logs: journalctl -u englio-deploy -n 80 · history: /var/lib/englio/deploys.log
 set -euo pipefail
 
 APP_DIR=/opt/englio

@@ -6,7 +6,7 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
-- Pushing to GitHub's main now updates the site by itself within about 2 minutes. A build or test failure leaves the live site as it was.
+- Pushing to GitHub's main now updates the site by itself, usually within a minute, switching to the new version in one step. A build or test failure means no update (the live site stays as it was), and every deploy is logged.
 - `npm run release` no longer needs the server password: it waits until the site runs the new version.
 
 ## 1.0.1 (2026-11-06)
