@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Glyph } from '../components/Glyph';
 import { Logo } from '../components/Logo';
+import { navFor } from './adminNav';
+import { AdminTabBar } from './AdminTabBar';
 import { ActivityPage } from './ActivityPage';
 import { BoardAdmin } from './BoardAdmin';
 import { BoardEditor } from './BoardEditor';
 import { ErrorsPage } from './ErrorsPage';
 import { ReportsPage } from './ReportsPage';
+import { SettingsPage } from './SettingsPage';
 import { adminApi, clearToken, getToken } from './adminApi';
 import { ContentPage } from './ContentPage';
 import { CourseEditor } from './CourseEditor';
@@ -19,20 +23,6 @@ import { TopicEditor } from './TopicEditor';
 import { UserPage } from './UserPage';
 import { UsersPage } from './UsersPage';
 import { go, useHashRoute } from './useHashRoute';
-
-/** The menu; the last three are for owners only (editors work on content). */
-const NAV = [
-  ['dashboard', 'Dashboard', false],
-  ['content', 'Lessons', false],
-  ['grammar', 'Grammar', false],
-  ['stories', 'Stories', false],
-  ['board', 'Board prep', false],
-  ['reports', 'Reports', false],
-  ['errors', 'Errors', false],
-  ['users', 'Learners', true],
-  ['team', 'Team', true],
-  ['activity', 'Activity', true],
-] as const;
 
 /** The admin panel: sign in with the token, then dashboard, lessons, grammar, stories and learners. */
 export function AdminApp() {
@@ -58,10 +48,16 @@ export function AdminApp() {
         <span className="ad-brand">
           <Logo size={30} /> <small>Admin</small>
         </span>
-        {NAV.filter(([, , ownerOnly]) => !ownerOnly || me?.role === 'owner').map(([key, label]) => (
-          <button key={key} className={`ad-nav-item${section === key ? ' is-on' : ''}`} onClick={() => go(key)}>
-            {label}
-          </button>
+        {navFor(me?.role === 'owner').map(({ group, items }) => (
+          <div key={group ?? 'top'} className="ad-nav-section" lang="bn">
+            {group && <div className="ad-nav-group">{group}</div>}
+            {items.map((i) => (
+              <button key={i.page} className={`ad-nav-item${section === i.page ? ' is-on' : ''}`} onClick={() => go(i.page)}>
+                <Glyph name={i.icon} size={19} filled={section === i.page && ['path', 'chat', 'letters', 'person'].includes(i.icon)} />
+                {i.label}
+              </button>
+            ))}
+          </div>
         ))}
         <span className="ad-nav-gap" />
         {me && (
@@ -69,13 +65,16 @@ export function AdminApp() {
             {me.name} · {me.role}
           </span>
         )}
-        <a className="ad-nav-item" href="./" target="_blank" rel="noreferrer">
-          Open app ↗
+        <a className="ad-nav-item" href="./" target="_blank" rel="noreferrer" lang="bn">
+          <Glyph name="play" size={19} />
+          অ্যাপ খোলো ↗
         </a>
-        <button className="ad-nav-item" onClick={signOut}>
-          Sign out
+        <button className="ad-nav-item" onClick={signOut} lang="bn">
+          <Glyph name="back" size={19} />
+          সাইন আউট
         </button>
       </nav>
+      <AdminTabBar section={section} owner={me?.role === 'owner'} onSignOut={signOut} />
       <main className="ad-main">
         {page === 'content' ? (
           <ContentPage onUnauthorized={signOut} />
@@ -99,6 +98,8 @@ export function AdminApp() {
           <ReportsPage onUnauthorized={signOut} />
         ) : page === 'errors' ? (
           <ErrorsPage onUnauthorized={signOut} />
+        ) : page === 'settings' ? (
+          <SettingsPage onUnauthorized={signOut} />
         ) : page === 'team' ? (
           <TeamPage onUnauthorized={signOut} />
         ) : page === 'activity' ? (

@@ -8,6 +8,7 @@ import type { GrammarLevel, GrammarTopic } from '../../types';
 import { BoardCard } from '../board/BoardCard';
 import { searchTopics } from './searchTopics';
 import { TopicPage } from './TopicPage';
+import { feature } from '../../lib/appSettings';
 
 type Filter = 'all' | GrammarLevel | 'saved';
 
@@ -61,7 +62,7 @@ export default function GrammarView() {
         <small>Grammar</small>
       </header>
 
-      <BoardCard />
+      {feature('board') && <BoardCard />}
 
       <label className="gr-search">
         <Glyph name="search" size={18} />

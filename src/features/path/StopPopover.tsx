@@ -3,6 +3,7 @@ import { minutesUntil, nextHeartAt } from '../../lib/hearts';
 import { useProgress } from '../../state/ProgressContext';
 import { LESSON_XP } from '../lesson/rewards';
 import type { Lesson, Unit } from '../../types';
+import { unlimitedHearts } from '../../lib/appSettings';
 
 export type StopState = 'done' | 'current' | 'locked';
 
@@ -40,7 +41,7 @@ export function StopPopover({ stop, state, onStart }: Props) {
         <p className="rpop-note" lang="bn">
           আগের লেসনগুলো শেষ করলে খুলবে
         </p>
-      ) : progress.hearts <= 0 ? (
+      ) : progress.hearts <= 0 && !unlimitedHearts() ? (
         <p className="rpop-note" lang="bn">
           হার্ট শেষ · {toBanglaDigits(refill ? minutesUntil(refill) : 0)} মিনিটে ফিরবে
         </p>

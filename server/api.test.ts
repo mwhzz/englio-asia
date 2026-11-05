@@ -54,6 +54,27 @@ describe('course', () => {
     expect((await call('GET', '/api/health')).json).toEqual({ ok: true, version });
   });
 
+  it('lets the owner switch features off and lock units, and sends that to the app with the course', async () => {
+    const before = await call('GET', '/api/course');
+    expect(before.json.settings.features.hearts).toBe(true);
+    expect(before.json.settings.lockedUnits).toEqual([]);
+
+    expect((await call('GET', '/api/admin/settings')).status).toBe(401);
+    const current = (await admin('GET', '/api/admin/settings')).json;
+    expect(current).toHaveProperty('paymentsReady');
+    const unit = before.json.units[2].id;
+    expect((await admin('PUT', '/api/admin/settings', { ...current, lockedUnits: ['nope'] })).status).toBe(400);
+    const saved = await admin('PUT', '/api/admin/settings', { features: { ...current.features, league: false }, lockedUnits: [unit], plus: { price: 149, days: 60 } });
+    expect(saved.status).toBe(200);
+
+    const after = await call('GET', '/api/course');
+    expect(after.etag).not.toBe(before.etag);
+    expect(after.json.settings).toEqual({ features: { ...current.features, league: false }, lockedUnits: [unit], plus: { price: 149, days: 60 } });
+    expect((await call('GET', '/api/premium/info')).json).toMatchObject({ price: 149, days: 60 });
+    // Put it back for the other tests.
+    await admin('PUT', '/api/admin/settings', { features: current.features, lockedUnits: [], plus: current.plus });
+  });
+
   it('serves the seeded course in the same shape as the built-in one', async () => {
     const { status, json } = await call('GET', '/api/course');
     expect(status).toBe(200);

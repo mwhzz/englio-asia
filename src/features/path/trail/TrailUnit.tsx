@@ -8,6 +8,8 @@ import { trailLayout } from './trailLayout';
 import { TrailStop } from './TrailStop';
 import { UnitTestStop } from './UnitTestStop';
 import { useProgress } from '../../../state/ProgressContext';
+import { unitLocked } from '../../../lib/appSettings';
+import { PlusBadge } from '../../premium/PlusBadge';
 
 interface Props {
   unit: Unit;
@@ -32,6 +34,7 @@ export function TrailUnit({ unit, unitIndex, firstIndex, stateOf, openId, onTogg
   return (
     <section className="trail-unit" style={{ '--u': unit.color } as CSSProperties}>
       <UnitSign mark={{ unit, unitIndex }} style={{}} done={done} onGuide={onGuide} />
+      {unitLocked(unit.id) && <PlusBadge />}
       <div className="trail-stops" style={{ height }}>
         <TrailDoodles title={unit.title} points={points} />
         <TrailLine points={points} states={states} height={height} />

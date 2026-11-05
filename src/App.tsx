@@ -1,13 +1,16 @@
 import { lazy, Suspense, useState, type ReactNode } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { findClassLevel } from './data/classLevels';
-import { applyLevel } from './data/course';
+import { ALL_LESSONS, applyLevel, COURSE } from './data/course';
+import type { Unit } from './types';
 import { PlusReturn } from './features/premium/PlusReturn';
 import { HomeView } from './features/home/HomeView';
 import { TabBar, type Tab } from './features/layout/TabBar';
 import { LessonRunner } from './features/lesson/LessonRunner';
 import { useProgress } from './state/ProgressContext';
 import { useBackButton } from './lib/backButton';
+import { lessonLocked, unitLocked } from './lib/appSettings';
+import { LockedUnitSheet } from './features/premium/LockedUnitSheet';
 
 // Only first-time users need onboarding (and its map), so it loads on demand; so does the profile and its card.
 const Onboarding = lazy(() => import('./features/onboarding/Onboarding'));
@@ -32,6 +35,9 @@ export default function App() {
   // The path shows the units made for the learner's level (chosen in onboarding, changeable in settings).
   applyLevel(findClassLevel(progress.profile?.classId)?.stage);
   const [screen, setScreen] = useState<Screen>({ name: 'learn' });
+  // A lesson or test of a Plus-only unit opens this sheet instead (see the admin's Settings).
+  const [lockedUnit, setLockedUnit] = useState<Unit | null>(null);
+  const unitOfLesson = (lessonId: string) => ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.unit;
   const home = () => setScreen({ name: 'learn' });
   const practice = () => setScreen({ name: 'practice' });
   useBackButton(home, screen.name === 'speak' || screen.name === 'grammar' || screen.name === 'profile');
@@ -82,12 +88,12 @@ export default function App() {
     <div className="shell">
       {screen.name === 'learn' ? (
         <HomeView
-          onStart={(lessonId) => setScreen({ name: 'lesson', lessonId })}
+          onStart={(lessonId) => (lessonLocked(lessonId) ? setLockedUnit(unitOfLesson(lessonId) ?? null) : setScreen({ name: 'lesson', lessonId }))}
           onPractice={practice}
           onProfile={() => setScreen({ name: 'profile' })}
           onPlacement={() => setScreen({ name: 'placement' })}
           onReview={() => setScreen({ name: 'review' })}
-          onTest={(unitId) => setScreen({ name: 'test', unitId })}
+          onTest={(unitId) => (unitLocked(unitId) ? setLockedUnit(COURSE.find((u) => u.id === unitId) ?? null) : setScreen({ name: 'test', unitId }))}
         />
       ) : (
         <Suspense fallback={<div className="pf" />}>
@@ -98,6 +104,7 @@ export default function App() {
       )}
       <TabBar tab={screen.name} onChange={(name) => setScreen({ name })} />
       <PlusReturn />
+      {lockedUnit && <LockedUnitSheet unit={lockedUnit} onClose={() => setLockedUnit(null)} />}
     </div>
   );
 }

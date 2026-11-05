@@ -13,6 +13,7 @@ import { HowItWorks } from './HowItWorks';
 import { StreakNudge } from './StreakNudge';
 import { SyncNote } from './SyncNote';
 import { VoiceHint } from './VoiceHint';
+import { feature } from '../../lib/appSettings';
 
 interface Props {
   onStart: (lessonId: string) => void;
@@ -45,9 +46,9 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
         {Object.keys(progress.completed).length < 3 && <HowItWorks />}
         <VoiceHint />
         <ReviewCard onStart={onReview} />
-        {boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
-        {anyDone && <StoriesCard />}
-        {anyDone && <LeagueCard />}
+        {feature('board') && boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
+        {feature('stories') && anyDone && <StoriesCard />}
+        {feature('league') && anyDone && <LeagueCard />}
         <section className="home-path home-rise" style={{ animationDelay: '220ms' }}>
           <div className="home-section-head">
             <h2 className="home-section-title">

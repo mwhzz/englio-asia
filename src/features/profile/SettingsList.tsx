@@ -15,6 +15,7 @@ import { ReminderRow } from './ReminderRow';
 import { TextSizeRow } from './TextSizeRow';
 import { ResetProgress } from './ResetProgress';
 import { PlusRow } from '../premium/PlusRow';
+import { feature } from '../../lib/appSettings';
 
 /** Settings as an iOS inset grouped list: daily goal, sound, then the profile actions. */
 export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
@@ -114,7 +115,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           />
         </label>
 
-        <ReminderRow />
+        {feature('reminders') && <ReminderRow />}
         <OfflineRows />
       </div>
 

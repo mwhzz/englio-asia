@@ -13,6 +13,7 @@ import { ReminderAsk } from '../reminder/ReminderAsk';
 import { LessonComplete } from './LessonComplete';
 import { LessonView } from './LessonView';
 import { applyRewards, type LessonResult } from './rewards';
+import { feature } from '../../lib/appSettings';
 
 const PRACTICE_COLOR = '#af52de';
 const MODE_COLOR = { listening: '#007aff', speaking: '#ff2d55' } as const;
@@ -54,7 +55,7 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
   const accent = ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.unit.color ?? (mode ? MODE_COLOR[mode] : PRACTICE_COLOR);
 
   if (result) {
-    const next = () => (lessonId && shouldAskReminder(progress.reminder?.on ?? false) ? setAskReminder(true) : onExit());
+    const next = () => (lessonId && feature('reminders') && shouldAskReminder(progress.reminder?.on ?? false) ? setAskReminder(true) : onExit());
     return (
       <>
         <LessonComplete result={result} accent={accent} onContinue={next} />

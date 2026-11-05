@@ -1,0 +1,267 @@
+/* The admin's grouped menu and the Settings page (src/admin/SettingsPage.tsx). */
+
+.ad-nav-group {
+  margin: 14px 12px 4px;
+  color: var(--ios-tertiary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ad-ok {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--ios-green) 12%, transparent);
+  color: color-mix(in srgb, var(--ios-green) 70%, var(--ios-label));
+  font-size: 14px;
+}
+
+p.ad-warn {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--ios-orange) 14%, transparent);
+  color: color-mix(in srgb, var(--ios-orange) 60%, var(--ios-label));
+  font-size: 14px;
+}
+
+.ad-pill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ad-pill.is-ok {
+  background: color-mix(in srgb, var(--ios-green) 14%, transparent);
+  color: color-mix(in srgb, var(--ios-green) 70%, var(--ios-label));
+}
+
+/* Feature switches: one row each, the text on the left, an iOS switch on the right. */
+.ad-switches {
+  display: flex;
+  flex-direction: column;
+}
+
+.ad-switch-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  padding: 8px 0;
+  border-top: 0.5px solid var(--ios-separator);
+  cursor: pointer;
+}
+
+.ad-switch-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ad-switch-text small {
+  color: var(--ios-secondary);
+  font-size: 13px;
+}
+
+.ad-switch {
+  flex: none;
+  appearance: none;
+  position: relative;
+  width: 51px;
+  height: 31px;
+  margin: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ios-label) 16%, transparent);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ad-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.ad-switch:checked {
+  background: var(--ios-green);
+}
+
+.ad-switch:checked::after {
+  transform: translateX(20px);
+}
+
+.ad-switch:focus-visible,
+.ad-seg button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ios-blue) 45%, transparent);
+  outline-offset: 2px;
+}
+
+/* Free / Plus for each unit. */
+.ad-seg {
+  flex: none;
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 9px;
+  background: var(--ios-fill);
+}
+
+.ad-seg button {
+  min-width: 64px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--ios-secondary);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ad-seg button.is-on {
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.ad-seg button.is-on.is-plus {
+  color: color-mix(in srgb, var(--ios-orange) 75%, var(--ios-label));
+}
+
+.ad-quick {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.ad-num {
+  width: 64px;
+}
+
+/* ---------- The admin looks like the app ---------- */
+
+.ad-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+}
+
+.ad-nav-item svg {
+  flex: none;
+  color: var(--ios-secondary);
+}
+
+.ad-nav-item.is-on svg {
+  color: var(--ios-blue);
+}
+
+.ad-head h1 {
+  font-size: 30px;
+}
+
+.ad-card {
+  border-radius: 22px;
+  padding: 18px;
+}
+
+/* Capsule buttons, like the app's. */
+.ad-btn {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+}
+
+.ad-btn.is-small {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+}
+
+.ad-btn.is-primary {
+  height: 42px;
+  padding: 0 24px;
+  box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--ios-blue) 70%, transparent);
+}
+
+.ad-input {
+  border-radius: 12px;
+}
+
+/* The phone tab bar is only for phones; on a computer the sidebar does the job. */
+@media (min-width: 761px) {
+  .ad-tabbar {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  /* Only the logo bar stays on top; the pages move to the tab bar and the "আরও" sheet. */
+  .ad-nav > .ad-nav-section,
+  .ad-nav > .ad-nav-item {
+    display: none;
+  }
+  .ad-nav > .ad-nav-me {
+    margin: 0 0 0 auto;
+  }
+  .ad-nav {
+    position: sticky;
+    top: 0;
+    padding: 12px 16px;
+    background: color-mix(in srgb, var(--ios-cell) 85%, transparent);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+  .ad-main {
+    padding-bottom: calc(110px + env(safe-area-inset-bottom));
+  }
+  .ad-head h1 {
+    font-size: 26px;
+  }
+}
+
+.ad-more {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.ad-more-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ad-more .ad-nav-item {
+  width: 100%;
+  min-height: 46px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Five tabs must fit a narrow phone: they share the width instead of each taking the app's minimum. */
+.ad-tabbar .tabbar-glass {
+  width: calc(100% - 24px);
+  max-width: 520px;
+}
+
+.ad-tabbar .tabbar-item {
+  flex: 1;
+  min-width: 0;
+}

@@ -10,7 +10,7 @@ import { QuitDialog } from './QuitDialog';
 import { useEnterKey } from './useEnterKey';
 import { useLessonSession, type LessonStats, type SessionState } from './useLessonSession';
 import { useBackButton } from '../../lib/backButton';
-import { isPlus } from '../../lib/premium';
+import { unlimitedHearts } from '../../lib/appSettings';
 
 interface Props {
   exercises: Exercise[];
@@ -42,7 +42,7 @@ export function LessonView({ exercises, practice, accent, where, resume, onSave,
       <LessonHeader
         done={session.solved}
         total={exercises.length}
-        hearts={practice ? null : isPlus() ? Infinity : session.hearts}
+        hearts={practice ? null : unlimitedHearts() ? Infinity : session.hearts}
         onQuit={() => (session.started ? setConfirmQuit(true) : onQuit())}
       />
 

@@ -25,6 +25,8 @@ npm run build    # type-checks app and server, then builds dist/
 - **Tabs** are শেখো · শোনা-বলা · ব্যাকরণ · প্রোফাইল. The letters tab was removed on purpose; don't bring it back.
 - New content kinds must be validated by the server (`server/validate.ts`) so the app can always solve them, and have tests.
 - **Brand:** app icon = the "e." (B), logo mark = the learning path (D), never merged; blue night `#2F3BD8` + yellow dot `#FFC93C`, dark = black `#141A2E` + lime `#C6F432`. Files and rules: `brand/README.md`; redraw PNGs with `PW=@playwright/test node scripts/make-icons.cjs`.
+- **Owner settings** (feature switches, Plus-only units, Plus price/days) live in `src/data/appSettings.ts` (shared rules), `server/settings.ts` (stored in `meta`, sent with `/api/course`) and `src/lib/appSettings.ts` (`feature()`, `unitLocked()`, `unlimitedHearts()`). A new switchable feature: add it to `FEATURES` and gate it with `feature('id')`. Unit lock is enforced in the app only (the course itself is public).
+- **Admin UI** is in Bangla and looks like the app; its menu is `src/admin/adminNav.ts` (sidebar on a computer, tab bar + "আরও" sheet on a phone). Agreed admin plan: memory/`admin-plan` (Settings → Learners → Content → Reports).
 - Bangla text in the UI, English learning content inside it via `MixedText`.
 
 ## How updates reach users (important)

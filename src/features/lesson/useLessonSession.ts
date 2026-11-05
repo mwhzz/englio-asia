@@ -7,7 +7,7 @@ import { speak } from '../../lib/speech';
 import { track } from '../../lib/track';
 import { useProgress } from '../../state/ProgressContext';
 import type { Exercise, Grade } from '../../types';
-import { isPlus } from '../../lib/premium';
+import { unlimitedHearts } from '../../lib/appSettings';
 
 export interface LessonStats {
   mistakes: number;
@@ -62,8 +62,8 @@ export function useLessonSession(
       setCombo(0);
       // Missed exercises come back at the end, like flash cards.
       setQueue((q) => [...q, { ...exercise, id: `${exercise.id}r` }]);
-      // Englio Plus learners have unlimited hearts.
-      if (!practice && !isPlus()) update((p) => loseHeart(p, Date.now()));
+      // Englio Plus learners (and everyone, when hearts are switched off) have unlimited hearts.
+      if (!practice && !unlimitedHearts()) update((p) => loseHeart(p, Date.now()));
     } else {
       playSound('correct');
       setSolved((s) => s + 1);
@@ -82,7 +82,7 @@ export function useLessonSession(
   }, [index]);
 
   function next() {
-    if (!practice && progress.hearts <= 0) {
+    if (!practice && progress.hearts <= 0 && !unlimitedHearts()) {
       setOutOfHearts(true);
       return;
     }

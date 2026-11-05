@@ -9,6 +9,7 @@ import { watchErrors } from './lib/reportError';
 import './lib/install';
 import { ProgressProvider } from './state/ProgressContext';
 import './styles/index.css';
+import { setAppSettings } from './lib/appSettings';
 
 // Lessons, grammar and stories come from the server (or the copy saved last time); the built-in content is the fallback.
 // The app is imported only after that, since some screens read the course when they load.
@@ -19,6 +20,7 @@ async function start() {
     setCourse(content.units);
     registerRecordings(content.units);
   }
+  setAppSettings(content?.settings);
   // Read later by the grammar, course and story modules (see data/serverContent.d.ts).
   globalThis.englioServerContent = {
     grammar: content?.grammar?.length ? content.grammar : undefined,

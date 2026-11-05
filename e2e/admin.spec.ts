@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { ADMIN_TOKEN, openTab, signIn } from './helpers';
+import { ADMIN_TOKEN, openTab, signIn, adminGo } from './helpers';
 
 test('the admin writes a story and learners see it', async ({ page }) => {
   await page.goto('/admin.html');
   await page.getByPlaceholder('Admin token').fill(ADMIN_TOKEN);
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.getByRole('button', { name: 'Stories' }).click();
+  await adminGo(page, 'গল্প');
   await page.getByRole('button', { name: '+ New story' }).click();
 
   await page.getByLabel('Title (English)').fill('The Red Kite');
@@ -40,7 +40,7 @@ test('a story draft can be previewed in the app before saving, without saving an
   await page.goto('/admin.html');
   await page.getByPlaceholder('Admin token').fill(ADMIN_TOKEN);
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.getByRole('button', { name: 'Stories' }).click();
+  await adminGo(page, 'গল্প');
   await page.getByRole('button', { name: '+ New story' }).click();
   await page.getByLabel('Title (English)').fill('Draft Only');
   await page.getByLabel('Title (Bangla)').fill('খসড়া');
@@ -59,7 +59,7 @@ test('the owner adds an editor, who sees content but not learners', async ({ pag
   await page.goto('/admin.html');
   await page.getByPlaceholder('Admin token').fill(ADMIN_TOKEN);
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.getByRole('button', { name: 'Team' }).click();
+  await adminGo(page, 'টিম');
   await page.getByLabel('Name').fill('Shila');
   await page.getByRole('button', { name: 'Add member' }).click();
   const token = (await page.locator('.ad-token code').textContent())!;
@@ -69,10 +69,13 @@ test('the owner adds an editor, who sees content but not learners', async ({ pag
   await editor.getByPlaceholder('Admin token').fill(token);
   await editor.getByRole('button', { name: 'Sign in' }).click();
   await expect(editor.getByText('Shila · editor')).toBeVisible();
-  await expect(editor.getByRole('button', { name: 'Stories' })).toBeVisible();
-  await expect(editor.getByRole('button', { name: 'Learners' })).toHaveCount(0);
+  // Editors see the content pages, but not learners or settings.
+  await editor.locator('.ad-tabbar').getByRole('button', { name: 'আরও' }).click();
+  await expect(editor.locator('.ad-more').getByRole('button', { name: 'গল্প', exact: true })).toBeVisible();
+  await expect(editor.getByRole('button', { name: 'শিক্ষার্থী', exact: true })).toHaveCount(0);
+  await expect(editor.getByRole('button', { name: 'সেটিংস', exact: true })).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Activity' }).click();
+  await adminGo(page, 'অ্যাক্টিভিটি');
   await expect(page.getByText('added team')).toBeVisible();
 });
 
@@ -100,4 +103,29 @@ test('the admin adds a picture and a recording to a word, and the app gets them'
   expect(word.audio).toMatch(/\.mp3$/);
   const pic = await page.request.get(`http://localhost:8799/api/media/${word.image}`);
   expect(pic.headers()['content-type']).toBe('image/png');
+});
+
+test('the owner switches a feature off and makes a unit Plus-only, and the app follows', async ({ page, context, request }) => {
+  await page.goto('/admin.html');
+  await page.getByPlaceholder(/token/i).fill(ADMIN_TOKEN);
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await adminGo(page, 'সেটিংস');
+  await page.locator('.ad-switch-row', { hasText: 'লিগ' }).first().locator('input').uncheck();
+  await page.getByRole('radiogroup', { name: 'Unit 1 access' }).getByRole('radio', { name: 'Plus' }).click();
+  await page.getByRole('button', { name: 'সেভ করো' }).click();
+  await expect(page.getByText('সেভ হয়েছে')).toBeVisible();
+
+  const app = await context.newPage();
+  await signIn(app);
+  await expect(app.locator('.lgc')).toHaveCount(0);
+  await expect(app.locator('.upnext .plus-badge')).toBeVisible();
+  await app.locator('.upnext').click();
+  await expect(app.getByText('এই ইউনিট Englio Plus-এ')).toBeVisible();
+
+  // Back to everything on and free, for the other tests.
+  const res = await request.put('http://localhost:8799/api/admin/settings', {
+    headers: { authorization: `Bearer ${ADMIN_TOKEN}` },
+    data: { features: { hearts: true, league: true, stories: true, board: true, speaking: true, reminders: true, plus: true }, lockedUnits: [], plus: { price: 99, days: 30 } },
+  });
+  expect(res.ok()).toBe(true);
 });

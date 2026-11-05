@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toBanglaDigits } from '../../lib/bangla';
 import { buyPlus, plusInfo } from '../../lib/premium';
 
-/** On the out-of-hearts screen: unlimited hearts with Englio Plus, when payments are set up. */
+/** On the out-of-hearts screen: Englio Plus (unlimited hearts and every unit), when payments are set up. */
 export function PlusOffer() {
   const [info, setInfo] = useState<{ available: boolean; price: number; days: number } | null>(null);
   useEffect(() => {
@@ -12,7 +12,7 @@ export function PlusOffer() {
   return (
     <button className="cta plus-cta" onClick={() => buyPlus().catch(() => undefined)}>
       <span lang="bn">
-        অফুরন্ত হার্ট নাও · {toBanglaDigits(info.price)} টাকা / {toBanglaDigits(info.days)} দিন
+        Englio Plus নাও · {toBanglaDigits(info.price)} টাকা / {toBanglaDigits(info.days)} দিন
       </span>
     </button>
   );

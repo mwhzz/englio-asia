@@ -17,7 +17,7 @@ import { addReport, closeReports, listReports } from './reports.ts';
 import { analytics, recordEvents } from './events.ts';
 import { accountsOf, signInGoogle, startPhone, verifyPhone } from './auth.ts';
 import { addFriend, friendsLeague, removeFriend } from './friends.ts';
-import { callback, checkout, premiumInfo, premiumOf } from './premium.ts';
+import { callback, checkout, paymentsReady, premiumInfo, premiumOf } from './premium.ts';
 import { clearLeaderboardCache, leaderboard } from './leaderboard.ts';
 import { MAX_UPLOAD, readMedia, saveMedia } from './media.ts';
 import { deletePush, savePush } from './reminders.ts';
@@ -25,6 +25,7 @@ import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
 import * as team from './team.ts';
 import { checkUserId, loadProgress, saveProgress } from './users.ts';
 import { SERVER_VERSION } from './version.ts';
+import { readSettings, saveSettings } from './settings.ts';
 
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
 function routes(db: DatabaseSync): Route[] {
@@ -43,6 +44,7 @@ function routes(db: DatabaseSync): Route[] {
         stories: readStories(db),
         board: readBoard(db),
         writing: readWriting(db),
+        settings: readSettings(db),
       }),
     },
     {
@@ -67,7 +69,7 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/auth/phone/verify', strict: true, handler: (r) => verifyPhone(db, r) },
     { method: 'POST', pattern: '/api/auth/google', strict: true, handler: (r) => signInGoogle(db, r) },
     { method: 'GET', pattern: '/api/users/:id/accounts', handler: (r) => accountsOf(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
-    { method: 'GET', pattern: '/api/premium/info', handler: () => premiumInfo() },
+    { method: 'GET', pattern: '/api/premium/info', handler: () => premiumInfo(db) },
     { method: 'GET', pattern: '/api/premium/callback', handler: (r) => callback(db, r) },
     { method: 'GET', pattern: '/api/users/:id/premium', handler: ({ params }) => premiumOf(db, checkUserId(params.id)) },
     { method: 'POST', pattern: '/api/users/:id/premium/checkout', strict: true, handler: (r) => checkout(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
@@ -114,6 +116,8 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/admin/team', admin: 'owner', handler: (r) => team.addMember(db, r) },
     { method: 'DELETE', pattern: '/api/admin/team/:id', admin: 'owner', handler: (r) => team.removeMember(db, r) },
     { method: 'GET', pattern: '/api/admin/activity', admin: 'owner', handler: (r) => team.activity(db, r) },
+    { method: 'GET', pattern: '/api/admin/settings', admin: 'owner', handler: () => ({ ...readSettings(db), paymentsReady: paymentsReady() }) },
+    { method: 'PUT', pattern: '/api/admin/settings', admin: 'owner', handler: (r) => saveSettings(db, r) },
     { method: 'POST', pattern: '/api/admin/media', admin: true, raw: MAX_UPLOAD, handler: (r) => saveMedia(r) },
     { method: 'GET', pattern: '/api/admin/summary', admin: true, handler: () => people.summary(db) },
     { method: 'GET', pattern: '/api/admin/analytics', admin: true, handler: ({ query }) => analytics(db, Math.min(365, Math.max(1, Number(query.get('days')) || 30))) },

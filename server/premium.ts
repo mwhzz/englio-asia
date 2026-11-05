@@ -1,12 +1,14 @@
 import { randomBytes } from 'node:crypto';
 import type { DatabaseSync } from 'node:sqlite';
 import { HttpError, Redirect, type Request } from './http.ts';
+import { readSettings } from './settings.ts';
 
 /**
  * Englio Plus (unlimited hearts), paid with bKash's Tokenized Checkout. Set these to turn it on
  * (see docs/SERVER.md): BKASH_BASE_URL, BKASH_APP_KEY, BKASH_APP_SECRET, BKASH_USERNAME, BKASH_PASSWORD,
  * PUBLIC_API_URL (this API's https address, for bKash to send the learner back to) and APP_URL (the app).
- * PREMIUM_PRICE (taka, default 99) and PREMIUM_DAYS (default 30) set the plan.
+ * The plan (price, days) and whether Plus can be bought are set on the admin's Settings page (settings.ts);
+ * PREMIUM_PRICE / PREMIUM_DAYS only give the starting plan before the owner saves one.
  */
 const env = () => ({
   base: process.env.BKASH_BASE_URL ?? '',
@@ -16,8 +18,6 @@ const env = () => ({
   password: process.env.BKASH_PASSWORD ?? '',
   api: (process.env.PUBLIC_API_URL ?? '').replace(/\/$/, ''),
   app: (process.env.APP_URL ?? './').replace(/\/$/, ''),
-  price: Number(process.env.PREMIUM_PRICE ?? 99),
-  days: Number(process.env.PREMIUM_DAYS ?? 30),
 });
 const ready = (e = env()) => !!(e.base && e.appKey && e.appSecret && e.username && e.password && e.api);
 
@@ -38,10 +38,13 @@ async function token(post: Post): Promise<string> {
   return r.id_token;
 }
 
+/** Whether bKash is set up on the server (the admin warns when Plus-only units can't be bought yet). */
+export const paymentsReady = () => ready();
+
 /** Whether payments are on, and the plan. */
-export function premiumInfo() {
-  const e = env();
-  return { available: ready(e), price: e.price, days: e.days };
+export function premiumInfo(db: DatabaseSync) {
+  const { features, plus } = readSettings(db);
+  return { available: ready() && features.plus, price: plus.price, days: plus.days };
 }
 
 /** Until when this learner has Englio Plus (null: not now). */
@@ -53,7 +56,8 @@ export function premiumOf(db: DatabaseSync, userId: string, now = new Date()) {
 /** Starts a payment and returns bKash's page to send the learner to. */
 export async function checkout(db: DatabaseSync, { params }: Request, post: Post = httpPost, now = new Date()) {
   const e = env();
-  if (!ready(e)) throw new HttpError(503, 'Payments are not set up yet');
+  const { features, plus } = readSettings(db);
+  if (!ready(e) || !features.plus) throw new HttpError(503, 'Payments are not set up yet');
   if (!db.prepare('SELECT 1 FROM users WHERE id = ?').get(params.id)) throw new HttpError(404, 'No such user');
   const invoice = `EN${now.getTime().toString(36)}${randomBytes(3).toString('hex')}`.toUpperCase();
   const idToken = await token(post);
@@ -63,14 +67,14 @@ export async function checkout(db: DatabaseSync, { params }: Request, post: Post
       mode: '0011',
       payerReference: invoice,
       callbackURL: `${e.api}/premium/callback`,
-      amount: e.price.toFixed(2),
+      amount: plus.price.toFixed(2),
       currency: 'BDT',
       intent: 'sale',
       merchantInvoiceNumber: invoice,
     }),
   });
   if (typeof r.paymentID !== 'string' || typeof r.bkashURL !== 'string') throw new HttpError(502, String(r.statusMessage ?? 'bKash could not start the payment'));
-  db.prepare('INSERT INTO payments (payment_id, user_id, amount, status, trx_id, created_at) VALUES (?, ?, ?, ?, NULL, ?)').run(r.paymentID, params.id, e.price, 'started', now.toISOString());
+  db.prepare('INSERT INTO payments (payment_id, user_id, amount, status, trx_id, created_at) VALUES (?, ?, ?, ?, NULL, ?)').run(r.paymentID, params.id, plus.price, 'started', now.toISOString());
   return { url: r.bkashURL };
 }
 
@@ -100,7 +104,7 @@ export async function callback(db: DatabaseSync, { query }: Request, post: Post 
   // Paying again while still Plus adds the days on top.
   const current = premiumOf(db, payment.user_id, now).until;
   const from = current ? new Date(current) : now;
-  const until = new Date(from.getTime() + e.days * 86_400_000).toISOString();
+  const until = new Date(from.getTime() + readSettings(db).plus.days * 86_400_000).toISOString();
   db.prepare('UPDATE payments SET status = ?, trx_id = ? WHERE payment_id = ?').run('paid', String(r.trxID ?? ''), paymentId);
   db.prepare('INSERT INTO premium (user_id, until) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET until = excluded.until').run(payment.user_id, until);
   return back('ok');

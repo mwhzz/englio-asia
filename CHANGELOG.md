@@ -6,6 +6,10 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Admin: a new সেটিংস page for the owner. Switch features on or off (hearts, league, stories, board prep, শোনা-বলা, reminders, buying Plus), choose which units are free and which need Englio Plus, and set the Plus price and days. Apps pick it up the next time they open, no new APK.
+- App: units the owner made Plus-only show a "Plus" tag on the path and the Up Next card; tapping one explains Englio Plus (and how to get it, once bKash is on) instead of starting the lesson. Switching hearts off gives everyone unlimited hearts.
+- Admin looks and moves like the app: menus in Bangla, grouped, with Englio's icons; on a phone, the app's glass tab bar with an "আরও" sheet; capsule buttons and rounder cards.
+
 ## 1.3.1 (2026-11-06)
 
 - Every icon in the app now has the same look: search, back, zoom, clear and the reminder bell were redrawn (the bell was an emoji). Flame, gem, heart, trophy and star get a soft fill of their own colour, and the selected tab shows a solid icon.

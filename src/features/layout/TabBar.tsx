@@ -1,5 +1,6 @@
 import { Glyph, type GlyphName } from '../../components/Glyph';
 import { haptic } from '../../lib/haptics';
+import { feature } from '../../lib/appSettings';
 
 export type Tab = 'learn' | 'speak' | 'grammar' | 'profile';
 
@@ -15,7 +16,7 @@ export function TabBar({ tab, onChange }: { tab: Tab; onChange: (tab: Tab) => vo
   return (
     <nav className="tabbar" aria-label="Main">
       <div className="tabbar-glass">
-        {TABS.map((t) => (
+        {TABS.filter((t) => t.id !== 'speak' || feature('speaking')).map((t) => (
           <button
             key={t.id}
             className={`tabbar-item${tab === t.id ? ' is-on' : ''}`}

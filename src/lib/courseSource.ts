@@ -19,6 +19,8 @@ export interface Content {
   board?: BoardTopic[];
   /** Writing practice tasks. */
   writing?: WritingTask[];
+  /** The owner's switches from the admin's Settings page (data/appSettings.ts). */
+  settings?: unknown;
 }
 
 interface Cached extends Content {

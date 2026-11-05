@@ -6,6 +6,8 @@ import { minutesUntil, nextHeartAt } from '../../lib/hearts';
 import { useProgress } from '../../state/ProgressContext';
 import { LESSON_XP } from '../lesson/rewards';
 import { nextLesson } from './nextLesson';
+import { unitLocked, unlimitedHearts } from '../../lib/appSettings';
+import { PlusBadge } from '../premium/PlusBadge';
 
 interface Props {
   onStart: (lessonId: string) => void;
@@ -16,7 +18,7 @@ interface Props {
 export function UpNextCard({ onStart, onPractice }: Props) {
   const { progress } = useProgress();
   const next = nextLesson(progress.completed);
-  const outOfHearts = progress.hearts <= 0;
+  const outOfHearts = progress.hearts <= 0 && !unlimitedHearts();
   const refill = nextHeartAt(progress);
   const canPractice = Object.keys(progress.completed).length > 0;
 
@@ -62,7 +64,7 @@ export function UpNextCard({ onStart, onPractice }: Props) {
       aria-label={`Start ${lesson.title}, unit ${unitNumber}`}
     >
       <span className="upnext-kicker">
-        UP NEXT · UNIT {unitNumber} · <span lang="bn">{unit.titleBn}</span>
+        UP NEXT · UNIT {unitNumber} · <span lang="bn">{unit.titleBn}</span> {unitLocked(unit.id) && <PlusBadge />}
       </span>
       <strong className="upnext-title">{lesson.title}</strong>
       <span className="upnext-bn" lang="bn">
