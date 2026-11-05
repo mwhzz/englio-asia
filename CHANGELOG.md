@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.3.0 (2026-11-06)
+
 - New Englio brand: the app icon is a bold "e." and the logo is the learning path, in blue night with a yellow dot (black and lime in dark mode). The browser bar and the phone's status bar are blue night too. All brand files and rules are in `brand/`.
 
 ## 1.2.0 (2026-11-06)
