@@ -13,7 +13,7 @@ export function reportError(error: unknown, where = location.hash || 'app'): voi
   if (sent >= MAX_REPORTS || seen.has(key) || location.hash.startsWith('#preview')) return;
   seen.add(key);
   sent++;
-  const body = JSON.stringify({ message: e.message || e.name, stack: e.stack ?? '', where: `${where} · v${APP_VERSION} · ${import.meta.env.MODE}` });
+  const body = JSON.stringify({ message: e.message || e.name, stack: e.stack ?? '', version: APP_VERSION, where: `${where} · v${APP_VERSION} · ${import.meta.env.MODE}` });
   fetch(`${API_BASE}/errors`, { method: 'POST', headers: { 'content-type': 'application/json' }, body, keepalive: true }).catch(() => undefined);
 }
 

@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Glyph } from '../components/Glyph';
 import { Modal } from '../components/Modal';
-import { navFor, TAB_PAGES } from './adminNav';
+import { navFor, TAB_PAGES, type Role } from './adminNav';
 import { go } from './useHashRoute';
 
 /**
  * On a phone, the admin moves around like the app: the same floating glass tab bar at the bottom with the
  * main pages, and "আরও" opening a sheet with every page, the app link and sign out.
  */
-export function AdminTabBar({ section, owner, onSignOut }: { section: string; owner: boolean; onSignOut: () => void }) {
+export function AdminTabBar({ section, role, onSignOut }: { section: string; role: Role; onSignOut: () => void }) {
   const [more, setMore] = useState(false);
-  const groups = navFor(owner);
+  const groups = navFor(role);
   const tabs = groups.flatMap((g) => g.items).filter((i) => TAB_PAGES.includes(i.page));
   const inMore = !tabs.some((t) => t.page === section);
   const open = (page: string) => {

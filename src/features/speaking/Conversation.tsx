@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { Glyph } from '../../components/Glyph';
 import { SpeakButton } from '../../components/SpeakButton';
-import { toBanglaDigits } from '../../lib/bangla';
+import { toBanglaDigits, possessive } from '../../lib/bangla';
 import { useBackButton } from '../../lib/backButton';
 import { dayKey } from '../../lib/days';
 import { haptic } from '../../lib/haptics';
@@ -74,7 +74,7 @@ export function Conversation({ dialog, onClose }: { dialog: Dialog; onClose: () 
           <Glyph name="close" size={16} />
         </button>
         <span className="lp-bar-title" lang="bn">
-          {dialog.with}-এর সাথে কথা
+          {possessive(dialog.with)} সাথে কথা
         </span>
         <span className="lp-bar-space" />
       </header>

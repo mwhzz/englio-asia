@@ -4,7 +4,7 @@
   --u: var(--ios-blue);
   /* Everything you can tap takes the unit's color. */
   --tint: var(--u);
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--zoom));
   display: flex;
   flex-direction: column;
   background: var(--ios-bg);
@@ -19,6 +19,11 @@
 /* ---------- Top bar ---------- */
 
 .lesson-top {
+  /* Pinned like the bottom bar: quit, progress and hearts stay in view when a long exercise scrolls. */
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: var(--ios-bg);
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
@@ -300,7 +305,7 @@
 
 .done-screen {
   --u: var(--ios-blue);
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--zoom));
   display: flex;
   flex-direction: column;
   padding: calc(48px + env(safe-area-inset-top)) max(20px, calc((100% - 440px) / 2)) calc(20px + env(safe-area-inset-bottom));

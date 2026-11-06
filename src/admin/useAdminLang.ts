@@ -54,3 +54,17 @@ export function useLanguages(version = 0) {
   }, [version]);
   return languages;
 }
+
+/**
+ * The language the meanings are written in on the content pages: its code, English name and direction,
+ * so forms say "Arabic meaning" (not "Bangla") and type right-to-left where it is.
+ */
+export function useMeaningLang(): { code: string; name: string; dir: 'ltr' | 'rtl' } {
+  const code = useAdminLang();
+  const languages = useLanguages();
+  const l = languages?.find((x) => x.code === code);
+  return { code, name: l?.name ?? (code === 'bn' ? 'Bangla' : code), dir: l?.dir ?? 'ltr' };
+}
+
+/** "Rule (Bangla)" → "Rule (Arabic)" for the chosen language. */
+export const forLang = (label: string, name: string) => (name === 'Bangla' ? label : label.replace(/\bBangla\b/g, name));

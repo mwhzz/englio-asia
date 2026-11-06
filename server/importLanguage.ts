@@ -7,13 +7,17 @@ import type { Request } from './http.ts';
 import { createLanguage, listLanguages } from './languages.ts';
 import { validateItem } from './validate.ts';
 import { validateTopic } from './validateTopic.ts';
+import { validateStory } from './validateStory.ts';
+import * as stories from './adminStories.ts';
+import * as writing from './adminWriting.ts';
 
 // `node server/importLanguage.ts <file.json>`: adds a starter course for one learner language (units with their
 // lessons and items, and grammar topics) from a JSON file, through the same checks as the admin. Everything is
 // checked first and nothing is added if anything is wrong; a language that already has content is refused, so
 // a file is never added twice. The language is created (in draft) if it doesn't exist yet. The file:
 //   { "language": { code, name, native, dir }, "units": [{ title, titleBn, color, tips, lessons: [{ title, titleBn,
-//     vocab, sentences, fills, gaps, grammar, dialogs }] }], "grammar": [ GrammarTopic … ] }
+//     vocab, sentences, fills, gaps, grammar, dialogs }] }], "grammar": [ GrammarTopic … ],
+//     "stories": [ Story … ], "writing": [ WritingTask … ] }
 // (titleBn / bn fields hold the meaning in that language.)
 
 interface LessonIn {
@@ -37,6 +41,9 @@ export interface LanguageFile {
   language: { code: string; name: string; native: string; dir: 'ltr' | 'rtl' };
   units: UnitIn[];
   grammar?: unknown[];
+  /** Short stories and writing tasks, as the admin's story and writing editors save them. */
+  stories?: unknown[];
+  writing?: unknown[];
 }
 
 const KINDS = [
@@ -75,8 +82,22 @@ export function importLanguage(db: DatabaseSync, file: LanguageFile) {
       throw new Error(`Grammar topic ${i + 1}: ${(error as Error).message}`);
     }
   });
+  (file.stories ?? []).forEach((t, i) => {
+    try {
+      validateStory(t);
+    } catch (error) {
+      throw new Error(`Story ${i + 1}: ${(error as Error).message}`);
+    }
+  });
+  (file.writing ?? []).forEach((t, i) => {
+    try {
+      writing.validateWriting(t);
+    } catch (error) {
+      throw new Error(`Writing task ${i + 1}: ${(error as Error).message}`);
+    }
+  });
   const existing = listLanguages(db).find((l) => l.code === code);
-  if (existing && existing.units + existing.grammar > 0) throw new Error(`"${code}" already has content; nothing was added`);
+  if (existing && existing.units + existing.grammar + existing.stories + existing.writing > 0) throw new Error(`"${code}" already has content; nothing was added`);
 
   // 2. Add it, through the admin's own functions (same ids, positions and checks).
   if (!existing) createLanguage(db, req({ body: file.language }));
@@ -95,7 +116,9 @@ export function importLanguage(db: DatabaseSync, file: LanguageFile) {
     }
   }
   for (const t of file.grammar ?? []) grammar.createTopic(db, req({ body: { ...(t as object), lang: code } }));
-  return { language: code, units: file.units.length, lessons, items, grammar: (file.grammar ?? []).length };
+  for (const t of file.stories ?? []) stories.createStory(db, req({ body: { ...(t as object), lang: code } }));
+  for (const t of file.writing ?? []) writing.createWriting(db, req({ body: { ...(t as object), lang: code } }));
+  return { language: code, units: file.units.length, lessons, items, grammar: (file.grammar ?? []).length, stories: (file.stories ?? []).length, writing: (file.writing ?? []).length };
 }
 
 // Run directly (not when the tests import it).

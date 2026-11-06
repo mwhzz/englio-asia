@@ -18,7 +18,7 @@ describe('importing a language', () => {
     seedCourse(db);
     const bangla = readCourse(db).length;
 
-    expect(importLanguage(db, ARABIC)).toEqual({ language: 'ar', units: 3, lessons: 6, items: 86, grammar: 3 });
+    expect(importLanguage(db, ARABIC)).toEqual({ language: 'ar', units: 3, lessons: 6, items: 86, grammar: 3, stories: 0, writing: 0 });
     const ar = listLanguages(db).find((l) => l.code === 'ar')!;
     expect(ar).toMatchObject({ status: 'draft', dir: 'rtl', units: 3, lessons: 6 });
     expect(ar.translated).toBe(ar.items);

@@ -6,6 +6,17 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Help page (Profile → সাহায্য ও অভিযোগ): answers to common questions, a form to report any problem (account, payment, a bug…), and the team's replies to your reports.
+- A lost streak is told ("৯ দিনের স্ট্রিক শেষ হয়ে গেছে") with a button to start again, instead of silently becoming 0.
+- Leaving a lesson can be "পরে চালিয়ে যাব" (carries on from the same question). The question count no longer grows when a missed question comes back; it says "আবার".
+- Largest text on a small phone: the tab bar, lesson header and story reader fit the screen; the lesson header stays pinned; nothing scrolls sideways.
+- The story's "পরের লাইন" button stays at the bottom, under the thumb. The league counts this week's XP right away. Small Bangla fixes (ঢাকার, Rina-র; "শব্দটা জোরে বলো" for single words; board practice says "১৮টা থেকে ১০টা প্রশ্ন"). A short lesson counts as 1 minute. The unearnable "পুরো বর্ণমালা" badge became "৩টা গল্প".
+- Admin, reports: every report with the learner, app version and phone; statuses (নতুন, দেখছি, ঠিক হয়েছে, বন্ধ), kinds, who handles it, search, and a reply the learner reads in the app. Fixing a lesson question tells everyone who reported it.
+- Admin, learners: find by name, backup code, phone number, device id or Google email; 50 per page; Plus, payments, sign-ins, reminder, phone and version on the learner page; give Plus, fill hearts, give freezes, give back a streak, join a second phone's progress, block from the league, download the data. Deleting removes payments too.
+- Admin, dashboard: sign-ups and active learners per day, day 1/7/30 retention, onboarding drop-off, reminders asked/sent/opened, Plus numbers, learners and crashes by app version; the lesson funnel is in course order. The admin pages are in Bangla.
+- Admin, team: a "support" role (learners and reports, no content or settings); the activity log shows what was sent and can be filtered.
+- Server: nightly backup checked and sent to the owner's Telegram (optionally locked), a restore script, and a 5-minute check that messages Telegram when the site is down, the disk is full or the backup is old. Reminders and the league no longer read every learner's progress (safe at 100k learners); higher rate limit for shared mobile networks; deploys build at low priority.
+
 ## 1.6.1 (2026-11-06)
 
 - Fix: since 1.5.0 the app downloaded the whole course every time it opened, instead of only when it changed. Fixed for the apps already on phones too.

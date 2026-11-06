@@ -4,6 +4,9 @@ import { TopicPage } from '../features/grammar/TopicPage';
 import { LessonRunner } from '../features/lesson/LessonRunner';
 import { StoryReader } from '../features/stories/StoryReader';
 import { DRAFT_KEY, readDraft, type Draft } from './draft';
+import { setCourse } from '../data/course';
+import { adminApi } from '../admin/adminApi';
+import type { Unit } from '../types';
 
 const noop = () => undefined;
 
@@ -17,8 +20,23 @@ function Screen({ draft }: { draft: Draft }) {
     case 'course':
       return <CoursePage topic={draft.topic} course={draft.course} onClose={noop} />;
     case 'lesson':
-      return <LessonRunner lessonId={draft.lessonId} onExit={noop} onPractice={noop} />;
+      return <LessonPreview lessonId={draft.lessonId} lang={draft.lang} />;
   }
+}
+
+/** A lesson as saved; for a language other than Bangla, its course (drafts too) is fetched from the admin first. */
+function LessonPreview({ lessonId, lang }: { lessonId: string; lang?: string }) {
+  const [ready, setReady] = useState(!lang || lang === 'bn');
+  const [problem, setProblem] = useState<string | null>(null);
+  useEffect(() => {
+    if (ready) return;
+    adminApi<{ units: Unit[] }>('GET', `/course?lang=${lang}`)
+      .then(({ units }) => (setCourse(units), setReady(true)))
+      .catch((e: Error) => setProblem(e.message));
+  }, [lang, ready]);
+  if (problem) return <p className="pv-empty">{problem}</p>;
+  if (!ready) return <p className="pv-empty">লোড হচ্ছে…</p>;
+  return <LessonRunner lessonId={lessonId} onExit={noop} onPractice={noop} />;
 }
 
 /** The preview tab: the latest draft, reloaded whenever the admin sends another. */

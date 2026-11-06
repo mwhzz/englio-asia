@@ -5,10 +5,11 @@ import { EMPTY_STORY, fieldsToStory, storyToFields, type StoryFields } from './s
 import { openPreview } from '../preview/draft';
 import { slug } from './topicForm';
 import { go } from './useHashRoute';
-import { useAdminLang } from './useAdminLang';
+import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 /** Write or edit one short story; the server checks it before saving. */
 export function StoryEditor({ id, onUnauthorized }: { id: string; onUnauthorized: () => void }) {
+  const meaning = useMeaningLang();
   const isNew = id === 'new';
   const lang = useAdminLang();
   const [fields, setFields] = useState<StoryFields | null>(isNew ? EMPTY_STORY : null);
@@ -63,7 +64,7 @@ export function StoryEditor({ id, onUnauthorized }: { id: string; onUnauthorized
             <input className="ad-input" value={fields.title} onChange={(e) => set('title', e.target.value)} />
           </label>
           <label className="ad-field">
-            <span>Title (Bangla)</span>
+            <span>{forLang('Title (Bangla)', meaning.name)}</span>
             <input className="ad-input" lang="bn" value={fields.titleBn} onChange={(e) => set('titleBn', e.target.value)} />
           </label>
           <label className="ad-field">

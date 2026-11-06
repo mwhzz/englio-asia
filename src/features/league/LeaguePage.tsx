@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Glyph } from "../../components/Glyph";
 import { findDistrict, type District } from "../../data/districts";
-import { toBanglaDigits } from "../../lib/bangla";
+import { toBanglaDigits, possessive } from "../../lib/bangla";
 import { daysLeft, type League } from "../../lib/league";
 import { FriendsLeague } from "./FriendsLeague";
 import { useBackButton } from "../../lib/backButton";
@@ -120,7 +120,7 @@ export function LeaguePage({
 
             {league.learners.length > 0 && (
               <section className="gt-card">
-                <h2 lang="bn">{district.bn}-এর সেরা শিক্ষার্থী</h2>
+                <h2 lang="bn">{possessive(district.bn)} সেরা শিক্ষার্থী</h2>
                 <ol className="lgp-people">
                   {league.learners.map((l, i) => (
                     <li key={i} className={l.isMe ? "is-me" : undefined}>

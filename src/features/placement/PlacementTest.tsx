@@ -8,7 +8,7 @@ import { buildPlacement, skipUnits } from '../../lib/placement';
 import { playSound } from '../../lib/sounds';
 import { useProgress } from '../../state/ProgressContext';
 import { ExerciseView } from '../exercises/ExerciseView';
-import { INSTRUCTIONS } from '../exercises/instructions';
+import { instructionFor } from '../exercises/instructions';
 import { useBackButton } from '../../lib/backButton';
 
 /**
@@ -140,7 +140,7 @@ export function PlacementTest({ onDone }: { onDone: () => void }) {
   }
 
   const asked = round * 2 + step;
-  const instruction = INSTRUCTIONS[exercise.kind];
+  const instruction = instructionFor(exercise);
   return (
     <div className="lesson" style={{ '--u': '#007aff' } as React.CSSProperties}>
       <header className="lesson-top">

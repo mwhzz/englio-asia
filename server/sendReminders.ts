@@ -1,5 +1,6 @@
 import { openDb } from './db.ts';
 import { deletePush, dueReminders, reminderMessage } from './reminders.ts';
+import { countEvent } from './events.ts';
 
 // `node server/sendReminders.ts`, run once an hour (cron: `5 * * * *`). Sends today's reminder to every
 // learner whose chosen hour it is and who hasn't learned yet today. Needs the `web-push` package and
@@ -53,4 +54,6 @@ for (const r of dueReminders(db)) {
     else console.error(`Reminder to ${r.userId} failed:`, status ?? error);
   }
 }
+// Counted for the admin's reminder numbers (sent vs opened).
+countEvent(db, 'reminder_sent', 'sent', sent);
 console.log(`Sent ${sent} reminders.`);

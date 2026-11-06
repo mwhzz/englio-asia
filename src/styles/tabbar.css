@@ -27,7 +27,8 @@
 }
 
 .tabbar-item {
-  min-width: clamp(66px, 20vw, 88px);
+  /* Four tabs always fit the screen, also with larger text (base.css --zoom). */
+  min-width: min(clamp(66px, 20vw, 88px), calc((100vw - 34px) / 4 / var(--zoom)));
   height: 54px;
   display: flex;
   flex-direction: column;

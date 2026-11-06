@@ -26,16 +26,15 @@ VITE_API_URL=https://api.yourdomain.com/api VITE_VAPID_PUBLIC_KEY=<public key fr
 
 Upload `dist/` to any static host (Cloudflare Pages, Netlify, Vercel). It has to be HTTPS, because the service worker, install and notifications only work over HTTPS.
 
-## 3. Back up the database
+## 3. Back up the database, and monitoring
 
-Everything (content, learners, reminders, analytics) is the single SQLite file, plus the uploaded pictures and recordings in `server/media/`. Copy both once a day:
+On the server this is set up by `deploy/setup.sh` (cron in `/etc/cron.d/englio`):
 
-```bash
-sqlite3 server/englio.db ".backup '/backups/englio-$(date +%F).db'"
-rsync -a server/media/ /backups/media/
-```
-
-Keep a copy off the server too, e.g. on Backblaze B2 or Google Drive, and delete copies older than about 30 days.
+- `deploy/backup.sh` (03:30): `sqlite3 .backup`, `PRAGMA integrity_check`, gzip into `/var/backups/englio` (7 days), media copied there; the database goes to the owner's Telegram every night and the media on Fridays (45 MB parts; locked with `openssl aes-256-cbc -pbkdf2` when `BACKUP_PASSWORD` is set). Touches `/var/lib/englio/last-backup`.
+- `deploy/watch.sh` (every 5 min): `/api/health`, disk ≥ 85 %, free memory < 80 MB, backup older than 30 h; one Telegram message when something breaks and one when it's fine again.
+- `deploy/telegram.sh`: sends a message or file; does nothing without `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in `/etc/englio.env` (set them with `deploy/telegram-setup.sh`).
+- `deploy/restore.sh <file> [--test]`: checks a backup (`.db`, `.db.gz`, `.enc`) and, without `--test`, puts it live, keeping the old database as `englio.db.before-restore-<time>`.
+- `/api/health` returns `{ ok, version, db: "ok", backupAgeHours }` (500 when the database doesn't answer), so any free uptime monitor can watch it too.
 
 ## 4. Daily reminders (push notifications)
 

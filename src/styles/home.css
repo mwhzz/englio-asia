@@ -5,7 +5,7 @@
 }
 
 .home {
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--zoom));
   padding-bottom: calc(110px + env(safe-area-inset-bottom));
   background: var(--ios-bg);
   color: var(--ios-label);
@@ -474,4 +474,45 @@
 
 .hw-ok {
   align-self: flex-end;
+}
+
+/* A streak that ended (StreakLost). */
+.sl {
+  position: relative;
+  cursor: default;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ios-secondary) 30%, transparent);
+}
+.sl:active {
+  transform: none;
+}
+.sl-icon {
+  background: var(--ios-secondary);
+}
+.sl-go {
+  border: none;
+  background: var(--ios-orange);
+  cursor: pointer;
+}
+.sl-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ios-blue);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sl-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  cursor: pointer;
 }

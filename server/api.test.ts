@@ -51,7 +51,7 @@ afterAll(() => new Promise<void>((done) => server.close(() => done())));
 describe('course', () => {
   it('reports the running version on /api/health, so a deploy can be checked', async () => {
     const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { version: string };
-    expect((await call('GET', '/api/health')).json).toEqual({ ok: true, version });
+    expect((await call('GET', '/api/health')).json).toMatchObject({ ok: true, version, db: 'ok' });
   });
 
   it('lets the owner switch features off and lock units, and sends that to the app with the course', async () => {
@@ -185,7 +185,7 @@ describe('users', () => {
     expect((await call('PUT', '/api/users/test-user-1', { progress })).status).toBe(200);
     expect((await call('GET', '/api/users/test-user-1')).json.progress).toEqual(progress);
     const list = (await admin('GET', '/api/admin/users?q=Test')).json;
-    expect(list).toEqual([expect.objectContaining({ id: 'test-user-1', xp: 42, lessonsDone: 1, districtId: 'dhaka' })]);
+    expect(list.users).toEqual([expect.objectContaining({ id: 'test-user-1', xp: 42, lessonsDone: 1, districtId: 'dhaka' })]);
   });
 
   it('rejects bad ids', async () => {

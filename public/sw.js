@@ -91,6 +91,8 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  // Anonymous count of reminders opened (the admin's reminder numbers).
+  fetch(new URL('api/events', self.registration.scope), { method: 'POST', body: JSON.stringify({ events: [{ name: 'reminder_open', key: 'open' }] }) }).catch(() => undefined);
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((tabs) => {
       const tab = tabs.find((t) => 'focus' in t);

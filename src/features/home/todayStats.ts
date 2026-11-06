@@ -16,7 +16,8 @@ export function todayStats(p: Progress, today = dayKey()): Today {
   return {
     xp,
     goal: p.dailyGoal,
-    minutes: Math.floor((p.secondsByDay[today] ?? 0) / 60),
+    // A short lesson still counts: any time today is at least 1 minute.
+    minutes: Math.ceil((p.secondsByDay[today] ?? 0) / 60),
     lessons: p.lessonsByDay[today] ?? 0,
     fraction: Math.min(1, xp / Math.max(1, p.dailyGoal)),
   };

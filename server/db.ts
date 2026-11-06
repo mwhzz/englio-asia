@@ -1,5 +1,10 @@
 import { DatabaseSync } from 'node:sqlite';
 import { fileURLToPath } from 'node:url';
+import { activitySummary } from './activity.ts';
+import { fairXpByDay } from './fairPlay.ts';
+import { migrateReports } from './reports.ts';
+import { migrateTeam } from './team.ts';
+import { migrateErrors } from './errors.ts';
 
 /** The database file; set DB_PATH to keep it somewhere else. */
 export const DB_PATH = process.env.DB_PATH ?? fileURLToPath(new URL('./englio.db', import.meta.url));
@@ -145,7 +150,7 @@ const SCHEMA = `
   CREATE TABLE IF NOT EXISTS admins (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
-    role TEXT NOT NULL CHECK (role IN ('owner', 'editor')),
+    role TEXT NOT NULL CHECK (role IN ('owner', 'editor', 'support')),
     token_hash TEXT NOT NULL UNIQUE,
     created_at TEXT NOT NULL,
     last_used TEXT
@@ -186,6 +191,15 @@ const SCHEMA = `
 
   CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 
+  -- The days each learner practised (from their XP per day), for daily active learners and retention.
+  -- Kept for 120 days (stats.ts trims it).
+  CREATE TABLE IF NOT EXISTS active_days (
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    day TEXT NOT NULL,
+    PRIMARY KEY (user_id, day)
+  ) WITHOUT ROWID;
+  CREATE INDEX IF NOT EXISTS active_by_day ON active_days(day);
+
   -- Recordings of English text (by its normalised text), from the admin's Words and Audio pages.
   CREATE TABLE IF NOT EXISTS audio_clips (
     key TEXT PRIMARY KEY,
@@ -223,6 +237,36 @@ function migrate(db: DatabaseSync): void {
   for (const table of ['units', 'grammar', 'stories', 'writing_tasks']) {
     if (!has(table, 'lang')) db.exec(`ALTER TABLE ${table} ADD COLUMN lang TEXT NOT NULL DEFAULT 'bn'`);
   }
+  // Copies of each learner's activity, so reminders and the league don't read every progress (users.ts).
+  if (!has('users', 'week_xp')) {
+    db.exec(`ALTER TABLE users ADD COLUMN last_xp_day TEXT;
+             ALTER TABLE users ADD COLUMN week_since TEXT;
+             ALTER TABLE users ADD COLUMN week_xp INTEGER NOT NULL DEFAULT 0;`);
+    const set = db.prepare('UPDATE users SET last_xp_day = ?, week_since = ?, week_xp = ? WHERE id = ?');
+    transaction(db, () => {
+      for (const u of db.prepare('SELECT id, progress FROM users').iterate() as Iterable<{ id: string; progress: string }>) {
+        const a = activitySummary(fairXpByDay((JSON.parse(u.progress) as { xpByDay?: unknown }).xpByDay));
+        set.run(a.lastDay, a.weekSince, a.weekXp, u.id);
+      }
+    });
+  }
+  if (!(db.prepare("SELECT 1 FROM meta WHERE key = 'active_days_filled'").get())) {
+    transaction(db, () => {
+      const add = db.prepare('INSERT OR IGNORE INTO active_days (user_id, day) VALUES (?, ?)');
+      for (const u of db.prepare('SELECT id, progress FROM users').iterate() as Iterable<{ id: string; progress: string }>) {
+        for (const day of Object.keys(fairXpByDay((JSON.parse(u.progress) as { xpByDay?: unknown }).xpByDay))) add.run(u.id, day);
+      }
+      db.prepare("INSERT INTO meta (key, value) VALUES ('active_days_filled', '1')").run();
+    });
+  }
+  db.exec('CREATE INDEX IF NOT EXISTS users_by_week ON users(week_since, week_xp DESC)');
+  // Which app version and phone a learner last used (admin learner page, reports).
+  if (!has('users', 'app_version')) db.exec('ALTER TABLE users ADD COLUMN app_version TEXT; ALTER TABLE users ADD COLUMN device TEXT;');
+  // The owner can block a learner who cheats: they stay out of the league.
+  if (!has('users', 'blocked')) db.exec('ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0');
+  migrateReports(db);
+  migrateTeam(db);
+  migrateErrors(db);
   db.prepare(`INSERT OR IGNORE INTO languages (code, name, native, dir, status, position) VALUES ('bn', 'Bangla', 'বাংলা', 'ltr', 'live', 0)`).run();
 }
 

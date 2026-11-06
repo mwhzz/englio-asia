@@ -1,0 +1,95 @@
+/* সাহায্য ও অভিযোগ (features/help) */
+.hp-faq li + li {
+  border-top: 0.5px solid var(--ios-separator, rgba(60, 60, 67, 0.18));
+}
+.hp-q {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+}
+.hp-chev {
+  flex: none;
+  opacity: 0.5;
+  transition: transform 0.2s;
+}
+.hp-q[aria-expanded='true'] .hp-chev {
+  transform: rotate(90deg);
+}
+.hp-a {
+  margin: 0;
+  padding: 0 16px 14px;
+  color: var(--ios-label-2, #555);
+  line-height: 1.55;
+}
+.hp-form {
+  display: grid;
+  gap: 12px;
+}
+.hp-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hp-kinds .rp-reason {
+  width: auto;
+}
+.hp-contact {
+  min-height: 0;
+}
+.hp-note {
+  margin: 0;
+  font-size: 0.92rem;
+}
+.hp-note.is-ok {
+  color: var(--ios-green);
+}
+.hp-note.is-bad {
+  color: var(--ios-red);
+}
+.hp-report {
+  padding: 12px 16px;
+}
+.hp-report + .hp-report {
+  border-top: 0.5px solid var(--ios-separator, rgba(60, 60, 67, 0.18));
+}
+.hp-report-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hp-report-top small {
+  opacity: 0.6;
+}
+.hp-status {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--ios-fill, rgba(120, 120, 128, 0.12));
+}
+.hp-status.is-doing {
+  background: color-mix(in srgb, #ffb800 22%, transparent);
+}
+.hp-status.is-fixed {
+  background: color-mix(in srgb, var(--ios-green) 22%, transparent);
+}
+.hp-report-text {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+.hp-reply {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ios-blue) 10%, transparent);
+  line-height: 1.5;
+}

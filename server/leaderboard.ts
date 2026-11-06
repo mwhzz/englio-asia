@@ -1,8 +1,7 @@
 import type { DatabaseSync } from 'node:sqlite';
-import { MAX_XP_PER_DAY } from './fairPlay.ts';
 
-/** How long one count of the week's XP is reused, so a million learners don't each rescan the table. */
-const CACHE_MS = 5 * 60 * 1000;
+/** How long one count of the week's XP is reused (the count itself is a quick indexed read). */
+const CACHE_MS = 60 * 1000;
 const TOP = 10;
 
 interface Row {
@@ -37,21 +36,17 @@ export function leagueWeek(now = new Date()): { since: string; ends: string } {
 
 let cache: { at: number; since: string; rows: Row[] } | null = null;
 
-/** XP of these learners (or everyone) this league week, highest first; each day counts at most MAX_XP_PER_DAY. */
+/** XP of these learners (or everyone) this league week, highest first (from the columns users.ts keeps). */
 export function weekXp(db: DatabaseSync, now: Date, ids?: string[]): Row[] {
-  const { since, ends } = leagueWeek(now);
-  const only = ids ? `AND u.id IN (${ids.map(() => '?').join(',') || "''"})` : '';
-  const found = db
+  const { since } = leagueWeek(now);
+  const only = ids ? `AND id IN (${ids.map(() => '?').join(',') || "''"})` : '';
+  return db
     .prepare(
-      `SELECT u.id, u.name, u.district_id AS district, SUM(MIN(j.value, ${MAX_XP_PER_DAY})) AS week_xp
-       FROM users u, json_each(u.progress, '$.xpByDay') j
-       WHERE j.key >= ? AND j.key <= ? AND j.type IN ('integer', 'real') AND j.value > 0 ${only}
-       GROUP BY u.id
-       HAVING week_xp > 0
+      `SELECT id, name, district_id AS district, week_xp AS xp FROM users
+       WHERE week_since = ? AND week_xp > 0 AND blocked = 0 ${only}
        ORDER BY week_xp DESC`,
     )
-    .all(since, ends, ...(ids ?? [])) as unknown as (Omit<Row, 'xp'> & { week_xp: number })[];
-  return found.map(({ week_xp, ...r }) => ({ ...r, xp: week_xp }));
+    .all(since, ...(ids ?? [])) as unknown as Row[];
 }
 
 /** Everyone's XP this league week, counted once and reused for a few minutes. */

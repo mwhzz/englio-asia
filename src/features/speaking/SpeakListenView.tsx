@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Glyph, type GlyphName } from '../../components/Glyph';
-import { toBanglaDigits } from '../../lib/bangla';
+import { toBanglaDigits, possessive } from '../../lib/bangla';
 import { haptic } from '../../lib/haptics';
 import { canListen } from '../../lib/listen';
 import { conversationsFor, ROUND } from '../../lib/speakListen';
@@ -95,7 +95,7 @@ export default function SpeakListenView({ onListening, onSpeaking }: Props) {
                 <span className="pf-row-text">
                   <span>{d.lines[0].en}</span>
                   <small lang="bn">
-                    {d.with}-এর সাথে · {toBanglaDigits(d.lines.length)} লাইন
+                    {possessive(d.with)} সাথে · {toBanglaDigits(d.lines.length)} লাইন
                   </small>
                 </span>
                 <Glyph name="chevron" size={16} className="pf-chevron" />

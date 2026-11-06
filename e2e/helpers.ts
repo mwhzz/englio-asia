@@ -25,7 +25,7 @@ export async function signIn(page: Page, name = 'Rina', extra: Record<string, un
   await page.locator('.home-greeting').waitFor();
 }
 
-/** Opens a tab of the bottom bar: 1 শেখো, 2 অক্ষর, 3 ব্যাকরণ, 4 প্রোফাইল. */
+/** Opens a tab of the bottom bar: 1 শেখো, 2 শোনা-বলা, 3 ব্যাকরণ, 4 প্রোফাইল. */
 export const openTab = (page: Page, n: 1 | 2 | 3 | 4) => page.locator(`.tabbar-item:nth-child(${n})`).click();
 
 /** Opens an admin page on the phone layout: from the tab bar, or else from the "আরও" sheet. */

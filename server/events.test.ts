@@ -11,7 +11,7 @@ describe('analytics events', () => {
     recordEvents(db, { events: [{ name: 'lesson_start', key: 'u1-l1' }, { name: 'mistake', key: 's:I am a boy.', n: 1 }] }, NOW);
     expect(analytics(db, 30, NOW)).toEqual({
       since: '2026-10-05',
-      lessons: [{ lessonId: 'u1-l1', started: 4, finished: 2 }],
+      lessons: [{ lessonId: 'u1-l1', started: 4, finished: 2, title: null }],
       mistakes: [
         { key: 'w:apple', n: 4 },
         { key: 's:I am a boy.', n: 1 },

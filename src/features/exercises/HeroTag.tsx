@@ -19,14 +19,14 @@ const LABELS: Record<Exercise['kind'], string> = {
 };
 
 /** The top line of the question card: what kind of question it is, and which one of how many. */
-export function HeroTag({ kind, number, total }: { kind: Exercise['kind']; number: number; total: number }) {
+export function HeroTag({ kind, number, total, again = false }: { kind: Exercise['kind']; number: number; total: number; again?: boolean }) {
   return (
     <div className="hero-tag">
       <span className="hero-kind" lang="bn">
         {LABELS[kind]}
       </span>
       <span className="hero-count" lang="bn">
-        প্রশ্ন {toBanglaDigits(number)}/{toBanglaDigits(total)}
+        {again ? 'আবার · ' : ''}প্রশ্ন {toBanglaDigits(number)}/{toBanglaDigits(total)}
       </span>
     </div>
   );

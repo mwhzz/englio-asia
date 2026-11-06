@@ -76,7 +76,7 @@ test('the owner adds an editor, who sees content but not learners', async ({ pag
   await expect(editor.getByRole('button', { name: 'সেটিংস', exact: true })).toHaveCount(0);
 
   await adminGo(page, 'অ্যাক্টিভিটি');
-  await expect(page.getByText('added team')).toBeVisible();
+  await expect(page.getByText('Owner · যোগ/কাজ team')).toBeVisible();
 });
 
 // A tiny valid PNG (1×1, green) and a few bytes standing in for an MP3.
@@ -86,6 +86,7 @@ test('the admin adds a picture and a recording to a word, and the app gets them'
   await page.goto('/admin.html');
   await page.getByPlaceholder('Admin token').fill(ADMIN_TOKEN);
   await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.locator('.ad-main').waitFor();
   await page.goto('/admin.html#lesson/u1-l1');
   await page.reload();
   const words = page.locator('section.ad-card', { hasText: 'Words' });
@@ -177,4 +178,32 @@ test('the admin adds a word with its recording, and uploads many recordings name
 
   const course = await page.request.get('http://localhost:8799/api/course').then((r) => r.json());
   expect(Object.keys(course.audio)).toEqual(expect.arrayContaining(['welcome', 'good morning, teacher.']));
+});
+
+test('support answers a learner’s complaint, and the learner reads the reply in the app', async ({ page }) => {
+  // A learner writes from Profile → সাহায্য ও অভিযোগ.
+  await signIn(page, 'Mina');
+  await page.locator('.tabbar-item:nth-child(4)').click();
+  await page.getByText('সাহায্য ও অভিযোগ').click();
+  await page.locator('.hp .rp-reason', { hasText: 'অগ্রগতি / অ্যাকাউন্ট' }).click();
+  await page.locator('.hp textarea').fill('নতুন ফোনে আমার স্ট্রিক নেই');
+  await page.locator('.hp .cta').click();
+  await expect(page.getByText('ধন্যবাদ! পেয়েছি।')).toBeVisible();
+
+  // The owner finds it with the learner's name, phone and version, and replies.
+  const admin = await page.context().newPage();
+  await admin.goto('/admin.html');
+  await admin.getByPlaceholder('Admin token').fill(ADMIN_TOKEN);
+  await admin.getByRole('button', { name: 'Sign in' }).click();
+  await adminGo(admin, 'রিপোর্ট');
+  await admin.getByText('নতুন ফোনে আমার স্ট্রিক নেই').click();
+  await expect(admin.locator('.ad-ticket').first()).toContainText('Pixel 7');
+  await admin.getByPlaceholder('শিক্ষার্থীকে উত্তর').fill('স্ট্রিক ফিরিয়ে দিয়েছি');
+  await admin.getByRole('button', { name: 'উত্তর দিয়ে "ঠিক হয়েছে"' }).click();
+  await expect(admin.locator('.ad-ticket .ad-pill.is-fixed')).toHaveCount(0); // gone from the open list
+
+  await page.locator('.hp .lp-back').click();
+  await page.getByText('সাহায্য ও অভিযোগ').click();
+  await expect(page.locator('.hp-reply')).toContainText('স্ট্রিক ফিরিয়ে দিয়েছি');
+  await expect(page.locator('.hp-status.is-fixed')).toBeVisible();
 });

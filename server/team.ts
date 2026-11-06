@@ -2,8 +2,20 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import type { DatabaseSync } from 'node:sqlite';
 import { HttpError, type Request } from './http.ts';
 
-/** owner: everything. editor: content only (no learners' data, team or activity log). */
-export type Role = 'owner' | 'editor';
+/**
+ * owner: everything. editor: content only. support: learners and their reports (no content, settings or team).
+ * A route says who may use it: true (anyone on the team), 'owner', 'content' (owner, editor) or 'people' (owner, support).
+ */
+export type Role = 'owner' | 'editor' | 'support';
+export type Access = true | 'owner' | 'content' | 'people';
+export const ROLES: Role[] = ['owner', 'editor', 'support'];
+
+export function allowed(role: Role, access: Access): boolean {
+  if (role === 'owner' || access === true) return true;
+  if (access === 'content') return role === 'editor';
+  if (access === 'people') return role === 'support';
+  return false;
+}
 export interface Admin {
   name: string;
   role: Role;
@@ -40,7 +52,7 @@ export function addMember(db: DatabaseSync, { body }: Request, now = new Date())
   const b = (body ?? {}) as { name?: unknown; role?: unknown };
   const name = typeof b.name === 'string' ? b.name.trim().slice(0, 60) : '';
   if (!name) throw new HttpError(400, '"name" is required');
-  const role: Role = b.role === 'owner' ? 'owner' : 'editor';
+  const role: Role = ROLES.includes(b.role as Role) ? (b.role as Role) : 'editor';
   const token = `eng_${randomBytes(24).toString('base64url')}`;
   const result = db.prepare('INSERT INTO admins (name, role, token_hash, created_at) VALUES (?, ?, ?, ?)').run(name, role, hash(token), now.toISOString());
   return { id: Number(result.lastInsertRowid), name, role, token };
@@ -51,13 +63,48 @@ export function removeMember(db: DatabaseSync, { params }: Request) {
   return { ok: true };
 }
 
-/** Remembers one change made in the admin panel. */
-export function logChange(db: DatabaseSync, admin: Admin, method: string, path: string, status: number, now = new Date()): void {
-  db.prepare('INSERT INTO audit (at, admin, method, path, status) VALUES (?, ?, ?, ?, ?)').run(now.toISOString(), admin.name, method, path, status);
+/** A short, safe note of what was sent with a change (no tokens or passwords, at most 300 letters). */
+export function changeDetail(body: unknown): string {
+  if (!body || typeof body !== 'object' || Buffer.isBuffer(body)) return '';
+  const safe = JSON.stringify(body, (key, value) => (/token|password|secret/i.test(key) ? '•••' : value));
+  return safe.length > 300 ? `${safe.slice(0, 299)}…` : safe;
 }
 
-/** The latest changes, newest first. */
-export function activity(db: DatabaseSync, { query }: Request) {
+/** Remembers one change made in the admin panel: who, what, what was sent, and whether it worked. */
+export function logChange(db: DatabaseSync, admin: Admin, method: string, path: string, status: number, now = new Date(), detail = ''): void {
+  db.prepare('INSERT INTO audit (at, admin, method, path, status, detail) VALUES (?, ?, ?, ?, ?, ?)').run(now.toISOString(), admin.name, method, path, status, detail);
+}
+
+/** The latest changes, newest first; filter by who (`admin`) or by words in the path (`q`). */
+export function activity(db: DatabaseSync, { query }: Pick<Request, 'query'>) {
   const limit = Math.min(500, Math.max(1, Number(query.get('limit')) || 100));
-  return db.prepare('SELECT at, admin, method, path, status FROM audit ORDER BY id DESC LIMIT ?').all(limit);
+  const where: string[] = [];
+  const args: (string | number)[] = [];
+  if (query.get('admin')) (where.push('admin = ?'), args.push(query.get('admin')!));
+  if (query.get('q')) (where.push('path LIKE ?'), args.push(`%${query.get('q')}%`));
+  return db
+    .prepare(`SELECT at, admin, method, path, status, detail FROM audit ${where.length ? `WHERE ${where.join(' AND ')}` : ''} ORDER BY id DESC LIMIT ?`)
+    .all(...args, limit);
+}
+
+/** Older databases: the support role and the change detail. */
+export function migrateTeam(db: DatabaseSync): void {
+  const sql = (db.prepare("SELECT sql FROM sqlite_master WHERE name = 'admins'").get() as { sql: string }).sql;
+  if (!sql.includes("'support'")) {
+    db.exec(`
+      CREATE TABLE admins_new (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        role TEXT NOT NULL CHECK (role IN ('owner', 'editor', 'support')),
+        token_hash TEXT NOT NULL UNIQUE,
+        created_at TEXT NOT NULL,
+        last_used TEXT
+      );
+      INSERT INTO admins_new SELECT id, name, role, token_hash, created_at, last_used FROM admins;
+      DROP TABLE admins;
+      ALTER TABLE admins_new RENAME TO admins;
+    `);
+  }
+  const cols = (db.prepare('PRAGMA table_info(audit)').all() as { name: string }[]).map((c) => c.name);
+  if (!cols.includes('detail')) db.exec("ALTER TABLE audit ADD COLUMN detail TEXT NOT NULL DEFAULT ''");
 }

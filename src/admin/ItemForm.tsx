@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { fromText, SCHEMAS, toText, type ItemData, type ItemKind } from './itemSchemas';
 import { MediaField } from './MediaField';
+import { forLang, useMeaningLang } from './useAdminLang';
 
 interface Props {
   kind: ItemKind;
@@ -11,6 +12,7 @@ interface Props {
 
 /** Add or edit one content item; the fields come from its kind's schema. The server checks it before saving. */
 export function ItemForm({ kind, initial = {}, onSave, onCancel }: Props) {
+  const meaning = useMeaningLang();
   const schema = SCHEMAS[kind];
   const [values, setValues] = useState(() => Object.fromEntries(schema.fields.map((f) => [f.key, toText(f, initial[f.key])])));
   const [error, setError] = useState<string | null>(null);
@@ -35,20 +37,22 @@ export function ItemForm({ kind, initial = {}, onSave, onCancel }: Props) {
     <form className="ad-form" onSubmit={submit}>
       {schema.fields.map((field) => (
         <label key={field.key} className="ad-field">
-          <span>{field.label}</span>
+          <span>{forLang(field.label, meaning.name)}</span>
           {field.type === 'image' || field.type === 'audio' ? (
             <MediaField kind={field.type} value={values[field.key]} onChange={(file) => setValues({ ...values, [field.key]: file })} />
           ) : field.type === 'text' ? (
             <input
               className="ad-input"
-              lang={field.bn ? 'bn' : undefined}
+              lang={field.bn ? meaning.code : undefined}
+              dir={field.bn ? meaning.dir : undefined}
               value={values[field.key]}
               onChange={(e) => setValues({ ...values, [field.key]: e.target.value })}
             />
           ) : (
             <textarea
               className="ad-input"
-              lang={field.bn ? 'bn' : undefined}
+              lang={field.bn ? meaning.code : undefined}
+              dir={field.bn ? meaning.dir : undefined}
               rows={field.type === 'dialog' ? 5 : field.type === 'area' ? 3 : 2}
               value={values[field.key]}
               onChange={(e) => setValues({ ...values, [field.key]: e.target.value })}

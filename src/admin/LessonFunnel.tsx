@@ -2,7 +2,7 @@ import { useAdminData } from './useAdminData';
 
 interface Analytics {
   since: string;
-  lessons: { lessonId: string; started: number; finished: number }[];
+  lessons: { lessonId: string; started: number; finished: number; title: string | null }[];
   mistakes: { key: string; n: number }[];
   stories: { storyId: string; n: number }[];
 }
@@ -25,14 +25,14 @@ export function LessonFunnel({ onUnauthorized }: { onUnauthorized: () => void })
   return (
     <div className="ad-two">
       <section className="ad-card">
-        <h2>Lessons: started → finished</h2>
-        <p className="ad-muted">Since {data.since}. A low finish rate means a lesson is too hard or too long.</p>
+        <h2 lang="bn">লেসন: শুরু → শেষ (কোর্সের ক্রমে)</h2>
+        <p className="ad-muted" lang="bn">{data.since} থেকে। শেষ করার হার কম মানে লেসনটা কঠিন বা লম্বা।</p>
         <ul className="ad-bars">
           {data.lessons.map((l) => {
             const rate = Math.round((100 * l.finished) / Math.max(1, l.started));
             return (
               <li key={l.lessonId}>
-                <span>{l.lessonId}</span>
+                <span title={l.lessonId}>{l.title ? `${l.lessonId} · ${l.title}` : l.lessonId}</span>
                 <span className="ad-bar">
                   <i style={{ width: `${(100 * l.started) / topStart}%`, opacity: 0.35 }} />
                   <i style={{ width: `${(100 * l.finished) / topStart}%`, marginTop: -8 }} />
@@ -43,12 +43,12 @@ export function LessonFunnel({ onUnauthorized }: { onUnauthorized: () => void })
               </li>
             );
           })}
-          {!data.lessons.length && <li className="ad-empty">No lessons played yet.</li>}
+          {!data.lessons.length && <li className="ad-empty">এখনো কেউ লেসন করেনি।</li>}
         </ul>
       </section>
       <section className="ad-card">
-        <h2>Most-missed exercises</h2>
-        <p className="ad-muted">Worth a clearer tip or an easier example.</p>
+        <h2 lang="bn">সবচেয়ে বেশি ভুল</h2>
+        <p className="ad-muted" lang="bn">এগুলোর জন্য ভালো টিপ বা সহজ উদাহরণ দাও।</p>
         <ul className="ad-bars">
           {data.mistakes.map((m) => (
             <li key={m.key}>
@@ -59,7 +59,7 @@ export function LessonFunnel({ onUnauthorized }: { onUnauthorized: () => void })
               <em>{m.n}</em>
             </li>
           ))}
-          {!data.mistakes.length && <li className="ad-empty">No mistakes counted yet.</li>}
+          {!data.mistakes.length && <li className="ad-empty">এখনো কোনো ভুল গোনা হয়নি।</li>}
         </ul>
       </section>
     </div>

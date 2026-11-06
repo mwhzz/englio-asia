@@ -11,6 +11,7 @@ import { HomeHeader } from './HomeHeader';
 import { UpNextCard } from './UpNextCard';
 import { HowItWorks } from './HowItWorks';
 import { StreakNudge } from './StreakNudge';
+import { StreakLost } from './StreakLost';
 import { SyncNote } from './SyncNote';
 import { VoiceHint } from './VoiceHint';
 import { feature } from '../../lib/appSettings';
@@ -40,6 +41,7 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
           </div>
         )}
         <StreakNudge onStart={onStart} />
+        <StreakLost onStart={onStart} />
         <div className="home-rise" style={{ animationDelay: '140ms' }}>
           <UpNextCard onStart={onStart} onPractice={onPractice} />
         </div>

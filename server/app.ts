@@ -13,7 +13,7 @@ import { contentVersion } from './db.ts';
 import { FileReply, HttpError, matchPath, readBody, readJson, Redirect, send, type Route } from './http.ts';
 import { clientIp, MINUTE, RateLimit } from './rateLimit.ts';
 import { clearError, listErrors, recordError } from './errors.ts';
-import { addReport, closeReports, listReports } from './reports.ts';
+import { addReport, closeReports, listReports, listTickets, myReports, updateTicket } from './reports.ts';
 import { analytics, recordEvents } from './events.ts';
 import { accountsOf, signInGoogle, startPhone, verifyPhone } from './auth.ts';
 import { addFriend, friendsLeague, removeFriend } from './friends.ts';
@@ -23,8 +23,9 @@ import { MAX_UPLOAD, readMedia, saveMedia } from './media.ts';
 import { deletePush, savePush } from './reminders.ts';
 import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
 import * as team from './team.ts';
-import { checkUserId, loadProgress, saveProgress } from './users.ts';
-import { SERVER_VERSION } from './version.ts';
+import { checkUserId, clientOf, loadProgress, saveProgress } from './users.ts';
+import { health } from './health.ts';
+import { stats } from './stats.ts';
 import { readSettings, saveSettings } from './settings.ts';
 import { deleteClip, listSpoken, listWords, readClips, setClip } from './adminAudio.ts';
 import { createLanguage, deleteLanguage, isLive, langOf, listLanguages, liveLanguages, updateLanguage } from './languages.ts';
@@ -32,7 +33,8 @@ import { createLanguage, deleteLanguage, isLive, langOf, listLanguages, liveLang
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
 function routes(db: DatabaseSync): Route[] {
   return [
-    { method: 'GET', pattern: '/api/health', handler: () => ({ ok: true, version: SERVER_VERSION }) },
+    // For uptime monitors: also checks that the database answers (a 500 means it doesn't).
+    { method: 'GET', pattern: '/api/health', handler: () => health(db) },
 
     // ---- The app ----
     {
@@ -63,9 +65,9 @@ function routes(db: DatabaseSync): Route[] {
     {
       method: 'PUT',
       pattern: '/api/users/:id',
-      handler: ({ params, body }) => {
+      handler: ({ params, body, headers }) => {
         // The answer is the merged progress, which the app takes (another phone may have added to it).
-        return { ok: true, progress: saveProgress(db, checkUserId(params.id), (body as { progress?: unknown } | null)?.progress) };
+        return { ok: true, progress: saveProgress(db, checkUserId(params.id), (body as { progress?: unknown } | null)?.progress, new Date(), clientOf(headers)) };
       },
     },
     { method: 'GET', pattern: '/api/users/:id', handler: ({ params }) => ({ progress: loadProgress(db, checkUserId(params.id)) }) },
@@ -74,8 +76,7 @@ function routes(db: DatabaseSync): Route[] {
       method: 'DELETE',
       pattern: '/api/users/:id',
       handler: ({ params }) => {
-        if (!db.prepare('DELETE FROM users WHERE id = ?').run(checkUserId(params.id)).changes) throw new HttpError(404, 'No such user');
-        return { ok: true };
+        return people.deleteUser(db, { params: { id: checkUserId(params.id) } });
       },
     },
     { method: 'POST', pattern: '/api/auth/phone/start', strict: true, handler: (r) => startPhone(db, r) },
@@ -94,8 +95,12 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/delete-by-code', strict: true, handler: ({ body }) => deleteByCode(db, body) },
     { method: 'POST', pattern: '/api/errors', handler: (r) => recordError(db, r) },
     { method: 'POST', pattern: '/api/reports', handler: (r) => addReport(db, r) },
-    { method: 'GET', pattern: '/api/admin/reports', admin: true, handler: () => listReports(db) },
+    { method: 'GET', pattern: '/api/admin/reports', admin: true, handler: (r) => listReports(db, r) },
     { method: 'POST', pattern: '/api/admin/reports/close', admin: true, handler: (r) => closeReports(db, r) },
+    { method: 'GET', pattern: '/api/admin/tickets', admin: 'people', handler: (r) => listTickets(db, r) },
+    { method: 'PUT', pattern: '/api/admin/tickets/:id', admin: 'people', handler: (r) => updateTicket(db, r) },
+    // The learner's own reports and the replies to them (the app's help page).
+    { method: 'GET', pattern: '/api/users/:id/reports', handler: ({ params }) => myReports(db, checkUserId(params.id)) },
     { method: 'GET', pattern: '/api/admin/errors', admin: true, handler: () => listErrors(db) },
     { method: 'DELETE', pattern: '/api/admin/errors/:id', admin: true, handler: (r) => clearError(db, r) },
     { method: 'GET', pattern: '/api/media/:file', handler: (r) => readMedia(r) },
@@ -129,70 +134,78 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/admin/team', admin: 'owner', handler: (r) => team.addMember(db, r) },
     { method: 'DELETE', pattern: '/api/admin/team/:id', admin: 'owner', handler: (r) => team.removeMember(db, r) },
     { method: 'GET', pattern: '/api/admin/activity', admin: 'owner', handler: (r) => team.activity(db, r) },
-    { method: 'GET', pattern: '/api/admin/words', admin: true, handler: (r) => listWords(db, langOf(db, r.query.get('lang'))) },
-    { method: 'GET', pattern: '/api/admin/audio', admin: true, handler: (r) => listSpoken(db, langOf(db, r.query.get('lang'))) },
-    { method: 'PUT', pattern: '/api/admin/audio', admin: true, handler: (r) => setClip(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/audio', admin: true, handler: (r) => deleteClip(db, r) },
+    { method: 'GET', pattern: '/api/admin/words', admin: 'content', handler: (r) => listWords(db, langOf(db, r.query.get('lang'))) },
+    { method: 'GET', pattern: '/api/admin/audio', admin: 'content', handler: (r) => listSpoken(db, langOf(db, r.query.get('lang'))) },
+    { method: 'PUT', pattern: '/api/admin/audio', admin: 'content', handler: (r) => setClip(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/audio', admin: 'content', handler: (r) => deleteClip(db, r) },
     { method: 'GET', pattern: '/api/admin/languages', admin: true, handler: () => listLanguages(db) },
     { method: 'POST', pattern: '/api/admin/languages', admin: 'owner', handler: (r) => createLanguage(db, r) },
     { method: 'PUT', pattern: '/api/admin/languages/:code', admin: 'owner', handler: (r) => updateLanguage(db, r) },
     { method: 'DELETE', pattern: '/api/admin/languages/:code', admin: 'owner', handler: (r) => deleteLanguage(db, r) },
     { method: 'GET', pattern: '/api/admin/settings', admin: 'owner', handler: () => ({ ...readSettings(db), paymentsReady: paymentsReady() }) },
     { method: 'PUT', pattern: '/api/admin/settings', admin: 'owner', handler: (r) => saveSettings(db, r) },
-    { method: 'POST', pattern: '/api/admin/media', admin: true, raw: MAX_UPLOAD, handler: (r) => saveMedia(r) },
+    { method: 'POST', pattern: '/api/admin/media', admin: 'content', raw: MAX_UPLOAD, handler: (r) => saveMedia(r) },
     { method: 'GET', pattern: '/api/admin/summary', admin: true, handler: () => people.summary(db) },
+    { method: 'GET', pattern: '/api/admin/stats', admin: 'people', handler: ({ query }) => stats(db, Math.min(90, Math.max(7, Number(query.get('days')) || 30))) },
     { method: 'GET', pattern: '/api/admin/analytics', admin: true, handler: ({ query }) => analytics(db, Math.min(365, Math.max(1, Number(query.get('days')) || 30))) },
-    { method: 'GET', pattern: '/api/admin/units', admin: true, handler: (r) => content.listUnits(db, langOf(db, r.query.get('lang'))) },
-    { method: 'POST', pattern: '/api/admin/units', admin: true, handler: (r) => content.createUnit(db, r) },
-    { method: 'PUT', pattern: '/api/admin/units/:id', admin: true, handler: (r) => content.updateUnit(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/units/:id', admin: true, handler: (r) => content.deleteUnit(db, r) },
-    { method: 'POST', pattern: '/api/admin/units/:id/move', admin: true, handler: (r) => content.moveRow(db, 'units', r) },
-    { method: 'POST', pattern: '/api/admin/units/:id/lessons', admin: true, handler: (r) => content.createLesson(db, r) },
-    { method: 'GET', pattern: '/api/admin/lessons/:id', admin: true, handler: (r) => content.getLesson(db, r) },
-    { method: 'PUT', pattern: '/api/admin/lessons/:id', admin: true, handler: (r) => content.updateLesson(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/lessons/:id', admin: true, handler: (r) => content.deleteLesson(db, r) },
-    { method: 'POST', pattern: '/api/admin/lessons/:id/move', admin: true, handler: (r) => content.moveRow(db, 'lessons', r) },
-    { method: 'POST', pattern: '/api/admin/lessons/:id/items', admin: true, handler: (r) => content.createItem(db, r) },
-    { method: 'POST', pattern: '/api/admin/lessons/:id/items/bulk', admin: true, handler: (r) => content.createItems(db, r) },
-    { method: 'PUT', pattern: '/api/admin/items/:id', admin: true, handler: (r) => content.updateItem(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/items/:id', admin: true, handler: (r) => content.deleteItem(db, r) },
-    { method: 'GET', pattern: '/api/admin/grammar', admin: true, handler: (r) => grammar.listTopics(db, langOf(db, r.query.get('lang'))) },
-    { method: 'POST', pattern: '/api/admin/grammar', admin: true, handler: (r) => grammar.createTopic(db, r) },
-    { method: 'GET', pattern: '/api/admin/grammar/:id', admin: true, handler: (r) => grammar.getTopic(db, r) },
-    { method: 'PUT', pattern: '/api/admin/grammar/:id', admin: true, handler: (r) => grammar.updateTopic(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/grammar/:id', admin: true, handler: (r) => grammar.deleteTopic(db, r) },
-    { method: 'POST', pattern: '/api/admin/grammar/:id/move', admin: true, handler: (r) => grammar.moveTopic(db, r) },
-    { method: 'GET', pattern: '/api/admin/courses/:id', admin: true, handler: (r) => courses.getCourse(db, r) },
-    { method: 'PUT', pattern: '/api/admin/courses/:id', admin: true, handler: (r) => courses.saveCourse(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/courses/:id', admin: true, handler: (r) => courses.deleteCourse(db, r) },
-    { method: 'GET', pattern: '/api/admin/board', admin: true, handler: () => board.listBoard(db) },
-    { method: 'POST', pattern: '/api/admin/board', admin: true, handler: (r) => board.createBoard(db, r) },
-    { method: 'GET', pattern: '/api/admin/board/:id', admin: true, handler: (r) => board.getBoard(db, r) },
-    { method: 'PUT', pattern: '/api/admin/board/:id', admin: true, handler: (r) => board.updateBoard(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/board/:id', admin: true, handler: (r) => board.deleteBoard(db, r) },
-    { method: 'POST', pattern: '/api/admin/board/:id/move', admin: true, handler: (r) => board.moveBoard(db, r) },
-    { method: 'GET', pattern: '/api/admin/coverage', admin: true, handler: () => coverage(db) },
-    { method: 'GET', pattern: '/api/admin/writing', admin: true, handler: (r) => writing.listWriting(db, langOf(db, r.query.get('lang'))) },
-    { method: 'POST', pattern: '/api/admin/writing', admin: true, handler: (r) => writing.createWriting(db, r) },
-    { method: 'GET', pattern: '/api/admin/writing/:id', admin: true, handler: (r) => writing.getWriting(db, r) },
-    { method: 'PUT', pattern: '/api/admin/writing/:id', admin: true, handler: (r) => writing.updateWriting(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/writing/:id', admin: true, handler: (r) => writing.deleteWriting(db, r) },
-    { method: 'POST', pattern: '/api/admin/writing/:id/move', admin: true, handler: (r) => writing.moveWriting(db, r) },
-    { method: 'GET', pattern: '/api/admin/stories', admin: true, handler: (r) => stories.listStories(db, langOf(db, r.query.get('lang'))) },
-    { method: 'POST', pattern: '/api/admin/stories', admin: true, handler: (r) => stories.createStory(db, r) },
-    { method: 'GET', pattern: '/api/admin/stories/:id', admin: true, handler: (r) => stories.getStory(db, r) },
-    { method: 'PUT', pattern: '/api/admin/stories/:id', admin: true, handler: (r) => stories.updateStory(db, r) },
-    { method: 'DELETE', pattern: '/api/admin/stories/:id', admin: true, handler: (r) => stories.deleteStory(db, r) },
-    { method: 'POST', pattern: '/api/admin/stories/:id/move', admin: true, handler: (r) => stories.moveStory(db, r) },
-    { method: 'GET', pattern: '/api/admin/users', admin: 'owner', handler: (r) => people.listUsers(db, r) },
-    { method: 'GET', pattern: '/api/admin/users/:id', admin: 'owner', handler: (r) => people.getUser(db, r) },
+    // A language's course as the app gets it, drafts too (the admin's lesson preview in that language).
+    { method: 'GET', pattern: '/api/admin/course', admin: 'content', handler: (r) => ({ units: readCourse(db, langOf(db, r.query.get('lang'))) }) },
+    { method: 'GET', pattern: '/api/admin/units', admin: 'content', handler: (r) => content.listUnits(db, langOf(db, r.query.get('lang'))) },
+    { method: 'POST', pattern: '/api/admin/units', admin: 'content', handler: (r) => content.createUnit(db, r) },
+    { method: 'PUT', pattern: '/api/admin/units/:id', admin: 'content', handler: (r) => content.updateUnit(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/units/:id', admin: 'content', handler: (r) => content.deleteUnit(db, r) },
+    { method: 'POST', pattern: '/api/admin/units/:id/move', admin: 'content', handler: (r) => content.moveRow(db, 'units', r) },
+    { method: 'POST', pattern: '/api/admin/units/:id/lessons', admin: 'content', handler: (r) => content.createLesson(db, r) },
+    { method: 'GET', pattern: '/api/admin/lessons/:id', admin: 'content', handler: (r) => content.getLesson(db, r) },
+    { method: 'PUT', pattern: '/api/admin/lessons/:id', admin: 'content', handler: (r) => content.updateLesson(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/lessons/:id', admin: 'content', handler: (r) => content.deleteLesson(db, r) },
+    { method: 'POST', pattern: '/api/admin/lessons/:id/move', admin: 'content', handler: (r) => content.moveRow(db, 'lessons', r) },
+    { method: 'POST', pattern: '/api/admin/lessons/:id/items', admin: 'content', handler: (r) => content.createItem(db, r) },
+    { method: 'POST', pattern: '/api/admin/lessons/:id/items/bulk', admin: 'content', handler: (r) => content.createItems(db, r) },
+    { method: 'PUT', pattern: '/api/admin/items/:id', admin: 'content', handler: (r) => content.updateItem(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/items/:id', admin: 'content', handler: (r) => content.deleteItem(db, r) },
+    { method: 'GET', pattern: '/api/admin/grammar', admin: 'content', handler: (r) => grammar.listTopics(db, langOf(db, r.query.get('lang'))) },
+    { method: 'POST', pattern: '/api/admin/grammar', admin: 'content', handler: (r) => grammar.createTopic(db, r) },
+    { method: 'GET', pattern: '/api/admin/grammar/:id', admin: 'content', handler: (r) => grammar.getTopic(db, r) },
+    { method: 'PUT', pattern: '/api/admin/grammar/:id', admin: 'content', handler: (r) => grammar.updateTopic(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/grammar/:id', admin: 'content', handler: (r) => grammar.deleteTopic(db, r) },
+    { method: 'POST', pattern: '/api/admin/grammar/:id/move', admin: 'content', handler: (r) => grammar.moveTopic(db, r) },
+    { method: 'GET', pattern: '/api/admin/courses/:id', admin: 'content', handler: (r) => courses.getCourse(db, r) },
+    { method: 'PUT', pattern: '/api/admin/courses/:id', admin: 'content', handler: (r) => courses.saveCourse(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/courses/:id', admin: 'content', handler: (r) => courses.deleteCourse(db, r) },
+    { method: 'GET', pattern: '/api/admin/board', admin: 'content', handler: () => board.listBoard(db) },
+    { method: 'POST', pattern: '/api/admin/board', admin: 'content', handler: (r) => board.createBoard(db, r) },
+    { method: 'GET', pattern: '/api/admin/board/:id', admin: 'content', handler: (r) => board.getBoard(db, r) },
+    { method: 'PUT', pattern: '/api/admin/board/:id', admin: 'content', handler: (r) => board.updateBoard(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/board/:id', admin: 'content', handler: (r) => board.deleteBoard(db, r) },
+    { method: 'POST', pattern: '/api/admin/board/:id/move', admin: 'content', handler: (r) => board.moveBoard(db, r) },
+    { method: 'GET', pattern: '/api/admin/coverage', admin: 'content', handler: () => coverage(db) },
+    { method: 'GET', pattern: '/api/admin/writing', admin: 'content', handler: (r) => writing.listWriting(db, langOf(db, r.query.get('lang'))) },
+    { method: 'POST', pattern: '/api/admin/writing', admin: 'content', handler: (r) => writing.createWriting(db, r) },
+    { method: 'GET', pattern: '/api/admin/writing/:id', admin: 'content', handler: (r) => writing.getWriting(db, r) },
+    { method: 'PUT', pattern: '/api/admin/writing/:id', admin: 'content', handler: (r) => writing.updateWriting(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/writing/:id', admin: 'content', handler: (r) => writing.deleteWriting(db, r) },
+    { method: 'POST', pattern: '/api/admin/writing/:id/move', admin: 'content', handler: (r) => writing.moveWriting(db, r) },
+    { method: 'GET', pattern: '/api/admin/stories', admin: 'content', handler: (r) => stories.listStories(db, langOf(db, r.query.get('lang'))) },
+    { method: 'POST', pattern: '/api/admin/stories', admin: 'content', handler: (r) => stories.createStory(db, r) },
+    { method: 'GET', pattern: '/api/admin/stories/:id', admin: 'content', handler: (r) => stories.getStory(db, r) },
+    { method: 'PUT', pattern: '/api/admin/stories/:id', admin: 'content', handler: (r) => stories.updateStory(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/stories/:id', admin: 'content', handler: (r) => stories.deleteStory(db, r) },
+    { method: 'POST', pattern: '/api/admin/stories/:id/move', admin: 'content', handler: (r) => stories.moveStory(db, r) },
+    { method: 'GET', pattern: '/api/admin/users', admin: 'people', handler: (r) => people.listUsers(db, r) },
+    { method: 'GET', pattern: '/api/admin/users/:id', admin: 'people', handler: (r) => people.getUser(db, r) },
+    { method: 'GET', pattern: '/api/admin/users/:id/export', admin: 'people', handler: (r) => people.exportUser(db, r) },
+    { method: 'POST', pattern: '/api/admin/users/:id/action', admin: 'people', handler: (r) => people.userAction(db, r) },
     { method: 'DELETE', pattern: '/api/admin/users/:id', admin: 'owner', handler: (r) => people.deleteUser(db, r) },
   ];
 }
 
-/** Per address: a normal app makes a few requests a minute; backup codes and wrong admin tokens get few tries. */
+/**
+ * Per address. Mobile networks put many phones behind one address (carrier NAT), so the general limit is
+ * high; backup codes, sign-in and wrong admin tokens get few tries.
+ */
 type Limits = Record<'all' | 'strict' | 'badToken', [max: number, windowMs: number]>;
-export const LIMITS: Limits = { all: [300, 5 * MINUTE], strict: [10, 15 * MINUTE], badToken: [20, 15 * MINUTE] };
+export const LIMITS: Limits = { all: [3000, 5 * MINUTE], strict: [10, 15 * MINUTE], badToken: [20, 15 * MINUTE] };
 
 /** The HTTP server: JSON in, JSON out, CORS open so the app can be hosted anywhere. */
 export function createApi(db: DatabaseSync, adminToken: string, limits: Limits = LIMITS): Server {
@@ -215,7 +228,7 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
         if (!badToken.take(ip)) throw new HttpError(429, 'Too many wrong tokens, try again later');
         throw new HttpError(401, 'Admin token needed');
       }
-      if (route.admin === 'owner' && admin?.role !== 'owner') throw new HttpError(403, 'Only the owner can do this');
+      if (route.admin && admin && !team.allowed(admin.role, route.admin)) throw new HttpError(403, 'Your role cannot do this');
 
       // The course only changes when the admin edits it, so apps can ask "has it changed?" cheaply.
       if (url.pathname === '/api/course') {
@@ -231,7 +244,7 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
 
       const body = req.method === 'GET' || req.method === 'DELETE' ? null : route.raw ? await readBody(req, route.raw) : await readJson(req);
       // Every admin change is written down (who, what, and whether it worked).
-      const log = (status: number) => admin && req.method !== 'GET' && team.logChange(db, admin, req.method!, url.pathname, status);
+      const log = (status: number) => admin && req.method !== 'GET' && team.logChange(db, admin, req.method!, url.pathname, status, new Date(), team.changeDetail(body));
       try {
         const result = await route.handler({ method: req.method!, path: url.pathname, query: url.searchParams, params, headers: req.headers, body, admin: admin ?? undefined });
         log(200);

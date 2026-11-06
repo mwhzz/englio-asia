@@ -58,20 +58,24 @@ export interface DueReminder {
  * earned any XP today. Run this once an hour (see docs/SERVER.md) and push to each.
  */
 export function dueReminders(db: DatabaseSync, now = new Date()): DueReminder[] {
+  // Only the few columns needed (never the whole progress), and one at a time, so 100k sign-ups stay small.
   const rows = db
     .prepare(
-      `SELECT p.user_id, p.subscription, p.hour, p.time_zone, u.name, u.streak, u.progress
+      `SELECT p.user_id, p.subscription, p.hour, p.time_zone, u.name, u.streak, u.last_xp_day
        FROM push_subs p JOIN users u ON u.id = p.user_id`,
     )
-    .all() as { user_id: string; subscription: string; hour: number; time_zone: string; name: string | null; streak: number; progress: string }[];
-  return rows
-    .filter((r) => {
-      const { day, hour } = localTime(now, r.time_zone);
-      if (hour !== r.hour) return false;
-      const xpToday = (JSON.parse(r.progress) as { xpByDay?: Record<string, number> }).xpByDay?.[day] ?? 0;
-      return xpToday === 0;
-    })
-    .map((r) => ({ userId: r.user_id, name: r.name, streak: r.streak, subscription: JSON.parse(r.subscription) }));
+    .iterate() as Iterable<{ user_id: string; subscription: string; hour: number; time_zone: string; name: string | null; streak: number; last_xp_day: string | null }>;
+  const due: DueReminder[] = [];
+  const zones = new Map<string, { day: string; hour: number }>();
+  for (const r of rows) {
+    let local = zones.get(r.time_zone);
+    if (!local) zones.set(r.time_zone, (local = localTime(now, r.time_zone)));
+    if (local.hour !== r.hour) continue;
+    // Any XP today (or "tomorrow", a time-zone edge) means they practised.
+    if (r.last_xp_day && r.last_xp_day >= local.day) continue;
+    due.push({ userId: r.user_id, name: r.name, streak: r.streak, subscription: JSON.parse(r.subscription) });
+  }
+  return due;
 }
 
 /** The notification text for one learner: mentions the streak when there's one to lose. */

@@ -1,6 +1,7 @@
 import { randomInt } from 'node:crypto';
 import type { DatabaseSync } from 'node:sqlite';
 import { HttpError } from './http.ts';
+import { forgetUser } from './users.ts';
 
 // No 0/O, 1/I/L: easy to read out and type. 10 characters ≈ 50 bits, which with rate limiting can't be guessed.
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -40,6 +41,8 @@ export function restore(db: DatabaseSync, body: unknown): { id: string; progress
 
 /** Erases the learner with this code, for the web page that deletes data without the app. */
 export function deleteByCode(db: DatabaseSync, body: unknown): { ok: true } {
-  db.prepare('DELETE FROM users WHERE id = ?').run(userOf(db, (body as { code?: unknown } | null)?.code));
+  const id = userOf(db, (body as { code?: unknown } | null)?.code);
+  db.prepare('DELETE FROM users WHERE id = ?').run(id);
+  forgetUser(db, id);
   return { ok: true };
 }

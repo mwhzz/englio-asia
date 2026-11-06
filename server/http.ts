@@ -35,7 +35,7 @@ export interface Request {
   headers: IncomingMessage['headers'];
   body: unknown;
   /** Who is calling an admin route. */
-  admin?: { name: string; role: 'owner' | 'editor' };
+  admin?: { name: string; role: 'owner' | 'editor' | 'support' };
 }
 
 export type Handler = (req: Request) => unknown;
@@ -45,7 +45,8 @@ export interface Route {
   pattern: string;
   handler: Handler;
   /** Needs an admin token; 'owner' routes (learners' data, the team, the log) aren't open to editors. */
-  admin?: boolean | 'owner';
+  /** Who may call it (team.ts `Access`): true = anyone on the team, 'owner', 'content' (owner, editor), 'people' (owner, support). */
+  admin?: true | 'owner' | 'content' | 'people';
   /** Guessable on purpose (a backup code): allowed only a few tries per address. */
   strict?: boolean;
   /** Takes the raw body (an upload) up to this many bytes, instead of JSON. */
@@ -94,7 +95,7 @@ export function send(res: ServerResponse, status: number, body: unknown, headers
   res.writeHead(status, {
     'content-type': 'application/json; charset=utf-8',
     'access-control-allow-origin': '*',
-    'access-control-allow-headers': 'content-type, authorization, if-none-match',
+    'access-control-allow-headers': 'content-type, authorization, if-none-match, x-app-version',
     'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
     ...headers,
   });

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { forLang, useMeaningLang } from './useAdminLang';
 
 export interface Tip {
   title: string;
@@ -21,6 +22,7 @@ interface Props {
 
 /** A unit's name, color and guidebook tips. */
 export function UnitForm({ initial, onSave, onCancel }: Props) {
+  const meaning = useMeaningLang();
   const [unit, setUnit] = useState(initial);
   const [error, setError] = useState<string | null>(null);
   const setTip = (i: number, tip: Partial<Tip>) => setUnit({ ...unit, tips: unit.tips.map((t, j) => (j === i ? { ...t, ...tip } : t)) });
@@ -42,7 +44,7 @@ export function UnitForm({ initial, onSave, onCancel }: Props) {
           <input className="ad-input" value={unit.title} onChange={(e) => setUnit({ ...unit, title: e.target.value })} />
         </label>
         <label className="ad-field">
-          <span>Title (Bangla)</span>
+          <span>{forLang('Title (Bangla)', meaning.name)}</span>
           <input className="ad-input" lang="bn" value={unit.titleBn} onChange={(e) => setUnit({ ...unit, titleBn: e.target.value })} />
         </label>
         <label className="ad-field">
@@ -59,7 +61,7 @@ export function UnitForm({ initial, onSave, onCancel }: Props) {
             className="ad-input"
             lang="bn"
             rows={3}
-            placeholder="Explanation (Bangla)"
+            placeholder={forLang('Explanation (Bangla)', meaning.name)}
             value={tip.body}
             onChange={(e) => setTip(i, { body: e.target.value })}
           />

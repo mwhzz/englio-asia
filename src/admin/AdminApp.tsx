@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Glyph } from '../components/Glyph';
 import { Logo } from '../components/Logo';
-import { navFor } from './adminNav';
+import { navFor, type Role } from './adminNav';
 import { AdminTabBar } from './AdminTabBar';
 import { ActivityPage } from './ActivityPage';
 import { BoardAdmin } from './BoardAdmin';
@@ -26,12 +26,14 @@ import { go, useHashRoute } from './useHashRoute';
 import { LanguagesPage } from './LanguagesPage';
 import { WordsPage } from './WordsPage';
 import { AudioPage } from './AudioPage';
+import { WritingAdmin } from './WritingAdmin';
+import { WritingEditor } from './WritingEditor';
 
 /** The admin panel: sign in with the token, then dashboard, lessons, grammar, stories and learners. */
 export function AdminApp() {
   const [signedIn, setSignedIn] = useState(() => !!getToken());
   const [page = 'dashboard', id = ''] = useHashRoute();
-  const [me, setMe] = useState<{ name: string; role: 'owner' | 'editor' } | null>(null);
+  const [me, setMe] = useState<{ name: string; role: Role } | null>(null);
   const signOut = useCallback(() => {
     clearToken();
     setSignedIn(false);
@@ -39,19 +41,19 @@ export function AdminApp() {
   }, []);
 
   useEffect(() => {
-    if (signedIn) adminApi<{ name: string; role: 'owner' | 'editor' }>('GET', '/me').then(setMe, signOut);
+    if (signedIn) adminApi<{ name: string; role: Role }>('GET', '/me').then(setMe, signOut);
   }, [signedIn, signOut]);
 
   if (!signedIn) return <Login onDone={() => setSignedIn(true)} />;
 
-  const section = page === 'lesson' ? 'content' : page === 'user' ? 'users' : page === 'topic' || page === 'course' ? 'grammar' : page === 'story' ? 'stories' : page === 'board-topic' ? 'board' : page;
+  const section = page === 'lesson' ? 'content' : page === 'user' ? 'users' : page === 'topic' || page === 'course' ? 'grammar' : page === 'story' ? 'stories' : page === 'board-topic' ? 'board' : page === 'writing-task' ? 'writing' : page;
   return (
     <div className="ad-shell">
       <nav className="ad-nav">
         <span className="ad-brand">
           <Logo size={30} /> <small>Admin</small>
         </span>
-        {navFor(me?.role === 'owner').map(({ group, items }) => (
+        {navFor(me?.role ?? 'editor').map(({ group, items }) => (
           <div key={group ?? 'top'} className="ad-nav-section" lang="bn">
             {group && <div className="ad-nav-group">{group}</div>}
             {items.map((i) => (
@@ -77,7 +79,7 @@ export function AdminApp() {
           সাইন আউট
         </button>
       </nav>
-      <AdminTabBar section={section} owner={me?.role === 'owner'} onSignOut={signOut} />
+      <AdminTabBar section={section} role={me?.role ?? 'editor'} onSignOut={signOut} />
       <main className="ad-main">
         {page === 'content' ? (
           <ContentPage onUnauthorized={signOut} />
@@ -97,8 +99,12 @@ export function AdminApp() {
           <BoardAdmin onUnauthorized={signOut} />
         ) : page === 'board-topic' ? (
           <BoardEditor key={id} id={id} onUnauthorized={signOut} />
+        ) : page === 'writing' ? (
+          <WritingAdmin onUnauthorized={signOut} />
+        ) : page === 'writing-task' ? (
+          <WritingEditor key={id} id={id} onUnauthorized={signOut} />
         ) : page === 'reports' ? (
-          <ReportsPage onUnauthorized={signOut} />
+          <ReportsPage onUnauthorized={signOut} people={me?.role !== 'editor'} />
         ) : page === 'errors' ? (
           <ErrorsPage onUnauthorized={signOut} />
         ) : page === 'words' ? (
@@ -118,7 +124,7 @@ export function AdminApp() {
         ) : page === 'user' ? (
           <UserPage key={id} id={id} onUnauthorized={signOut} />
         ) : (
-          <Dashboard onUnauthorized={signOut} />
+          <Dashboard onUnauthorized={signOut} owner={me?.role !== 'editor'} />
         )}
       </main>
     </div>

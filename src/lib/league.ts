@@ -57,3 +57,19 @@ export const daysLeft = (ends: string, today = new Date()) => {
   const [y, m, d] = ends.split('-').map(Number);
   return Math.max(1, Math.round((new Date(y, m - 1, d).getTime() - local) / 86_400_000) + 1);
 };
+
+/**
+ * The league with this phone's own XP of the week counted in, so a lesson just done shows at once
+ * (the server only knows it after the next sync). `xpByDay` is the learner's own progress.
+ */
+export function withMyXp(league: League, xpByDay: Record<string, number>, name: string): League {
+  const mine = Object.entries(xpByDay)
+    .filter(([day]) => day >= league.since && day <= league.ends)
+    .reduce((sum, [, xp]) => sum + xp, 0);
+  if (mine <= (league.me?.xp ?? 0)) return league;
+  const others = league.learners.filter((l) => !l.isMe);
+  const me = { name: name.trim().split(/\s+/)[0] || 'Learner', xp: mine, isMe: true };
+  const ranked = [...others, me].sort((a, b) => b.xp - a.xp || Number(b.isMe) - Number(a.isMe));
+  const rank = ranked.indexOf(me) + 1;
+  return { ...league, learners: ranked.slice(0, Math.max(10, league.learners.length)), me: { rank: league.me ? Math.min(league.me.rank, rank) : rank, xp: mine } };
+}

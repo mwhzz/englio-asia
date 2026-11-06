@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from 'react';
 import type { Exercise } from '../../types';
 import { ExerciseView } from '../exercises/ExerciseView';
 import { HeroTag } from '../exercises/HeroTag';
-import { INSTRUCTIONS } from '../exercises/instructions';
+import { instructionFor } from '../exercises/instructions';
 import { LessonFooter } from './LessonFooter';
 import { LessonHeader } from './LessonHeader';
 import { OutOfHearts } from './OutOfHearts';
@@ -23,11 +23,13 @@ interface Props {
   resume?: SessionState | null;
   onSave?: (state: SessionState) => void;
   onQuit: () => void;
+  /** Leaves but keeps the place, to carry on later (only lessons can be resumed). */
+  onLater?: () => void;
   onPractice: () => void;
   onFinish: (stats: LessonStats) => void;
 }
 
-export function LessonView({ exercises, practice, accent, where, resume, onSave, onQuit, onPractice, onFinish }: Props) {
+export function LessonView({ exercises, practice, accent, where, resume, onSave, onQuit, onLater, onPractice, onFinish }: Props) {
   const session = useLessonSession(exercises, practice, onFinish, resume, onSave);
   const [confirmQuit, setConfirmQuit] = useState(false);
   const { exercise, feedback } = session;
@@ -36,7 +38,7 @@ export function LessonView({ exercises, practice, accent, where, resume, onSave,
   useBackButton(() => (session.started ? setConfirmQuit(true) : onQuit()));
   if (session.outOfHearts) return <OutOfHearts onPractice={onPractice} onQuit={onQuit} />;
 
-  const instruction = INSTRUCTIONS[exercise.kind];
+  const instruction = instructionFor(exercise);
   return (
     <div className="lesson" style={{ '--u': accent } as CSSProperties}>
       <LessonHeader
@@ -47,7 +49,7 @@ export function LessonView({ exercises, practice, accent, where, resume, onSave,
       />
 
       <main className={`lesson-body${feedback?.result === 'wrong' ? ' is-wrong' : ''}`} key={exercise.id}>
-        {resume && session.position === resume.index + 1 && (
+        {resume && session.index === resume.index && (
           <p className="redo-tag" lang="bn">
             ↻ যেখানে থেমেছিলে, সেখান থেকে
           </p>
@@ -62,7 +64,7 @@ export function LessonView({ exercises, practice, accent, where, resume, onSave,
           <small>{instruction.en}</small>
         </h1>
         <div className={`lesson-stage${exercise.kind === 'match' ? ' no-hero' : ''}`}>
-          <HeroTag kind={exercise.kind} number={session.position} total={session.count} />
+          <HeroTag kind={exercise.kind} number={session.position} total={session.count} again={session.again} />
           <ExerciseView ex={exercise} disabled={feedback !== null} onChange={session.answerChanged} />
         </div>
       </main>
@@ -77,7 +79,7 @@ export function LessonView({ exercises, practice, accent, where, resume, onSave,
         onNext={session.next}
       />
 
-      {confirmQuit && <QuitDialog onStay={() => setConfirmQuit(false)} onQuit={onQuit} />}
+      {confirmQuit && <QuitDialog onStay={() => setConfirmQuit(false)} onQuit={onQuit} onLater={onLater} />}
     </div>
   );
 }

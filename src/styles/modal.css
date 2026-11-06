@@ -17,7 +17,7 @@
   position: relative;
   width: 100%;
   max-width: 560px;
-  max-height: 88dvh;
+  max-height: calc(88dvh / var(--zoom));
   overflow: auto;
   padding: 30px 20px calc(20px + env(safe-area-inset-bottom));
   border-radius: 34px 34px 0 0;

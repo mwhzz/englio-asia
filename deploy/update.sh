@@ -54,10 +54,13 @@ if [ ! -d node_modules ] || [ -z "$PREV" ] || [ "${1:-}" = "--no-pull" ] || echo
 fi
 
 # 3. Build next to the live site, and test. Nothing live has changed yet.
+#    At the lowest priority and with capped memory, so learners using the API don't feel a deploy.
 STEP="build"
-VITE_VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" npm run build -- --outDir dist-next --emptyOutDir
+export NODE_OPTIONS="--max-old-space-size=384"
+VITE_VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" nice -n 19 ionice -c3 npm run build -- --outDir dist-next --emptyOutDir
 STEP="tests"
-npm test
+nice -n 19 ionice -c3 npm test
+unset NODE_OPTIONS
 
 # First time only: fill the database with the built-in course (no demo learners).
 STEP="database"

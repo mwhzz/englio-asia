@@ -1,5 +1,5 @@
 .shell {
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--zoom));
 }
 
 /* Shown for a moment while the onboarding code loads. */
@@ -50,7 +50,7 @@
 
 .crash {
   max-width: 420px;
-  min-height: 70dvh;
+  min-height: calc(70dvh / var(--zoom));
   margin: 0 auto;
   padding: 40px 24px;
   display: flex;

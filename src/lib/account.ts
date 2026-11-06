@@ -1,3 +1,4 @@
+import { appHeaders } from './appHeaders';
 import { deviceId } from '../state/useProgressSync';
 import { API_BASE } from './api';
 import { becomeLearner, post } from './backup';
@@ -15,7 +16,7 @@ interface Linked {
 /** Saves this phone's progress to the server first, so a new account has something to link to. */
 async function saveFirst(progress: Progress | null) {
   if (!progress?.profile) return;
-  await fetch(`${API_BASE}/users/${deviceId()}`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ progress }) });
+  await fetch(`${API_BASE}/users/${deviceId()}`, { method: 'PUT', headers: appHeaders(), body: JSON.stringify({ progress }) });
 }
 
 /** Texts a sign-in code to the number. Returns the code itself only on a development server. */

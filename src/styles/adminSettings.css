@@ -493,3 +493,139 @@ p.ad-warn {
     justify-self: end;
   }
 }
+
+/* Stat cards can be buttons (open reports → the reports page). */
+button.ad-stat {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+}
+.ad-stats.is-small {
+  grid-template-columns: repeat(3, 1fr);
+}
+.ad-stats.is-small .ad-stat {
+  padding: 10px 0;
+}
+
+/* Reports (TicketRow): status pills, the editor under an opened report. */
+.ad-pill.is-new {
+  background: color-mix(in srgb, var(--ios-blue) 14%, transparent);
+  color: var(--ios-blue);
+}
+.ad-pill.is-doing {
+  background: color-mix(in srgb, var(--ios-orange) 16%, transparent);
+  color: color-mix(in srgb, var(--ios-orange) 70%, var(--ios-label));
+}
+.ad-pill.is-fixed {
+  background: color-mix(in srgb, var(--ios-green) 14%, transparent);
+  color: color-mix(in srgb, var(--ios-green) 70%, var(--ios-label));
+}
+.ad-pill.is-bad {
+  background: color-mix(in srgb, var(--ios-red) 14%, transparent);
+  color: var(--ios-red);
+}
+.ad-ticket {
+  flex-direction: column;
+  align-items: stretch;
+}
+.ad-ticket-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.ad-ticket-text {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.ad-ticket-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 0 8px;
+}
+.ad-ticket-edit textarea {
+  width: 100%;
+  resize: vertical;
+}
+.ad-scroll-x {
+  overflow-x: auto;
+}
+
+/* Learner page: the "fix the account" buttons. */
+.ad-actions .ad-quick {
+  gap: 8px;
+}
+.ad-pager {
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+/* Daily active learners (dark) and sign-ups (light), one column per day. */
+.ad-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 120px;
+  margin-top: 12px;
+}
+.ad-chart-day {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.ad-chart-day i {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 3px 3px 0 0;
+  min-height: 1px;
+}
+.ad-chart-day .is-active {
+  background: var(--ios-blue);
+}
+.ad-chart-day .is-new {
+  left: 25%;
+  right: 25%;
+  background: color-mix(in srgb, #ffc93c 85%, transparent);
+}
+.ad-chart-axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ios-secondary);
+}
+
+/* The learners table becomes cards on a phone. */
+@media (max-width: 760px) {
+  .ad-users thead {
+    display: none;
+  }
+  .ad-users tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 12px;
+    padding: 10px 12px;
+    border-top: 0.5px solid var(--ios-separator);
+  }
+  .ad-users td {
+    padding: 0;
+    border: none;
+  }
+  .ad-users td:first-child {
+    grid-column: 1 / -1;
+    font-weight: 600;
+  }
+  .ad-users td:not(:first-child)::before {
+    content: attr(data-label) ': ';
+    color: var(--ios-secondary);
+  }
+  .ad-users td.num {
+    text-align: left;
+  }
+}

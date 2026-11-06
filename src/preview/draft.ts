@@ -6,7 +6,8 @@ export type Draft =
   | { kind: 'story'; story: Story }
   | { kind: 'topic'; topic: GrammarTopic }
   | { kind: 'course'; topic: GrammarTopic; course: GrammarCourse }
-  | { kind: 'lesson'; lessonId: string };
+  /** A saved lesson; `lang` is the course it belongs to (another language's draft course is fetched for it). */
+  | { kind: 'lesson'; lessonId: string; lang?: string };
 
 const KEY = 'englio-preview-draft';
 export const PREVIEW_HASH = '#preview';

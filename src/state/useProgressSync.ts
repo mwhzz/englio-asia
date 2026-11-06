@@ -1,3 +1,4 @@
+import { appHeaders } from '../lib/appHeaders';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { API_BASE } from '../lib/api';
 import { sameProgress } from '../lib/mergeProgress';
@@ -64,7 +65,7 @@ export function useProgressSync(progress: Progress, enabled: boolean, adopt: (me
       try {
         const res = await fetch(`${API_BASE}/users/${deviceId()}`, {
           method: 'PUT',
-          headers: { 'content-type': 'application/json' },
+          headers: appHeaders(),
           body: JSON.stringify({ progress }),
           keepalive: true,
         });

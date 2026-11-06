@@ -8,6 +8,8 @@ interface AppError {
   stack: string;
   place: string;
   agent: string;
+  version: string | null;
+  device: string | null;
   firstAt: string;
   lastAt: string;
   n: number;
@@ -35,7 +37,7 @@ export function ErrorsPage({ onUnauthorized }: { onUnauthorized: () => void }) {
               <button className="ad-item-open" onClick={() => setOpen(open === e.id ? null : e.id)}>
                 <strong>{e.message}</strong>
                 <small>
-                  {e.n}× · {e.place} · last {new Date(e.lastAt).toLocaleString()}
+                  {e.n}× · v{e.version ?? '?'} · {e.device ?? '?'} · {e.place} · last {new Date(e.lastAt).toLocaleString()}
                 </small>
                 {open === e.id && (
                   <pre className="ad-help">

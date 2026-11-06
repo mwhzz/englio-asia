@@ -32,7 +32,8 @@ export const BADGES: Badge[] = [
   { id: 'xp-1000', icon: 'gem', color: '#ff9500', bn: '১০০০ XP', en: '1000 XP', value: (p) => p.xp, target: 1000 },
   { id: 'words-50', icon: 'letters', color: '#007aff', bn: '৫০টা শব্দ', en: '50 words', value: wordsLearned, target: 50 },
   { id: 'words-100', icon: 'letters', color: '#007aff', bn: '১০০টা শব্দ', en: '100 words', value: wordsLearned, target: 100 },
-  { id: 'alphabet', icon: 'pencil', color: '#5856d6', bn: 'পুরো বর্ণমালা', en: 'Traced A–Z', value: (p) => p.lettersPracticed?.length ?? 0, target: 26 },
+  // (The letters tab is gone, so the old "Traced A–Z" badge could never be earned; stories took its place.)
+  { id: 'stories-3', icon: 'book', color: '#5856d6', bn: '৩টা গল্প', en: '3 stories read', value: (p) => p.storiesRead?.length ?? 0, target: 3 },
   { id: 'grammar-1', icon: 'book', color: '#af52de', bn: 'প্রথম ব্যাকরণ', en: 'First grammar topic', value: (p) => p.grammarLearned?.length ?? 0, target: 1 },
   { id: 'grammar-10', icon: 'book', color: '#af52de', bn: '১০টা ব্যাকরণ', en: '10 grammar topics', value: (p) => p.grammarLearned?.length ?? 0, target: 10 },
   { id: 'course-1', icon: 'trophy', color: '#af52de', bn: 'পুরো কোর্স শেষ', en: 'A full grammar course', value: coursesDone, target: 1 },

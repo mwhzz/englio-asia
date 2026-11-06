@@ -15,3 +15,9 @@ export const INSTRUCTIONS: Record<Exercise['kind'], { en: string; bn: string }> 
   dictate: { en: 'Type what you hear', bn: 'যা শুনছ তা লেখো' },
   speak: { en: 'Say this sentence', bn: 'বাক্যটা জোরে বলো' },
 };
+
+/** The instruction for one exercise: a single word to say aloud is a word, not a sentence. */
+export function instructionFor(ex: Exercise): { en: string; bn: string } {
+  if (ex.kind === 'speak' && !/\s/.test(ex.sentence.en.trim())) return { en: 'Say this word', bn: 'শব্দটা জোরে বলো' };
+  return INSTRUCTIONS[ex.kind];
+}

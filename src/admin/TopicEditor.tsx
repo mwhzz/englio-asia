@@ -5,7 +5,7 @@ import { adminApi, Unauthorized } from './adminApi';
 import { EMPTY_TOPIC, fromFields, slug, toFields, type TopicFields } from './topicForm';
 import { openPreview } from '../preview/draft';
 import { go } from './useHashRoute';
-import { useAdminLang } from './useAdminLang';
+import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 type TextKey = Exclude<keyof TopicFields, 'level'>;
 
@@ -23,6 +23,7 @@ const FIELDS: { key: TextKey; label: string; rows?: number; hint?: string; bn?: 
 
 /** Write or edit one grammar topic as plain text fields; the server checks it before saving. */
 export function TopicEditor({ id, onUnauthorized }: { id: string; onUnauthorized: () => void }) {
+  const meaning = useMeaningLang();
   const isNew = id === 'new';
   const lang = useAdminLang();
   const [fields, setFields] = useState<TopicFields | null>(isNew ? EMPTY_TOPIC : null);
@@ -96,11 +97,11 @@ export function TopicEditor({ id, onUnauthorized }: { id: string; onUnauthorized
 
         {FIELDS.map((f) => (
           <label key={f.key} className="ad-field">
-            <span>{f.label}</span>
+            <span>{forLang(f.label, meaning.name)}</span>
             {f.rows ? (
-              <textarea className="ad-input" rows={f.rows} lang={f.bn ? 'bn' : undefined} value={fields[f.key]} onChange={(e) => set(f.key, e.target.value)} />
+              <textarea className="ad-input" rows={f.rows} lang={f.bn ? meaning.code : undefined} dir={f.bn ? meaning.dir : undefined} value={fields[f.key]} onChange={(e) => set(f.key, e.target.value)} />
             ) : (
-              <input className="ad-input" lang={f.bn ? 'bn' : undefined} value={fields[f.key]} onChange={(e) => set(f.key, e.target.value)} />
+              <input className="ad-input" lang={f.bn ? meaning.code : undefined} dir={f.bn ? meaning.dir : undefined} value={fields[f.key]} onChange={(e) => set(f.key, e.target.value)} />
             )}
             {f.hint && <small>{f.hint}</small>}
           </label>

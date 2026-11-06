@@ -7,6 +7,7 @@ import { go } from './useHashRoute';
 import { openPreview } from '../preview/draft';
 import { BulkAdd } from './BulkAdd';
 import { BULK } from './bulkRows';
+import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 interface Item {
   id: number;
@@ -23,7 +24,9 @@ interface LessonData {
 
 /** One lesson: its name, then its words, sentences, blanks, gaps, grammar and dialogues, each editable. */
 export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized: () => void }) {
+  const meaning = useMeaningLang();
   const { data: lesson, error, reload } = useAdminData<LessonData>(`/lessons/${id}`, onUnauthorized);
+  const lang = useAdminLang();
   // What's being edited: an item id, "new:<kind>", or "title".
   const [editing, setEditing] = useState<string | null>(null);
   const [title, setTitle] = useState({ title: '', titleBn: '' });
@@ -56,7 +59,7 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
             <input className="ad-input" value={title.title} onChange={(e) => setTitle({ ...title, title: e.target.value })} />
           </label>
           <label className="ad-field">
-            <span>Title (Bangla)</span>
+            <span>{forLang('Title (Bangla)', meaning.name)}</span>
             <input className="ad-input" lang="bn" value={title.titleBn} onChange={(e) => setTitle({ ...title, titleBn: e.target.value })} />
           </label>
           <div className="ad-row">
@@ -83,7 +86,7 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
           >
             Rename
           </button>
-          <button className="ad-btn" onClick={() => openPreview({ kind: 'lesson', lessonId: lesson.id })} title="Runs the lesson as saved">
+          <button className="ad-btn" onClick={() => openPreview({ kind: 'lesson', lessonId: lesson.id, lang })} title="Runs the lesson as saved">
             Preview in app ↗
           </button>
         </header>

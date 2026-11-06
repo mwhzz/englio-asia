@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { track } from '../../lib/track';
 import { haptic } from '../../lib/haptics';
 import { cleanName } from '../../lib/profile';
 import { useProgress } from '../../state/ProgressContext';
@@ -29,6 +30,8 @@ export default function Onboarding() {
   const rect = useSlotRect(rootRef, slot);
 
   const index = STEPS.indexOf(step);
+  // Anonymous count of who reaches each step (the admin's onboarding drop-off).
+  useEffect(() => track('onboard', step), [step]);
   function go(next: Step) {
     haptic();
     setDirection(STEPS.indexOf(next) > index ? 1 : -1);

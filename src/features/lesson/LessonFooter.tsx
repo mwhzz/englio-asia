@@ -72,7 +72,8 @@ export function LessonFooter({ exercise, canCheck, feedback, combo, where, onChe
           </button>
         ) : (
           <button className="cta" disabled={!canCheck} onClick={onCheck}>
-            <span lang="bn">যাচাই করো</span>
+            {/* Matching checks itself once every pair is found, so its button only says what to do. */}
+            <span lang="bn">{exercise.kind === 'match' ? 'জোড়াগুলো মেলাও' : 'যাচাই করো'}</span>
           </button>
         )}
       </div>

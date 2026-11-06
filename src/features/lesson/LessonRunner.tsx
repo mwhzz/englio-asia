@@ -76,6 +76,7 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
         clearResume();
         onExit();
       }}
+      onLater={lessonId ? onExit : undefined}
       onPractice={onPractice}
       onFinish={(stats) => {
         const today = dayKey();

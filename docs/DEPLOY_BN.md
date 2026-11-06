@@ -109,16 +109,26 @@ npm run release -- major     # বড় বদল (1.0.0 → 2.0.0)
 | API-র লগ (লাইভ) | `journalctl -u englio-api -f` (বের হতে Ctrl+C) |
 | অটো-আপডেট হলো কি না | `cat /var/lib/englio/deploys.log` |
 | রিমাইন্ডার কতজনকে গেল | `journalctl -t englio-reminders -n 20` |
-| ব্যাকআপ হলো কি না | `ls -lh /var/backups/englio` |
+| ব্যাকআপ হলো কি না | `ls -lh /var/backups/englio`, `journalctl -t englio-backup -n 20` |
+| সাইট-চেকের লগ | `journalctl -t englio-watch -n 20` |
 | API রিস্টার্ট | `sudo systemctl restart englio-api` |
 
-## ৯. ব্যাকআপ
+## ৯. ব্যাকআপ (Telegram-এ) আর সাইট বন্ধ হলে খবর
 
-প্রতি রাত ৩:৩০-এ ডেটাবেস আর আপলোড করা ছবি ও রেকর্ডিং `/var/backups/englio`-তে কপি হয় (১৪ দিন রাখা হয়)। কিন্তু সার্ভারটাই নষ্ট হলে এগুলোও যাবে, তাই DigitalOcean-এর **Backups** চালু রাখো, অথবা মাঝে মাঝে কম্পিউটারে নামিয়ে রাখো:
+প্রতি রাত ৩:৩০-এ ডেটাবেস চেক করে, ছোট (gzip) করে `/var/backups/englio`-তে রাখে (৭ দিন), আর **তোমার Telegram-এ পাঠায়**, যাতে সার্ভার নষ্ট হলেও কপি থাকে। ছবি আর রেকর্ডিং যায় প্রতি শুক্রবার। প্রতি ৫ মিনিটে সাইট চলছে কি না, ডিস্ক ভরছে কি না, ব্যাকআপ পুরনো কি না দেখে; সমস্যা হলে Telegram-এ একবার জানায়, ঠিক হলে আবার জানায়।
 
-```powershell
-scp -r root@159.89.10.20:/var/backups/englio ./englio-backup
-```
+**একবার চালু করতে:**
+
+1. Telegram-এ **@BotFather** খোলো, `/newbot` লেখো, একটা নাম দাও। সে একটা **token** দেবে।
+2. তোমার নতুন বটটা খুলে যেকোনো একটা মেসেজ পাঠাও (যেমন `hi`)।
+3. সার্ভারে: `sudo bash /opt/englio/deploy/telegram-setup.sh`। token চাইবে (লেখা দেখা যাবে না), তারপর একটা **পাসওয়ার্ড** চাইবে ব্যাকআপ ফাইল লক করার জন্য (দিলে ভালো; ফাইল খুলতে এটা লাগবে, তাই কোথাও লিখে রাখো)। Telegram-এ একটা টেস্ট মেসেজ আসবে।
+4. এখনই একটা ব্যাকআপ পাঠাতে: `sudo bash /opt/englio/deploy/backup.sh`
+
+**ব্যাকআপ ফেরত আনা (restore):** Telegram থেকে ফাইলটা নামিয়ে সার্ভারে পাঠাও (`scp englio-2026-11-06.db.gz.enc root@165.22.253.84:/root/`), তারপর
+- শুধু চেক: `sudo bash /opt/englio/deploy/restore.sh /root/englio-2026-11-06.db.gz.enc --test`
+- আসলেই ফেরত আনা: একই কমান্ড `--test` ছাড়া (`yes` লিখতে বলবে; এখনকার ডেটাবেস আলাদা করে রেখে দেয়)।
+
+মাসে একবার `--test` চালিয়ে দেখো ব্যাকআপ ঠিক আছে। ৫০ MB-র বড় ফাইল কয়েক ভাগে (`part00`, `part01`) আসে: আগে জোড়া দাও `cat f.part00 f.part01 > f`।
 
 ## ১০. পরে আসল ডোমেইনে সরানো
 

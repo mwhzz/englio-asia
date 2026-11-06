@@ -26,6 +26,9 @@ npm run build    # type-checks app and server, then builds dist/
 - New content kinds must be validated by the server (`server/validate.ts`) so the app can always solve them, and have tests.
 - **Brand:** app icon = the "e." (B), logo mark = the learning path (D), never merged; blue night `#2F3BD8` + yellow dot `#FFC93C`, dark = black `#141A2E` + lime `#C6F432`. Files and rules: `brand/README.md`; redraw PNGs with `PW=@playwright/test node scripts/make-icons.cjs`.
 - **Owner settings** (feature switches, Plus-only units, Plus price/days) live in `src/data/appSettings.ts` (shared rules), `server/settings.ts` (stored in `meta`, sent with `/api/course`) and `src/lib/appSettings.ts` (`feature()`, `unitLocked()`, `unlimitedHearts()`). A new switchable feature: add it to `FEATURES` and gate it with `feature('id')`. Unit lock is enforced in the app only (the course itself is public).
+- **Admin roles:** owner (everything), editor (content), support (learners and reports). A route's `admin:` is `true`, `'owner'`, `'content'` or `'people'` (`server/team.ts` `allowed`); the menu filters by role (`adminNav.ts` `roles`).
+- **Reports:** one table for lesson reports and the app's help page (`server/reports.ts`): learner id, app version, phone, status, kind, assignee, reply; the learner sees replies in Profile → সাহায্য ও অভিযোগ (`src/features/help`).
+- **Learners at scale:** `users` keeps `last_xp_day`, `week_since`, `week_xp` (reminders and the league read these, never the progress JSON) and `active_days` (daily active, retention; `server/stats.ts`). Admin fixes to a learner (`userAction`) bump `savedAt` so the phone takes them on its next sync.
 - **Admin UI** is in Bangla and looks like the app; its menu is `src/admin/adminNav.ts` (sidebar on a computer, tab bar + "আরও" sheet on a phone). Agreed admin plan: memory/`admin-plan` (Settings → Learners → Content → Reports).
 - **Languages** (the learner's own language; see memory/global-vision): table `languages` (code, name, native, dir, draft/live), and a `lang` column on `units`, `grammar`, `stories`, `writing_tasks` (old content is `bn`). New content in another language gets ids prefixed with its code (`ar-u1`, `server/languages.ts` `idIn`). `/api/course?lang=` serves one language (Bangla by default; board prep is Bangla only) plus the live languages. In content, the `bn`/`titleBn` fields hold the meaning in *that* language. The admin's language bar is `src/admin/LanguagePicker.tsx` / `useAdminLang.ts`. Seeding only replaces the Bangla content. Next steps: translatable app UI strings + RTL, then a language choice in the app.
 - **Audio:** recordings are kept per English text in `audio_clips` (key = `src/lib/audioKey.ts`), set on the admin's শব্দ and অডিও pages (`server/adminAudio.ts`), sent with the course as `audio`, and played by `speak()` (lib/media.ts) instead of the phone's voice; a clip wins over a recording stored on the item itself. One recording serves every lesson, story and language that says that text.
@@ -73,8 +76,8 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 | API service | `systemctl status englio-api`, logs `journalctl -u englio-api -f` |
 | Web server (HTTPS, static files, `/api` proxy) | Caddy, `/etc/caddy/Caddyfile` |
 | Auto-deploy (every 15 s) | `systemctl status englio-deploy.timer`; logs `journalctl -u englio-deploy`; history `/var/lib/englio/deploys.log` |
-| Hourly reminders, nightly backup (03:30) | `/etc/cron.d/englio`; logs `journalctl -t englio-reminders`, `-t englio-backup` |
-| Backups (14 days) | `/var/backups/englio` (root only) |
+| Hourly reminders, nightly backup (03:30), 5-minute health check | `/etc/cron.d/englio`; logs `journalctl -t englio-reminders`, `-t englio-backup`, `-t englio-watch` |
+| Backups (7 days, gzip) | `/var/backups/englio` (root only); also sent to the owner's Telegram (`deploy/telegram-setup.sh`, `TELEGRAM_*` and `BACKUP_PASSWORD` in `/etc/englio.env`); restore with `deploy/restore.sh <file> [--test]` |
 | Downloadable APK for testers | `/opt/englio/public/englio.apk` → `https://<domain>/englio.apk` (server only, not in git) |
 
 ### Deploying a change
@@ -100,11 +103,14 @@ The service worker (`public/sw.js`) loads the page from the network for up to 3 
 
 ## Review agents
 
-Three read-only reviewers live in `.claude/agents/` (Claude Code picks them up; with other tools, give the agent that file as its brief). Run them before a release or launch, and after big changes:
+Five read-only reviewers live in `.claude/agents/` (Claude Code picks them up; with other tools, give the agent that file as its brief). Run them before a release or launch, and after big changes:
 
 - `language-auditor`: can a new learner language be added and reach learners using only the admin? Lists what's missing.
 - `learner-tester`: uses the app end to end as a new learner on a phone-sized browser (own throwaway server) and reports bugs, dead ends and missing features.
 - `admin-ops-auditor`: can the owner run the app at scale (e.g. 1,000 new learners a day, many complaints) with the admin as it is? Lists missing data, workflows and server risks.
+
+- `persona-learners`: five learner personalities (a class-8 student, a garage owner with little English, an HSC candidate, a retired teacher, a worker going abroad) each learn with the app for several days; a deep UX report.
+- `product-auditor`: the whole app, website, admin and server seen as a Duolingo-sized product: what running it every day needs that's missing, with a roadmap.
 
 They never edit files, push, or touch the live server. Their findings are collected in `docs/GAPS.md`.
 

@@ -316,7 +316,7 @@ p.cq-sentence:not(:has(button)) {
    the reason comes up from the bottom as a sheet and the answers move up above it. */
 .cl-ask {
   box-sizing: border-box;
-  min-height: calc(100dvh - 56px - env(safe-area-inset-top));
+  min-height: calc(100dvh / var(--zoom) - 56px - env(safe-area-inset-top));
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
   transition: padding-bottom 0.3s var(--ease);
 }
@@ -340,7 +340,7 @@ p.cq-sentence:not(:has(button)) {
   right: 0;
   bottom: 0;
   max-width: 520px;
-  max-height: 60dvh;
+  max-height: calc(60dvh / var(--zoom));
   overflow-y: auto;
   margin: 0 auto;
   padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
@@ -502,6 +502,12 @@ p.cq-sentence:not(:has(button)) {
 
 .st-next {
   --c: var(--u);
+  /* Under the thumb: the button stays at the bottom of the screen while the story grows above it. */
+  position: sticky;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 2;
+  margin-top: calc(50dvh / var(--zoom));
+  box-shadow: 0 0 0 12px var(--ios-bg);
 }
 
 /* The card that opens a quiz full screen (topic pages, stories). */

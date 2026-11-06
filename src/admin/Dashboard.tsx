@@ -1,6 +1,9 @@
+import { toBanglaDigits } from '../lib/bangla';
+import { DailyStats } from './DailyStats';
 import { LessonFunnel } from './LessonFunnel';
 import { className, districtName } from './names';
 import { useAdminData } from './useAdminData';
+import { go } from './useHashRoute';
 
 interface Summary {
   users: number;
@@ -11,49 +14,50 @@ interface Summary {
   lessons: number;
   items: number;
   grammar: number;
+  openReports: number;
   districts: { id: string; users: number; xp: number }[];
   classes: { id: string; users: number }[];
 }
 
-/** Headline numbers, the top districts by XP, learners by class, and the lesson funnel. */
-export function Dashboard({ onUnauthorized }: { onUnauthorized: () => void }) {
+/** The owner's day at a glance: headline numbers, growth and retention (DailyStats), districts, classes and the lesson funnel. */
+export function Dashboard({ onUnauthorized, owner = true }: { onUnauthorized: () => void; owner?: boolean }) {
   const { data, error } = useAdminData<Summary>('/summary', onUnauthorized);
   if (error) return <p className="ad-error">{error}</p>;
-  if (!data) return <p className="ad-muted">Loading…</p>;
+  if (!data) return <p className="ad-muted">লোড হচ্ছে…</p>;
 
   const stats = [
-    ['Learners', data.users],
-    ['Active today', data.activeToday],
-    ['Active this week', data.activeWeek],
-    ['Total XP', data.totalXp],
-    ['Units', data.units],
-    ['Lessons', data.lessons],
-    ['Content items', data.items],
-    ['Grammar topics', data.grammar],
+    ['শিক্ষার্থী', data.users],
+    ['আজ সক্রিয়', data.activeToday],
+    ['এই সপ্তাহে সক্রিয়', data.activeWeek],
+    ['খোলা রিপোর্ট', data.openReports],
+    ['মোট XP', data.totalXp],
+    ['লেসন', data.lessons],
+    ['কনটেন্ট', data.items],
+    ['ব্যাকরণ টপিক', data.grammar],
   ] as const;
   const topXp = Math.max(1, ...data.districts.map((d) => d.xp));
   const topClass = Math.max(1, ...data.classes.map((c) => c.users));
 
   return (
-    <div className="ad-page">
+    <div className="ad-page" lang="bn">
       <header className="ad-head">
-        <h1>
-          Dashboard <span lang="bn">· ড্যাশবোর্ড</span>
-        </h1>
+        <h1>ড্যাশবোর্ড</h1>
       </header>
 
       <div className="ad-stats">
         {stats.map(([label, value]) => (
-          <div key={label} className="ad-card ad-stat">
+          <button key={label} className="ad-card ad-stat" onClick={label === 'খোলা রিপোর্ট' ? () => go('reports') : undefined}>
             <small>{label}</small>
-            <strong>{value.toLocaleString()}</strong>
-          </div>
+            <strong>{toBanglaDigits(value.toLocaleString('en'))}</strong>
+          </button>
         ))}
       </div>
 
+      {owner && <DailyStats onUnauthorized={onUnauthorized} />}
+
       <div className="ad-two">
         <section className="ad-card">
-          <h2>Top districts by XP</h2>
+          <h2>XP-তে সেরা জেলা</h2>
           <ul className="ad-bars">
             {data.districts.map((d) => (
               <li key={d.id}>
@@ -62,14 +66,14 @@ export function Dashboard({ onUnauthorized }: { onUnauthorized: () => void }) {
                   <i style={{ width: `${(100 * d.xp) / topXp}%` }} />
                 </span>
                 <em>
-                  {d.xp} XP · {d.users}
+                  {d.xp} XP · {d.users} জন
                 </em>
               </li>
             ))}
           </ul>
         </section>
         <section className="ad-card">
-          <h2>Learners by class</h2>
+          <h2>ক্লাস অনুযায়ী শিক্ষার্থী</h2>
           <ul className="ad-bars">
             {data.classes.map((c) => (
               <li key={c.id}>

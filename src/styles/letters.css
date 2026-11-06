@@ -2,7 +2,7 @@
 
 .lt,
 .gr {
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--zoom));
   max-width: 520px;
   margin: 0 auto;
   padding: calc(18px + env(safe-area-inset-top)) 16px calc(116px + env(safe-area-inset-bottom));

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Glyph } from '../../components/Glyph';
 import { findDistrict } from '../../data/districts';
-import { toBanglaDigits } from '../../lib/bangla';
+import { toBanglaDigits, possessive } from '../../lib/bangla';
 import { haptic } from '../../lib/haptics';
-import { fetchLeague, type League } from '../../lib/league';
+import { fetchLeague, withMyXp, type League } from '../../lib/league';
 import { isLowData } from '../../lib/offline';
 import { useProgress } from '../../state/ProgressContext';
 import { LeaguePage } from './LeaguePage';
@@ -23,9 +23,11 @@ export function LeagueCard() {
       live = false;
     };
   }, [districtId, open]);
+  // This phone's XP of the week counts at once, before the server hears of it.
+  const view = league ? withMyXp(league, progress.xpByDay, progress.profile?.name ?? '') : null;
 
   const district = findDistrict(districtId);
-  if (!league || !district) return null;
+  if (!view || !district) return null;
 
   return (
     <>
@@ -43,13 +45,13 @@ export function LeagueCard() {
         <span className="rc-text">
           <strong lang="bn">জেলা লিগ</strong>
           <small lang="bn">
-            {league.myDistrictRank ? `এই সপ্তাহে ${district.bn} ${toBanglaDigits(league.myDistrictRank)} নম্বরে` : `${district.bn}-এর হয়ে প্রথম পয়েন্ট আনো`}
-            {league.me ? ` · তুমি ${toBanglaDigits(league.me.rank)} নম্বরে` : ''}
+            {view.myDistrictRank ? `এই সপ্তাহে ${district.bn} ${toBanglaDigits(view.myDistrictRank)} নম্বরে` : `${possessive(district.bn)} হয়ে প্রথম পয়েন্ট আনো`}
+            {view.me ? ` · তুমি ${toBanglaDigits(view.me.rank)} নম্বরে` : ''}
           </small>
         </span>
         <Glyph name="chevron" size={16} className="pf-chevron" />
       </button>
-      {open && <LeaguePage league={league} district={district} onClose={() => setOpen(false)} />}
+      {open && <LeaguePage league={view} district={district} onClose={() => setOpen(false)} />}
     </>
   );
 }

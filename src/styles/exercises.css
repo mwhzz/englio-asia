@@ -747,7 +747,7 @@
 
 /* A word's picture (uploaded in the admin) on the question card. */
 .prompt-pic {
-  width: min(40vw, 150px);
+  width: min(calc(40vw / var(--zoom)), 150px);
   aspect-ratio: 1;
   object-fit: cover;
   margin-bottom: 8px;

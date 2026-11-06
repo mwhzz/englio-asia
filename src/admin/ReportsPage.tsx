@@ -1,70 +1,102 @@
+import { useState } from 'react';
 import { adminApi } from './adminApi';
+import { ContentReports } from './ContentReports';
+import { TicketRow, type Ticket } from './TicketRow';
 import { useAdminData } from './useAdminData';
+import { useDebounced } from './useDebounced';
+import { KIND_BN } from './reportLabels';
 
-interface Report {
-  place: string;
-  question: string;
-  n: number;
-  lastAt: string;
-  items: { id: number; reason: string; answer: string; note: string }[];
-}
+const VIEWS = [
+  ['open', 'খোলা'],
+  ['new', 'নতুন'],
+  ['doing', 'দেখছি'],
+  ['fixed', 'ঠিক হয়েছে'],
+  ['closed', 'বন্ধ'],
+  ['', 'সব'],
+] as const;
 
-const REASONS: Record<string, string> = {
-  'wrong-answer': 'My answer was right too',
-  mistake: 'Mistake in the question or answer',
-  audio: 'Audio / pronunciation',
-  unclear: 'Hard to understand',
-  other: 'Something else',
-};
+/**
+ * Learners' reports. "সব রিপোর্ট" lists each one (from lessons and the app's help page) with the learner,
+ * app version and phone; set its status, who handles it, and a reply the learner reads in the app.
+ * "লেসনের ভুল" groups the same lesson question reported by many learners: fix the content, then mark it fixed.
+ */
+export function ReportsPage({ onUnauthorized, people = true }: { onUnauthorized: () => void; people?: boolean }) {
+  // Editors fix lesson content; learners' own reports are for the owner and support.
+  const [tab, setTab] = useState<'tickets' | 'content'>(people ? 'tickets' : 'content');
+  const [status, setStatus] = useState('open');
+  const [kind, setKind] = useState('');
+  const [q, setQ] = useState('');
+  const query = useDebounced(q);
+  const { data, error, reload } = useAdminData<{ tickets: Ticket[]; counts: Record<string, number> }>(
+    people ? `/tickets?status=${status}&kind=${kind}&q=${encodeURIComponent(query)}` : '/reports',
+    onUnauthorized,
+  );
+  const { data: team } = useAdminData<{ name: string }[]>(people ? '/team' : '/me', () => undefined);
 
-/** What learners flagged with "সমস্যা জানাও", most-reported first. Fix the content, then mark it done. */
-export function ReportsPage({ onUnauthorized }: { onUnauthorized: () => void }) {
-  const { data, error, reload } = useAdminData<Report[]>('/reports', onUnauthorized);
-  if (error) return <p className="ad-error">{error}</p>;
-  if (!data) return <p className="ad-muted">Loading…</p>;
+  const save = (id: number, change: Partial<Ticket>) =>
+    adminApi('PUT', `/tickets/${id}`, change)
+      .then(reload)
+      .catch((e: Error) => alert(e.message));
 
   return (
-    <div className="ad-page">
+    <div className="ad-page" lang="bn">
       <header className="ad-head">
-        <h1>
-          Reports <span lang="bn">· শিক্ষার্থীদের জানানো সমস্যা</span>
-        </h1>
+        <h1>রিপোর্ট</h1>
+        {people && (
+        <span className="ad-seg" role="radiogroup" aria-label="Which reports">
+          <button role="radio" aria-checked={tab === 'tickets'} className={tab === 'tickets' ? 'is-on' : ''} onClick={() => setTab('tickets')}>
+            সব রিপোর্ট
+          </button>
+          <button role="radio" aria-checked={tab === 'content'} className={tab === 'content' ? 'is-on' : ''} onClick={() => setTab('content')}>
+            লেসনের ভুল
+          </button>
+        </span>
+        )}
       </header>
-      <p className="ad-muted">Learners tap “সমস্যা জানাও” after an answer. The same question from many learners is one row.</p>
-      <section className="ad-card">
-        <ul className="ad-list">
-          {data.map((r) => (
-            <li key={r.place + r.question} className="ad-item ad-report">
-              <span className="ad-item-open">
-                <strong lang="bn">{r.question}</strong>
-                <small>
-                  {r.n} report{r.n > 1 ? 's' : ''} · {r.place} · last {new Date(r.lastAt).toLocaleDateString()}
-                </small>
-                <ul className="ad-report-items">
-                  {r.items.slice(0, 5).map((i) => (
-                    <li key={i.id} lang="bn">
-                      {REASONS[i.reason] ?? i.reason}
-                      {i.answer && <> · answered “{i.answer}”</>}
-                      {i.note && <> · “{i.note}”</>}
-                    </li>
-                  ))}
-                </ul>
-              </span>
-              <button
-                className="ad-btn is-small"
-                onClick={() =>
-                  adminApi('POST', '/reports/close', { where: r.place, question: r.question })
-                    .then(reload)
-                    .catch((e: Error) => alert(e.message))
-                }
-              >
-                Done
-              </button>
-            </li>
-          ))}
-          {!data.length && <li className="ad-empty">No open reports.</li>}
-        </ul>
-      </section>
+
+      {tab === 'content' ? (
+        <ContentReports onUnauthorized={onUnauthorized} />
+      ) : (
+        <>
+          <p className="ad-muted">
+            শিক্ষার্থীরা লেসনের "সমস্যা জানাও" আর প্রোফাইল → সাহায্য ও অভিযোগ থেকে পাঠায়। উত্তর লিখলে শিক্ষার্থী অ্যাপের সাহায্য পেজে দেখতে পায়।
+          </p>
+          <div className="ad-row ad-filters">
+            <input className="ad-input" placeholder="লেখা দিয়ে খোঁজো" value={q} onChange={(e) => setQ(e.target.value)} />
+            <select className="ad-input" value={kind} onChange={(e) => setKind(e.target.value)} aria-label="ধরন">
+              <option value="">সব ধরন</option>
+              {Object.entries(KIND_BN).map(([k, bn]) => (
+                <option key={k} value={k}>
+                  {bn}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="ad-row ad-filters ad-scroll-x">
+            <span className="ad-seg" role="radiogroup" aria-label="Status">
+              {VIEWS.map(([id, bn]) => (
+                <button key={id} role="radio" aria-checked={status === id} className={status === id ? 'is-on' : ''} onClick={() => setStatus(id)}>
+                  {bn}
+                  {id && id !== 'open' && data?.counts[id] ? ` ${data.counts[id]}` : ''}
+                </button>
+              ))}
+            </span>
+          </div>
+          {error && <p className="ad-error">{error}</p>}
+          {!data ? (
+            <p className="ad-muted">লোড হচ্ছে…</p>
+          ) : (
+            <section className="ad-card">
+              <ul className="ad-list">
+                {data.tickets.map((t) => (
+                  <TicketRow key={t.id} ticket={t} team={Array.isArray(team) ? team.map((m) => m.name) : []} onSave={(change) => save(t.id, change)} />
+                ))}
+                {!data.tickets.length && <li className="ad-empty">এখানে কোনো রিপোর্ট নেই।</li>}
+              </ul>
+            </section>
+          )}
+        </>
+      )}
     </div>
   );
 }

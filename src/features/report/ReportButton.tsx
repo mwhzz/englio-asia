@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Modal } from '../../components/Modal';
 import { API_BASE } from '../../lib/api';
 import { haptic } from '../../lib/haptics';
+import { appHeaders } from '../../lib/appHeaders';
+import { deviceId } from '../../state/useProgressSync';
 
 const REASONS = [
   ['wrong-answer', 'আমার উত্তরটাও ঠিক ছিল'],
@@ -31,8 +33,9 @@ export function ReportButton({ where, question, answer }: Props) {
     haptic();
     await fetch(`${API_BASE}/reports`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ where, question, answer, reason, note }),
+      headers: appHeaders(),
+      // The device id lets the admin see the learner's progress next to the report, and reply in the help page.
+      body: JSON.stringify({ where, question, answer, reason, note, userId: deviceId() }),
     }).catch(() => undefined);
     setSent(true);
     setTimeout(() => setOpen(false), 1200);

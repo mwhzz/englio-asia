@@ -5,7 +5,7 @@ import { useAdminData } from './useAdminData';
 interface Member {
   id: number;
   name: string;
-  role: 'owner' | 'editor';
+  role: 'owner' | 'editor' | 'support';
   createdAt: string;
   lastUsed: string | null;
 }
@@ -16,7 +16,7 @@ const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString() : 
 export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
   const { data: team, error, reload } = useAdminData<Member[]>('/team', onUnauthorized);
   const [name, setName] = useState('');
-  const [role, setRole] = useState<'editor' | 'owner'>('editor');
+  const [role, setRole] = useState<Member['role']>('editor');
   const [made, setMade] = useState<{ name: string; token: string } | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   if (error) return <p className="ad-error">{error}</p>;
@@ -43,8 +43,8 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
         </h1>
       </header>
       <p className="ad-muted">
-        Editors can change lessons, grammar and stories. Only owners see learners, this page and the activity log. The ADMIN_TOKEN on the server is
-        always an owner.
+        Editor: lessons, grammar, stories and audio. Support: learners and their reports (answer complaints, give Plus, fix streaks), no
+        content or settings. Owner: everything. The ADMIN_TOKEN on the server is always an owner.
       </p>
 
       <form className="ad-card ad-form" onSubmit={add}>
@@ -55,8 +55,9 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
           </label>
           <label className="ad-field">
             <span>Role</span>
-            <select className="ad-input" value={role} onChange={(e) => setRole(e.target.value as 'editor' | 'owner')}>
+            <select className="ad-input" value={role} onChange={(e) => setRole(e.target.value as Member['role'])}>
               <option value="editor">Editor: content only</option>
+              <option value="support">Support: learners and reports</option>
               <option value="owner">Owner: everything</option>
             </select>
           </label>

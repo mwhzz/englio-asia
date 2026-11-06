@@ -139,10 +139,11 @@ EOF
 systemctl daemon-reload
 systemctl enable --now englio-deploy.timer
 
-echo "==> Hourly reminders and a nightly backup"
+echo "==> Hourly reminders, a nightly backup (also to Telegram) and a 5-minute health check"
 cat > /etc/cron.d/englio <<EOF
 5 * * * * englio set -a; . $ENV_FILE; set +a; cd $APP_DIR && node server/sendReminders.ts 2>&1 | logger -t englio-reminders
 30 3 * * * root bash $APP_DIR/deploy/backup.sh 2>&1 | logger -t englio-backup
+*/5 * * * * root bash $APP_DIR/deploy/watch.sh 2>&1 | logger -t englio-watch
 EOF
 
 echo "==> Firewall: only SSH and web"

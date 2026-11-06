@@ -118,7 +118,12 @@ export function BoardPage({ onClose }: { onClose: () => void }) {
             </p>
             <div className="cta-stack">
               <button className="cta" onClick={() => start(topic.id, topic.title, roundOf(topic))}>
-                <span lang="bn">অনুশীলন শুরু · {toBanglaDigits(Math.min(ROUND, topic.questions.length))}টা প্রশ্ন</span>
+                <span lang="bn">
+                  অনুশীলন শুরু ·{' '}
+                  {topic.questions.length > ROUND
+                    ? `${toBanglaDigits(topic.questions.length)}টা থেকে ${toBanglaDigits(ROUND)}টা প্রশ্ন`
+                    : `${toBanglaDigits(topic.questions.length)}টা প্রশ্ন`}
+                </span>
               </button>
               <button className="cta-text" onClick={() => setTopic(null)}>
                 <span lang="bn">পরে</span>

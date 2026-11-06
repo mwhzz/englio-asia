@@ -46,6 +46,8 @@ export function useLessonSession(
   const [startedAt] = useState(() => Date.now());
   const [outOfHearts, setOutOfHearts] = useState(false);
   const exercise = queue[index];
+  // The lesson's own questions (missed ones asked again end in "r").
+  const total = queue.filter((e) => !e.id.endsWith('r')).length;
 
   function check(value = answer) {
     if (value === null || feedback) return;
@@ -103,9 +105,16 @@ export function useLessonSession(
 
   return {
     exercise,
-    /** 1-based place of this exercise, and how many there are (missed ones are added at the end). */
-    position: index + 1,
-    count: queue.length,
+    /**
+     * Which of the lesson's own questions this is (1-based). A missed one comes back at the end marked
+     * "আবার", and the total the learner sees doesn't grow.
+     */
+    position: Math.min(queue.slice(0, index + 1).filter((e) => !e.id.endsWith('r')).length, total),
+    count: total,
+    /** A missed question asked again. */
+    again: exercise?.id.endsWith('r') ?? false,
+    /** Where in the queue (for resuming). */
+    index,
     answer,
     feedback,
     solved,

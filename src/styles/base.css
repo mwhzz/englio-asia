@@ -81,13 +81,28 @@ button:disabled {
   }
 }
 
-/* Larger text (Settings → লেখার সাইজ, src/lib/textSize.ts): everything is drawn bigger, so nothing overlaps. */
-html[data-text-size='large'] body {
-  zoom: 1.12;
+/*
+ * Larger text (Settings → লেখার সাইজ, src/lib/textSize.ts): everything is drawn bigger, so nothing overlaps.
+ * Zoom also enlarges viewport units (100dvh, 50vw), so sizes made from them divide by --zoom to still fit the screen.
+ */
+html {
+  --zoom: 1;
+}
+html[data-text-size='large'] {
+  --zoom: 1.12;
+}
+html[data-text-size='larger'] {
+  --zoom: 1.25;
+}
+html[data-text-size] body {
+  zoom: var(--zoom);
 }
 
-html[data-text-size='larger'] body {
-  zoom: 1.25;
+/* Cards sliding in from the side (and anything a bit too wide) never make the page scroll sideways. */
+html,
+body,
+.gt {
+  overflow-x: clip;
 }
 
 .ts-glyph {

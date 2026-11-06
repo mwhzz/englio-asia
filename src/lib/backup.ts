@@ -1,3 +1,4 @@
+import { appHeaders } from './appHeaders';
 import { STORAGE_KEY } from '../state/ProgressContext';
 import { DEVICE_KEY, deviceId } from '../state/useProgressSync';
 import { API_BASE } from './api';
@@ -7,7 +8,7 @@ import type { Progress } from './progress';
 export async function post<T>(path: string, body?: unknown): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: appHeaders(),
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
@@ -17,7 +18,7 @@ export async function post<T>(path: string, body?: unknown): Promise<T> {
 /** This learner's backup code; saves the latest progress first so the code brings everything. */
 export async function getBackupCode(progress: Progress): Promise<string> {
   const id = deviceId();
-  await fetch(`${API_BASE}/users/${id}`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ progress }) });
+  await fetch(`${API_BASE}/users/${id}`, { method: 'PUT', headers: appHeaders(), body: JSON.stringify({ progress }) });
   return (await post<{ code: string }>(`/users/${id}/code`)).code;
 }
 

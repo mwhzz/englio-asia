@@ -162,7 +162,7 @@
   flex: 1;
   min-height: 0;
   /* Full-bleed: the map spans the whole window width. */
-  margin: 0 calc(50% - 50vw);
+  margin: 0 calc(50% - 50vw / var(--zoom));
   pointer-events: none;
 }
 
@@ -747,7 +747,7 @@
 .ob-sheet {
   width: 100%;
   max-width: 560px;
-  height: 88dvh;
+  height: calc(88dvh / var(--zoom));
   display: flex;
   flex-direction: column;
   border-radius: 12px 12px 0 0;

@@ -28,3 +28,9 @@ describe('weekly report', () => {
     expect(before).toEqual({ xp: 15, lessons: 1, minutes: 0, activeDays: 1 });
   });
 });
+
+describe('every badge can be earned', () => {
+  it('has no badge for the removed letters tab', () => {
+    expect(BADGES.map((b) => b.id)).not.toContain('alphabet');
+  });
+});
