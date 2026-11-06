@@ -1,0 +1,59 @@
+/* The owner's notice on the home page, and the maintenance / update screens (features/notice). */
+.nb {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ios-blue) 10%, var(--ios-cell));
+  color: var(--ios-label);
+}
+.nb.is-warn {
+  background: color-mix(in srgb, var(--ios-orange) 14%, var(--ios-cell));
+}
+.nb p {
+  flex: 1;
+  margin: 0;
+  line-height: 1.45;
+}
+.nb-close {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  cursor: pointer;
+}
+.gate {
+  min-height: calc(100dvh / var(--zoom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 32px 24px calc(32px + env(safe-area-inset-bottom));
+  text-align: center;
+  background: var(--ios-bg);
+  color: var(--ios-label);
+}
+.gate h1 {
+  margin: 8px 0 0;
+  font-size: 24px;
+}
+.gate p {
+  margin: 0;
+  max-width: 340px;
+  line-height: 1.5;
+  color: var(--ios-secondary);
+}
+.gate .cta {
+  width: min(100%, 340px);
+  margin-top: auto;
+}
+.gate-note {
+  font-size: 14px;
+}

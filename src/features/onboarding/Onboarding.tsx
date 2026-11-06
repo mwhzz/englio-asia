@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { track } from '../../lib/track';
+import { signupSource } from '../../lib/source';
 import { haptic } from '../../lib/haptics';
 import { cleanName } from '../../lib/profile';
 import { useProgress } from '../../state/ProgressContext';
@@ -42,7 +43,7 @@ export default function Onboarding() {
     if (!districtId || !classId) return;
     update((p) => ({
       ...p,
-      profile: { name: cleanName(name), districtId, classId, joinedAt: new Date().toISOString() },
+      profile: { name: cleanName(name), districtId, classId, joinedAt: new Date().toISOString(), source: signupSource() },
     }));
   }, [update, name, districtId, classId]);
 

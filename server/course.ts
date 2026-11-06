@@ -40,10 +40,18 @@ function levelsOf(json: string): Pick<Unit, 'levels'> {
   return levels.length ? { levels } : {};
 }
 
+/**
+ * Drafts (খসড়া: a lesson, story or grammar topic the admin isn't done with) are left out of what learners
+ * get (`{ drafts: false }`, the public course) and kept for the admin and its previews.
+ */
+export interface ReadOptions {
+  drafts?: boolean;
+}
+
 /** The whole course from the database, in the same shape as the app's built-in course. */
-export function readCourse(db: DatabaseSync, lang = 'bn'): Unit[] {
+export function readCourse(db: DatabaseSync, lang = 'bn', { drafts = true }: ReadOptions = {}): Unit[] {
   const units = db.prepare('SELECT * FROM units WHERE lang = ? ORDER BY position').all(lang) as unknown as UnitRow[];
-  const lessons = db.prepare('SELECT * FROM lessons ORDER BY position').all() as unknown as LessonRow[];
+  const lessons = db.prepare(`SELECT * FROM lessons ${drafts ? '' : 'WHERE draft = 0'} ORDER BY position`).all() as unknown as LessonRow[];
   const items = db.prepare('SELECT lesson_id, kind, data FROM items ORDER BY position, id').all() as unknown as ItemRow[];
 
   const byLesson = new Map<string, Lesson>();
@@ -68,20 +76,20 @@ export function readCourse(db: DatabaseSync, lang = 'bn'): Unit[] {
 }
 
 /** Every grammar topic, in order. */
-export function readGrammar(db: DatabaseSync, lang = 'bn'): GrammarTopic[] {
-  const rows = db.prepare('SELECT data FROM grammar WHERE lang = ? ORDER BY position, id').all(lang) as unknown as { data: string }[];
+export function readGrammar(db: DatabaseSync, lang = 'bn', { drafts = true }: ReadOptions = {}): GrammarTopic[] {
+  const rows = db.prepare(`SELECT data FROM grammar WHERE lang = ? ${drafts ? '' : 'AND draft = 0'} ORDER BY position, id`).all(lang) as unknown as { data: string }[];
   return rows.map((r) => JSON.parse(r.data));
 }
 
 /** Every grammar course, by topic id, for topics that still exist. */
-export function readCourses(db: DatabaseSync, lang = 'bn'): Record<string, GrammarCourse> {
-  const rows = db.prepare('SELECT c.topic_id, c.data FROM grammar_courses c JOIN grammar g ON g.id = c.topic_id WHERE g.lang = ?').all(lang) as unknown as { topic_id: string; data: string }[];
+export function readCourses(db: DatabaseSync, lang = 'bn', { drafts = true }: ReadOptions = {}): Record<string, GrammarCourse> {
+  const rows = db.prepare(`SELECT c.topic_id, c.data FROM grammar_courses c JOIN grammar g ON g.id = c.topic_id WHERE g.lang = ? ${drafts ? '' : 'AND g.draft = 0'}`).all(lang) as unknown as { topic_id: string; data: string }[];
   return Object.fromEntries(rows.map((r) => [r.topic_id, JSON.parse(r.data)]));
 }
 
 /** Every story, in order. */
-export function readStories(db: DatabaseSync, lang = 'bn'): Story[] {
-  const rows = db.prepare('SELECT data FROM stories WHERE lang = ? ORDER BY position, id').all(lang) as unknown as { data: string }[];
+export function readStories(db: DatabaseSync, lang = 'bn', { drafts = true }: ReadOptions = {}): Story[] {
+  const rows = db.prepare(`SELECT data FROM stories WHERE lang = ? ${drafts ? '' : 'AND draft = 0'} ORDER BY position, id`).all(lang) as unknown as { data: string }[];
   return rows.map((r) => JSON.parse(r.data));
 }
 

@@ -2,6 +2,7 @@ import { randomInt } from 'node:crypto';
 import type { DatabaseSync } from 'node:sqlite';
 import { HttpError, type Request } from './http.ts';
 import { leagueWeek, weekXp } from './leaderboard.ts';
+import { isRude } from './nameFilter.ts';
 
 // Easy to read out to a friend: no 0/O, 1/I/L. Six characters; it only lets someone see your first name and weekly XP.
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -34,7 +35,8 @@ export function friendsLeague(db: DatabaseSync, { params }: Request, now = new D
   );
   const people = ids
     .map((id) => ({
-      name: names.get(id)?.trim().split(/\s+/)[0] || 'Learner',
+      // Friends chose each other, so only rude names are hidden (not new ones).
+      name: isRude(names.get(id) ?? '') && id !== me ? 'Learner' : names.get(id)?.trim().split(/\s+/)[0] || 'Learner',
       code: id === me ? code : friends.find((f) => f.id === id)!.code,
       xp: xp.get(id) ?? 0,
       isMe: id === me,

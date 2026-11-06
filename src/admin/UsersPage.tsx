@@ -4,6 +4,7 @@ import { ago, className, districtName } from './names';
 import { useAdminData } from './useAdminData';
 import { useDebounced } from './useDebounced';
 import { go } from './useHashRoute';
+import { downloadCsv } from './csv';
 
 interface UserRow {
   id: string;
@@ -53,7 +54,12 @@ export function UsersPage({ onUnauthorized }: { onUnauthorized: () => void }) {
     <div className="ad-page" lang="bn">
       <header className="ad-head">
         <h1>শিক্ষার্থী</h1>
-        {data && <span className="ad-pill">{toBanglaDigits(data.total)} জন</span>}
+        <span className="ad-row">
+          {data && <span className="ad-pill">{toBanglaDigits(data.total)} জন</span>}
+          <button className="ad-btn" onClick={() => downloadCsv('/export/users', 'englio-learners').catch((e: Error) => alert(e.message))}>
+            CSV নামাও
+          </button>
+        </span>
       </header>
       <div className="ad-row ad-tools">
         <input

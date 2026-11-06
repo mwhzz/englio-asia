@@ -67,3 +67,26 @@ test('friends add each other by code and see each other in the league', async ({
   await friend.getByRole('button', { name: 'যোগ করো', exact: true }).click();
   await expect(friend.locator('.lgp-people')).toContainText('Rafi');
 });
+
+test('the owner’s notice and maintenance reach the app, and today’s quests show on home', async ({ page, request }) => {
+  const API = 'http://localhost:8799/api';
+  const auth = { authorization: 'Bearer e2e-admin' };
+  const current = await (await request.get(`${API}/admin/settings`, { headers: auth })).json();
+  const { paymentsReady: _, ...settings } = current;
+  const put = (s: object) => request.put(`${API}/admin/settings`, { headers: auth, data: s });
+
+  await put({ ...settings, notice: { text: 'নতুন ইউনিট এসেছে!', tone: 'info' } });
+  await signIn(page);
+  await expect(page.locator('.nb')).toContainText('নতুন ইউনিট এসেছে!');
+  await expect(page.locator('.qc')).toContainText('আজকের কাজ');
+  await page.locator('.nb-close').click();
+  await expect(page.locator('.nb')).toHaveCount(0);
+
+  await put({ ...settings, maintenance: { on: true, text: '৩০ মিনিট পর এসো' } });
+  await page.reload();
+  await expect(page.locator('.gate')).toContainText('৩০ মিনিট পর এসো');
+
+  await put(settings);
+  await page.reload();
+  await expect(page.locator('.home-greeting')).toBeVisible();
+});

@@ -1,6 +1,7 @@
 import { ALL_LESSONS } from '../data/course';
 import { DEFAULT_SETTINGS, normalizeSettings, type AppSettings, type FeatureId } from '../data/appSettings';
 import { isPlus } from './premium';
+import { isAndroidApp } from './playApp';
 
 // The owner's switches from the admin's Settings page, as the server sent them with the course (and saved
 // with it for offline use). Set once at startup, before the app is drawn (main.tsx).
@@ -13,8 +14,15 @@ export function setAppSettings(raw: unknown): void {
 /** Whether a feature is switched on (everything is on unless the owner turned it off). */
 export const feature = (id: FeatureId): boolean => current.features[id];
 
-/** Whether this unit needs Englio Plus, and this learner doesn't have it. */
-export const unitLocked = (unitId: string): boolean => current.lockedUnits.includes(unitId) && !isPlus();
+/** All of the owner's settings (notice, maintenance, minimum version…). */
+export const appSettings = (): AppSettings => current;
+
+/**
+ * Whether this unit needs Englio Plus, and this learner doesn't have it. In the Android app Plus can't be
+ * bought with bKash, so there the owner chooses whether Plus-only units are open (Settings → appUnitsFree).
+ */
+export const unitLocked = (unitId: string): boolean =>
+  current.lockedUnits.includes(unitId) && !isPlus() && !(isAndroidApp() && current.appUnitsFree);
 
 /** The same, for the unit a lesson belongs to. */
 export function lessonLocked(lessonId: string): boolean {

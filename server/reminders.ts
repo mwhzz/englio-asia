@@ -51,7 +51,13 @@ export interface DueReminder {
   name: string | null;
   streak: number;
   subscription: unknown;
+  /** Days since they last practised (0 = yesterday or never). */
+  away: number;
 }
+
+const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000) - 1;
+/** After two quiet days, only these days away get a "come back" message (not every day: that gets notifications turned off). */
+const COME_BACK_DAYS = new Set([3, 7, 14, 30]);
 
 /**
  * Who should get a reminder now: it's their chosen hour where they live and they haven't
@@ -73,15 +79,34 @@ export function dueReminders(db: DatabaseSync, now = new Date()): DueReminder[] 
     if (local.hour !== r.hour) continue;
     // Any XP today (or "tomorrow", a time-zone edge) means they practised.
     if (r.last_xp_day && r.last_xp_day >= local.day) continue;
-    due.push({ userId: r.user_id, name: r.name, streak: r.streak, subscription: JSON.parse(r.subscription) });
+    const away = r.last_xp_day ? Math.max(0, daysBetween(r.last_xp_day, local.day)) : 0;
+    if (away > 2 && !COME_BACK_DAYS.has(away)) continue;
+    due.push({ userId: r.user_id, name: r.name, streak: r.streak, subscription: JSON.parse(r.subscription), away });
   }
   return due;
 }
 
-/** The notification text for one learner: mentions the streak when there's one to lose. */
-export function reminderMessage(r: Pick<DueReminder, 'name' | 'streak'>): { title: string; body: string } {
+/**
+ * The notification for one learner: about the streak when there's one to lose, a "come back" message after
+ * days away, otherwise one of a few everyday wordings. `variant` names the wording, so the admin can compare
+ * how often each one is opened.
+ */
+export function reminderMessage(r: Pick<DueReminder, 'name' | 'streak'> & { away?: number }, pick = Math.random()): { title: string; body: string; variant: string } {
   const first = r.name?.split(' ')[0];
-  return r.streak > 1
-    ? { title: `${toBanglaDigits(r.streak)} দিনের স্ট্রিক বাঁচাও!`, body: `${first ? first + ', ' : ''}আজকের একটা লেসন বাকি। মাত্র ৫ মিনিট লাগবে।` }
-    : { title: 'আজকের ইংরেজি বাকি!', body: `${first ? first + ', ' : ''}মাত্র ৫ মিনিট। একটা লেসন করে ফেলো।` };
+  const hi = first ? `${first}, ` : '';
+  const away = r.away ?? 0;
+  if (away >= 3) {
+    return away >= 14
+      ? { title: 'অনেক দিন দেখা নেই!', body: `${hi}ইংরেজি ভুলে যাওয়ার আগে ৫ মিনিটের একটা লেসন করে ফেলো।`, variant: `back-${away}` }
+      : { title: 'তোমাকে মিস করছি', body: `${hi}যেখানে থেমেছিলে সেখান থেকেই শুরু করো। মাত্র ৫ মিনিট।`, variant: `back-${away}` };
+  }
+  if (r.streak > 1) {
+    return { title: `${toBanglaDigits(r.streak)} দিনের স্ট্রিক বাঁচাও!`, body: `${hi}আজকের একটা লেসন বাকি। মাত্র ৫ মিনিট লাগবে।`, variant: 'streak' };
+  }
+  const everyday = [
+    { title: 'আজকের ইংরেজি বাকি!', body: `${hi}মাত্র ৫ মিনিট। একটা লেসন করে ফেলো।`, variant: 'daily-a' },
+    { title: 'নতুন ৫টা শব্দ অপেক্ষা করছে', body: `${hi}আজকের লেসনটা করে ফেলো। ৫ মিনিটেই হয়ে যাবে।`, variant: 'daily-b' },
+    { title: 'একটু ইংরেজি হয়ে যাক?', body: `${hi}রোজ ৫ মিনিট = এক মাসে অনেক শব্দ।`, variant: 'daily-c' },
+  ];
+  return everyday[Math.min(everyday.length - 1, Math.floor(pick * everyday.length))];
 }

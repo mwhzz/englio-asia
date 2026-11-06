@@ -13,7 +13,7 @@ import { contentVersion } from './db.ts';
 import { FileReply, HttpError, matchPath, readBody, readJson, Redirect, send, type Route } from './http.ts';
 import { clientIp, MINUTE, RateLimit } from './rateLimit.ts';
 import { clearError, listErrors, recordError } from './errors.ts';
-import { addReport, closeReports, listReports, listTickets, myReports, updateTicket } from './reports.ts';
+import { addReport, bulkTickets, closeReports, exportTickets, listReports, listTickets, myReports, updateTicket } from './reports.ts';
 import { analytics, recordEvents } from './events.ts';
 import { accountsOf, signInGoogle, startPhone, verifyPhone } from './auth.ts';
 import { addFriend, friendsLeague, removeFriend } from './friends.ts';
@@ -26,9 +26,13 @@ import * as team from './team.ts';
 import { checkUserId, clientOf, loadProgress, saveProgress } from './users.ts';
 import { health } from './health.ts';
 import { stats } from './stats.ts';
+import { draftIds, listHistory, restoreHistory, setDraft, snapshotFor } from './history.ts';
 import { readSettings, saveSettings } from './settings.ts';
 import { deleteClip, listSpoken, listWords, readClips, setClip } from './adminAudio.ts';
 import { createLanguage, deleteLanguage, isLive, langOf, listLanguages, liveLanguages, updateLanguage } from './languages.ts';
+
+/** What learners get: no drafts. */
+const PUBLIC = { drafts: false };
 
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
 function routes(db: DatabaseSync): Route[] {
@@ -49,10 +53,10 @@ function routes(db: DatabaseSync): Route[] {
           version: contentVersion(db),
           lang,
           languages: liveLanguages(db),
-          units: readCourse(db, lang),
-          grammar: readGrammar(db, lang),
-          courses: readCourses(db, lang),
-          stories: readStories(db, lang),
+          units: readCourse(db, lang, PUBLIC),
+          grammar: readGrammar(db, lang, PUBLIC),
+          courses: readCourses(db, lang, PUBLIC),
+          stories: readStories(db, lang, PUBLIC),
           // SSC/HSC board practice is for Bangladesh only.
           board: lang === 'bn' ? readBoard(db) : [],
           writing: readWriting(db, lang),
@@ -83,6 +87,8 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/auth/phone/verify', strict: true, handler: (r) => verifyPhone(db, r) },
     { method: 'POST', pattern: '/api/auth/google', strict: true, handler: (r) => signInGoogle(db, r) },
     { method: 'GET', pattern: '/api/users/:id/accounts', handler: (r) => accountsOf(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
+    // The owner's switches, read by the app each time it opens (small; not cached).
+    { method: 'GET', pattern: '/api/settings', handler: () => readSettings(db) },
     { method: 'GET', pattern: '/api/premium/info', handler: () => premiumInfo(db) },
     { method: 'GET', pattern: '/api/premium/callback', handler: (r) => callback(db, r) },
     { method: 'GET', pattern: '/api/users/:id/premium', handler: ({ params }) => premiumOf(db, checkUserId(params.id)) },
@@ -99,6 +105,29 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'POST', pattern: '/api/admin/reports/close', admin: true, handler: (r) => closeReports(db, r) },
     { method: 'GET', pattern: '/api/admin/tickets', admin: 'people', handler: (r) => listTickets(db, r) },
     { method: 'PUT', pattern: '/api/admin/tickets/:id', admin: 'people', handler: (r) => updateTicket(db, r) },
+    { method: 'POST', pattern: '/api/admin/tickets/bulk', admin: 'people', handler: (r) => bulkTickets(db, r) },
+    // Spreadsheets for the owner (the admin turns these into CSV files).
+    // A language's whole course in the importer's format (importLanguage.ts): for translators to turn into
+    // another language (change "language", translate the meanings) and import back.
+    {
+      method: 'GET',
+      pattern: '/api/admin/export/content',
+      admin: 'content',
+      handler: ({ query }) => {
+        const lang = langOf(db, query.get('lang'));
+        const language = listLanguages(db).find((l) => l.code === lang)!;
+        return {
+          language: { code: language.code, name: language.name, native: language.native, dir: language.dir },
+          units: readCourse(db, lang),
+          grammar: readGrammar(db, lang),
+          stories: readStories(db, lang),
+          writing: readWriting(db, lang),
+        };
+      },
+    },
+    { method: 'GET', pattern: '/api/admin/export/tickets', admin: 'people', handler: () => exportTickets(db) },
+    { method: 'GET', pattern: '/api/admin/export/users', admin: 'owner', handler: () => people.exportUsers(db) },
+    { method: 'GET', pattern: '/api/admin/export/payments', admin: 'owner', handler: () => people.exportPayments(db) },
     // The learner's own reports and the replies to them (the app's help page).
     { method: 'GET', pattern: '/api/users/:id/reports', handler: ({ params }) => myReports(db, checkUserId(params.id)) },
     { method: 'GET', pattern: '/api/admin/errors', admin: true, handler: () => listErrors(db) },
@@ -150,6 +179,12 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'GET', pattern: '/api/admin/analytics', admin: true, handler: ({ query }) => analytics(db, Math.min(365, Math.max(1, Number(query.get('days')) || 30))) },
     // A language's course as the app gets it, drafts too (the admin's lesson preview in that language).
     { method: 'GET', pattern: '/api/admin/course', admin: 'content', handler: (r) => ({ units: readCourse(db, langOf(db, r.query.get('lang'))) }) },
+    // খসড়া: hide a lesson, story or grammar topic from learners until it's ready (or show it again).
+    { method: 'POST', pattern: '/api/admin/draft', admin: 'content', handler: (r) => setDraft(db, r) },
+    { method: 'GET', pattern: '/api/admin/drafts', admin: 'content', handler: () => draftIds(db) },
+    // Content history: every change and delete is kept, and can be put back (history.ts).
+    { method: 'GET', pattern: '/api/admin/history', admin: 'content', handler: (r) => listHistory(db, r) },
+    { method: 'POST', pattern: '/api/admin/history/:id/restore', admin: 'content', handler: (r) => restoreHistory(db, r) },
     { method: 'GET', pattern: '/api/admin/units', admin: 'content', handler: (r) => content.listUnits(db, langOf(db, r.query.get('lang'))) },
     { method: 'POST', pattern: '/api/admin/units', admin: 'content', handler: (r) => content.createUnit(db, r) },
     { method: 'PUT', pattern: '/api/admin/units/:id', admin: 'content', handler: (r) => content.updateUnit(db, r) },
@@ -204,8 +239,9 @@ function routes(db: DatabaseSync): Route[] {
  * Per address. Mobile networks put many phones behind one address (carrier NAT), so the general limit is
  * high; backup codes, sign-in and wrong admin tokens get few tries.
  */
-type Limits = Record<'all' | 'strict' | 'badToken', [max: number, windowMs: number]>;
-export const LIMITS: Limits = { all: [3000, 5 * MINUTE], strict: [10, 15 * MINUTE], badToken: [20, 15 * MINUTE] };
+/** newUsers: new learners (device ids) one address may create a day, so nobody floods the league with fakes. */
+type Limits = Record<'all' | 'strict' | 'badToken' | 'newUsers', [max: number, windowMs: number]>;
+export const LIMITS: Limits = { all: [3000, 5 * MINUTE], strict: [10, 15 * MINUTE], badToken: [20, 15 * MINUTE], newUsers: [40, 24 * 60 * MINUTE] };
 
 /** The HTTP server: JSON in, JSON out, CORS open so the app can be hosted anywhere. */
 export function createApi(db: DatabaseSync, adminToken: string, limits: Limits = LIMITS): Server {
@@ -213,6 +249,9 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
   const all = new RateLimit(...limits.all);
   const strict = new RateLimit(...limits.strict);
   const badToken = new RateLimit(...limits.badToken);
+  const newUsers = new RateLimit(...(limits.newUsers ?? LIMITS.newUsers));
+  // Reports: plenty for a classroom sharing one address, too few to flood the admin.
+  const reports = new RateLimit(60, 15 * MINUTE);
 
   return createServer(async (req, res) => {
     try {
@@ -223,6 +262,11 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
       if (!route || !params) throw new HttpError(404, 'Not found');
       const ip = clientIp(req);
       if (!all.take(ip) || (route.strict && !strict.take(ip))) throw new HttpError(429, 'Too many requests, try again later');
+      if (route.pattern === '/api/reports' && !reports.take(ip)) throw new HttpError(429, 'Too many reports, try again later');
+      // A learner saved for the first time counts against the address's daily new-learner limit.
+      if (req.method === 'PUT' && route.pattern === '/api/users/:id' && !db.prepare('SELECT 1 FROM users WHERE id = ?').get((params as Record<string, string>).id)) {
+        if (!newUsers.take(ip)) throw new HttpError(429, 'Too many new learners from here today');
+      }
       const admin = route.admin ? team.adminOf(db, req.headers.authorization, adminToken) : null;
       if (route.admin && !admin) {
         if (!badToken.take(ip)) throw new HttpError(429, 'Too many wrong tokens, try again later');
@@ -245,9 +289,12 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
       const body = req.method === 'GET' || req.method === 'DELETE' ? null : route.raw ? await readBody(req, route.raw) : await readJson(req);
       // Every admin change is written down (who, what, and whether it worked).
       const log = (status: number) => admin && req.method !== 'GET' && team.logChange(db, admin, req.method!, url.pathname, status, new Date(), team.changeDetail(body));
+      // Content about to change or be deleted is copied first, so the admin can put it back.
+      const snapshot = admin && (req.method === 'PUT' || req.method === 'DELETE') ? snapshotFor(db, url.pathname) : null;
       try {
         const result = await route.handler({ method: req.method!, path: url.pathname, query: url.searchParams, params, headers: req.headers, body, admin: admin ?? undefined });
         log(200);
+        if (snapshot && admin) snapshot.save(admin.name, req.method!);
         // A learner was removed: the league shouldn't show them for its next 5 minutes.
         if ((req.method === 'DELETE' && /\/users\/[^/]+$/.test(url.pathname)) || url.pathname === '/api/delete-by-code') clearLeaderboardCache();
         if (result instanceof Redirect) {

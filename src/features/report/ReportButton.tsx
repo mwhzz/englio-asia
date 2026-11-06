@@ -4,6 +4,7 @@ import { API_BASE } from '../../lib/api';
 import { haptic } from '../../lib/haptics';
 import { appHeaders } from '../../lib/appHeaders';
 import { deviceId } from '../../state/useProgressSync';
+import { markReported } from '../help/useReplies';
 
 const REASONS = [
   ['wrong-answer', 'আমার উত্তরটাও ঠিক ছিল'],
@@ -37,6 +38,7 @@ export function ReportButton({ where, question, answer }: Props) {
       // The device id lets the admin see the learner's progress next to the report, and reply in the help page.
       body: JSON.stringify({ where, question, answer, reason, note, userId: deviceId() }),
     }).catch(() => undefined);
+    markReported();
     setSent(true);
     setTimeout(() => setOpen(false), 1200);
   }

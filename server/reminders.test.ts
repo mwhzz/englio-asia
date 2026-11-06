@@ -17,7 +17,7 @@ function setup(xpByDay: Record<string, number>) {
 describe('daily reminders', () => {
   it('is due at the chosen local hour when nothing was learned today', () => {
     const db = setup({ '2026-11-02': 20 });
-    expect(dueReminders(db, NOW)).toEqual([{ userId: 'device-0001', name: 'Rina Akter', streak: 4, subscription: SUB }]);
+    expect(dueReminders(db, NOW)).toEqual([{ userId: 'device-0001', name: 'Rina Akter', streak: 4, subscription: SUB, away: 0 }]);
   });
 
   it('is not due at another hour, or after learning today', () => {
@@ -39,5 +39,13 @@ describe('daily reminders', () => {
   it('mentions the streak when there is one to keep', () => {
     expect(reminderMessage({ name: 'Rina Akter', streak: 4 }).title).toContain('৪');
     expect(reminderMessage({ name: null, streak: 0 }).body).not.toContain(',');
+  });
+
+  it('after two quiet days, only asks them back on days 3, 7, 14 and 30', () => {
+    // Last practised 2026-10-30: on 2026-11-03 that is 3 days away.
+    expect(dueReminders(setup({ '2026-10-30': 20 }), NOW).map((r) => r.away)).toEqual([3]);
+    expect(dueReminders(setup({ '2026-10-29': 20 }), NOW)).toEqual([]);
+    expect(reminderMessage({ name: 'Rina', streak: 0, away: 3 }).variant).toBe('back-3');
+    expect(reminderMessage({ name: 'Rina', streak: 0 }, 0.99).variant).toBe('daily-c');
   });
 });

@@ -10,11 +10,16 @@ import './lib/install';
 import { ProgressProvider } from './state/ProgressContext';
 import './styles/index.css';
 import { setAppSettings } from './lib/appSettings';
+import { detectAndroidApp } from './lib/playApp';
+import { captureSource } from './lib/source';
+import { AppGate } from './features/notice/AppGate';
 
 // Lessons, grammar and stories come from the server (or the copy saved last time); the built-in content is the fallback.
 // The app is imported only after that, since some screens read the course when they load.
 async function start() {
   watchErrors();
+  detectAndroidApp();
+  captureSource();
   const content = await loadCourse();
   if (content) {
     setCourse(content.units);
@@ -36,7 +41,13 @@ async function start() {
     <StrictMode>
       <ErrorBoundary where="app">
         <ProgressProvider memoryOnly={preview}>
-          <App />
+          {preview ? (
+            <App />
+          ) : (
+            <AppGate>
+              <App />
+            </AppGate>
+          )}
         </ProgressProvider>
       </ErrorBoundary>
     </StrictMode>,

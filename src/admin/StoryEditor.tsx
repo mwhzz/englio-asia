@@ -5,6 +5,7 @@ import { EMPTY_STORY, fieldsToStory, storyToFields, type StoryFields } from './s
 import { openPreview } from '../preview/draft';
 import { slug } from './topicForm';
 import { go } from './useHashRoute';
+import { DraftToggle } from './DraftToggle';
 import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 /** Write or edit one short story; the server checks it before saving. */
@@ -55,6 +56,7 @@ export function StoryEditor({ id, onUnauthorized }: { id: string; onUnauthorized
       </button>
       <header className="ad-head">
         <h1>{isNew ? 'New story' : fields.title}</h1>
+        {!isNew && <DraftToggle kind="story" id={id} />}
       </header>
 
       <form className="ad-card ad-form" onSubmit={save}>

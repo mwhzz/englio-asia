@@ -5,6 +5,7 @@ import { TicketRow, type Ticket } from './TicketRow';
 import { useAdminData } from './useAdminData';
 import { useDebounced } from './useDebounced';
 import { KIND_BN } from './reportLabels';
+import { downloadCsv } from './csv';
 
 const VIEWS = [
   ['open', 'খোলা'],
@@ -82,6 +83,24 @@ export function ReportsPage({ onUnauthorized, people = true }: { onUnauthorized:
               ))}
             </span>
           </div>
+          {data && data.tickets.length > 0 && (
+            <div className="ad-row ad-quick">
+              <button
+                className="ad-btn"
+                onClick={() =>
+                  confirm(`এই তালিকার ${data.tickets.length}টা রিপোর্ট "বন্ধ" করবে?`) &&
+                  adminApi('POST', '/tickets/bulk', { ids: data.tickets.map((t) => t.id), status: 'closed' })
+                    .then(reload)
+                    .catch((e: Error) => alert(e.message))
+                }
+              >
+                এই তালিকার সব বন্ধ করো
+              </button>
+              <button className="ad-btn" onClick={() => downloadCsv('/export/tickets', 'englio-reports').catch((e: Error) => alert(e.message))}>
+                CSV নামাও
+              </button>
+            </div>
+          )}
           {error && <p className="ad-error">{error}</p>}
           {!data ? (
             <p className="ad-muted">লোড হচ্ছে…</p>

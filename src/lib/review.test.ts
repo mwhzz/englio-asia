@@ -39,3 +39,18 @@ describe('mistake review', () => {
     for (const ex of exercises) expect(due.has(reviewKey(ex)!)).toBe(true);
   });
 });
+
+describe('weak spots beyond words', () => {
+  it('a missed blank and a missed grammar question come back in review', async () => {
+    const { ALL_LESSONS } = await import('../data/course');
+    const { DEFAULT_PROGRESS } = await import('./progress');
+    const lesson = ALL_LESSONS.map((x) => x.lesson).find((l) => l.fills.length && l.grammar?.length)!;
+    const fill = lesson.fills[0];
+    const grammar = lesson.grammar![0];
+    expect(reviewKey({ id: 'x', kind: 'fill', fill })).toBe(`f:${fill.text}`);
+    let p = noteMistake(DEFAULT_PROGRESS, `f:${fill.text}`, '2026-11-01');
+    p = noteMistake(p, `g:${grammar.correct}`, '2026-11-01');
+    const kinds = buildReview(p, '2026-11-02').map((e) => e.kind).sort();
+    expect(kinds).toEqual(['fill', 'grammar']);
+  });
+});

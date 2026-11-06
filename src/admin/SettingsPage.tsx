@@ -3,6 +3,7 @@ import { FEATURES, type AppSettings, type FeatureId } from '../data/appSettings'
 import { toBanglaDigits } from '../lib/bangla';
 import { adminApi } from './adminApi';
 import { useAdminData } from './useAdminData';
+import { SettingsMessages } from './SettingsMessages';
 
 interface UnitRow {
   id: string;
@@ -10,6 +11,17 @@ interface UnitRow {
   titleBn: string;
   color: string;
 }
+
+/** The settings themselves (without what the server adds, like paymentsReady). */
+const pick = (d: AppSettings): AppSettings => ({
+  features: d.features,
+  lockedUnits: d.lockedUnits,
+  plus: d.plus,
+  appUnitsFree: d.appUnitsFree,
+  notice: d.notice,
+  maintenance: d.maintenance,
+  minVersion: d.minVersion,
+});
 
 /**
  * The owner's switches for the whole app: features on or off, which units need Englio Plus, and the Plus
@@ -24,13 +36,13 @@ export function SettingsPage({ onUnauthorized }: { onUnauthorized: () => void })
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (data) setDraft({ features: data.features, lockedUnits: data.lockedUnits, plus: data.plus });
+    if (data) setDraft(pick(data));
   }, [data]);
 
   if (error) return <p className="ad-error">{error}</p>;
   if (!data || !draft || !units) return <p className="ad-muted">লোড হচ্ছে…</p>;
 
-  const saved = JSON.stringify({ features: data.features, lockedUnits: data.lockedUnits, plus: data.plus });
+  const saved = JSON.stringify(pick(data));
   const dirty = JSON.stringify(draft) !== saved;
   const change = (next: AppSettings) => {
     setDraft(next);
@@ -67,6 +79,8 @@ export function SettingsPage({ onUnauthorized }: { onUnauthorized: () => void })
         এখানে যা বদলাবে, সবার অ্যাপে পরের বার খোলার সময় চালু হবে। নতুন APK লাগবে না।
       </p>
       {status && <p className={status.ok ? 'ad-ok' : 'ad-error'}>{status.text}</p>}
+
+      <SettingsMessages draft={draft} onChange={change} />
 
       <section className="ad-card">
         <div className="ad-section-head">
@@ -176,8 +190,16 @@ export function SettingsPage({ onUnauthorized }: { onUnauthorized: () => void })
           </label>
         </div>
         <p className="ad-muted" lang="bn">
-          Plus-এ পাওয়া যায়: অফুরন্ত হার্ট আর লক করা সব ইউনিট। Play Store-এর অ্যাপে বিক্রি করতে পরে Google Play Billing লাগবে; ওয়েবসাইট আর APK-তে bKash চলবে।
+          Plus-এ পাওয়া যায়: অফুরন্ত হার্ট আর লক করা সব ইউনিট। bKash শুধু ওয়েবসাইটে দেখায়; Android অ্যাপে (Play Store) Google-এর নিয়মে bKash দেখানো যায় না,
+          সেখানে বিক্রির জন্য পরে Google Play Billing লাগবে।
         </p>
+        <label className="ad-switch-row" lang="bn">
+          <span className="ad-switch-text">
+            <strong>Android অ্যাপে Plus ইউনিট ফ্রি</strong>
+            <small>চালু: অ্যাপে লক করা ইউনিটও সবাই খুলতে পারবে (কেনার উপায় নেই বলে)। বন্ধ: অ্যাপে লক থাকবে, "শিগগিরই আসছে" দেখাবে।</small>
+          </span>
+          <input type="checkbox" role="switch" className="ad-switch" checked={draft.appUnitsFree} onChange={(e) => change({ ...draft, appUnitsFree: e.target.checked })} />
+        </label>
       </section>
     </div>
   );

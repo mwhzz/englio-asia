@@ -66,14 +66,15 @@ export function saveProgress(db: DatabaseSync, id: string, progress: unknown, no
   const act = activitySummary(days);
   const num = (x: unknown) => (typeof x === 'number' && Number.isFinite(x) ? Math.max(0, Math.round(x)) : 0);
   db.prepare(
-    `INSERT INTO users (id, name, district_id, class_id, xp, streak, lessons_done, joined_at, last_seen, progress, last_xp_day, week_since, week_xp, app_version, device)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `INSERT INTO users (id, name, district_id, class_id, xp, streak, lessons_done, joined_at, last_seen, progress, last_xp_day, week_since, week_xp, app_version, device, source, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET
        name = excluded.name, district_id = excluded.district_id, class_id = excluded.class_id,
        xp = excluded.xp, streak = excluded.streak, lessons_done = excluded.lessons_done,
        joined_at = excluded.joined_at, last_seen = excluded.last_seen, progress = excluded.progress,
        last_xp_day = excluded.last_xp_day, week_since = excluded.week_since, week_xp = excluded.week_xp,
-       app_version = COALESCE(excluded.app_version, users.app_version), device = COALESCE(excluded.device, users.device)`,
+       app_version = COALESCE(excluded.app_version, users.app_version), device = COALESCE(excluded.device, users.device),
+       source = COALESCE(users.source, excluded.source)`,
   ).run(
     id,
     p.profile?.name?.slice(0, 60) ?? null,
@@ -90,6 +91,8 @@ export function saveProgress(db: DatabaseSync, id: string, progress: unknown, no
     act.weekXp,
     client?.version ?? null,
     client?.device ?? null,
+    typeof p.profile?.source === 'string' ? p.profile.source.slice(0, 60) : null,
+    now.toISOString(),
   );
   // The recent days practised (older ones were recorded when they happened).
   const recent = new Date(now.getTime() - 3 * 86_400_000).toISOString().slice(0, 10);

@@ -56,6 +56,15 @@ export function stats(db: DatabaseSync, days = 30, now = new Date()) {
       { step: 'done', n: onboard.done ?? 0 },
       { step: 'first-lesson', n: firstLesson },
     ],
+    // Each reminder wording: sent and opened (sw.js counts opens by wording).
+    reminderVariants: (() => {
+      const sent = events('reminder_sent');
+      const opened = events('reminder_open');
+      return Object.keys({ ...sent, ...opened })
+        .filter((k) => k !== 'sent' && k !== 'open')
+        .map((k) => ({ variant: k, sent: sent[k] ?? 0, opened: opened[k] ?? 0 }))
+        .sort((a, b) => b.sent - a.sent);
+    })(),
     reminders: {
       subscribed: one('SELECT COUNT(*) AS n FROM push_subs'),
       asked: asks.shown ?? 0,
@@ -74,6 +83,14 @@ export function stats(db: DatabaseSync, days = 30, now = new Date()) {
       revenue: one("SELECT SUM(amount) AS n FROM payments WHERE status = 'paid' AND created_at >= ?", since),
       started: one('SELECT COUNT(*) AS n FROM payments WHERE created_at >= ?', since),
     },
+    // Where this period's new learners came from (campaign tags on their first link).
+    sources: all<{ source: string; n: number }>(
+      "SELECT COALESCE(source, 'direct') AS source, COUNT(*) AS n FROM users WHERE joined_at >= ? GROUP BY source ORDER BY n DESC LIMIT 15",
+      since,
+    ),
+    // Learners who practised in the last 7 and 30 days, and how "sticky" the app is (daily / monthly).
+    activeWeek: one('SELECT COUNT(DISTINCT user_id) AS n FROM active_days WHERE day > ?', shift(today, -7)),
+    activeMonth: one('SELECT COUNT(DISTINCT user_id) AS n FROM active_days WHERE day > ?', shift(today, -30)),
     versions: all<{ version: string; n: number }>(
       "SELECT COALESCE(app_version, '?') AS version, COUNT(*) AS n FROM users WHERE last_seen >= ? GROUP BY version ORDER BY n DESC LIMIT 10",
       new Date(now.getTime() - 7 * DAY).toISOString(),

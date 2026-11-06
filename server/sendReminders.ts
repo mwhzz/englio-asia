@@ -43,10 +43,13 @@ if (process.argv.includes('--test')) {
 }
 
 let sent = 0;
+const byVariant = new Map<string, number>();
 for (const r of dueReminders(db)) {
   try {
-    await webpush.default.sendNotification(r.subscription, JSON.stringify(reminderMessage(r)));
+    const message = reminderMessage(r);
+    await webpush.default.sendNotification(r.subscription, JSON.stringify(message));
     sent++;
+    byVariant.set(message.variant, (byVariant.get(message.variant) ?? 0) + 1);
   } catch (error) {
     // 404/410: the learner uninstalled or turned notifications off, so forget the subscription.
     const status = (error as { statusCode?: number }).statusCode;
@@ -55,5 +58,5 @@ for (const r of dueReminders(db)) {
   }
 }
 // Counted for the admin's reminder numbers (sent vs opened).
-countEvent(db, 'reminder_sent', 'sent', sent);
+for (const [variant, n] of byVariant) countEvent(db, 'reminder_sent', variant, n);
 console.log(`Sent ${sent} reminders.`);

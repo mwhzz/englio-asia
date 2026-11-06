@@ -89,6 +89,7 @@ export async function callback(db: DatabaseSync, { query }: Request, post: Post 
   const payment = db.prepare('SELECT user_id, status FROM payments WHERE payment_id = ?').get(paymentId) as { user_id: string; status: string } | undefined;
   if (!payment) return back('failed');
   if (payment.status === 'paid') return back('ok');
+  if (payment.status !== 'started') return back('failed');
   if (query.get('status') !== 'success') {
     db.prepare('UPDATE payments SET status = ? WHERE payment_id = ?').run(query.get('status') === 'cancel' ? 'cancelled' : 'failed', paymentId);
     return back(query.get('status') === 'cancel' ? 'cancelled' : 'failed');
@@ -98,14 +99,54 @@ export async function callback(db: DatabaseSync, { query }: Request, post: Post 
     body: JSON.stringify({ paymentID: paymentId }),
   });
   if (r.transactionStatus !== 'Completed') {
-    db.prepare('UPDATE payments SET status = ? WHERE payment_id = ?').run('failed', paymentId);
+    db.prepare("UPDATE payments SET status = 'failed' WHERE payment_id = ? AND status = 'started'").run(paymentId);
     return back('failed');
   }
+  credit(db, paymentId, payment.user_id, String(r.trxID ?? ''), now);
+  return back('ok');
+}
+
+/**
+ * Marks a payment paid and gives its days of Plus, once: the payment is claimed in one statement, so two
+ * callbacks (or a callback and the check below) for the same payment can't both add days.
+ */
+function credit(db: DatabaseSync, paymentId: string, userId: string, trxId: string, now: Date): boolean {
+  const claimed = db.prepare("UPDATE payments SET status = 'paid', trx_id = ? WHERE payment_id = ? AND status = 'started'").run(trxId, paymentId).changes;
+  if (!claimed) return false;
   // Paying again while still Plus adds the days on top.
-  const current = premiumOf(db, payment.user_id, now).until;
+  const current = premiumOf(db, userId, now).until;
   const from = current ? new Date(current) : now;
   const until = new Date(from.getTime() + readSettings(db).plus.days * 86_400_000).toISOString();
-  db.prepare('UPDATE payments SET status = ?, trx_id = ? WHERE payment_id = ?').run('paid', String(r.trxID ?? ''), paymentId);
-  db.prepare('INSERT INTO premium (user_id, until) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET until = excluded.until').run(payment.user_id, until);
-  return back('ok');
+  db.prepare('INSERT INTO premium (user_id, until) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET until = excluded.until').run(userId, until);
+  return true;
+}
+
+/**
+ * Payments still "started" after a few minutes: the learner may have paid and closed the browser before
+ * bKash sent them back. Ask bKash about each (run every 10 minutes, main.ts); a completed one gets its Plus,
+ * and one still unfinished after a day is marked expired.
+ */
+export async function checkStuckPayments(db: DatabaseSync, post: Post = httpPost, now = new Date()): Promise<{ credited: number; expired: number }> {
+  const e = env();
+  let credited = 0;
+  let expired = 0;
+  if (!ready(e)) return { credited, expired };
+  const stuck = db
+    .prepare("SELECT payment_id AS id, user_id AS userId, created_at AS at FROM payments WHERE status = 'started' AND created_at < ?")
+    .all(new Date(now.getTime() - 5 * 60_000).toISOString()) as { id: string; userId: string; at: string }[];
+  if (!stuck.length) return { credited, expired };
+  const idToken = await token(post);
+  for (const p of stuck) {
+    const r = await post(`${e.base}/tokenized/checkout/payment/status`, {
+      headers: { authorization: idToken, 'x-app-key': e.appKey },
+      body: JSON.stringify({ paymentID: p.id }),
+    }).catch(() => ({}) as Record<string, unknown>);
+    if (r.transactionStatus === 'Completed') {
+      if (credit(db, p.id, p.userId, String(r.trxID ?? ''), now)) credited++;
+    } else if (now.getTime() - Date.parse(p.at) > 86_400_000) {
+      db.prepare("UPDATE payments SET status = 'expired' WHERE payment_id = ? AND status = 'started'").run(p.id);
+      expired++;
+    }
+  }
+  return { credited, expired };
 }

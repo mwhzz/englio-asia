@@ -28,6 +28,7 @@ export const NAV: { group?: string; items: NavItem[] }[] = [
       { page: 'stories', label: 'গল্প', icon: 'book', roles: CONTENT },
       { page: 'writing', label: 'লেখা', icon: 'pencil', roles: CONTENT },
       { page: 'board', label: 'বোর্ড প্রস্তুতি', icon: 'trophy', roles: CONTENT },
+      { page: 'history', label: 'ইতিহাস ও ট্র্যাশ', icon: 'clock', roles: CONTENT },
     ],
   },
   {

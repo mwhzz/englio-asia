@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite';
+import { shownName } from './nameFilter.ts';
 
 /** How long one count of the week's XP is reused (the count itself is a quick indexed read). */
 const CACHE_MS = 60 * 1000;
@@ -8,6 +9,7 @@ interface Row {
   id: string;
   name: string | null;
   district: string | null;
+  joinedAt: string | null;
   xp: number;
 }
 
@@ -42,7 +44,7 @@ export function weekXp(db: DatabaseSync, now: Date, ids?: string[]): Row[] {
   const only = ids ? `AND id IN (${ids.map(() => '?').join(',') || "''"})` : '';
   return db
     .prepare(
-      `SELECT id, name, district_id AS district, week_xp AS xp FROM users
+      `SELECT id, name, district_id AS district, created_at AS joinedAt, week_xp AS xp FROM users
        WHERE week_since = ? AND week_xp > 0 AND blocked = 0 ${only}
        ORDER BY week_xp DESC`,
     )
@@ -84,7 +86,7 @@ export function leaderboard(db: DatabaseSync, districtId: string | null, me: str
   return {
     ...leagueWeek(now),
     districts: ranked.slice(0, TOP),
-    learners: local.slice(0, TOP).map((r) => ({ name: r.name?.trim().split(/\s+/)[0] || 'Learner', xp: r.xp, isMe: r.id === me })),
+    learners: local.slice(0, TOP).map((r) => ({ name: r.id === me ? r.name?.trim().split(/\s+/)[0] || 'Learner' : shownName(r.name, r.joinedAt, now), xp: r.xp, isMe: r.id === me })),
     me: myIndex >= 0 ? { rank: myIndex + 1, xp: local[myIndex].xp } : null,
     myDistrictRank: districtIndex >= 0 ? districtIndex + 1 : null,
   };

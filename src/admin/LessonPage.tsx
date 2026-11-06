@@ -7,6 +7,7 @@ import { go } from './useHashRoute';
 import { openPreview } from '../preview/draft';
 import { BulkAdd } from './BulkAdd';
 import { BULK } from './bulkRows';
+import { DraftToggle } from './DraftToggle';
 import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 interface Item {
@@ -32,7 +33,7 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
   const [title, setTitle] = useState({ title: '', titleBn: '' });
 
   if (error) return <p className="ad-error">{error}</p>;
-  if (!lesson) return <p className="ad-muted">Loading…</p>;
+  if (!lesson) return <p className="ad-muted">লোড হচ্ছে…</p>;
 
   const save = async (fn: () => Promise<unknown>) => {
     await fn();
@@ -64,9 +65,9 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
           </label>
           <div className="ad-row">
             <button type="button" className="ad-btn" onClick={() => setEditing(null)}>
-              Cancel
+              বাতিল
             </button>
-            <button className="ad-btn is-primary">Save</button>
+            <button className="ad-btn is-primary">সেভ করো</button>
           </div>
         </form>
       ) : (
@@ -84,9 +85,10 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
               setEditing('title');
             }}
           >
-            Rename
+            নাম বদলাও
           </button>
-          <button className="ad-btn" onClick={() => openPreview({ kind: 'lesson', lessonId: lesson.id, lang })} title="Runs the lesson as saved">
+          <DraftToggle kind="lesson" id={lesson.id} />
+          <button className="ad-btn" onClick={() => openPreview({ kind: 'lesson', lessonId: lesson.id, lang })} title="সেভ করা লেসনটা চালিয়ে দেখো">
             Preview in app ↗
           </button>
         </header>
@@ -104,11 +106,11 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
               <span className="ad-row">
                 {BULK[kind] && (
                   <button className="ad-btn is-small" onClick={() => setEditing(`bulk:${kind}`)}>
-                    + Paste many
+                    + অনেকগুলো পেস্ট করো
                   </button>
                 )}
                 <button className="ad-btn is-small" onClick={() => setEditing(`new:${kind}`)}>
-                  + Add
+                  + যোগ করো
                 </button>
               </span>
             </div>
@@ -148,13 +150,13 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
                   <li key={item.id} className="ad-item">
                     <span className="ad-item-text">{schema.summary(item.data)}</span>
                     <button className="ad-btn is-small" onClick={() => setEditing(String(item.id))}>
-                      Edit
+                      বদলাও
                     </button>
                     <button
                       className="ad-btn is-small is-danger"
-                      onClick={() => confirm('Delete this item?') && save(() => adminApi('DELETE', `/items/${item.id}`))}
+                      onClick={() => confirm('এটা মুছবে? (ইতিহাস ও ট্র্যাশ থেকে ফেরানো যাবে)') && save(() => adminApi('DELETE', `/items/${item.id}`))}
                     >
-                      Delete
+                      মুছো
                     </button>
                   </li>
                 ),

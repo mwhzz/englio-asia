@@ -93,3 +93,18 @@
   background: color-mix(in srgb, var(--ios-blue) 10%, transparent);
   line-height: 1.5;
 }
+
+/* "তোমার রিপোর্টের উত্তর এসেছে" on the home page (ReplyCard). */
+.rpc {
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ios-green) 45%, transparent);
+}
+.rpc-icon {
+  background: var(--ios-green);
+}
+/* The FAQ list is a plain list (no bullets). */
+.hp-faq,
+.hp-mine {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

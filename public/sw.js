@@ -84,7 +84,7 @@ self.addEventListener('push', (event) => {
       icon: './icon-192.png',
       badge: './icon-badge-96.png',
       tag: 'daily-reminder',
-      data: { url: data.url || './' },
+      data: { url: data.url || './', variant: data.variant || 'open' },
     }),
   );
 });
@@ -92,7 +92,10 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   // Anonymous count of reminders opened (the admin's reminder numbers).
-  fetch(new URL('api/events', self.registration.scope), { method: 'POST', body: JSON.stringify({ events: [{ name: 'reminder_open', key: 'open' }] }) }).catch(() => undefined);
+  fetch(new URL('api/events', self.registration.scope), {
+    method: 'POST',
+    body: JSON.stringify({ events: [{ name: 'reminder_open', key: String(event.notification.data?.variant || 'open').slice(0, 40) }] }),
+  }).catch(() => undefined);
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((tabs) => {
       const tab = tabs.find((t) => 'focus' in t);

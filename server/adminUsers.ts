@@ -26,6 +26,10 @@ export function summary(db: DatabaseSync, now = Date.now()) {
     items: count('SELECT COUNT(*) AS n FROM items'),
     grammar: count('SELECT COUNT(*) AS n FROM grammar'),
     openReports: count("SELECT COUNT(*) AS n FROM reports WHERE status IN ('new', 'doing')"),
+    // What needs the owner today.
+    newReports: count("SELECT COUNT(*) AS n FROM reports WHERE status = 'new'"),
+    crashesToday: count('SELECT COALESCE(SUM(n), 0) AS n FROM app_errors WHERE last_at >= ?', since(DAY)),
+    stuckPayments: count("SELECT COUNT(*) AS n FROM payments WHERE status IN ('started', 'failed', 'expired') AND created_at >= ?", since(DAY)),
     districts: db
       .prepare(
         `SELECT district_id AS id, COUNT(*) AS users, SUM(xp) AS xp FROM users
@@ -201,3 +205,20 @@ export function deleteUser(db: DatabaseSync, { params }: Pick<Request, 'params'>
     return { ok: true };
   });
 }
+
+/** Every learner as rows for a spreadsheet (owner's CSV download): no progress, only the columns. */
+export function exportUsers(db: DatabaseSync) {
+  return db
+    .prepare(
+      `SELECT id, name, district_id AS district, class_id AS class, xp, streak, lessons_done AS lessons, joined_at AS joined,
+              last_seen AS lastSeen, app_version AS version, device, source, blocked
+       FROM users ORDER BY last_seen DESC LIMIT 200000`,
+    )
+    .all();
+}
+
+/** Every payment, newest first (owner's CSV download). */
+export function exportPayments(db: DatabaseSync) {
+  return db.prepare('SELECT payment_id AS id, user_id AS learner, amount, status, trx_id AS trx, created_at AS at FROM payments ORDER BY created_at DESC LIMIT 200000').all();
+}
+

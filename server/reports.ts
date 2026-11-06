@@ -1,6 +1,7 @@
 import type { DatabaseSync } from 'node:sqlite';
 import { HttpError, type Request } from './http.ts';
 import { clientOf } from './users.ts';
+import { notifyOwner } from './notify.ts';
 
 /**
  * Learners' reports: "this question is wrong" from a lesson (ReportButton.tsx) and anything else from the
@@ -26,12 +27,18 @@ export function addReport(db: DatabaseSync, { body, headers }: Request, now = ne
   const reason = typeof b.reason === 'string' && REASONS.has(b.reason) ? b.reason : 'other';
   const kind: Kind = KINDS.includes(b.kind as Kind) ? (b.kind as Kind) : where === 'help' ? 'other' : 'content';
   const userId = typeof b.userId === 'string' && USER.test(b.userId) ? b.userId : null;
+  // The help page always sends who it is; a help report without a learner is spam.
+  if (where === 'help' && !userId) throw new HttpError(400, '"userId" is required');
   const client = clientOf(headers);
   const at = now.toISOString();
   db.prepare(
     `INSERT INTO reports (at, place, question, answer, reason, note, done, user_id, app_version, device, status, kind, contact, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?, ?, 'new', ?, ?, ?)`,
   ).run(at, where, question, clip(b.answer, 300), reason, clip(b.note, 1000), userId, client.version ?? null, client.device ?? null, kind, clip(b.contact, 80), at);
+  // Help-page reports (account, payment, bugs) reach the owner's Telegram at once; lesson reports wait in the admin.
+  if (where === 'help') notifyOwner(`New Englio report (${kind}):
+${question.slice(0, 500)}
+${client.device ?? ''} · v${client.version ?? '?'}`);
   return { ok: true };
 }
 
@@ -153,3 +160,23 @@ export function migrateReports(db: DatabaseSync): void {
     CREATE INDEX IF NOT EXISTS reports_by_status ON reports(status, id);
   `);
 }
+
+/** Changes many reports at once (e.g. close every spam report): `{ ids: [1, 2], status: 'closed' }`. */
+export function bulkTickets(db: DatabaseSync, { body, admin }: Pick<Request, 'body' | 'admin'>, now = new Date()) {
+  const b = (body ?? {}) as { ids?: unknown; status?: unknown };
+  const ids = Array.isArray(b.ids) ? b.ids.filter((x): x is number => Number.isInteger(x)).slice(0, 1000) : [];
+  if (!ids.length || !STATUSES.includes(b.status as Status)) throw new HttpError(400, 'Give ids and a status');
+  const done = b.status === 'fixed' || b.status === 'closed' ? 1 : 0;
+  const n = db
+    .prepare(`UPDATE reports SET status = ?, done = ?, handled_by = ?, updated_at = ? WHERE id IN (${ids.map(() => '?').join(',')})`)
+    .run(b.status as string, done, admin?.name ?? null, now.toISOString(), ...ids).changes;
+  return { ok: true, changed: n };
+}
+
+/** Every report as rows for a spreadsheet. */
+export function exportTickets(db: DatabaseSync) {
+  return db
+    .prepare('SELECT id, at, kind, status, place, question, note, reply, assignee, user_id AS learner, app_version AS version, device FROM reports ORDER BY id DESC LIMIT 200000')
+    .all();
+}
+

@@ -64,10 +64,10 @@ export function ItemForm({ kind, initial = {}, onSave, onCancel }: Props) {
       {error && <p className="ad-error">{error}</p>}
       <div className="ad-row">
         <button type="button" className="ad-btn" onClick={onCancel}>
-          Cancel
+          বাতিল
         </button>
         <button className="ad-btn is-primary" disabled={saving}>
-          {saving ? 'Saving…' : 'Save'}
+          {saving ? 'সেভ হচ্ছে…' : 'সেভ করো'}
         </button>
       </div>
     </form>

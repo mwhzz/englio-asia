@@ -41,6 +41,8 @@ export interface Progress {
   reminder: { on: boolean; hour: number };
   /** Best score (0–100) in each SSC/HSC board practice topic, by topic id. */
   boardScores: Record<string, number>;
+  /** The last day the learner collected the daily quests' reward (lib/quests.ts). */
+  questDay?: string | null;
   /** When this copy last changed, and when the learner last reset it (ms); used to merge two phones' copies. */
   savedAt: number;
   resetAt: number;

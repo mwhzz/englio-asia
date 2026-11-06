@@ -8,7 +8,7 @@ import { sample, shuffle, uniqueBy } from './random';
 /** Days until a missed item comes back, step by step; after the last step it counts as learned. */
 export const INTERVALS = [1, 3, 7, 14];
 
-/** The word or sentence an exercise is about (matching, blanks and grammar aren't tracked). */
+/** The word, sentence, blank or grammar point an exercise is about (matching isn't tracked). */
 export function reviewKey(ex: Exercise): string | null {
   switch (ex.kind) {
     case 'select':
@@ -20,6 +20,11 @@ export function reviewKey(ex: Exercise): string | null {
     case 'type':
     case 'dictate':
       return `s:${ex.sentence.en}`;
+    // Weak spots beyond words: a missed blank or grammar question comes back too.
+    case 'fill':
+      return `f:${ex.fill.text}`;
+    case 'grammar':
+      return `g:${ex.grammar.correct}`;
     default:
       return null;
   }
@@ -60,12 +65,20 @@ export function buildReview(p: Progress, today = dayKey()): Exercise[] {
     ALL_LESSONS.flatMap((x) => x.lesson.sentences),
     (s) => s.en,
   );
+  const fills = ALL_LESSONS.flatMap((x) => x.lesson.fills);
+  const grammars = ALL_LESSONS.flatMap((x) => x.lesson.grammar ?? []);
   const bodies: ExerciseBody[] = [];
   dueKeys(p, today)
     .slice(0, 10)
     .forEach((key, i) => {
       const en = key.slice(2);
-      if (key.startsWith('w:')) {
+      if (key.startsWith('f:')) {
+        const fill = fills.find((f) => f.text === en);
+        if (fill) bodies.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
+      } else if (key.startsWith('g:')) {
+        const grammar = grammars.find((g) => g.correct === en);
+        if (grammar) bodies.push({ kind: 'grammar', grammar, options: shuffle([grammar.correct, ...grammar.wrong]) });
+      } else if (key.startsWith('w:')) {
         const word = vocab.find((v) => v.en === en);
         if (word) bodies.push(selectFor(word, vocab));
       } else {

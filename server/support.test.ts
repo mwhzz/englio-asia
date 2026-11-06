@@ -187,3 +187,44 @@ describe('owner numbers', () => {
     expect(errors[0]).toMatchObject({ message: 'Boom', version: '1.6.1' });
   });
 });
+
+describe('content history and drafts', () => {
+  it('a deleted lesson comes back with its items, and a draft is hidden from learners', async () => {
+    const { seedCourse } = await import('./seed.ts');
+    seedCourse(db);
+    const before = (await call('GET', '/api/course', undefined, '')).json.units[0].lessons;
+    const lesson = before[0];
+    expect((await call('DELETE', `/api/admin/lessons/${lesson.id}`)).status).toBe(200);
+    expect((await call('GET', '/api/course', undefined, '')).json.units[0].lessons[0].id).not.toBe(lesson.id);
+    const trash = (await call('GET', '/api/admin/history?action=delete')).json;
+    expect(trash[0]).toMatchObject({ kind: 'lesson', entity: lesson.id, action: 'delete' });
+    expect((await call('POST', `/api/admin/history/${trash[0].id}/restore`)).status).toBe(200);
+    const back = (await call('GET', '/api/course', undefined, '')).json.units[0].lessons[0];
+    expect(back.id).toBe(lesson.id);
+    expect(back.vocab.length).toBe(lesson.vocab.length);
+
+    await call('POST', '/api/admin/draft', { kind: 'lesson', id: lesson.id, draft: true });
+    expect((await call('GET', '/api/course', undefined, '')).json.units[0].lessons.map((l: { id: string }) => l.id)).not.toContain(lesson.id);
+    expect((await call('GET', '/api/admin/drafts')).json.lessons).toContain(lesson.id);
+    await call('POST', '/api/admin/draft', { kind: 'lesson', id: lesson.id, draft: false });
+    expect((await call('GET', '/api/course', undefined, '')).json.units[0].lessons[0].id).toBe(lesson.id);
+  });
+
+  it('an edit can be undone', async () => {
+    const unit = (await call('GET', '/api/admin/units')).json[0];
+    await call('PUT', `/api/admin/units/${unit.id}`, { ...unit, title: 'Changed title' });
+    const change = (await call('GET', '/api/admin/history?action=change')).json[0];
+    await call('POST', `/api/admin/history/${change.id}/restore`);
+    expect((await call('GET', '/api/admin/units')).json[0].title).toBe(unit.title);
+  });
+
+  it('limits new learners per address, so nobody floods the league with fakes', async () => {
+    const { createApi: make } = await import('./app.ts');
+    const s = make(openDb(':memory:'), 'x', { all: [1000, 60_000], strict: [10, 60_000], badToken: [10, 60_000], newUsers: [2, 60_000] });
+    await new Promise<void>((done) => s.listen(0, done));
+    const url = `http://localhost:${(s.address() as AddressInfo).port}/api/users/`;
+    const put = (id: string) => fetch(url + id, { method: 'PUT', body: JSON.stringify({ progress: { profile: { name: 'X' }, completed: {} } }) }).then((r) => r.status);
+    expect([await put('fake-000001'), await put('fake-000002'), await put('fake-000003'), await put('fake-000001')]).toEqual([200, 200, 429, 200]);
+    await new Promise<void>((done) => s.close(() => done()));
+  });
+});

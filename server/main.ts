@@ -2,6 +2,7 @@ import { createApi } from './app.ts';
 import { DB_PATH, openDb } from './db.ts';
 import { seedWriting } from './seed.ts';
 import { trimActiveDays } from './stats.ts';
+import { checkStuckPayments } from './premium.ts';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const DEV_TOKEN = 'englio-admin';
@@ -16,6 +17,13 @@ if (!db.prepare(`SELECT 1 FROM meta WHERE key = 'writing_seeded'`).get()) {
 // Old practice days aren't needed for the numbers; forget them once a day.
 trimActiveDays(db);
 setInterval(() => trimActiveDays(db), 24 * 60 * 60 * 1000).unref();
+
+// Payments left halfway (paid, but the browser closed before bKash sent the learner back) get their Plus.
+setInterval(() => {
+  checkStuckPayments(db)
+    .then((r) => (r.credited || r.expired) && console.log(`bKash check: ${r.credited} credited, ${r.expired} expired`))
+    .catch((e) => console.error('bKash check failed:', e));
+}, 10 * 60 * 1000).unref();
 
 createApi(db, token).listen(PORT, () => {
   console.log(`Englio API on http://localhost:${PORT}  (database: ${DB_PATH})`);

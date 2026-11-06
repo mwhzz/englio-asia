@@ -10,6 +10,10 @@ interface Stats {
   reminders: { subscribed: number; asked: number; said_yes: number; later: number; blocked: number; sent: number; opened: number; activeTodayWith: number; activeTodayWithout: number };
   plus: { active: number; paid: number; revenue: number; started: number };
   versions: { version: string; n: number }[];
+  sources: { source: string; n: number }[];
+  reminderVariants: { variant: string; sent: number; opened: number }[];
+  activeWeek: number;
+  activeMonth: number;
   crashes: { version: string; n: number; errors: number }[];
 }
 
@@ -50,7 +54,8 @@ export function DailyStats({ onUnauthorized }: { onUnauthorized: () => void }) {
           </span>
         </div>
         <p className="ad-muted">
-          নতুন যোগ দিয়েছে {n(signups)} জন। গাঢ় দাগ = সেদিন শিখেছে, হালকা = নতুন এসেছে।
+          নতুন যোগ দিয়েছে {n(signups)} জন। ৭ দিনে শিখেছে {n(data.activeWeek)} জন, ৩০ দিনে {n(data.activeMonth)} জন
+          {data.activeMonth ? ` (রোজ আসে ${pct(data.daily.at(-1)?.active ?? 0, data.activeMonth)})` : ''}। গাঢ় দাগ = সেদিন শিখেছে, হালকা = নতুন এসেছে।
         </p>
         <div className="ad-chart" role="img" aria-label="Active learners and sign-ups per day">
           {data.daily.map((d) => (
@@ -127,6 +132,18 @@ export function DailyStats({ onUnauthorized }: { onUnauthorized: () => void }) {
               </dd>
             </div>
           </dl>
+          {data.reminderVariants.length > 0 && (
+            <ul className="ad-bars">
+              {data.reminderVariants.map((v) => (
+                <li key={v.variant}>
+                  <span>{v.variant}</span>
+                  <em>
+                    {n(v.sent)} → {n(v.opened)} ({pct(v.opened, v.sent)})
+                  </em>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
         <section className="ad-card">
           <h2>Englio Plus</h2>
@@ -148,6 +165,20 @@ export function DailyStats({ onUnauthorized }: { onUnauthorized: () => void }) {
           </dl>
         </section>
       </div>
+
+      <section className="ad-card">
+        <h2>নতুনরা কোথা থেকে এল</h2>
+        <p className="ad-muted">লিংকে ?utm_source=facebook&utm_campaign=launch দিলে এখানে আলাদা দেখাবে।</p>
+        <ul className="ad-bars">
+          {data.sources.map((x) => (
+            <li key={x.source}>
+              <span>{x.source}</span>
+              <em>{n(x.n)} জন</em>
+            </li>
+          ))}
+          {!data.sources.length && <li className="ad-empty">এখনো কেউ আসেনি।</li>}
+        </ul>
+      </section>
 
       <div className="ad-two">
         <section className="ad-card">

@@ -3,6 +3,8 @@ export interface Profile {
   districtId: string;
   classId: string;
   joinedAt: string;
+  /** Where they came from on their first visit (lib/source.ts), e.g. "facebook/launch". */
+  source?: string;
 }
 
 export const NAME_MAX = 30;

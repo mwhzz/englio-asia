@@ -516,3 +516,84 @@
   color: var(--ios-secondary);
   cursor: pointer;
 }
+
+/* আজকের কাজ (QuestsCard). */
+.qc {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--ios-cell);
+}
+.qc-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+.qc-title small {
+  color: var(--ios-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+.qc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.qc-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.qc-check {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--ios-tertiary);
+  color: #fff;
+}
+.is-done .qc-check {
+  background: var(--ios-green);
+  box-shadow: none;
+}
+.qc-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  font-size: 15px;
+}
+.qc-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ios-fill);
+  overflow: hidden;
+}
+.qc-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: #ffc93c;
+  transition: width 0.4s var(--ease);
+}
+.is-done .qc-bar i {
+  background: var(--ios-green);
+}
+.qc-num {
+  color: var(--ios-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.qc-claim {
+  margin-top: 12px;
+  width: 100%;
+}
+.qc-hint {
+  margin: 10px 0 0;
+  color: var(--ios-secondary);
+  font-size: 13px;
+}

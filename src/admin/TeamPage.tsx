@@ -20,7 +20,7 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
   const [made, setMade] = useState<{ name: string; token: string } | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   if (error) return <p className="ad-error">{error}</p>;
-  if (!team) return <p className="ad-muted">Loading…</p>;
+  if (!team) return <p className="ad-muted">লোড হচ্ছে…</p>;
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -39,33 +39,33 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
     <div className="ad-page">
       <header className="ad-head">
         <h1>
-          Team <span lang="bn">· টিম</span>
+          টিম
         </h1>
       </header>
       <p className="ad-muted">
-        Editor: lessons, grammar, stories and audio. Support: learners and their reports (answer complaints, give Plus, fix streaks), no
-        content or settings. Owner: everything. The ADMIN_TOKEN on the server is always an owner.
+        Editor: লেসন, ব্যাকরণ, গল্প আর অডিও। Support: শিক্ষার্থী আর তাদের রিপোর্ট (অভিযোগের উত্তর, Plus দেওয়া, স্ট্রিক ফেরানো), কনটেন্ট বা
+        সেটিংস না। Owner: সবকিছু। সার্ভারের ADMIN_TOKEN সবসময় owner।
       </p>
 
       <form className="ad-card ad-form" onSubmit={add}>
         <div className="ad-grid">
           <label className="ad-field">
-            <span>Name</span>
+            <span>নাম</span>
             <input className="ad-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Shila (content writer)" />
           </label>
           <label className="ad-field">
-            <span>Role</span>
+            <span>ভূমিকা</span>
             <select className="ad-input" value={role} onChange={(e) => setRole(e.target.value as Member['role'])}>
-              <option value="editor">Editor: content only</option>
-              <option value="support">Support: learners and reports</option>
-              <option value="owner">Owner: everything</option>
+              <option value="editor">Editor: শুধু কনটেন্ট</option>
+              <option value="support">Support: শিক্ষার্থী আর রিপোর্ট</option>
+              <option value="owner">Owner: সবকিছু</option>
             </select>
           </label>
         </div>
         {problem && <p className="ad-error">{problem}</p>}
         <div className="ad-row">
           <button className="ad-btn is-primary" disabled={!name.trim()}>
-            Add member
+            সদস্য যোগ করো
           </button>
         </div>
         {made && (
@@ -96,7 +96,7 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
                     .catch((e: Error) => alert(e.message))
                 }
               >
-                Remove
+                সরাও
               </button>
             </li>
           ))}

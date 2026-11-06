@@ -191,6 +191,18 @@ const SCHEMA = `
 
   CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 
+  -- Content as it was before each admin change or delete (history.ts), to put it back.
+  CREATE TABLE IF NOT EXISTS content_history (
+    id INTEGER PRIMARY KEY,
+    at TEXT NOT NULL,
+    admin TEXT NOT NULL,
+    action TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    entity TEXT NOT NULL,
+    label TEXT NOT NULL,
+    rows TEXT NOT NULL
+  );
+
   -- The days each learner practised (from their XP per day), for daily active learners and retention.
   -- Kept for 120 days (stats.ts trims it).
   CREATE TABLE IF NOT EXISTS active_days (
@@ -263,7 +275,13 @@ function migrate(db: DatabaseSync): void {
   // Which app version and phone a learner last used (admin learner page, reports).
   if (!has('users', 'app_version')) db.exec('ALTER TABLE users ADD COLUMN app_version TEXT; ALTER TABLE users ADD COLUMN device TEXT;');
   // The owner can block a learner who cheats: they stay out of the league.
+  // Where the learner came from (a campaign tag on their first link), for sign-ups by source.
+  // When the server first saw the learner (the app's own joinedAt can't be trusted for the league).
+  if (!has('users', 'created_at')) db.exec('ALTER TABLE users ADD COLUMN created_at TEXT');
+  if (!has('users', 'source')) db.exec('ALTER TABLE users ADD COLUMN source TEXT');
   if (!has('users', 'blocked')) db.exec('ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0');
+  // খসড়া (draft): lessons, stories and grammar topics hidden from learners until the admin publishes them.
+  for (const table of ['lessons', 'stories', 'grammar']) if (!has(table, 'draft')) db.exec(`ALTER TABLE ${table} ADD COLUMN draft INTEGER NOT NULL DEFAULT 0`);
   migrateReports(db);
   migrateTeam(db);
   migrateErrors(db);

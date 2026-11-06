@@ -25,7 +25,7 @@ export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) 
   const [editing, setEditing] = useState<string | null>(null);
 
   if (error) return <p className="ad-error">{error}</p>;
-  if (!units) return <p className="ad-muted">Loading…</p>;
+  if (!units) return <p className="ad-muted">লোড হচ্ছে…</p>;
 
   const act = (fn: () => Promise<unknown>) =>
     fn()
@@ -45,7 +45,7 @@ export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) 
           Lessons <span lang="bn">· লেসন</span>
         </h1>
         <button className="ad-btn is-primary" onClick={() => setEditing('new')}>
-          + New unit
+          + নতুন ইউনিট
         </button>
       </header>
       <LanguagePicker />
@@ -89,25 +89,25 @@ export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) 
                 <em>{unit.tips.length} tips</em>
               </h2>
               <div className="ad-row">
-                <button className="ad-btn is-small" title="Move up" disabled={i === 0} onClick={() => act(() => adminApi('POST', `/units/${unit.id}/move`, { dir: -1 }))}>
+                <button className="ad-btn is-small" title="উপরে" disabled={i === 0} onClick={() => act(() => adminApi('POST', `/units/${unit.id}/move`, { dir: -1 }))}>
                   ↑
                 </button>
                 <button
                   className="ad-btn is-small"
-                  title="Move down"
+                  title="নিচে"
                   disabled={i === units.length - 1}
                   onClick={() => act(() => adminApi('POST', `/units/${unit.id}/move`, { dir: 1 }))}
                 >
                   ↓
                 </button>
                 <button className="ad-btn is-small" onClick={() => setEditing(unit.id)}>
-                  Edit
+                  বদলাও
                 </button>
                 <button
                   className="ad-btn is-small is-danger"
                   onClick={() => confirm(`Delete "${unit.title}" and all its lessons?`) && act(() => adminApi('DELETE', `/units/${unit.id}`))}
                 >
-                  Delete
+                  মুছো
                 </button>
               </div>
             </div>
@@ -142,13 +142,13 @@ export function ContentPage({ onUnauthorized }: { onUnauthorized: () => void }) 
                   className="ad-btn is-small is-danger"
                   onClick={() => confirm(`Delete "${lesson.title}"?`) && act(() => adminApi('DELETE', `/lessons/${lesson.id}`))}
                 >
-                  Delete
+                  মুছো
                 </button>
               </li>
             ))}
           </ul>
           <button className="ad-btn is-small" onClick={() => addLesson(unit.id)}>
-            + Add lesson
+            + লেসন যোগ করো
           </button>
         </section>
       ))}

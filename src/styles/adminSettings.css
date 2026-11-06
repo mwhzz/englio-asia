@@ -629,3 +629,9 @@ button.ad-stat {
     text-align: left;
   }
 }
+.ad-today .ad-stat {
+  background: none;
+}
+.ad-stat strong.is-alert {
+  color: var(--ios-red);
+}

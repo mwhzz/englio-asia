@@ -488,3 +488,14 @@
     transform: scale(0.3);
   }
 }
+
+/* A wrong pick shows a cross in its circle, not a tick. */
+.lesson-body.is-wrong .row.selected .row-check svg {
+  display: none;
+}
+.lesson-body.is-wrong .row.selected .row-check::before {
+  content: '×';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}

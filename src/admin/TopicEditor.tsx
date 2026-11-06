@@ -5,6 +5,7 @@ import { adminApi, Unauthorized } from './adminApi';
 import { EMPTY_TOPIC, fromFields, slug, toFields, type TopicFields } from './topicForm';
 import { openPreview } from '../preview/draft';
 import { go } from './useHashRoute';
+import { DraftToggle } from './DraftToggle';
 import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 type TextKey = Exclude<keyof TopicFields, 'level'>;
@@ -69,6 +70,7 @@ export function TopicEditor({ id, onUnauthorized }: { id: string; onUnauthorized
       </button>
       <header className="ad-head">
         <h1>{isNew ? 'New topic' : fields.title}</h1>
+        {!isNew && <DraftToggle kind="grammar" id={id} />}
         {!isNew && (
           <button className="ad-btn" onClick={() => go('course', id)}>
             Step-by-step course →

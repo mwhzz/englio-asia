@@ -4,6 +4,7 @@ import { LessonFunnel } from './LessonFunnel';
 import { className, districtName } from './names';
 import { useAdminData } from './useAdminData';
 import { go } from './useHashRoute';
+import { downloadCsv } from './csv';
 
 interface Summary {
   users: number;
@@ -15,6 +16,9 @@ interface Summary {
   items: number;
   grammar: number;
   openReports: number;
+  newReports: number;
+  crashesToday: number;
+  stuckPayments: number;
   districts: { id: string; users: number; xp: number }[];
   classes: { id: string; users: number }[];
 }
@@ -43,6 +47,30 @@ export function Dashboard({ onUnauthorized, owner = true }: { onUnauthorized: ()
       <header className="ad-head">
         <h1>ড্যাশবোর্ড</h1>
       </header>
+
+      {/* What needs the owner today, first (also on a phone). */}
+      <section className="ad-card ad-today">
+        <h2>আজ যা দেখতে হবে</h2>
+        <div className="ad-stats is-small">
+          <button className="ad-stat" onClick={() => go('reports')}>
+            <small>নতুন রিপোর্ট</small>
+            <strong className={data.newReports ? 'is-alert' : undefined}>{toBanglaDigits(data.newReports)}</strong>
+          </button>
+          <button className="ad-stat" onClick={() => go('errors')}>
+            <small>২৪ ঘণ্টায় ক্র্যাশ</small>
+            <strong className={data.crashesToday ? 'is-alert' : undefined}>{toBanglaDigits(data.crashesToday)}</strong>
+          </button>
+          <button className="ad-stat" onClick={() => owner && go('users')}>
+            <small>আটকে থাকা পেমেন্ট</small>
+            <strong className={data.stuckPayments ? 'is-alert' : undefined}>{toBanglaDigits(data.stuckPayments)}</strong>
+          </button>
+        </div>
+        {owner && (
+          <button className="ad-link" onClick={() => downloadCsv('/export/payments', 'englio-payments').catch((e: Error) => alert(e.message))}>
+            সব পেমেন্ট CSV-তে নামাও
+          </button>
+        )}
+      </section>
 
       <div className="ad-stats">
         {stats.map(([label, value]) => (

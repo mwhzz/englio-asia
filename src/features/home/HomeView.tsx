@@ -12,6 +12,9 @@ import { UpNextCard } from './UpNextCard';
 import { HowItWorks } from './HowItWorks';
 import { StreakNudge } from './StreakNudge';
 import { StreakLost } from './StreakLost';
+import { NoticeBanner } from '../notice/NoticeBanner';
+import { ReplyCard } from '../help/ReplyCard';
+import { QuestsCard } from './QuestsCard';
 import { SyncNote } from './SyncNote';
 import { VoiceHint } from './VoiceHint';
 import { feature } from '../../lib/appSettings';
@@ -40,6 +43,8 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
             <PlacementCard onStart={onPlacement} />
           </div>
         )}
+        <NoticeBanner />
+        <ReplyCard />
         <StreakNudge onStart={onStart} />
         <StreakLost onStart={onStart} />
         <div className="home-rise" style={{ animationDelay: '140ms' }}>
@@ -47,6 +52,7 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
         </div>
         {Object.keys(progress.completed).length < 3 && <HowItWorks />}
         <VoiceHint />
+        {anyDone && <QuestsCard />}
         <ReviewCard onStart={onReview} />
         {feature('board') && boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
         {feature('stories') && anyDone && <StoriesCard />}

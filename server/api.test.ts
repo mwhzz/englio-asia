@@ -67,9 +67,12 @@ describe('course', () => {
     const saved = await admin('PUT', '/api/admin/settings', { features: { ...current.features, league: false }, lockedUnits: [unit], plus: { price: 149, days: 60 } });
     expect(saved.status).toBe(200);
 
+    // Apps read settings from /api/settings, so a switch doesn't make every phone download the course again.
     const after = await call('GET', '/api/course');
-    expect(after.etag).not.toBe(before.etag);
-    expect(after.json.settings).toEqual({ features: { ...current.features, league: false }, lockedUnits: [unit], plus: { price: 149, days: 60 } });
+    expect(after.etag).toBe(before.etag);
+    const expected = { features: { ...current.features, league: false }, lockedUnits: [unit], plus: { price: 149, days: 60 } };
+    expect(after.json.settings).toMatchObject(expected);
+    expect((await call('GET', '/api/settings')).json).toMatchObject({ ...expected, appUnitsFree: true, maintenance: { on: false, text: '' } });
     expect((await call('GET', '/api/premium/info')).json).toMatchObject({ price: 149, days: 60 });
     // Put it back for the other tests.
     await admin('PUT', '/api/admin/settings', { features: current.features, lockedUnits: [], plus: current.plus });

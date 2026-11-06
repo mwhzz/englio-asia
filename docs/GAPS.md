@@ -4,7 +4,7 @@ Collected from the three review agents in `.claude/agents/` (2026-11-06, app v1.
 
 Status: **language audit ✓, admin/ops audit ✓, learner test ✓**. The order to fix things is in section 4.
 
-**Done on branch `gaps` (2026-11-06, not yet released):** all of section 1's "minimum before launch" (reminders and league read small columns, rate limit 3000/5 min, Telegram off-site backup + restore script + integrity check, 5-minute health check with Telegram alerts, health checks the database), learner search by name/code/phone/device/email with paging and debounce, deploy builds at low priority, old daily history trimmed; sign-ups/active/retention/onboarding/reminder/Plus/version/crash numbers; reports v2 (learner, version, phone, status, kind, assignee, reply seen in the app, help page with FAQ and form); learner page (Plus, payments, sign-ins, give Plus, hearts, freezes, streak, merge phones, block, export; delete removes payments); support role; activity detail and filters; all of section 3 (majors, minors, polish); from section 2: lesson preview in any language, admin forms named after the language with right-to-left typing, a লেখা (writing) admin page, the importer takes stories and writing.
+**Done and on `main` (commit 2fba173, deployed 2026-11-06; version number not yet raised):** all of section 1's "minimum before launch" (reminders and league read small columns, rate limit 3000/5 min, Telegram off-site backup + restore script + integrity check, 5-minute health check with Telegram alerts, health checks the database), learner search by name/code/phone/device/email with paging and debounce, deploy builds at low priority, old daily history trimmed; sign-ups/active/retention/onboarding/reminder/Plus/version/crash numbers; reports v2 (learner, version, phone, status, kind, assignee, reply seen in the app, help page with FAQ and form); learner page (Plus, payments, sign-ins, give Plus, hearts, freezes, streak, merge phones, block, export; delete removes payments); support role; activity detail and filters; all of section 3 (majors, minors, polish); from section 2: lesson preview in any language, admin forms named after the language with right-to-left typing, a লেখা (writing) admin page, the importer takes stories and writing.
 
 **Still open:** section 1 "build on GitHub Actions" (deploys now run at low priority instead) and Postgres beyond ~200k learners; section 2's app-side items (app text in the learner's language, right-to-left layout and fonts, choosing a language in the app, countries instead of districts, localized privacy/store pages), which need translations by native speakers.
 
@@ -85,3 +85,35 @@ Pixel 7 and 360×640, normal and "আরও বড়" text, local copy. **No bl
 3. **Before launch, admin (2–3 days):** reports v2 (device/version, help form, statuses) and a small learner page (find by device id/backup code, Plus status, give Plus).
 4. **After launch:** the rest of section 1 (stats, build off-server, data growth), learner polish and missing features.
 5. **Later, for other languages:** section 2 (app text, right-to-left, language choice, countries); Arabic needs a native speaker.
+
+## 5. Running it at Duolingo scale (product-auditor, 2026-11-06)
+
+New findings, beyond sections 1–4:
+
+| # | Item | Why | Size | When |
+| --- | --- | --- | --- | --- |
+| 1 | Detect the Play app (TWA) and hide bKash there; plan Play Billing; decide what Play learners get for Plus-only units | Play payments policy | S | Before launch |
+| 2 | League abuse: name filter, report a name, hide new learners' names for a few days, limit new device ids per IP | One request put a rude name at #1 in the Dhaka league | S–M | Before launch |
+| 3 | Uptime monitor outside the droplet (free) on `/api/health` | `watch.sh` dies with the droplet | S | Before launch |
+| 4 | Check stuck bKash payments against bKash on a timer; lock a payment while crediting | Paid-but-no-Plus, double credit | S | Before launch |
+| 5 | Landing page, terms, refund policy, support email on Englio's domain, share preview cards (Open Graph) | Store review, trust, sharing | M | Before launch |
+| 6 | Content undo: trash instead of delete, snapshot before each save, restore; draft → publish per lesson/story/topic | Every save is live at once, no undo; deleting breaks saved progress | M | Before launch |
+| 7 | Support: new-ticket alert to Telegram, canned replies, "waiting since", tell the learner when a reply arrives, refuse tickets with no learner | Support time; spam tickets | S–M | First 3 months |
+| 8 | In-app announcement / maintenance / forced-update message from the admin | Talk to learners without a deploy | S–M | First 3 months |
+| 9 | Per-learner (anonymous) events, campaign tags, Play install referrer; weekly/monthly active, cohort funnels | Know what works | M | First 3 months |
+| 10 | Content: ~30 more Bangla units (A1–A2) with recordings | Course runs out in 3–4 weeks (11 units, 23 lessons) | L (people) | First 3 months |
+| 11 | "Come back" reminders after 3/7/14 days, wording variants with open rates | Cheapest retention lever | S–M | First 3 months |
+| 12 | Daily quests, league tiers with promotion | Duolingo's main pull back | M | First 3 months |
+| 13 | Weak-skill practice (review blanks, grammar, matching), harder questions after right answers | Learning quality | M | First 3 months |
+| 14 | Course download in parts (outline + lessons on demand); settings changes not bumping the content version (`server/settings.ts:30`) | Payload grows; one switch makes every phone re-download | M | Before ~100 units |
+| 15 | Content export for translators, CEFR tags and coverage | Multi-language team | M | Later |
+| 16 | Rollout percentages and A/B tests on switches | Safe launches | M | Later |
+| 17 | Promo codes, yearly plan, trial, school plan, refunds, revenue report | Revenue | M–L | Later |
+| 18 | Admin two-step login, token rotation/expiry, CSV exports, bulk ticket actions; the last English admin pages (Lessons, Team) in Bangla | Security and speed | M | Later |
+
+Also seen: a wrong answer shows a check mark in its radio circle; stray bullet points on the FAQ list; the phone dashboard starts with totals instead of "what needs me today"; Families policy and privacy paperwork (Class 1 learners are under 13).
+
+**Done from section 5 (branch `agents2`, 2026-11-06):** 1 (no bKash in the Android app, owner's choice for Plus units there), 2 (rude-name filter, new names hidden 3 days, 40 new learners per address a day), 3 (outside uptime monitor: steps in `docs/DEPLOY_BN.md`), 4 (stuck-payment check every 10 min, one-time credit), 5 (about page, terms, refund policy, Open Graph cards; the support email is still the owner's Gmail), 6 (history + trash with restore; খসড়া/প্রকাশিত for lessons, stories, topics), 7 (Telegram alert for help reports, canned replies, "waiting since" via ago, reply card in the app, help reports need a learner, 60 reports per address per 15 min), 8 (notice, maintenance, minimum version), 9 (sign-up source from utm tags, weekly/monthly active; per-learner event funnels not done), 11 (come-back reminders, wording variants with open rates), 12 (daily quests; league tiers not done), 13 (review of blanks and grammar; adaptive difficulty not done), 14 (settings no longer bump the content version; course download in parts not done), 15 (content export; CEFR tags not done), 18 (CSV exports, bulk close, Lessons/Team in Bangla; two-step login and token rotation not done), and the small issues (wrong pick shows a cross, FAQ bullets, "আজ যা দেখতে হবে" on the dashboard).
+
+**Still open from section 5:** 10 (more content: people's work), league tiers, adaptive difficulty, per-learner event funnels and the Play install referrer (needs native code), course download in parts, CEFR tags and coverage, rollout percentages and A/B tests, promo codes / yearly / trial / school plans / Play Billing, two-step admin login and token rotation, a support email on Englio's own domain, Families-policy paperwork, Postgres and a CDN.
+

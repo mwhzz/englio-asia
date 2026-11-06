@@ -60,8 +60,8 @@ test('the owner adds an editor, who sees content but not learners', async ({ pag
   await page.getByPlaceholder('Admin token').fill(ADMIN_TOKEN);
   await page.getByRole('button', { name: 'Sign in' }).click();
   await adminGo(page, 'টিম');
-  await page.getByLabel('Name').fill('Shila');
-  await page.getByRole('button', { name: 'Add member' }).click();
+  await page.getByLabel('নাম').fill('Shila');
+  await page.getByRole('button', { name: 'সদস্য যোগ করো' }).click();
   const token = (await page.locator('.ad-token code').textContent())!;
 
   const editor = await browser.newPage();
@@ -90,12 +90,12 @@ test('the admin adds a picture and a recording to a word, and the app gets them'
   await page.goto('/admin.html#lesson/u1-l1');
   await page.reload();
   const words = page.locator('section.ad-card', { hasText: 'Words' });
-  await words.getByRole('button', { name: 'Edit' }).first().click();
+  await words.getByRole('button', { name: 'বদলাও' }).first().click();
   await words.locator('input[type=file][accept^="image"]').setInputFiles({ name: 'pic.png', mimeType: 'image/png', buffer: PNG });
   await expect(words.locator('.ad-media img')).toBeVisible();
   await words.locator('input[type=file][accept^="audio"]').setInputFiles({ name: 'say.mp3', mimeType: 'audio/mpeg', buffer: Buffer.from('ID3fake') });
   await expect(words.locator('.ad-media audio')).toBeAttached();
-  await words.getByRole('button', { name: 'Save' }).click();
+  await words.getByRole('button', { name: 'সেভ করো' }).click();
   await expect(words.getByText('· picture · audio')).toBeVisible();
 
   const course = await page.request.get('http://localhost:8799/api/course').then((r) => r.json());

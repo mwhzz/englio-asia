@@ -13,6 +13,8 @@ function db() {
   add('device-0002', 'Karim Uddin', 'dhaka', { '2026-11-02': 60 });
   add('device-0003', 'Mina', 'sylhet', { '2026-11-03': 40, '2026-10-20': 500 });
   add('device-0004', 'Old', 'sylhet', { '2026-10-01': 100 });
+  // Long-time learners (new ones show as "নতুন শিক্ষার্থী" for a few days, see nameFilter.ts).
+  d.exec("UPDATE users SET created_at = '2026-01-01T00:00:00Z'");
   return d;
 }
 
@@ -89,5 +91,21 @@ describe('friends league', () => {
     // Dhaka is UTC+6: 18:00 UTC on Friday is midnight, the start of Saturday.
     expect(leagueWeek(new Date('2026-11-06T18:00:00Z'))).toEqual({ since: '2026-11-07', ends: '2026-11-13' });
     expect(leagueWeek(new Date('2026-11-06T12:00:00Z'))).toEqual({ since: '2026-10-31', ends: '2026-11-06' });
+  });
+});
+
+describe('names others see', () => {
+  it('hides rude names and, for a few days, new learners', async () => {
+    const { isRude, shownName } = await import('./nameFilter.ts');
+    expect(isRude('FUCK')).toBe(true);
+    expect(isRude('f.u.c.k')).toBe(true);
+    expect(isRude('খানকি')).toBe(true);
+    expect(isRude('Iqbal Hossain')).toBe(false);
+    expect(isRude('Salma')).toBe(false);
+    expect(isRude('bal')).toBe(true);
+    const now = new Date('2026-11-06T00:00:00Z');
+    expect(shownName('Rina Akter', '2026-01-01T00:00:00Z', now)).toBe('Rina');
+    expect(shownName('Rina Akter', '2026-11-05T00:00:00Z', now)).toBe('নতুন শিক্ষার্থী');
+    expect(shownName('Shit Head', '2026-01-01T00:00:00Z', now)).toBe('Learner');
   });
 });

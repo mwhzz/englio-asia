@@ -12,7 +12,7 @@ describe('rate limits', () => {
   });
 
   it('answers 429 when an address tries too many backup codes or admin tokens', async () => {
-    const server = createApi(openDb(':memory:'), 'secret', { all: [100, 60_000], strict: [3, 60_000], badToken: [2, 60_000] });
+    const server = createApi(openDb(':memory:'), 'secret', { all: [100, 60_000], strict: [3, 60_000], badToken: [2, 60_000], newUsers: [100, 60_000] });
     await new Promise<void>((done) => server.listen(0, done));
     const base = `http://localhost:${(server.address() as AddressInfo).port}`;
     const restore = () => fetch(`${base}/api/restore`, { method: 'POST', body: JSON.stringify({ code: 'AAAAAAAAAA' }) }).then((r) => r.status);

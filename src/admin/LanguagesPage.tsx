@@ -89,6 +89,11 @@ export function LanguagesPage({ owner }: { owner: boolean }) {
               )}
               {empty && <p className="ad-muted">এখনো কোনো কনটেন্ট নেই। লেসন পাতায় এই ভাষা বেছে ইউনিট যোগ করো।</p>}
               <div className="ad-row">
+                {!empty && (
+                  <button className="ad-btn" title="অনুবাদকের জন্য পুরো কোর্স একটা ফাইলে (server/importLanguage.ts দিয়ে আবার যোগ করা যায়)" onClick={() => exportContent(l.code)}>
+                    JSON নামাও
+                  </button>
+                )}
                 <button
                   className="ad-btn"
                   onClick={() => {
@@ -165,4 +170,17 @@ export function LanguagesPage({ owner }: { owner: boolean }) {
       )}
     </div>
   );
+}
+
+/** Downloads a language's whole course as JSON, in the importer's format. */
+async function exportContent(code: string) {
+  try {
+    const data = await adminApi('GET', `/export/content?lang=${code}`);
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+    const a = Object.assign(document.createElement('a'), { href: url, download: `englio-${code}-course.json` });
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    alert((e as Error).message);
+  }
 }

@@ -1,5 +1,6 @@
 import { deviceId } from '../state/useProgressSync';
 import { API_BASE } from './api';
+import { isAndroidApp } from './playApp';
 
 const KEY = 'englio-plus-until';
 
@@ -33,6 +34,8 @@ export async function refreshPlus(): Promise<string | null> {
 
 /** Whether payments are switched on, and the plan (price in taka, days). */
 export async function plusInfo(): Promise<{ available: boolean; price: number; days: number } | null> {
+  // Inside the Android (Play) app there is no bKash: Google requires Play Billing there.
+  if (isAndroidApp()) return null;
   try {
     const res = await fetch(`${API_BASE}/premium/info`);
     return res.ok ? res.json() : null;

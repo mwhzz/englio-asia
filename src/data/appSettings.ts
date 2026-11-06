@@ -20,13 +20,30 @@ export interface AppSettings {
   lockedUnits: string[];
   /** The Plus plan: price in taka, and how many days it lasts. */
   plus: { price: number; days: number };
+  /**
+   * In the Android app (Play), bKash can't be offered (Google requires Play Billing for digital goods), so
+   * Plus-only units are either open to everyone there (true) or stay locked with no way to buy (false).
+   */
+  appUnitsFree: boolean;
+  /** A message on every learner's home page (e.g. "নতুন ইউনিট এসেছে!"); empty text = none. */
+  notice: { text: string; tone: 'info' | 'warn' };
+  /** Maintenance: the app shows this message instead of lessons until it's switched off. */
+  maintenance: { on: boolean; text: string };
+  /** Apps older than this version ("1.7.0") are asked to update (reload); empty = no check. */
+  minVersion: string;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   features: Object.fromEntries(FEATURES.map((f) => [f.id, true])) as Record<FeatureId, boolean>,
   lockedUnits: [],
   plus: { price: 99, days: 30 },
+  appUnitsFree: true,
+  notice: { text: '', tone: 'info' },
+  maintenance: { on: false, text: '' },
+  minVersion: '',
 };
+
+const VERSION = /^\d+\.\d+\.\d+$/;
 
 const isRecord = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 const wholeIn = (v: unknown, min: number, max: number) => typeof v === 'number' && Number.isInteger(v) && v >= min && v <= max;
@@ -46,7 +63,25 @@ export function normalizeSettings(raw: unknown, fallback: AppSettings = DEFAULT_
       price: wholeIn(p.price, 1, 100_000) ? (p.price as number) : fallback.plus.price,
       days: wholeIn(p.days, 1, 3650) ? (p.days as number) : fallback.plus.days,
     },
+    appUnitsFree: typeof r.appUnitsFree === 'boolean' ? r.appUnitsFree : fallback.appUnitsFree,
+    notice: {
+      text: isRecord(r.notice) && typeof r.notice.text === 'string' ? r.notice.text.trim().slice(0, 300) : fallback.notice.text,
+      tone: isRecord(r.notice) && r.notice.tone === 'warn' ? 'warn' : 'info',
+    },
+    maintenance: {
+      on: isRecord(r.maintenance) && r.maintenance.on === true,
+      text: isRecord(r.maintenance) && typeof r.maintenance.text === 'string' ? r.maintenance.text.trim().slice(0, 300) : '',
+    },
+    minVersion: typeof r.minVersion === 'string' && VERSION.test(r.minVersion) ? r.minVersion : '',
   };
+}
+
+/** "1.6.1" < "1.7.0": whether version `a` is older than `b` (anything unreadable is never older). */
+export function olderThan(a: string, b: string): boolean {
+  if (!VERSION.test(a) || !VERSION.test(b)) return false;
+  const [x, y] = [a, b].map((v) => v.split('.').map(Number));
+  for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] < y[i];
+  return false;
 }
 
 /** For the admin saving new settings: the problems in plain words (empty when it's fine). */
@@ -61,5 +96,8 @@ export function settingsProblems(raw: unknown, unitIds: string[]): string[] {
   const p = isRecord(raw.plus) ? raw.plus : null;
   if (!p || !wholeIn(p.price, 1, 100_000)) problems.push('Plus price must be a whole number of taka (1–100000)');
   if (!p || !wholeIn(p.days, 1, 3650)) problems.push('Plus days must be a whole number (1–3650)');
+  if (raw.minVersion !== undefined && raw.minVersion !== '' && !(typeof raw.minVersion === 'string' && VERSION.test(raw.minVersion))) {
+    problems.push('Minimum version must look like 1.7.0');
+  }
   return problems;
 }

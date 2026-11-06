@@ -76,3 +76,19 @@ describe('importing a language', () => {
         }
   });
 });
+
+describe('exporting a language', () => {
+  it('gives a file the importer takes back as another language', async () => {
+    const { createApi } = await import('./app.ts');
+    const db = openDb(':memory:');
+    importLanguage(db, ARABIC);
+    const server = createApi(db, 't');
+    await new Promise<void>((done) => server.listen(0, done));
+    const port = (server.address() as import('node:net').AddressInfo).port;
+    const file = (await (await fetch(`http://localhost:${port}/api/admin/export/content?lang=ar`, { headers: { authorization: 'Bearer t' } })).json()) as typeof ARABIC;
+    await new Promise<void>((done) => server.close(() => done()));
+    expect(file.units).toHaveLength(3);
+    const copy = { ...file, language: { code: 'ur', name: 'Urdu', native: 'اردو', dir: 'rtl' as const } };
+    expect(importLanguage(db, copy)).toMatchObject({ language: 'ur', units: 3, lessons: 6, items: 86, grammar: 3 });
+  });
+});

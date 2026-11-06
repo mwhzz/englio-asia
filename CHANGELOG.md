@@ -6,6 +6,19 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Inside the Android (Play) app the bKash buy button never shows (Google requires Play Billing there); the owner chooses whether Plus-only units are open in the app until then.
+- League: rude names are hidden ("Learner"), new learners show as "নতুন শিক্ষার্থী" for 3 days, and one address can create at most 40 new learners a day.
+- bKash: a payment can't give its days twice, and a payment left halfway (browser closed after paying) gets its Plus from a check every 10 minutes; unfinished ones expire after a day.
+- Admin: ইতিহাস ও ট্র্যাশ: every content change and delete is kept for 90 days and can be put back in one tap (a lesson or unit with everything in it). Lessons, stories and grammar topics can be খসড়া (hidden from learners) or প্রকাশিত.
+- Admin settings: a notice on every learner's home page, maintenance mode, and "please update" for apps older than a version. Switching settings no longer makes every phone download the whole course again.
+- Admin: "আজ যা দেখতে হবে" on the dashboard (new reports, crashes, stuck payments); CSV downloads of learners, reports and payments; close a whole list of reports at once; a language's course as JSON for translators; where new learners came from (?utm_source=…) and weekly/monthly active; reminder wordings compared by how often they're opened. The Lessons and Team pages are in Bangla.
+- New help reports reach the owner's Telegram at once; a learner whose report was answered sees "তোমার রিপোর্টের উত্তর এসেছে" on the home page.
+- আজকের কাজ: three small goals each day (daily goal, 2 lessons, 10 minutes); all three give a streak freeze.
+- Reminders: after two quiet days only on days 3, 7, 14 and 30 away, with a "come back" message; everyday reminders have three wordings.
+- Missed blanks and grammar questions come back in review too, not only words and sentences.
+- A wrong pick shows a cross in its circle; the help page's lists have no stray bullets.
+- Website: an about page, terms of use and a refund policy (linked from Profile), and link preview cards when the site is shared.
+
 - Help page (Profile → সাহায্য ও অভিযোগ): answers to common questions, a form to report any problem (account, payment, a bug…), and the team's replies to your reports.
 - A lost streak is told ("৯ দিনের স্ট্রিক শেষ হয়ে গেছে") with a button to start again, instead of silently becoming 0.
 - Leaving a lesson can be "পরে চালিয়ে যাব" (carries on from the same question). The question count no longer grows when a missed question comes back; it says "আবার".

@@ -8,6 +8,7 @@ import { haptic } from '../../lib/haptics';
 import { deviceId } from '../../state/useProgressSync';
 import { FAQ } from './faq';
 import { MyReports, type MyReport } from './MyReports';
+import { markReported, markRepliesSeen } from './useReplies';
 import '../../styles/help.css';
 
 const KINDS = [
@@ -38,6 +39,7 @@ export function HelpPage({ onClose }: { onClose: () => void }) {
       .then(setMine, () => setMine([]));
   useEffect(() => {
     load();
+    markRepliesSeen();
   }, []);
 
   async function send() {
@@ -51,6 +53,7 @@ export function HelpPage({ onClose }: { onClose: () => void }) {
         body: JSON.stringify({ where: 'help', kind, question: text.trim(), contact: contact.trim(), userId: deviceId() }),
       });
       if (!res.ok) throw new Error();
+      markReported();
       setState('sent');
       setText('');
       load();

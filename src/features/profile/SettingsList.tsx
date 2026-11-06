@@ -175,6 +175,16 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           </span>
           <Glyph name="chevron" size={16} className="pf-chevron" />
         </a>
+        <a className="pf-row" href="./terms.html" target="_blank" rel="noreferrer">
+          <span className="pf-icon" style={{ background: 'var(--ios-gray, #8e8e93)' }}>
+            <Glyph name="book" size={16} />
+          </span>
+          <span className="pf-row-text">
+            <span lang="bn">ব্যবহারের শর্ত ও রিফান্ড</span>
+            <small lang="bn">কী করা যাবে, টাকা ফেরতের নিয়ম</small>
+          </span>
+          <Glyph name="chevron" size={16} className="pf-chevron" />
+        </a>
         <button className="pf-row is-danger" onClick={() => setSheet('delete')}>
           <span className="pf-icon" style={{ background: 'var(--ios-red)' }}>
             <Glyph name="person" size={16} />

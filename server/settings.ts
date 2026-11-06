@@ -1,6 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite';
 import { DEFAULT_SETTINGS, normalizeSettings, settingsProblems, type AppSettings } from '../src/data/appSettings.ts';
-import { bumpContentVersion } from './db.ts';
 import { HttpError, type Request } from './http.ts';
 
 const KEY = 'app_settings';
@@ -27,6 +26,7 @@ export function saveSettings(db: DatabaseSync, { body }: Request): AppSettings {
   if (problems.length) throw new HttpError(400, problems.join('; '));
   const settings = normalizeSettings(body);
   db.prepare('INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(KEY, JSON.stringify(settings));
-  bumpContentVersion(db);
+  // Apps read settings from /api/settings each time they open, so a switch no longer makes every phone
+  // download the whole course again (the course still carries them, for apps older than 1.7).
   return settings;
 }

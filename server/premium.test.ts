@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { openDb } from './db.ts';
 import type { Request } from './http.ts';
-import { callback, checkout, premiumInfo, premiumOf, type Post } from './premium.ts';
+import { callback, checkStuckPayments, checkout, premiumInfo, premiumOf, type Post } from './premium.ts';
 import { saveSettings } from './settings.ts';
 import { saveProgress } from './users.ts';
 import { DEFAULT_SETTINGS } from '../src/data/appSettings.ts';
@@ -94,5 +94,29 @@ describe('Englio Plus with bKash', () => {
 
   it('ignores a payment it never started', async () => {
     expect((await callback(setup(), query('paymentID=FAKE&status=success'), fakeBkash().post, NOW)).location).toContain('premium=failed');
+  });
+
+  it('two callbacks at the same moment give the days once', async () => {
+    const db = setup();
+    const bkash = fakeBkash();
+    await checkout(db, { params: { id: 'learner-0001' } } as unknown as Request, bkash.post, NOW);
+    await Promise.all([callback(db, query('paymentID=PAY1&status=success'), bkash.post, NOW), callback(db, query('paymentID=PAY1&status=success'), bkash.post, NOW)]);
+    expect(premiumOf(db, 'learner-0001', NOW).until).toBe('2026-12-03T08:00:00.000Z');
+  });
+
+  it('a payment left halfway (browser closed) gets its Plus from the later check', async () => {
+    const db = setup();
+    await checkout(db, { params: { id: 'learner-0001' } } as unknown as Request, fakeBkash().post, NOW);
+    const later = new Date(NOW.getTime() + 10 * 60_000);
+    expect(await checkStuckPayments(db, fakeBkash().post, later)).toEqual({ credited: 1, expired: 0 });
+    expect(premiumOf(db, 'learner-0001', later).until).toBeTruthy();
+    expect(await checkStuckPayments(db, fakeBkash().post, later)).toEqual({ credited: 0, expired: 0 });
+  });
+
+  it('an unfinished payment expires after a day', async () => {
+    const db = setup();
+    await checkout(db, { params: { id: 'learner-0001' } } as unknown as Request, fakeBkash().post, NOW);
+    const nextDay = new Date(NOW.getTime() + 25 * 3_600_000);
+    expect(await checkStuckPayments(db, fakeBkash(false).post, nextDay)).toEqual({ credited: 0, expired: 1 });
   });
 });
