@@ -110,7 +110,7 @@ describe('managing a learner', () => {
   });
 
   it('deleting a learner removes their payments too', async () => {
-    db.prepare("INSERT INTO payments VALUES ('pay1', 'device-rina-02', 99, 'paid', 'T1', '2026-11-01')").run();
+    db.prepare("INSERT INTO payments (payment_id, user_id, amount, status, trx_id, created_at) VALUES ('pay1', 'device-rina-02', 99, 'paid', 'T1', '2026-11-01')").run();
     await call('DELETE', '/api/admin/users/device-rina-02');
     expect(db.prepare("SELECT COUNT(*) AS n FROM payments WHERE user_id = 'device-rina-02'").get()).toEqual({ n: 0 });
   });
@@ -179,6 +179,7 @@ describe('owner numbers', () => {
     expect(json.onboarding[0]).toEqual({ step: 'welcome', n: 0 });
     expect(json.reminders).toHaveProperty('subscribed');
     expect(json.plus).toMatchObject({ active: expect.any(Number) });
+    expect(json.returnByLessons).toHaveLength(4);
   });
 
   it('keeps the app version of a crash', async () => {

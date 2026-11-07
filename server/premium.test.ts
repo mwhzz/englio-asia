@@ -120,3 +120,41 @@ describe('Englio Plus with bKash', () => {
     expect(await checkStuckPayments(db, fakeBkash(false).post, nextDay)).toEqual({ credited: 0, expired: 1 });
   });
 });
+
+describe('trial, yearly plan and promo codes', () => {
+  it('gives the free trial once, when the owner set one', async () => {
+    const { startTrial } = await import('./premium.ts');
+    const db = setup();
+    expect(() => startTrial(db, { params: { id: 'learner-0001' } }, NOW)).toThrow(/No free trial/);
+    saveSettings(db, { body: { ...DEFAULT_SETTINGS, plus: { price: 99, days: 30, yearPrice: 999, trialDays: 7 } } } as unknown as Request);
+    expect(startTrial(db, { params: { id: 'learner-0001' } }, NOW).until).toBe('2026-11-10T08:00:00.000Z');
+    expect(() => startTrial(db, { params: { id: 'learner-0001' } }, NOW)).toThrow(/used already/);
+    expect(premiumOf(db, 'learner-0001', NOW).trialUsed).toBe(true);
+  });
+
+  it('the yearly plan charges its price and gives 365 days', async () => {
+    const db = setup();
+    saveSettings(db, { body: { ...DEFAULT_SETTINGS, plus: { price: 99, days: 30, yearPrice: 999, trialDays: 0 } } } as unknown as Request);
+    const amounts: string[] = [];
+    const bkash = fakeBkash();
+    const post: Post = async (url, init) => {
+      if (url.endsWith('create')) amounts.push(JSON.parse(init.body).amount);
+      return bkash.post(url, init);
+    };
+    await checkout(db, { params: { id: 'learner-0001' }, body: { plan: 'year' } } as unknown as Request, post, NOW);
+    await callback(db, query('paymentID=PAY1&status=success'), post, NOW);
+    expect(amounts).toEqual(['999.00']);
+    expect(premiumOf(db, 'learner-0001', NOW).until).toBe('2027-11-03T08:00:00.000Z');
+  });
+
+  it('a promo code gives its days once per learner, until its uses run out', async () => {
+    const { createPromo, redeemPromo } = await import('./promo.ts');
+    const db = setup();
+    saveProgress(db, 'learner-0002', { profile: { name: 'Mina' }, completed: {} });
+    const { code } = createPromo(db, { body: { code: 'school-30', days: 30, uses: 1 } }, NOW);
+    expect(code).toBe('SCHOOL30');
+    expect(redeemPromo(db, { params: { id: 'learner-0001' }, body: { code: 'school 30' } }, NOW).days).toBe(30);
+    expect(() => redeemPromo(db, { params: { id: 'learner-0001' }, body: { code } }, NOW)).toThrow(/already/);
+    expect(() => redeemPromo(db, { params: { id: 'learner-0002' }, body: { code } }, NOW)).toThrow(/does not work/);
+  });
+});

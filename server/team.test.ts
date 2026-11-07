@@ -30,7 +30,7 @@ describe('admin team', () => {
     expect(added.json).toMatchObject({ name: 'Shila', role: 'editor' });
     const editor = as(added.json.token);
 
-    expect((await editor('GET', '/api/admin/me')).json).toEqual({ name: 'Shila', role: 'editor' });
+    expect((await editor('GET', '/api/admin/me')).json).toMatchObject({ name: 'Shila', role: 'editor' });
     expect((await editor('POST', '/api/admin/units', { title: 'Sports', titleBn: 'খেলা', color: '#ff9500' })).status).toBe(200);
     expect((await editor('GET', '/api/admin/users')).status).toBe(403);
     expect((await editor('GET', '/api/admin/team')).status).toBe(403);
@@ -65,5 +65,36 @@ describe('app errors', () => {
     expect(list).toEqual([expect.objectContaining({ message: 'x is undefined', n: 3 })]);
     await owner('DELETE', `/api/admin/errors/${list[0].id}`);
     expect((await owner('GET', '/api/admin/errors')).json).toEqual([]);
+  });
+});
+
+describe('admin sign-in', () => {
+  it('trades a token for a 30-day session, and with two-step on, needs a code and refuses raw tokens', async () => {
+    const { totp } = await import('./adminAuth.ts');
+    const post = (path: string, body: unknown, token?: string) =>
+      fetch(base + path, { method: 'POST', headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify(body) }).then(async (r) => ({ status: r.status, json: (await r.json().catch(() => null)) as any }));
+    expect((await post('/api/admin/login', { token: 'wrong' })).status).toBe(401);
+    const { json: s1 } = await post('/api/admin/login', { token: 'owner-secret' });
+    expect(s1.session).toMatch(/^ses_/);
+    expect((await as(s1.session)('GET', '/api/admin/me')).json).toMatchObject({ role: 'owner', twoStep: false });
+
+    const { json: start } = await post('/api/admin/two-step/start', {}, s1.session);
+    expect((await post('/api/admin/two-step/confirm', { code: '000000' }, s1.session)).status).toBe(400);
+    expect((await post('/api/admin/two-step/confirm', { code: totp(start.secret) }, s1.session)).json).toEqual({ on: true });
+
+    expect((await owner('GET', '/api/admin/me')).status).toBe(401);
+    expect((await post('/api/admin/login', { token: 'owner-secret' })).status).toBe(428);
+    const { json: s2 } = await post('/api/admin/login', { token: 'owner-secret', code: totp(start.secret) });
+    expect((await as(s2.session)('GET', '/api/admin/me')).status).toBe(200);
+
+    await post('/api/admin/two-step/off', { code: totp(start.secret) }, s2.session);
+    expect((await owner('GET', '/api/admin/me')).status).toBe(200);
+  });
+
+  it('gives a team member a new token; the old one stops working', async () => {
+    const added = (await owner('POST', '/api/admin/team', { name: 'Rotate Me', role: 'editor' })).json;
+    const fresh = (await owner('POST', `/api/admin/team/${added.id}/rotate`)).json;
+    expect((await as(added.token)('GET', '/api/admin/me')).status).toBe(401);
+    expect((await as(fresh.token)('GET', '/api/admin/me')).status).toBe(200);
   });
 });

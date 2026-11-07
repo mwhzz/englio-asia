@@ -8,6 +8,7 @@ import { useProgress } from '../../state/ProgressContext';
 import { AccountRow } from '../account/AccountRow';
 import { BackupCode } from './BackupCode';
 import { DeleteAccount } from './DeleteAccount';
+import { PoliteRow } from './PoliteRow';
 import { InstallRow } from './InstallRow';
 import { OfflineRows } from './OfflineRows';
 import { RedoSetup } from './RedoSetup';
@@ -115,6 +116,7 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           />
         </label>
 
+        <PoliteRow />
         {feature('reminders') && <ReminderRow />}
         <OfflineRows />
       </div>

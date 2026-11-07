@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { adminApi } from './adminApi';
 import { useAdminData } from './useAdminData';
+import { TwoStep } from './TwoStep';
 
 interface Member {
   id: number;
   name: string;
   role: 'owner' | 'editor' | 'support';
+  expiresAt?: string | null;
   createdAt: string;
   lastUsed: string | null;
 }
@@ -83,10 +85,22 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
             <li key={m.id} className="ad-item">
               <span className="ad-item-open">
                 <strong>{m.name}</strong> <span className="ad-muted">{m.role}</span>
-                <small>
-                  added {day(m.createdAt)} · last used {day(m.lastUsed)}
+                <small lang="bn">
+                  যোগ {day(m.createdAt)} · শেষ ব্যবহার {day(m.lastUsed)}
+                  {m.expiresAt ? ` · টোকেনের মেয়াদ ${day(m.expiresAt)}` : ''}
                 </small>
               </span>
+              <button
+                className="ad-btn is-small"
+                onClick={() =>
+                  confirm(`${m.name}-কে নতুন টোকেন দেবে? পুরনোটা সাথে সাথে বন্ধ হবে।`) &&
+                  adminApi<{ name: string; token: string }>('POST', `/team/${m.id}/rotate`)
+                    .then((r) => (setMade(r), reload()))
+                    .catch((e: Error) => alert(e.message))
+                }
+              >
+                নতুন টোকেন
+              </button>
               <button
                 className="ad-btn is-small is-danger"
                 onClick={() =>
@@ -100,9 +114,11 @@ export function TeamPage({ onUnauthorized }: { onUnauthorized: () => void }) {
               </button>
             </li>
           ))}
-          {!team.length && <li className="ad-empty">Only you (the owner) so far.</li>}
+          {!team.length && <li className="ad-empty">এখনো শুধু তুমি (owner)।</li>}
         </ul>
       </section>
+
+      <TwoStep onUnauthorized={onUnauthorized} />
     </div>
   );
 }

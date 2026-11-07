@@ -57,6 +57,8 @@ test('with the largest text on a small phone, onboarding fits: text size on the 
   expect(await page.evaluate(() => document.documentElement.dataset.textSize)).toBe('larger');
   await page.locator('.ob button').filter({ hasText: 'শুরু করো' }).first().click();
   await page.getByRole('button', { name: 'খুঁজো' }).click();
+  // The sheet slides up; measure once it has arrived.
+  await page.locator('.ob-sheet').evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
   await fits(page, '.ob-text-btn');
   await noSideScroll(page);
 });

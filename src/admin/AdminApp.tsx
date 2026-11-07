@@ -36,6 +36,8 @@ export function AdminApp() {
   const [page = 'dashboard', id = ''] = useHashRoute();
   const [me, setMe] = useState<{ name: string; role: Role } | null>(null);
   const signOut = useCallback(() => {
+    // Ends the session on the server too (a stolen copy of it stops working).
+    adminApi('POST', '/logout').catch(() => undefined);
     clearToken();
     setSignedIn(false);
     setMe(null);

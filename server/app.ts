@@ -17,7 +17,8 @@ import { addReport, bulkTickets, closeReports, exportTickets, listReports, listT
 import { analytics, recordEvents } from './events.ts';
 import { accountsOf, signInGoogle, startPhone, verifyPhone } from './auth.ts';
 import { addFriend, friendsLeague, removeFriend } from './friends.ts';
-import { callback, checkout, paymentsReady, premiumInfo, premiumOf } from './premium.ts';
+import { callback, checkout, paymentsReady, premiumInfo, premiumOf, startTrial } from './premium.ts';
+import { createPromo, deletePromo, listPromos, redeemPromo } from './promo.ts';
 import { clearLeaderboardCache, leaderboard } from './leaderboard.ts';
 import { MAX_UPLOAD, readMedia, saveMedia } from './media.ts';
 import { deletePush, savePush } from './reminders.ts';
@@ -25,6 +26,7 @@ import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
 import * as team from './team.ts';
 import { checkUserId, clientOf, loadProgress, saveProgress } from './users.ts';
 import { health } from './health.ts';
+import { login, logout, twoStepConfirm, twoStepOff, twoStepOn, twoStepStart, twoStepStatus } from './adminAuth.ts';
 import { importMore } from './importLanguage.ts';
 import { stats } from './stats.ts';
 import { draftIds, listHistory, restoreHistory, setDraft, snapshotFor } from './history.ts';
@@ -36,7 +38,7 @@ import { createLanguage, deleteLanguage, isLive, langOf, listLanguages, liveLang
 const PUBLIC = { drafts: false };
 
 /** Every API route. Admin routes need `Authorization: Bearer <ADMIN_TOKEN>`. */
-function routes(db: DatabaseSync): Route[] {
+function routes(db: DatabaseSync, ADMIN: string): Route[] {
   return [
     // For uptime monitors: also checks that the database answers (a 500 means it doesn't).
     { method: 'GET', pattern: '/api/health', handler: () => health(db) },
@@ -92,6 +94,11 @@ function routes(db: DatabaseSync): Route[] {
     { method: 'GET', pattern: '/api/settings', handler: () => readSettings(db) },
     { method: 'GET', pattern: '/api/premium/info', handler: () => premiumInfo(db) },
     { method: 'GET', pattern: '/api/premium/callback', handler: (r) => callback(db, r) },
+    { method: 'POST', pattern: '/api/users/:id/premium/trial', strict: true, handler: (r) => startTrial(db, { params: { id: checkUserId(r.params.id) } }) },
+    { method: 'POST', pattern: '/api/users/:id/premium/redeem', strict: true, handler: (r) => redeemPromo(db, { params: { id: checkUserId(r.params.id) }, body: r.body }) },
+    { method: 'GET', pattern: '/api/admin/promos', admin: 'owner', handler: () => listPromos(db) },
+    { method: 'POST', pattern: '/api/admin/promos', admin: 'owner', handler: (r) => createPromo(db, r) },
+    { method: 'DELETE', pattern: '/api/admin/promos/:code', admin: 'owner', handler: (r) => deletePromo(db, r) },
     { method: 'GET', pattern: '/api/users/:id/premium', handler: ({ params }) => premiumOf(db, checkUserId(params.id)) },
     { method: 'POST', pattern: '/api/users/:id/premium/checkout', strict: true, handler: (r) => checkout(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
     { method: 'GET', pattern: '/api/users/:id/friends', handler: (r) => friendsLeague(db, { ...r, params: { id: checkUserId(r.params.id) } }) },
@@ -161,7 +168,15 @@ function routes(db: DatabaseSync): Route[] {
     },
 
     // ---- Admin ----
-    { method: 'GET', pattern: '/api/admin/me', admin: true, handler: ({ admin }) => admin },
+    { method: 'GET', pattern: '/api/admin/me', admin: true, handler: ({ admin }) => ({ ...admin, twoStep: twoStepOn(db) }) },
+    // Sign in for a 30-day session (and a code from the authenticator app when two-step sign-in is on).
+    { method: 'POST', pattern: '/api/admin/login', handler: (r) => login(db, r, (token) => team.tokenAdmin(db, token, ADMIN)) },
+    { method: 'POST', pattern: '/api/admin/logout', admin: true, handler: ({ headers }) => logout(db, headers.authorization) },
+    { method: 'GET', pattern: '/api/admin/two-step', admin: 'owner', handler: () => twoStepStatus(db) },
+    { method: 'POST', pattern: '/api/admin/two-step/start', admin: 'owner', handler: () => twoStepStart(db) },
+    { method: 'POST', pattern: '/api/admin/two-step/confirm', admin: 'owner', handler: (r) => twoStepConfirm(db, r) },
+    { method: 'POST', pattern: '/api/admin/two-step/off', admin: 'owner', handler: (r) => twoStepOff(db, r) },
+    { method: 'POST', pattern: '/api/admin/team/:id/rotate', admin: 'owner', handler: (r) => team.rotateMember(db, r) },
     { method: 'GET', pattern: '/api/admin/team', admin: 'owner', handler: () => team.listTeam(db) },
     { method: 'POST', pattern: '/api/admin/team', admin: 'owner', handler: (r) => team.addMember(db, r) },
     { method: 'DELETE', pattern: '/api/admin/team/:id', admin: 'owner', handler: (r) => team.removeMember(db, r) },
@@ -248,13 +263,15 @@ export const LIMITS: Limits = { all: [3000, 5 * MINUTE], strict: [10, 15 * MINUT
 
 /** The HTTP server: JSON in, JSON out, CORS open so the app can be hosted anywhere. */
 export function createApi(db: DatabaseSync, adminToken: string, limits: Limits = LIMITS): Server {
-  const table = routes(db);
+  const table = routes(db, adminToken);
   const all = new RateLimit(...limits.all);
   const strict = new RateLimit(...limits.strict);
   const badToken = new RateLimit(...limits.badToken);
   const newUsers = new RateLimit(...(limits.newUsers ?? LIMITS.newUsers));
   // Reports: plenty for a classroom sharing one address, too few to flood the admin.
   const reports = new RateLimit(60, 15 * MINUTE);
+  // Admin sign-ins: enough for a team on one network, too few to guess a token or a code.
+  const logins = new RateLimit(60, 15 * MINUTE);
 
   return createServer(async (req, res) => {
     try {
@@ -265,6 +282,7 @@ export function createApi(db: DatabaseSync, adminToken: string, limits: Limits =
       if (!route || !params) throw new HttpError(404, 'Not found');
       const ip = clientIp(req);
       if (!all.take(ip) || (route.strict && !strict.take(ip))) throw new HttpError(429, 'Too many requests, try again later');
+      if (route.pattern === '/api/admin/login' && !logins.take(ip)) throw new HttpError(429, 'Too many sign-ins, try again later');
       if (route.pattern === '/api/reports' && !reports.take(ip)) throw new HttpError(429, 'Too many reports, try again later');
       // A learner saved for the first time counts against the address's daily new-learner limit.
       if (req.method === 'PUT' && route.pattern === '/api/users/:id' && !db.prepare('SELECT 1 FROM users WHERE id = ?').get((params as Record<string, string>).id)) {

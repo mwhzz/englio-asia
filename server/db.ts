@@ -4,6 +4,7 @@ import { activitySummary } from './activity.ts';
 import { fairXpByDay } from './fairPlay.ts';
 import { migrateReports } from './reports.ts';
 import { migrateTeam } from './team.ts';
+import { migrateAdminAuth } from './adminAuth.ts';
 import { migrateErrors } from './errors.ts';
 
 /** The database file; set DB_PATH to keep it somewhere else. */
@@ -124,6 +125,22 @@ const SCHEMA = `
     status TEXT NOT NULL,
     trx_id TEXT,
     created_at TEXT NOT NULL
+  );
+  -- Free trials taken (once per learner) and promo codes worth Plus days (promo.ts).
+  CREATE TABLE IF NOT EXISTS trials (user_id TEXT PRIMARY KEY, at TEXT NOT NULL);
+  CREATE TABLE IF NOT EXISTS promo_codes (
+    code TEXT PRIMARY KEY,
+    days INTEGER NOT NULL,
+    uses_left INTEGER NOT NULL,
+    expires_at TEXT,
+    note TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS promo_uses (
+    code TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    at TEXT NOT NULL,
+    PRIMARY KEY (code, user_id)
   );
   CREATE TABLE IF NOT EXISTS premium (
     user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
@@ -281,11 +298,14 @@ function migrate(db: DatabaseSync): void {
   if (!has('users', 'source')) db.exec('ALTER TABLE users ADD COLUMN source TEXT');
   // League tier (tiers.ts): 0 ব্রোঞ্জ … 3 ডায়মন্ড.
   if (!has('users', 'tier')) db.exec('ALTER TABLE users ADD COLUMN tier INTEGER NOT NULL DEFAULT 0');
+  // The days a payment buys (main or yearly plan).
+  if (!has('payments', 'days')) db.exec('ALTER TABLE payments ADD COLUMN days INTEGER');
   if (!has('users', 'blocked')) db.exec('ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0');
   // খসড়া (draft): lessons, stories and grammar topics hidden from learners until the admin publishes them.
   for (const table of ['lessons', 'stories', 'grammar']) if (!has(table, 'draft')) db.exec(`ALTER TABLE ${table} ADD COLUMN draft INTEGER NOT NULL DEFAULT 0`);
   migrateReports(db);
   migrateTeam(db);
+  migrateAdminAuth(db);
   migrateErrors(db);
   db.prepare(`INSERT OR IGNORE INTO languages (code, name, native, dir, status, position) VALUES ('bn', 'Bangla', 'বাংলা', 'ltr', 'live', 0)`).run();
 }

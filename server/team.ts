@@ -1,6 +1,7 @@
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import type { DatabaseSync } from 'node:sqlite';
 import { HttpError, type Request } from './http.ts';
+import { sessionAdmin, twoStepOn } from './adminAuth.ts';
 
 /**
  * owner: everything. editor: content only. support: learners and their reports (no content, settings or team).
@@ -36,15 +37,27 @@ function sameText(a: string, b: string): boolean {
 export function adminOf(db: DatabaseSync, authorization: string | undefined, ownerToken: string, now = new Date()): Admin | null {
   const token = authorization?.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
   if (!token) return null;
+  // A session from signing in (adminAuth.ts); with two-step sign-in on, only sessions work.
+  const session = sessionAdmin(db, token, now);
+  if (session) return session;
+  if (twoStepOn(db)) return null;
+  return tokenAdmin(db, token, ownerToken, now);
+}
+
+/** Who a raw token belongs to (ADMIN_TOKEN, or a team member's token that hasn't expired). */
+export function tokenAdmin(db: DatabaseSync, token: string, ownerToken: string, now = new Date()): Admin | null {
+  if (!token) return null;
   if (sameText(token, ownerToken)) return { name: 'Owner', role: 'owner' };
-  const row = db.prepare('SELECT id, name, role FROM admins WHERE token_hash = ?').get(hash(token)) as { id: number; name: string; role: Role } | undefined;
-  if (!row) return null;
+  const row = db.prepare('SELECT id, name, role, expires_at FROM admins WHERE token_hash = ?').get(hash(token)) as
+    | { id: number; name: string; role: Role; expires_at: string | null }
+    | undefined;
+  if (!row || (row.expires_at && row.expires_at < now.toISOString())) return null;
   db.prepare('UPDATE admins SET last_used = ? WHERE id = ?').run(now.toISOString(), row.id);
   return { name: row.name, role: row.role };
 }
 
 export function listTeam(db: DatabaseSync) {
-  return db.prepare('SELECT id, name, role, created_at AS createdAt, last_used AS lastUsed FROM admins ORDER BY id').all();
+  return db.prepare('SELECT id, name, role, created_at AS createdAt, last_used AS lastUsed, expires_at AS expiresAt FROM admins ORDER BY id').all();
 }
 
 /** Adds a team member and returns their token. It's shown this once; the server only keeps its hash. */
@@ -54,8 +67,23 @@ export function addMember(db: DatabaseSync, { body }: Request, now = new Date())
   if (!name) throw new HttpError(400, '"name" is required');
   const role: Role = ROLES.includes(b.role as Role) ? (b.role as Role) : 'editor';
   const token = `eng_${randomBytes(24).toString('base64url')}`;
-  const result = db.prepare('INSERT INTO admins (name, role, token_hash, created_at) VALUES (?, ?, ?, ?)').run(name, role, hash(token), now.toISOString());
+  const result = db.prepare('INSERT INTO admins (name, role, token_hash, created_at, expires_at) VALUES (?, ?, ?, ?, ?)').run(name, role, hash(token), now.toISOString(), expiry(now));
   return { id: Number(result.lastInsertRowid), name, role, token };
+}
+
+/** Team tokens last this long; the owner gives a new one before then (rotateMember). */
+const TOKEN_DAYS = 180;
+const expiry = (now: Date) => new Date(now.getTime() + TOKEN_DAYS * 86_400_000).toISOString();
+
+/** A new token for a team member (the old one stops working at once), valid for another 180 days. */
+export function rotateMember(db: DatabaseSync, { params }: Pick<Request, 'params'>, now = new Date()) {
+  const token = `eng_${randomBytes(24).toString('base64url')}`;
+  const row = db.prepare('SELECT name, role FROM admins WHERE id = ?').get(Number(params.id)) as { name: string; role: Role } | undefined;
+  if (!row) throw new HttpError(404, 'No such team member');
+  db.prepare('UPDATE admins SET token_hash = ?, expires_at = ? WHERE id = ?').run(hash(token), expiry(now), Number(params.id));
+  // Their open sessions end too.
+  db.prepare('DELETE FROM admin_sessions WHERE name = ? AND role = ?').run(row.name, row.role);
+  return { name: row.name, role: row.role, token };
 }
 
 export function removeMember(db: DatabaseSync, { params }: Request) {

@@ -3,9 +3,15 @@ import type { Exercise, ExerciseBody, Fill, Lesson, Sentence, Vocab } from '../t
 import { tokens } from './answer';
 import { sample, shuffle, uniqueBy } from './random';
 import { wordInSentence } from './wordInSentence';
+import type { Level } from './difficulty';
 
-// One sentence exercise per sentence, cycling through these kinds.
+// One sentence exercise per sentence, cycling through these kinds; easier and harder mixes by level (difficulty.ts).
 const SENTENCE_KINDS = ['translate', 'listen', 'translate', 'choice', 'type'] as const;
+const KINDS_BY_LEVEL: Record<Level, readonly (typeof SENTENCE_KINDS)[number][]> = {
+  easy: ['translate', 'choice', 'listen', 'choice', 'translate'],
+  normal: SENTENCE_KINDS,
+  hard: ['type', 'listen', 'type', 'translate', 'choice'],
+};
 
 function distractorTiles(answer: string[], pool: Sentence[], n = 3): string[] {
   const used = new Set(answer.map((w) => w.toLowerCase()));
@@ -41,7 +47,7 @@ export function sentenceExercise(kind: (typeof SENTENCE_KINDS)[number], sentence
 type Extras = Pick<Lesson, 'gaps' | 'grammar' | 'dialogs'>;
 
 /** At most one of each extra kind, plus a dictation of a short sentence (and, when the device can listen, one to say). */
-function extraExercises(extras: Extras, sentences: Sentence[], speak = false): ExerciseBody[] {
+function extraExercises(extras: Extras, sentences: Sentence[], speak = false, level: Level = 'normal'): ExerciseBody[] {
   const out: ExerciseBody[] = [];
   for (const gaps of sample(extras.gaps ?? [], 1)) {
     out.push({ kind: 'gaps', gaps, bank: shuffle([...gaps.answers, ...gaps.extra]) });
@@ -54,7 +60,8 @@ function extraExercises(extras: Extras, sentences: Sentence[], speak = false): E
   }
   const short = sentences.filter((x) => tokens(x.en).length <= 5);
   const [dictate, spoken] = sample(short, 2);
-  if (dictate) out.push({ kind: 'dictate', sentence: dictate });
+  // Dictation is for learners who are doing well; a struggling one isn't asked to write from hearing.
+  if (dictate && level !== 'easy') out.push({ kind: 'dictate', sentence: dictate });
   if (speak && (spoken ?? dictate)) out.push({ kind: 'speak', sentence: spoken ?? dictate });
   return out;
 }
@@ -67,6 +74,7 @@ function generate(
   sentencePool: Sentence[],
   extras: Extras = {},
   speak = false,
+  level: Level = 'normal',
 ): Exercise[] {
   const words = uniqueBy(vocab, (w) => w.bn);
   const intro: ExerciseBody[] = sample(words, 3).map((word) => ({
@@ -78,7 +86,8 @@ function generate(
   const rest: ExerciseBody[] = [];
   if (words.length >= 3) rest.push({ kind: 'match', pairs: sample(words, 5) });
   shuffle(sentences).forEach((sentence, i) => {
-    rest.push(sentenceExercise(SENTENCE_KINDS[i % SENTENCE_KINDS.length], sentence, sentencePool));
+    const kinds = KINDS_BY_LEVEL[level];
+    rest.push(sentenceExercise(kinds[i % kinds.length], sentence, sentencePool));
   });
   for (const fill of sample(fills, 2)) rest.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
   // New words again, now inside a sentence of the lesson: "Our house is ___." (at most two).
@@ -86,13 +95,16 @@ function generate(
     .map((ex) => (ex.kind === 'select' ? wordInSentence(ex.word, shuffle(sentences), vocabPool) : null))
     .filter((fill): fill is Fill => fill !== null);
   for (const fill of inSentences.slice(0, 2)) rest.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
-  rest.push(...extraExercises(extras, sentences, speak));
+  rest.push(...extraExercises(extras, sentences, speak, level));
 
   return [...intro, ...shuffle(rest)].map((ex, i) => ({ ...ex, id: `ex${i}` }));
 }
 
-/** A lesson's exercises; `speak` adds a speaking exercise (only when the device can recognise speech). */
-export function buildLesson(lessonId: string, { speak = false } = {}): Exercise[] {
+/**
+ * A lesson's exercises; `speak` adds a speaking exercise (only when the device can recognise speech), and
+ * `level` makes it easier or harder (lib/difficulty.ts).
+ */
+export function buildLesson(lessonId: string, { speak = false, level = 'normal' as Level } = {}): Exercise[] {
   const found = ALL_LESSONS.find((x) => x.lesson.id === lessonId);
   if (!found) throw new Error(`Unknown lesson: ${lessonId}`);
   const { unit, lesson } = found;
@@ -104,6 +116,7 @@ export function buildLesson(lessonId: string, { speak = false } = {}): Exercise[
     unit.lessons.flatMap((l) => l.sentences),
     lesson,
     speak,
+    level,
   );
 }
 

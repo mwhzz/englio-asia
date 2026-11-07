@@ -12,7 +12,7 @@ describe('app settings', () => {
     expect(s.features.league).toBe(false);
     expect(s.features.hearts).toBe(true);
     expect(s.lockedUnits).toEqual(['u3', 'u4']);
-    expect(s.plus).toEqual({ price: 149, days: 60 });
+    expect(s.plus).toEqual({ price: 149, days: 60, yearPrice: 0, trialDays: 0 });
   });
 
   it('names every problem when the admin saves', () => {

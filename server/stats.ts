@@ -83,6 +83,24 @@ export function stats(db: DatabaseSync, days = 30, now = new Date()) {
       revenue: one("SELECT SUM(amount) AS n FROM payments WHERE status = 'paid' AND created_at >= ?", since),
       started: one('SELECT COUNT(*) AS n FROM payments WHERE created_at >= ?', since),
     },
+    // Do learners who finish more lessons come back? Learners who joined 7–90 days ago, grouped by lessons
+    // finished, and how many of them practised in the last 7 days.
+    returnByLessons: [
+      [1, 1],
+      [2, 3],
+      [4, 9],
+      [10, 1_000_000],
+    ].map(([lo, hi]) => {
+      const where = 'joined_at BETWEEN ? AND ? AND lessons_done BETWEEN ? AND ?';
+      const range = [shift(today, -90), shift(today, -7), lo, hi] as const;
+      const learners = one(`SELECT COUNT(*) AS n FROM users WHERE ${where}`, ...range);
+      const back = one(
+        `SELECT COUNT(*) AS n FROM users u WHERE ${where} AND EXISTS (SELECT 1 FROM active_days a WHERE a.user_id = u.id AND a.day > ?)`,
+        ...range,
+        shift(today, -7),
+      );
+      return { lessons: hi >= 1_000_000 ? `${lo}+` : lo === hi ? `${lo}` : `${lo}-${hi}`, learners, back, rate: learners ? Math.round((100 * back) / learners) : null };
+    }),
     // Where this period's new learners came from (campaign tags on their first link).
     sources: all<{ source: string; n: number }>(
       "SELECT COALESCE(source, 'direct') AS source, COUNT(*) AS n FROM users WHERE joined_at >= ? GROUP BY source ORDER BY n DESC LIMIT 15",

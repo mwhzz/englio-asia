@@ -1,3 +1,4 @@
+import { nextSkill } from '../../lib/difficulty';
 import { gainHeart } from '../../lib/hearts';
 import { recordLesson, type Progress } from '../../lib/progress';
 import { currentStreak } from '../../lib/streak';
@@ -22,7 +23,9 @@ export function applyRewards(p: Progress, lessonId: string | null, stats: Lesson
   const practice = lessonId === null;
   const perfect = stats.mistakes === 0;
   const xp = practice ? PRACTICE_XP : LESSON_XP + (perfect ? PERFECT_BONUS_XP : 0);
-  const next = recordLesson(practice ? gainHeart(p) : p, lessonId, xp, today, stats.seconds);
+  const recorded = recordLesson(practice ? gainHeart(p) : p, lessonId, xp, today, stats.seconds);
+  // How well it went sets how hard the next lessons are.
+  const next = { ...recorded, skill: nextSkill(p.skill, stats.attempts - stats.mistakes, stats.attempts) };
   const result: LessonResult = {
     xp,
     perfect,

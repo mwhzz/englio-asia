@@ -8,6 +8,7 @@ const KEY = 'app_settings';
 const defaults = (): AppSettings => ({
   ...DEFAULT_SETTINGS,
   plus: {
+    ...DEFAULT_SETTINGS.plus,
     price: Number(process.env.PREMIUM_PRICE) || DEFAULT_SETTINGS.plus.price,
     days: Number(process.env.PREMIUM_DAYS) || DEFAULT_SETTINGS.plus.days,
   },

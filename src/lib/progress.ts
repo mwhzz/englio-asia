@@ -43,6 +43,8 @@ export interface Progress {
   boardDays?: Record<string, { right: number; total: number }>;
   /** Best score (0–100) in each SSC/HSC board practice topic, by topic id. */
   boardScores: Record<string, number>;
+  /** Running share of right answers in recent lessons (0–1), for lesson difficulty (lib/difficulty.ts). */
+  skill?: number;
   /** The last day the learner collected the daily quests' reward (lib/quests.ts). */
   questDay?: string | null;
   /** When this copy last changed, and when the learner last reset it (ms); used to merge two phones' copies. */

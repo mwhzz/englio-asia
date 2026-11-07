@@ -4,6 +4,7 @@ import { toBanglaDigits } from '../lib/bangla';
 import { adminApi } from './adminApi';
 import { useAdminData } from './useAdminData';
 import { SettingsMessages } from './SettingsMessages';
+import { PromoCodes } from './PromoCodes';
 
 interface UnitRow {
   id: string;
@@ -188,6 +189,27 @@ export function SettingsPage({ onUnauthorized }: { onUnauthorized: () => void })
               onChange={(e) => change({ ...draft, plus: { ...draft.plus, days: Math.round(Number(e.target.value)) } })}
             />
           </label>
+          <label className="ad-field" lang="bn">
+            <span>এক বছরের দাম (০ = বছরের প্ল্যান নেই)</span>
+            <input
+              className="ad-input"
+              type="number"
+              min={0}
+              value={draft.plus.yearPrice}
+              onChange={(e) => change({ ...draft, plus: { ...draft.plus, yearPrice: Math.round(Number(e.target.value)) } })}
+            />
+          </label>
+          <label className="ad-field" lang="bn">
+            <span>ফ্রি ট্রায়াল কত দিন (০ = নেই; প্রতি শিক্ষার্থী একবার)</span>
+            <input
+              className="ad-input"
+              type="number"
+              min={0}
+              max={90}
+              value={draft.plus.trialDays}
+              onChange={(e) => change({ ...draft, plus: { ...draft.plus, trialDays: Math.round(Number(e.target.value)) } })}
+            />
+          </label>
         </div>
         <p className="ad-muted" lang="bn">
           Plus-এ পাওয়া যায়: অফুরন্ত হার্ট আর লক করা সব ইউনিট। bKash শুধু ওয়েবসাইটে দেখায়; Android অ্যাপে (Play Store) Google-এর নিয়মে bKash দেখানো যায় না,
@@ -201,6 +223,8 @@ export function SettingsPage({ onUnauthorized }: { onUnauthorized: () => void })
           <input type="checkbox" role="switch" className="ad-switch" checked={draft.appUnitsFree} onChange={(e) => change({ ...draft, appUnitsFree: e.target.checked })} />
         </label>
       </section>
+
+      <PromoCodes onUnauthorized={onUnauthorized} />
     </div>
   );
 }

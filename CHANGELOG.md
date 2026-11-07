@@ -6,6 +6,17 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- New content, waiting for a teacher's check: units 12–21 (A1+ to A2: home, clothes and shopping, free time, jobs, in town, last weekend, health, plans, feelings, comparing), 20 lessons, every blank with a "why". The whole A1–B2 plan is in docs/SYLLABUS.md.
+- Admin: ভাষা → "JSON থেকে যোগ করো" adds a writer's batch of units, topics and stories to a language, checked first, as drafts.
+- A wrong answer to a blank, a gap text or a dialogue shows why the right answer is right (when the lesson has it).
+- SSC/HSC exam plan in board practice: a daily mixed round of 10 questions and the last 14 days' scores; the home card says whether today's round is done.
+- League tiers: ব্রোঞ্জ → সিলভার → গোল্ড → ডায়মন্ড. 150+ XP in a week moves you up, under 30 (or a skipped week) moves you down; the league opens on your tier.
+- Lessons adapt: learners who are doing well get more typing and dictation, struggling ones more picking and no dictation.
+- "আপনি": learners who chose job / other are spoken to as আপনি everywhere (Profile → আপনি বলে ডাকো to change).
+- Englio Plus: a free trial (days set by the owner, once per learner), a yearly plan, and promo codes made in the admin (Settings → প্রোমো কোড). Trial and codes work in the Android app too.
+- Admin sign-in now gives a 30-day session instead of keeping the token in the browser; two-step sign-in with an authenticator app (Team page); team tokens last 180 days and can be replaced ("নতুন টোকেন").
+- Admin dashboard: "কত লেসন করলে ফিরে আসে" (learners by lessons finished, and how many came back this week).
+
 - Day one can't fail: the first 3 lessons cost no hearts; practice works before any lesson is finished (it crashed for a beginner out of hearts); a half-done lesson waits 24 hours instead of 6.
 - Offline from the first visit: the app saves all its files when first opened; a page that still needs the internet says so calmly instead of "something went wrong".
 - Home: the next lesson is at the top; it never points at a Plus-locked unit; "Englio কীভাবে চলে" is folded to one row; the streak cards no longer contradict each other; a one-time card asks to write down the backup code after 3 lessons. Card labels are in Bangla.

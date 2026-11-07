@@ -11,6 +11,7 @@ interface Stats {
   plus: { active: number; paid: number; revenue: number; started: number };
   versions: { version: string; n: number }[];
   sources: { source: string; n: number }[];
+  returnByLessons: { lessons: string; learners: number; back: number; rate: number | null }[];
   reminderVariants: { variant: string; sent: number; opened: number }[];
   activeWeek: number;
   activeMonth: number;
@@ -165,6 +166,24 @@ export function DailyStats({ onUnauthorized }: { onUnauthorized: () => void }) {
           </dl>
         </section>
       </div>
+
+      <section className="ad-card">
+        <h2>কত লেসন করলে ফিরে আসে</h2>
+        <p className="ad-muted">৭–৯০ দিন আগে যোগ দেওয়া শিক্ষার্থী, শেষ করা লেসন অনুযায়ী: গত ৭ দিনে কতজন আবার শিখেছে।</p>
+        <ul className="ad-bars">
+          {data.returnByLessons.map((r) => (
+            <li key={r.lessons}>
+              <span>{toBanglaDigits(r.lessons)}টা লেসন</span>
+              <span className="ad-bar">
+                <i style={{ width: `${r.rate ?? 0}%` }} />
+              </span>
+              <em>
+                {r.rate === null ? '—' : `${toBanglaDigits(r.rate)}%`} · {n(r.back)}/{n(r.learners)}
+              </em>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="ad-card">
         <h2>নতুনরা কোথা থেকে এল</h2>

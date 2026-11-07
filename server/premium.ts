@@ -41,24 +41,48 @@ async function token(post: Post): Promise<string> {
 /** Whether bKash is set up on the server (the admin warns when Plus-only units can't be bought yet). */
 export const paymentsReady = () => ready();
 
-/** Whether payments are on, and the plan. */
+/** Whether payments are on, and the plans (main, yearly if set) and the free trial's days. */
 export function premiumInfo(db: DatabaseSync) {
   const { features, plus } = readSettings(db);
-  return { available: ready() && features.plus, price: plus.price, days: plus.days };
+  return { available: ready() && features.plus, price: plus.price, days: plus.days, yearPrice: plus.yearPrice, trialDays: features.plus ? plus.trialDays : 0 };
+}
+
+/** Adds `days` of Plus to a learner, on top of what's left. */
+export function addPlusDays(db: DatabaseSync, userId: string, days: number, now = new Date()): string {
+  const current = premiumOf(db, userId, now).until;
+  const from = current ? new Date(current) : now;
+  const until = new Date(from.getTime() + days * 86_400_000).toISOString();
+  db.prepare('INSERT INTO premium (user_id, until) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET until = excluded.until').run(userId, until);
+  return until;
+}
+
+/** The free trial (settings: plus.trialDays), once per learner; free, so it's allowed in the Play app too. */
+export function startTrial(db: DatabaseSync, { params }: Pick<Request, 'params'>, now = new Date()) {
+  const { features, plus } = readSettings(db);
+  if (!features.plus || !plus.trialDays) throw new HttpError(403, 'No free trial now');
+  if (!db.prepare('SELECT 1 FROM users WHERE id = ?').get(params.id)) throw new HttpError(404, 'No such user');
+  if (db.prepare('SELECT 1 FROM trials WHERE user_id = ?').get(params.id)) throw new HttpError(409, 'The free trial was used already');
+  db.prepare('INSERT INTO trials (user_id, at) VALUES (?, ?)').run(params.id, now.toISOString());
+  return { until: addPlusDays(db, params.id, plus.trialDays, now) };
 }
 
 /** Until when this learner has Englio Plus (null: not now). */
 export function premiumOf(db: DatabaseSync, userId: string, now = new Date()) {
   const row = db.prepare('SELECT until FROM premium WHERE user_id = ?').get(userId) as { until: string } | undefined;
-  return { until: row && row.until > now.toISOString() ? row.until : null };
+  const trialUsed = !!db.prepare('SELECT 1 FROM trials WHERE user_id = ?').get(userId);
+  return { until: row && row.until > now.toISOString() ? row.until : null, trialUsed };
 }
 
 /** Starts a payment and returns bKash's page to send the learner to. */
-export async function checkout(db: DatabaseSync, { params }: Request, post: Post = httpPost, now = new Date()) {
+export async function checkout(db: DatabaseSync, { params, body }: Request, post: Post = httpPost, now = new Date()) {
   const e = env();
   const { features, plus } = readSettings(db);
   if (!ready(e) || !features.plus) throw new HttpError(503, 'Payments are not set up yet');
   if (!db.prepare('SELECT 1 FROM users WHERE id = ?').get(params.id)) throw new HttpError(404, 'No such user');
+  // The yearly plan when asked for and set; otherwise the main plan.
+  const year = (body as { plan?: string } | null)?.plan === 'year' && plus.yearPrice > 0;
+  const price = year ? plus.yearPrice : plus.price;
+  const days = year ? 365 : plus.days;
   const invoice = `EN${now.getTime().toString(36)}${randomBytes(3).toString('hex')}`.toUpperCase();
   const idToken = await token(post);
   const r = await post(`${e.base}/tokenized/checkout/create`, {
@@ -67,14 +91,14 @@ export async function checkout(db: DatabaseSync, { params }: Request, post: Post
       mode: '0011',
       payerReference: invoice,
       callbackURL: `${e.api}/premium/callback`,
-      amount: plus.price.toFixed(2),
+      amount: price.toFixed(2),
       currency: 'BDT',
       intent: 'sale',
       merchantInvoiceNumber: invoice,
     }),
   });
   if (typeof r.paymentID !== 'string' || typeof r.bkashURL !== 'string') throw new HttpError(502, String(r.statusMessage ?? 'bKash could not start the payment'));
-  db.prepare('INSERT INTO payments (payment_id, user_id, amount, status, trx_id, created_at) VALUES (?, ?, ?, ?, NULL, ?)').run(r.paymentID, params.id, plus.price, 'started', now.toISOString());
+  db.prepare('INSERT INTO payments (payment_id, user_id, amount, status, trx_id, created_at, days) VALUES (?, ?, ?, ?, NULL, ?, ?)').run(r.paymentID, params.id, price, 'started', now.toISOString(), days);
   return { url: r.bkashURL };
 }
 
@@ -113,11 +137,9 @@ export async function callback(db: DatabaseSync, { query }: Request, post: Post 
 function credit(db: DatabaseSync, paymentId: string, userId: string, trxId: string, now: Date): boolean {
   const claimed = db.prepare("UPDATE payments SET status = 'paid', trx_id = ? WHERE payment_id = ? AND status = 'started'").run(trxId, paymentId).changes;
   if (!claimed) return false;
-  // Paying again while still Plus adds the days on top.
-  const current = premiumOf(db, userId, now).until;
-  const from = current ? new Date(current) : now;
-  const until = new Date(from.getTime() + readSettings(db).plus.days * 86_400_000).toISOString();
-  db.prepare('INSERT INTO premium (user_id, until) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET until = excluded.until').run(userId, until);
+  // The plan's days as bought (paying again while still Plus adds them on top).
+  const days = (db.prepare('SELECT days FROM payments WHERE payment_id = ?').get(paymentId) as { days: number | null }).days ?? readSettings(db).plus.days;
+  addPlusDays(db, userId, days, now);
   return true;
 }
 

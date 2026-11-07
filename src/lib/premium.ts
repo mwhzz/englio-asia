@@ -32,21 +32,64 @@ export async function refreshPlus(): Promise<string | null> {
   }
 }
 
-/** Whether payments are switched on, and the plan (price in taka, days). */
-export async function plusInfo(): Promise<{ available: boolean; price: number; days: number } | null> {
-  // Inside the Android (Play) app there is no bKash: Google requires Play Billing there.
-  if (isAndroidApp()) return null;
+export interface PlusInfo {
+  /** bKash can be used (website only; never inside the Play app). */
+  available: boolean;
+  price: number;
+  days: number;
+  /** 0: no yearly plan. */
+  yearPrice: number;
+  /** 0: no free trial. */
+  trialDays: number;
+}
+
+/** Whether payments are switched on, and the plans (price in taka, days). */
+export async function plusInfo(): Promise<PlusInfo | null> {
   try {
     const res = await fetch(`${API_BASE}/premium/info`);
-    return res.ok ? res.json() : null;
+    const info = res.ok ? ((await res.json()) as PlusInfo) : null;
+    // Inside the Android (Play) app there is no bKash (Google requires Play Billing there); trials and codes stay.
+    return info && isAndroidApp() ? { ...info, available: false } : info;
   } catch {
     return null;
   }
 }
 
 /** Sends the learner to bKash to pay; they come back to the app with #premium=ok (or failed / cancelled). */
-export async function buyPlus(): Promise<void> {
-  const res = await fetch(`${API_BASE}/users/${deviceId()}/premium/checkout`, { method: 'POST' });
+export async function buyPlus(plan: 'month' | 'year' = 'month'): Promise<void> {
+  const res = await fetch(`${API_BASE}/users/${deviceId()}/premium/checkout`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ plan }) });
   if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
   location.href = ((await res.json()) as { url: string }).url;
+}
+
+/** Starts the free trial (once per learner); returns until when Plus is on. */
+export async function startTrial(): Promise<string> {
+  const res = await fetch(`${API_BASE}/users/${deviceId()}/premium/trial`, { method: 'POST' });
+  if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
+  const { until } = (await res.json()) as { until: string };
+  localStorage.setItem(KEY, until);
+  return until;
+}
+
+/** Uses a promo code; returns until when Plus is on. Throws with the status (404 wrong code, 409 used). */
+export async function redeemCode(code: string): Promise<string> {
+  const res = await fetch(`${API_BASE}/users/${deviceId()}/premium/redeem`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ code }),
+  });
+  if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
+  const { until } = (await res.json()) as { until: string };
+  localStorage.setItem(KEY, until);
+  return until;
+}
+
+/** Whether this learner already used the free trial (asks the server). */
+export async function trialUsed(): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_BASE}/users/${deviceId()}/premium`);
+    return res.ok ? !!((await res.json()) as { trialUsed?: boolean }).trialUsed : true;
+  } catch {
+    return true;
+  }
 }

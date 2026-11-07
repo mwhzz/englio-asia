@@ -1,4 +1,5 @@
-import { lazy, Suspense, useState, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
+import { setPolite, wantsPolite } from './lib/polite';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { findClassLevel } from './data/classLevels';
 import { ALL_LESSONS, applyLevel, COURSE } from './data/course';
@@ -33,7 +34,10 @@ type Screen =
 export default function App() {
   const { progress } = useProgress();
   // The path shows the units made for the learner's level (chosen in onboarding, changeable in settings).
-  applyLevel(findClassLevel(progress.profile?.classId)?.stage);
+  const stage = findClassLevel(progress.profile?.classId)?.stage;
+  applyLevel(stage);
+  // Adults (job / other) are spoken to as আপনি, unless they chose otherwise in Profile.
+  useEffect(() => setPolite(wantsPolite(stage)), [stage]);
   const [screen, setScreen] = useState<Screen>({ name: 'learn' });
   // A lesson or test of a Plus-only unit opens this sheet instead (see the admin's Settings).
   const [lockedUnit, setLockedUnit] = useState<Unit | null>(null);

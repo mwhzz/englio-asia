@@ -125,3 +125,15 @@ Rina (class 8, cheap phone, large text), Karim (garage owner, little English), N
 
 **Still open:** "আপনি" for adult learners (every screen's wording), a real adult course (market, phone, doctor, travel, work abroad first), an exam plan for SSC/HSC students (daily board round, score trend), "why" explanations for wrong answers outside grammar (content work), speaking without the network.
 
+
+## 7. The owner's list (2026-11-07)
+
+**Done (branch `content-and-more`):** content batch 01 (units 12–21, drafts) and the A1–B2 plan (`docs/SYLLABUS.md`); admin JSON import; "why" notes on blanks, gaps and dialogues; SSC/HSC exam plan (daily round, 14-day trend); league tiers; adaptive lessons; আপনি for adults; Plus trial, yearly plan and promo codes; admin sessions, two-step sign-in, team token expiry and rotation; "come back by lessons finished" numbers.
+
+**Measured, not needed yet: course download in parts.** The Bangla units' data is 64 KB (19 KB gzipped) for 21 units, about 1 KB gzipped per unit, and it is only downloaded when content changes (ETag). At 80 units that is about 75 KB gzipped. Splitting it would touch every screen that reads the course (words, review, practice, badges), so it is worth doing only past about 150 units.
+
+**Still open, and why:**
+- **The app's own text in other languages, right-to-left, choosing a language in the app.** The content side is ready (per-language courses, admin, import/export). The app's ~500 Bangla UI strings live in about 110 files; they need moving into per-language string files and a translator for each language. About a week of work, best started when a second language has its content reviewed.
+- **Play Billing.** Needs the owner's Play Console: a "subscription" product, a service account for the Google Play Developer API (to check purchases on the server), and Play Billing switched on in the TWA (`twa-manifest.json`, new AAB). Then the app uses the Digital Goods API inside the Play app. Until then Plus in the Play app is: trial, promo codes, or Plus units open (Settings).
+- **Postgres and a CDN.** Needed past about 100k learners (GAPS section 1). It means a managed database (about $15/month on DigitalOcean) and moving `server/*` from `node:sqlite` to a Postgres driver (the first added package). Cloudflare in front of the domain (free) is the easy first step for the CDN.
+- **More content:** batches 02–09 of `docs/SYLLABUS.md`, written like batch 01, each checked by a teacher.

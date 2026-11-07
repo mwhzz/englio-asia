@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ALL_LESSONS } from '../../data/course';
 import { dayKey } from '../../lib/days';
 import { buildLesson, buildPractice } from '../../lib/lesson';
+import { levelFor } from '../../lib/difficulty';
 import { canListen } from '../../lib/listen';
 import { clearResume, loadResume, saveResume } from '../../lib/lessonResume';
 import { buildReview } from '../../lib/review';
@@ -36,7 +37,7 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
     resume
       ? resume.queue
       : lessonId
-      ? buildLesson(lessonId, { speak: canListen() && navigator.onLine })
+      ? buildLesson(lessonId, { speak: canListen() && navigator.onLine, level: levelFor(progress) })
       : mode === 'listening'
         ? buildListening(progress)
         : mode === 'speaking'

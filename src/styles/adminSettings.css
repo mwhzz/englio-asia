@@ -635,3 +635,13 @@ button.ad-stat {
 .ad-stat strong.is-alert {
   color: var(--ios-red);
 }
+.ad-secret {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--ios-fill);
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  user-select: all;
+}

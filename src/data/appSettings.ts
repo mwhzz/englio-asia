@@ -18,8 +18,11 @@ export interface AppSettings {
   features: Record<FeatureId, boolean>;
   /** Units that need Englio Plus; everyone else can open the rest. */
   lockedUnits: string[];
-  /** The Plus plan: price in taka, and how many days it lasts. */
-  plus: { price: number; days: number };
+  /**
+   * The Plus plans: the main one (price in taka for `days`), a year for `yearPrice` (0 = no yearly plan),
+   * and a free trial of `trialDays` once per learner (0 = no trial).
+   */
+  plus: { price: number; days: number; yearPrice: number; trialDays: number };
   /**
    * In the Android app (Play), bKash can't be offered (Google requires Play Billing for digital goods), so
    * Plus-only units are either open to everyone there (true) or stay locked with no way to buy (false).
@@ -36,7 +39,7 @@ export interface AppSettings {
 export const DEFAULT_SETTINGS: AppSettings = {
   features: Object.fromEntries(FEATURES.map((f) => [f.id, true])) as Record<FeatureId, boolean>,
   lockedUnits: [],
-  plus: { price: 99, days: 30 },
+  plus: { price: 99, days: 30, yearPrice: 0, trialDays: 0 },
   appUnitsFree: true,
   notice: { text: '', tone: 'info' },
   maintenance: { on: false, text: '' },
@@ -62,6 +65,8 @@ export function normalizeSettings(raw: unknown, fallback: AppSettings = DEFAULT_
     plus: {
       price: wholeIn(p.price, 1, 100_000) ? (p.price as number) : fallback.plus.price,
       days: wholeIn(p.days, 1, 3650) ? (p.days as number) : fallback.plus.days,
+      yearPrice: wholeIn(p.yearPrice, 0, 1_000_000) ? (p.yearPrice as number) : fallback.plus.yearPrice,
+      trialDays: wholeIn(p.trialDays, 0, 90) ? (p.trialDays as number) : fallback.plus.trialDays,
     },
     appUnitsFree: typeof r.appUnitsFree === 'boolean' ? r.appUnitsFree : fallback.appUnitsFree,
     notice: {
@@ -96,6 +101,8 @@ export function settingsProblems(raw: unknown, unitIds: string[]): string[] {
   const p = isRecord(raw.plus) ? raw.plus : null;
   if (!p || !wholeIn(p.price, 1, 100_000)) problems.push('Plus price must be a whole number of taka (1–100000)');
   if (!p || !wholeIn(p.days, 1, 3650)) problems.push('Plus days must be a whole number (1–3650)');
+  if (p && p.yearPrice !== undefined && !wholeIn(p.yearPrice, 0, 1_000_000)) problems.push('Yearly price must be a whole number of taka (0 = no yearly plan)');
+  if (p && p.trialDays !== undefined && !wholeIn(p.trialDays, 0, 90)) problems.push('Trial days must be 0–90');
   if (raw.minVersion !== undefined && raw.minVersion !== '' && !(typeof raw.minVersion === 'string' && VERSION.test(raw.minVersion))) {
     problems.push('Minimum version must look like 1.7.0');
   }
