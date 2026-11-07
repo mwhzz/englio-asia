@@ -51,7 +51,7 @@ export async function plusInfo(): Promise<PlusInfo | null> {
     const info = res.ok ? ((await res.json()) as PlusInfo) : null;
     // Inside the Android (Play) app there is no bKash (Google requires Play Billing there); trials and codes stay.
     // bKash is for Bangladesh: other languages' learners get trials and codes.
-    return info && (isAndroidApp() || learnerLang() !== 'bn') ? { ...info, available: false } : info;
+    return info && (isAndroidApp() || learnerLang().split('-')[0] !== 'bn') ? { ...info, available: false } : info;
   } catch {
     return null;
   }

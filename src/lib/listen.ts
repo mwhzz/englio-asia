@@ -1,3 +1,4 @@
+import { speechLang } from './target';
 // The browser's speech recognition (Chrome/Edge/Android: webkitSpeechRecognition). Not every browser has it.
 
 interface Recognition {
@@ -33,7 +34,7 @@ export function listenOnce(onText: (text: string) => void, onDone: (text: string
     return () => undefined;
   }
   const rec = new Ctor();
-  rec.lang = 'en-US';
+  rec.lang = speechLang();
   rec.interimResults = true;
   rec.maxAlternatives = 1;
   let text = '';

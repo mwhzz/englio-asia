@@ -942,3 +942,16 @@
   font-size: 15px;
   color: var(--ios-secondary);
 }
+
+/* A course teaching Arabic (html[data-target='ar'], lib/target.ts): Arabic reads right to left, so the
+   answer line, the tile bank and sentences with a blank run that way; each line of text takes the direction
+   of its own script (Arabic right to left, Bangla left to right). */
+html[data-target='ar'] :is(.answer-line, .bank, .drop-sentence, .drop-bank, .type-input, .gaps-text) {
+  direction: rtl;
+}
+html[data-target='ar'] :is(.lesson-body, .gt, .feedback) :where(p, h2, h3, li, strong, span, button, label) {
+  unicode-bidi: plaintext;
+}
+html[data-target='ar'] :is(.tile, .drop-tile, .prompt-card strong, .feedback-en) {
+  font-size: 1.12em;
+}

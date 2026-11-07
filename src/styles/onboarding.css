@@ -1569,3 +1569,11 @@
   border-color: var(--ob-blue);
   color: var(--ob-blue);
 }
+.ob-courses {
+  align-items: center;
+}
+.ob-courses-label {
+  color: var(--ob-secondary);
+  font-size: 14px;
+  font-weight: 600;
+}

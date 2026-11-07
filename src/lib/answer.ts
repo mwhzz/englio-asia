@@ -1,4 +1,5 @@
 import type { Grade, Sentence } from '../types';
+import { isArabicText, normalizeArabic } from './target';
 
 // Short forms are expanded so "I'm fine" and "I am fine" compare equal.
 const CONTRACTIONS: Record<string, string> = {
@@ -29,6 +30,8 @@ const CONTRACTIONS: Record<string, string> = {
 };
 
 export function normalize(text: string): string {
+  // Arabic (a course that teaches Arabic): its own rules (lib/target.ts).
+  if (isArabicText(text)) return normalizeArabic(text);
   return text
     .toLowerCase()
     .replace(/[‘’]/g, "'")
@@ -43,7 +46,7 @@ export function normalize(text: string): string {
 /** Word tiles for a sentence: punctuation dropped, original casing kept. */
 export function tokens(text: string): string[] {
   return text
-    .replace(/[.,!?]/g, '')
+    .replace(/[.,!?،؟؛]/g, '')
     .split(/\s+/)
     .filter(Boolean);
 }

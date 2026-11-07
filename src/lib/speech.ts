@@ -1,5 +1,6 @@
 import { recordingOf } from './media';
 import { isLowData } from './offline';
+import { speechLang, target } from './target';
 
 let voice: SpeechSynthesisVoice | null = null;
 let playing: HTMLAudioElement | null = null;
@@ -9,9 +10,11 @@ let playing: HTMLAudioElement | null = null;
  * best English voices first, American before other English. Online voices don't work offline.
  */
 function score(v: SpeechSynthesisVoice, online: boolean): number {
-  if (!v.lang.toLowerCase().startsWith('en')) return -1;
+  // The language being learned (English, or Arabic in an Arabic course).
+  const want = target();
+  if (!v.lang.toLowerCase().startsWith(want)) return -1;
   if (!online && !v.localService) return -1;
-  let s = v.lang === 'en-US' || v.lang === 'en_US' ? 3 : v.lang.startsWith('en-GB') ? 2 : 1;
+  let s = want === 'ar' ? 1 : v.lang === 'en-US' || v.lang === 'en_US' ? 3 : v.lang.startsWith('en-GB') ? 2 : 1;
   if (/natural|neural|enhanced|premium/i.test(v.name)) s += 6;
   if (/google/i.test(v.name)) s += 4;
   if (/samantha|ava|allison|aria|jenny|guy|daniel|karen/i.test(v.name)) s += 3;
@@ -57,7 +60,7 @@ function speakAloud(text: string, slow: boolean, onEnd?: () => void): void {
   if (!('speechSynthesis' in window)) return;
   voice ??= pickVoice();
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US';
+  utterance.lang = speechLang();
   if (voice) utterance.voice = voice;
   utterance.rate = slow ? 0.6 : 0.95;
   if (onEnd) utterance.onend = utterance.onerror = onEnd;
@@ -72,5 +75,5 @@ export function englishVoice(): 'yes' | 'none' | 'unknown' {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return 'none';
   const voices = speechSynthesis.getVoices();
   if (!voices.length) return 'unknown';
-  return voices.some((v) => v.lang.toLowerCase().startsWith('en')) ? 'yes' : 'none';
+  return voices.some((v) => v.lang.toLowerCase().startsWith(target())) ? 'yes' : 'none';
 }

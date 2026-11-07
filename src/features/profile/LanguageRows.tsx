@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Glyph } from '../../components/Glyph';
 import { haptic } from '../../lib/haptics';
-import { learnerLang, liveLanguages, setLearnerLang } from '../../lib/learnerLang';
+import { baseLanguages, coursesForMe, learnerLang, setLearnerLang, uiLang } from '../../lib/learnerLang';
 
 const FONT_KEY = 'englio-ar-font';
 
@@ -10,8 +10,10 @@ const FONT_KEY = 'englio-ar-font';
  * a clean modern one or Naskh, the familiar book style.
  */
 export function LanguageRows() {
-  const languages = liveLanguages();
-  const lang = learnerLang();
+  const languages = baseLanguages();
+  const courses = coursesForMe();
+  const lang = uiLang();
+  const course = learnerLang();
   const [font, setFont] = useState(() => {
     try {
       return localStorage.getItem(FONT_KEY) === 'naskh' ? 'naskh' : 'sans';
@@ -51,7 +53,25 @@ export function LanguageRows() {
           </span>
         </div>
       )}
-      {lang === 'ar' && (
+      {courses.length > 1 && (
+        <div className="pf-row">
+          <span className="pf-icon" style={{ background: '#ff9500' }}>
+            <Glyph name="book" size={17} />
+          </span>
+          <span className="pf-row-text">
+            <span lang="bn">কী শিখছি</span>
+            <small lang="bn">XP আর স্ট্রিক একসাথে থাকে, লেসন আলাদা</small>
+          </span>
+          <span className="pf-segmented lr-seg" role="radiogroup" aria-label="What to learn">
+            {courses.map((c) => (
+              <button key={c.code} role="radio" aria-checked={c.code === course} className={c.code === course ? 'is-on' : ''} onClick={() => setLearnerLang(c.code)}>
+                {c.code === lang ? 'English' : c.target === 'ar' ? 'العربية' : c.native}
+              </button>
+            ))}
+          </span>
+        </div>
+      )}
+      {(lang === 'ar' || course.endsWith('-ar')) && (
         <div className="pf-row">
           <span className="pf-icon" style={{ background: '#34c759' }}>
             <Glyph name="letters" size={17} />

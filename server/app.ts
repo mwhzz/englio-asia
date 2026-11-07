@@ -56,6 +56,8 @@ function routes(db: DatabaseSync, ADMIN: string): Route[] {
         return {
           version: contentVersion(db),
           lang,
+          // What this course teaches (English, or Arabic for a course like "bn-ar").
+          target: (db.prepare('SELECT target FROM languages WHERE code = ?').get(lang) as { target: string }).target,
           languages: liveLanguages(db),
           units: readCourse(db, lang, PUBLIC),
           grammar: readGrammar(db, lang, PUBLIC),
@@ -68,7 +70,7 @@ function routes(db: DatabaseSync, ADMIN: string): Route[] {
           // Recordings by English text (adminAudio.ts), played instead of the phone's voice.
           audio: readClips(db),
           // The app's own text in this language (uiTexts.ts); none for Bangla, the source.
-          ui: uiTexts(db, lang),
+          ui: uiTexts(db, lang.split('-')[0]),
         };
       },
     },

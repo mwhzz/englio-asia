@@ -6,6 +6,10 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Learn Arabic too: Bangla speakers can choose "কী শিখবে? English · العربية" on the first screen or in Profile. Arabic lessons are read aloud in Arabic, answers count without vowel marks (মَرْحَبًا = مرحبا), Arabic runs right to left in the lessons, and the speaking practice listens for Arabic. XP and streak are shared between courses.
+- First Arabic course for Bangla speakers (draft, for an Arabic teacher's check): 6 units, 24 lessons, A1 (greetings, family, numbers and time, food, daily life, work and travel).
+- Admin: ভাষা → "আরবি শেখা" creates the Arabic course (code bn-ar).
+
 ## 1.8.0 (2026-11-07)
 
 - The app in Arabic: when Arabic is live, a learner picks العربية on the first screen (or in Profile → আমার ভাষা) and the whole app is in Arabic, right to left, with dates in Arabic; Bangladesh-only parts (district map, SSC/HSC board prep, bKash) are left out; reminders come in Arabic. Two clean Arabic fonts: a modern one and Naskh, the familiar book style (Profile).

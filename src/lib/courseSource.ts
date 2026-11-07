@@ -26,6 +26,8 @@ export interface Content {
   audio?: Record<string, string>;
   /** The language this course is for, the learner languages that are live, and the app's text in it (lib/uiText.ts). */
   lang?: string;
+  /** What the course teaches: English, or Arabic for a course like "bn-ar". */
+  target?: 'en' | 'ar';
   languages?: LiveLanguage[];
   ui?: Record<string, string>;
 }

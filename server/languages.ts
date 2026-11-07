@@ -13,12 +13,15 @@ export interface Language {
   native: string;
   dir: 'ltr' | 'rtl';
   status: 'draft' | 'live';
+  /** What the course teaches: English (every course so far) or Arabic ("bn-ar": Arabic for Bangla speakers). */
+  target: 'en' | 'ar';
 }
 
 const BANGLA = /[ঀ-৿]/;
-const CODE = /^[a-z]{2,3}$/;
+// A learner language ("ar"), or a course for one that teaches another language ("bn-ar": Arabic for Bangla speakers).
+const CODE = /^[a-z]{2,3}(-[a-z]{2,3})?$/;
 
-const row = (db: DatabaseSync, code: string) => db.prepare('SELECT code, name, native, dir, status FROM languages WHERE code = ?').get(code) as Language | undefined;
+const row = (db: DatabaseSync, code: string) => db.prepare('SELECT code, name, native, dir, status, target FROM languages WHERE code = ?').get(code) as Language | undefined;
 
 /** The language a request is about (?lang=), Bangla when none is given; an unknown one is a 404. */
 export function langOf(db: DatabaseSync, value: string | null | undefined): string {
@@ -32,7 +35,7 @@ export const isLive = (db: DatabaseSync, code: string) => row(db, code)?.status 
 
 /** Every language, with how much content it has and, for the others, how much is translated from Bangla. */
 export function listLanguages(db: DatabaseSync) {
-  const languages = db.prepare('SELECT code, name, native, dir, status FROM languages ORDER BY position, code').all() as unknown as Language[];
+  const languages = db.prepare('SELECT code, name, native, dir, status, target FROM languages ORDER BY position, code').all() as unknown as Language[];
   const count = (sql: string, code: string) => (db.prepare(sql).get(code) as { n: number }).n;
   return languages.map((l) => {
     const items = db
@@ -54,7 +57,7 @@ export function listLanguages(db: DatabaseSync) {
 
 /** The live languages, for the app (it offers these to learners). */
 export function liveLanguages(db: DatabaseSync) {
-  return db.prepare("SELECT code, name, native, dir FROM languages WHERE status = 'live' ORDER BY position, code").all();
+  return db.prepare("SELECT code, name, native, dir, target FROM languages WHERE status = 'live' ORDER BY position, code").all();
 }
 
 function fields(body: unknown, partial: boolean) {
@@ -70,6 +73,10 @@ function fields(body: unknown, partial: boolean) {
     if (b.dir !== 'ltr' && b.dir !== 'rtl') throw new HttpError(400, '"dir" must be ltr or rtl');
     out.dir = b.dir;
   }
+  if (b.target !== undefined) {
+    if (b.target !== 'en' && b.target !== 'ar') throw new HttpError(400, '"target" must be en or ar');
+    out.target = b.target;
+  }
   if (b.status !== undefined) {
     if (b.status !== 'draft' && b.status !== 'live') throw new HttpError(400, '"status" must be draft or live');
     out.status = b.status;
@@ -80,11 +87,12 @@ function fields(body: unknown, partial: boolean) {
 /** Adds a language, empty and in draft: its content is written in the admin before it goes live. */
 export function createLanguage(db: DatabaseSync, { body }: Request) {
   const code = typeof (body as { code?: unknown })?.code === 'string' ? (body as { code: string }).code.trim().toLowerCase() : '';
-  if (!CODE.test(code)) throw new HttpError(400, '"code" must be a 2–3 letter language code, like ar or hi');
+  if (!CODE.test(code)) throw new HttpError(400, '"code" must be a 2–3 letter language code, like ar or hi (or bn-ar for a course teaching Arabic)');
   if (row(db, code)) throw new HttpError(409, `"${code}" is already added`);
   const f = fields(body, false);
   const { p } = db.prepare('SELECT COALESCE(MAX(position), -1) + 1 AS p FROM languages').get() as { p: number };
-  db.prepare('INSERT INTO languages (code, name, native, dir, status, position) VALUES (?, ?, ?, ?, ?, ?)').run(code, f.name!, f.native!, f.dir!, 'draft', p);
+  const target = f.target ?? (code.includes('-') ? (code.split('-')[1] === 'ar' ? 'ar' : 'en') : 'en');
+  db.prepare('INSERT INTO languages (code, name, native, dir, status, position, target) VALUES (?, ?, ?, ?, ?, ?, ?)').run(code, f.name!, f.native!, f.dir!, 'draft', p, target);
   return row(db, code);
 }
 
@@ -95,7 +103,7 @@ export function updateLanguage(db: DatabaseSync, { params, body }: Request) {
   const next = { ...current, ...fields(body, true) };
   if (params.code === 'bn' && next.status !== 'live') throw new HttpError(400, 'Bangla stays live');
   return transaction(db, () => {
-    db.prepare('UPDATE languages SET name = ?, native = ?, dir = ?, status = ? WHERE code = ?').run(next.name, next.native, next.dir, next.status, params.code);
+    db.prepare('UPDATE languages SET name = ?, native = ?, dir = ?, status = ?, target = ? WHERE code = ?').run(next.name, next.native, next.dir, next.status, next.target ?? 'en', params.code);
     bumpContentVersion(db);
     return next;
   });

@@ -306,6 +306,8 @@ function migrate(db: DatabaseSync): void {
   if (!has('users', 'blocked')) db.exec('ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0');
   // খসড়া (draft): lessons, stories and grammar topics hidden from learners until the admin publishes them.
   for (const table of ['lessons', 'stories', 'grammar']) if (!has(table, 'draft')) db.exec(`ALTER TABLE ${table} ADD COLUMN draft INTEGER NOT NULL DEFAULT 0`);
+  // What each course teaches (languages.ts): English unless it's an Arabic course.
+  if (!has('languages', 'target')) db.exec("ALTER TABLE languages ADD COLUMN target TEXT NOT NULL DEFAULT 'en'");
   migrateReports(db);
   migrateTeam(db);
   migrateAdminAuth(db);

@@ -147,7 +147,7 @@ describe('Arabic batch 01 (units 4–11, A1 to A2)', () => {
 
 describe('every new unit is complete (docs/SYLLABUS.md)', () => {
   // A unit: words 1, words 2, grammar, conversation (and the unit test the app builds from them), tips.
-  for (const file of ['ar-batch-01.json', 'bn-batch-01.json']) {
+  for (const file of ['ar-batch-01.json', 'bn-batch-01.json', 'bn-ar-batch-01.json']) {
     it(file, () => {
       const { units } = JSON.parse(readFileSync(new URL(`../content/${file}`, import.meta.url), 'utf8')) as LanguageFile;
       for (const u of units) {
@@ -179,5 +179,36 @@ describe('Arabic starter, completed (lessons 3–4 added to units 1–3)', () =>
           const answer = solve(ex);
           if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
         }
+  });
+});
+
+describe('Arabic for Bangla speakers (course bn-ar), batch 01', () => {
+  it('is a course that teaches Arabic, and every question can be answered (Arabic answers too)', async () => {
+    const { setTarget } = await import('../src/lib/target.ts');
+    const FILE = JSON.parse(readFileSync(new URL('../content/bn-ar-batch-01.json', import.meta.url), 'utf8')) as LanguageFile;
+    const db = openDb(':memory:');
+    expect(importLanguage(db, FILE)).toMatchObject({ language: 'bn-ar', units: 6, lessons: 24 });
+    expect(listLanguages(db).find((l) => l.code === 'bn-ar')).toMatchObject({ target: 'ar', status: 'draft' });
+    const units = readCourse(db, 'bn-ar');
+    expect(units[0].id).toMatch(/^bn-ar-/);
+    setCourse(units);
+    setTarget('ar');
+    try {
+      for (const lesson of units.flatMap((u) => u.lessons))
+        for (let run = 0; run < 10; run++)
+          for (const ex of buildLesson(lesson.id)) {
+            const answer = solve(ex);
+            if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
+          }
+    } finally {
+      setTarget('en');
+    }
+  });
+
+  it('an Arabic answer counts without its vowel marks', async () => {
+    const { compare } = await import('../src/lib/answer.ts');
+    expect(compare('مرحبا', ['مَرْحَبًا'], true)).toBe('correct');
+    expect(compare('أنا من بنغلاديش', ['انا من بنغلاديش'], false)).toBe('correct');
+    expect(compare('أنا طالب', ['أنا من بنغلاديش'], true)).toBe('wrong');
   });
 });

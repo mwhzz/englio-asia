@@ -16,6 +16,8 @@ const PRESETS: Pick<AdminLanguage, 'code' | 'name' | 'native' | 'dir'>[] = [
   { code: 'tr', name: 'Turkish', native: 'Türkçe', dir: 'ltr' },
   { code: 'es', name: 'Spanish', native: 'Español', dir: 'ltr' },
   { code: 'pt', name: 'Portuguese', native: 'Português', dir: 'ltr' },
+  // Not a learner language but a course for Bangla speakers that teaches Arabic (code language-target).
+  { code: 'bn-ar', name: 'Arabic for Bangla speakers', native: 'আরবি শেখা', dir: 'ltr' },
 ];
 
 const EMPTY = { code: '', name: '', native: '', dir: 'ltr' as 'ltr' | 'rtl' };
@@ -69,7 +71,7 @@ export function LanguagesPage({ owner }: { owner: boolean }) {
                 <span className={l.status === 'live' ? 'ad-pill is-ok' : 'ad-pill'}>{l.status === 'live' ? 'চালু' : 'খসড়া'}</span>
               </div>
               <p className="ad-muted">
-                {l.name} · {l.code} · {l.dir === 'rtl' ? 'ডান থেকে বামে লেখা' : 'বাম থেকে ডানে লেখা'}
+                {l.name} · {l.code} · {l.target === 'ar' ? 'আরবি শেখানোর কোর্স' : l.dir === 'rtl' ? 'ডান থেকে বামে লেখা' : 'বাম থেকে ডানে লেখা'}
               </p>
               <ul className="ad-lang-stats">
                 <li>

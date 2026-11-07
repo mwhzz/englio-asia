@@ -1,4 +1,5 @@
 import { learnerLang } from './learnerLang';
+import { addTextSwap, removeTextSwap } from './textSwap';
 
 /**
  * "আপনি" for adult learners: the app's Bangla is written with তুমি; for a learner who chose "চাকরি / অন্যান্য"
@@ -72,41 +73,12 @@ const PATTERN = new RegExp(`(?<![${BN}])(${Object.keys(WORDS).map((w) => w.repla
 /** The same Bangla text, speaking to the learner as আপনি. */
 export const polite = (text: string): string => text.replace(PATTERN, (w) => WORDS[w] ?? w);
 
-let observer: MutationObserver | null = null;
+const swap = (text: string) => polite(text);
 
-const skip = (node: Node) => {
-  const el = node.parentElement;
-  return !el || !!el.closest('input, textarea, [contenteditable], [data-no-polite], script, style');
-};
-
-function fix(node: Node) {
-  if (node.nodeType === Node.TEXT_NODE) {
-    const before = node.nodeValue ?? '';
-    if (!/[ঀ-৿]/.test(before) || skip(node)) return;
-    const after = polite(before);
-    if (after !== before) node.nodeValue = after;
-    return;
-  }
-  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
-  for (let n = walker.nextNode(); n; n = walker.nextNode()) fix(n);
-}
-
-/** Turns the polite form on (or off) for everything on screen now and drawn later. */
+/** Turns the polite form on (or off) for everything on screen now and drawn later (lib/textSwap.ts). */
 export function setPolite(on: boolean): void {
-  if (!on) {
-    observer?.disconnect();
-    observer = null;
-    return;
-  }
-  if (observer || typeof MutationObserver === 'undefined') return;
-  fix(document.body);
-  observer = new MutationObserver((changes) => {
-    for (const c of changes) {
-      if (c.type === 'characterData') fix(c.target);
-      else c.addedNodes.forEach(fix);
-    }
-  });
-  observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+  if (on) addTextSwap(swap);
+  else removeTextSwap(swap);
 }
 
 const KEY = 'englio-polite';
@@ -132,7 +104,7 @@ export function setPoliteChoice(v: 'on' | 'off'): void {
 /** Whether to speak to this learner as আপনি: their choice, else yes for job / other learners. */
 export const wantsPolite = (stage: string | undefined) => {
   // Bangla only (other languages have their own text).
-  if (learnerLang() !== 'bn') return false;
+  if (learnerLang() !== 'bn' && !learnerLang().startsWith('bn-')) return false;
   const choice = politeChoice();
   return choice ? choice === 'on' : stage === 'other';
 };

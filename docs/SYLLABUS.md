@@ -134,6 +134,23 @@ Meanings, tips and explanations in Modern Standard Arabic, drafted by AI: a nati
 
 The app's own text in Arabic: `content/ui/ar.json` (editable in admin → অ্যাপের লেখা).
 
+## Learning Arabic (for Bangla speakers, course `bn-ar`)
+
+A second course for Bangla speakers: the app stays in Bangla, and what's learned is Arabic (Modern Standard
+Arabic, the Gulf workplace in mind). In these files the `en` fields hold the Arabic, `bn` its Bangla meaning.
+The learner picks "কী শিখবে? English · العربية" on the first screen or in Profile; XP and streak are shared.
+Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar`), then import the file. Needs an Arabic teacher's check.
+
+| # | Unit | Focus | File | Status |
+| --- | --- | --- | --- | --- |
+| 1 | السلام عليكم · সালাম ও পরিচয় | greetings, أنا/أنت/هو/هي, no "is" in Arabic | `content/bn-ar-batch-01.json` | draft |
+| 2 | العائلة · পরিবার | family, هذا/هذه, ة for feminine, ـي = my | same | draft |
+| 3 | الأرقام والوقت · সংখ্যা ও সময় | numbers 1–10, time, days | same | draft |
+| 4 | الطعام والشراب · খাবার ও পানীয় | food, أريد/تريد, ال | same | draft |
+| 5 | الحياة اليومية · প্রতিদিনের জীবন | أ/ت/ي verb forms, إلى/في | same | draft |
+| 6 | العمل والسفر · কাজ ও ভ্রমণ | work, airport, أين/كم, asking for help | same | draft |
+| 7+ | past tense, numbers 11–100, shopping, health, housing, A2 | | | planned |
+
 ## Beside the path
 
 - **Grammar tab:** 34 topics today; each new grammar point above gets a topic (explanation in Bangla, examples, quiz).

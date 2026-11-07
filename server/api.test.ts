@@ -81,7 +81,7 @@ describe('course', () => {
   it('adds a language empty and in draft, keeps its content apart, and only removes it when empty', async () => {
     expect((await admin('POST', '/api/admin/languages', { code: 'Arabic!', name: 'Arabic', native: 'العربية', dir: 'rtl' })).status).toBe(400);
     const added = await admin('POST', '/api/admin/languages', { code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl' });
-    expect(added.json).toEqual({ code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl', status: 'draft' });
+    expect(added.json).toEqual({ code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl', status: 'draft', target: 'en' });
     expect((await admin('POST', '/api/admin/languages', { code: 'ar', name: 'Arabic', native: 'العربية', dir: 'rtl' })).status).toBe(409);
 
     const unit = await admin('POST', '/api/admin/units', { lang: 'ar', title: 'First steps', titleBn: 'الخطوات الأولى', color: '#34c759' });

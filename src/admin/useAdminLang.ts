@@ -8,6 +8,8 @@ export interface AdminLanguage {
   native: string;
   dir: 'ltr' | 'rtl';
   status: 'draft' | 'live';
+  /** What the course teaches: English, or Arabic for a course like "bn-ar". */
+  target?: 'en' | 'ar';
   units: number;
   lessons: number;
   items: number;
