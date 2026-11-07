@@ -5,6 +5,8 @@ export interface Profile {
   joinedAt: string;
   /** Where they came from on their first visit (lib/source.ts), e.g. "facebook/launch". */
   source?: string;
+  /** The learner's own language (lib/learnerLang.ts), for reminders in it. */
+  lang?: string;
 }
 
 export const NAME_MAX = 30;

@@ -51,7 +51,7 @@
   overflow: hidden;
   background: var(--ob-bg);
   color: var(--ob-label);
-  font-family: 'Inter Variable', 'Inter', 'Anek Bangla Variable', 'Anek Bangla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter Variable', 'Inter', 'Anek Bangla Variable', 'Anek Bangla', var(--font-ar), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
@@ -1544,4 +1544,28 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--ob-secondary);
+}
+
+/* The learner's language on the welcome screen (LanguagePick). */
+.ob-langs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 16px 0;
+}
+.ob-lang {
+  min-width: 88px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--ob-separator);
+  border-radius: 999px;
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ob-lang.is-on {
+  border-color: var(--ob-blue);
+  color: var(--ob-blue);
 }

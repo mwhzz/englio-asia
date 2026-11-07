@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { dateLocale } from '../../lib/learnerLang';
 import { findClassLevel } from '../../data/classLevels';
 import { findDistrict } from '../../data/districts';
 import { initialOf } from '../../lib/profile';
@@ -19,7 +20,7 @@ export function HomeHeader({ onProfile }: { onProfile: () => void }) {
   const profile = progress.profile;
   const district = findDistrict(profile?.districtId);
   const level = findClassLevel(profile?.classId);
-  const date = new Intl.DateTimeFormat('bn-BD', { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
+  const date = new Intl.DateTimeFormat(dateLocale(), { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
 
   return (
     <header className={`home-head sky-${sky.id}`} style={{ '--glow': sky.glow } as CSSProperties}>

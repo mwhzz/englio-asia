@@ -5,6 +5,7 @@ import { fairXpByDay } from './fairPlay.ts';
 import { migrateReports } from './reports.ts';
 import { migrateTeam } from './team.ts';
 import { migrateAdminAuth } from './adminAuth.ts';
+import { migrateUiTexts } from './uiTexts.ts';
 import { migrateErrors } from './errors.ts';
 
 /** The database file; set DB_PATH to keep it somewhere else. */
@@ -295,6 +296,8 @@ function migrate(db: DatabaseSync): void {
   // Where the learner came from (a campaign tag on their first link), for sign-ups by source.
   // When the server first saw the learner (the app's own joinedAt can't be trusted for the league).
   if (!has('users', 'created_at')) db.exec('ALTER TABLE users ADD COLUMN created_at TEXT');
+  // The learner's own language (reminders in it).
+  if (!has('users', 'lang')) db.exec("ALTER TABLE users ADD COLUMN lang TEXT NOT NULL DEFAULT 'bn'");
   if (!has('users', 'source')) db.exec('ALTER TABLE users ADD COLUMN source TEXT');
   // League tier (tiers.ts): 0 ব্রোঞ্জ … 3 ডায়মন্ড.
   if (!has('users', 'tier')) db.exec('ALTER TABLE users ADD COLUMN tier INTEGER NOT NULL DEFAULT 0');
@@ -306,6 +309,7 @@ function migrate(db: DatabaseSync): void {
   migrateReports(db);
   migrateTeam(db);
   migrateAdminAuth(db);
+  migrateUiTexts(db);
   migrateErrors(db);
   db.prepare(`INSERT OR IGNORE INTO languages (code, name, native, dir, status, position) VALUES ('bn', 'Bangla', 'বাংলা', 'ltr', 'live', 0)`).run();
 }

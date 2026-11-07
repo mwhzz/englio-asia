@@ -1,0 +1,650 @@
+{
+ "units": [
+  {
+   "title": "First Steps",
+   "titleBn": "الخطوات الأولى",
+   "color": "#34c759",
+   "tips": [],
+   "lessons": [
+    {
+     "title": "I am, you are",
+     "titleBn": "أنا، أنت",
+     "vocab": [
+      {
+       "en": "I",
+       "bn": "أنا",
+       "emoji": "🙋"
+      },
+      {
+       "en": "you",
+       "bn": "أنت",
+       "emoji": "👉"
+      },
+      {
+       "en": "he",
+       "bn": "هو",
+       "emoji": "👦"
+      },
+      {
+       "en": "she",
+       "bn": "هي",
+       "emoji": "👧"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I am a student.",
+       "bn": "أنا طالب.",
+       "alt": []
+      },
+      {
+       "en": "You are my friend.",
+       "bn": "أنت صديقي.",
+       "alt": []
+      },
+      {
+       "en": "He is a teacher.",
+       "bn": "هو معلم.",
+       "alt": []
+      },
+      {
+       "en": "She is from Egypt.",
+       "bn": "هي من مصر.",
+       "alt": []
+      },
+      {
+       "en": "We are happy.",
+       "bn": "نحن سعداء.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I ___ a student.",
+       "answer": "am",
+       "options": [
+        "am",
+        "is",
+        "are"
+       ],
+       "bn": "أنا طالب.",
+       "why": "مع I نستخدم am."
+      },
+      {
+       "text": "She ___ from Egypt.",
+       "answer": "is",
+       "options": [
+        "is",
+        "am",
+        "are"
+       ],
+       "bn": "هي من مصر.",
+       "why": "مع she نستخدم is."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "I ___ Ali and you ___ Sara.",
+       "answers": [
+        "am",
+        "are"
+       ],
+       "extra": [
+        "is",
+        "be"
+       ],
+       "bn": "أنا علي وأنت سارة.",
+       "why": "I + am، و you + are."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "am مع I، و is مع he/she/it، و are مع you/we/they.",
+       "correct": "They are students.",
+       "wrong": [
+        "They is students.",
+        "They am students."
+       ],
+       "why": "they + are."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Nice to meet you",
+     "titleBn": "تشرفت بمعرفتك",
+     "vocab": [
+      {
+       "en": "meet",
+       "bn": "يقابل",
+       "emoji": "🤝"
+      },
+      {
+       "en": "nice",
+       "bn": "لطيف",
+       "emoji": "😊"
+      },
+      {
+       "en": "name",
+       "bn": "اسم",
+       "emoji": "🏷️"
+      },
+      {
+       "en": "where",
+       "bn": "أين",
+       "emoji": "📍"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "What is your name?",
+       "bn": "ما اسمك؟",
+       "alt": []
+      },
+      {
+       "en": "My name is Omar.",
+       "bn": "اسمي عمر.",
+       "alt": []
+      },
+      {
+       "en": "Nice to meet you.",
+       "bn": "تشرفت بمعرفتك.",
+       "alt": []
+      },
+      {
+       "en": "Where are you from?",
+       "bn": "من أين أنت؟",
+       "alt": []
+      },
+      {
+       "en": "I am from Morocco.",
+       "bn": "أنا من المغرب.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "What is your ___?",
+       "answer": "name",
+       "options": [
+        "name",
+        "meet",
+        "nice"
+       ],
+       "bn": "ما اسمك؟",
+       "why": "name هو الاسم."
+      },
+      {
+       "text": "Where are you ___?",
+       "answer": "from",
+       "options": [
+        "from",
+        "to",
+        "at"
+       ],
+       "bn": "من أين أنت؟",
+       "why": "للبلد نسأل: Where are you from?"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Lina",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Hi, my name is Lina. What is your name?",
+         "bn": "مرحبًا، اسمي لينا. ما اسمك؟"
+        },
+        {
+         "who": "you",
+         "en": "My name is Omar. Nice to meet you.",
+         "bn": "اسمي عمر. تشرفت بمعرفتك."
+        }
+       ],
+       "wrong": [
+        "I am name Omar.",
+        "Yes, nice is me."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Family",
+   "titleBn": "العائلة",
+   "color": "#af52de",
+   "tips": [],
+   "lessons": [
+    {
+     "title": "My, your, his, her",
+     "titleBn": "ـي، ـك، ـه، ـها",
+     "vocab": [
+      {
+       "en": "my",
+       "bn": "ـي (لي)",
+       "emoji": "🙋"
+      },
+      {
+       "en": "your",
+       "bn": "ـك (لك)",
+       "emoji": "👉"
+      },
+      {
+       "en": "his",
+       "bn": "ـه (له)",
+       "emoji": "👦"
+      },
+      {
+       "en": "her",
+       "bn": "ـها (لها)",
+       "emoji": "👧"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "This is my mother.",
+       "bn": "هذه أمي.",
+       "alt": []
+      },
+      {
+       "en": "Is this your brother?",
+       "bn": "هل هذا أخوك؟",
+       "alt": []
+      },
+      {
+       "en": "His name is Karim.",
+       "bn": "اسمه كريم.",
+       "alt": []
+      },
+      {
+       "en": "Her sister is ten.",
+       "bn": "أختها عمرها عشر سنوات.",
+       "alt": []
+      },
+      {
+       "en": "Our house is small.",
+       "bn": "بيتنا صغير.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ name is Karim.",
+       "answer": "His",
+       "options": [
+        "His",
+        "He",
+        "Him"
+       ],
+       "bn": "اسمه كريم.",
+       "why": "للملكية مع he نستخدم his."
+      },
+      {
+       "text": "This is ___ mother.",
+       "answer": "my",
+       "options": [
+        "my",
+        "I",
+        "me"
+       ],
+       "bn": "هذه أمي.",
+       "why": "للملكية مع I نستخدم my."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "___ father is a doctor and ___ mother is a teacher.",
+       "answers": [
+        "My",
+        "my"
+       ],
+       "extra": [
+        "I",
+        "me"
+       ],
+       "bn": "أبي طبيب وأمي معلمة.",
+       "why": "my قبل الاسم للملكية."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "his للمذكر و her للمؤنث.",
+       "correct": "Sara loves her brother.",
+       "wrong": [
+        "Sara loves his brother.",
+        "Sara loves she brother."
+       ],
+       "why": "Sara مؤنث، لذلك her."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Talking about family",
+     "titleBn": "الحديث عن العائلة",
+     "vocab": [
+      {
+       "en": "have",
+       "bn": "يملك/عنده",
+       "emoji": "🤲"
+      },
+      {
+       "en": "married",
+       "bn": "متزوج",
+       "emoji": "💍"
+      },
+      {
+       "en": "children",
+       "bn": "أطفال",
+       "emoji": "👧"
+      },
+      {
+       "en": "cousin",
+       "bn": "ابن/ابنة العم",
+       "emoji": "👫"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Do you have brothers?",
+       "bn": "هل عندك إخوة؟",
+       "alt": []
+      },
+      {
+       "en": "I have one sister.",
+       "bn": "عندي أخت واحدة.",
+       "alt": []
+      },
+      {
+       "en": "My brother is married.",
+       "bn": "أخي متزوج.",
+       "alt": []
+      },
+      {
+       "en": "They have two children.",
+       "bn": "عندهم طفلان.",
+       "alt": []
+      },
+      {
+       "en": "My cousin lives in Cairo.",
+       "bn": "ابن عمي يعيش في القاهرة.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Do you ___ brothers?",
+       "answer": "have",
+       "options": [
+        "have",
+        "has",
+        "having"
+       ],
+       "bn": "هل عندك إخوة؟",
+       "why": "مع you نستخدم have."
+      },
+      {
+       "text": "They have two ___.",
+       "answer": "children",
+       "options": [
+        "children",
+        "child",
+        "childs"
+       ],
+       "bn": "عندهم طفلان.",
+       "why": "جمع child هو children."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Friend",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Do you have brothers or sisters?",
+         "bn": "هل عندك إخوة أو أخوات؟"
+        },
+        {
+         "who": "you",
+         "en": "Yes, I have one brother and two sisters.",
+         "bn": "نعم، عندي أخ واحد وأختان."
+        }
+       ],
+       "wrong": [
+        "Yes, I am one brother.",
+        "No, sisters is me."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Food & Drink",
+   "titleBn": "الطعام والشراب",
+   "color": "#ff9500",
+   "tips": [],
+   "lessons": [
+    {
+     "title": "I like, I don't like",
+     "titleBn": "أحب، لا أحب",
+     "vocab": [
+      {
+       "en": "like",
+       "bn": "يحب",
+       "emoji": "👍"
+      },
+      {
+       "en": "love",
+       "bn": "يعشق",
+       "emoji": "❤️"
+      },
+      {
+       "en": "hate",
+       "bn": "يكره",
+       "emoji": "👎"
+      },
+      {
+       "en": "sweet",
+       "bn": "حلو",
+       "emoji": "🍬"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I like apples.",
+       "bn": "أحب التفاح.",
+       "alt": []
+      },
+      {
+       "en": "I don't like coffee.",
+       "bn": "لا أحب القهوة.",
+       "alt": []
+      },
+      {
+       "en": "She loves sweet food.",
+       "bn": "تحب الطعام الحلو كثيرًا.",
+       "alt": []
+      },
+      {
+       "en": "Do you like fish?",
+       "bn": "هل تحب السمك؟",
+       "alt": []
+      },
+      {
+       "en": "He doesn't like milk.",
+       "bn": "لا يحب الحليب.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I ___ like coffee.",
+       "answer": "don't",
+       "options": [
+        "don't",
+        "doesn't",
+        "not"
+       ],
+       "bn": "لا أحب القهوة.",
+       "why": "مع I نستخدم don't للنفي."
+      },
+      {
+       "text": "He ___ like milk.",
+       "answer": "doesn't",
+       "options": [
+        "doesn't",
+        "don't",
+        "isn't"
+       ],
+       "bn": "لا يحب الحليب.",
+       "why": "مع he نستخدم doesn't."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "I ___ tea but my sister ___ like it.",
+       "answers": [
+        "like",
+        "doesn't"
+       ],
+       "extra": [
+        "likes",
+        "don't"
+       ],
+       "bn": "أحب الشاي لكن أختي لا تحبه.",
+       "why": "I + like، و she + doesn't."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "بعد don't و doesn't يأتي الفعل كما هو.",
+       "correct": "She doesn't like rice.",
+       "wrong": [
+        "She doesn't likes rice.",
+        "She don't like rice."
+       ],
+       "why": "doesn't + like."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Ordering food",
+     "titleBn": "طلب الطعام",
+     "vocab": [
+      {
+       "en": "order",
+       "bn": "يطلب",
+       "emoji": "📝"
+      },
+      {
+       "en": "bill",
+       "bn": "الفاتورة",
+       "emoji": "🧾"
+      },
+      {
+       "en": "water",
+       "bn": "ماء",
+       "emoji": "💧"
+      },
+      {
+       "en": "chicken",
+       "bn": "دجاج",
+       "emoji": "🍗"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Can I see the menu, please?",
+       "bn": "هل يمكن أن أرى القائمة من فضلك؟",
+       "alt": []
+      },
+      {
+       "en": "I would like chicken and rice.",
+       "bn": "أريد دجاجًا وأرزًا.",
+       "alt": []
+      },
+      {
+       "en": "A glass of water, please.",
+       "bn": "كوب ماء من فضلك.",
+       "alt": []
+      },
+      {
+       "en": "The food is delicious.",
+       "bn": "الطعام لذيذ.",
+       "alt": []
+      },
+      {
+       "en": "Can I have the bill, please?",
+       "bn": "هل يمكن أن أحصل على الفاتورة من فضلك؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I would ___ chicken and rice.",
+       "answer": "like",
+       "options": [
+        "like",
+        "likes",
+        "liking"
+       ],
+       "bn": "أريد دجاجًا وأرزًا.",
+       "why": "للطلب بأدب: I would like."
+      },
+      {
+       "text": "Can I have the ___, please?",
+       "answer": "bill",
+       "options": [
+        "bill",
+        "water",
+        "order"
+       ],
+       "bn": "هل يمكن أن أحصل على الفاتورة من فضلك؟",
+       "why": "bill هي الفاتورة."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Waiter",
+       "lines": [
+        {
+         "who": "them",
+         "en": "What would you like?",
+         "bn": "ماذا تريد؟"
+        },
+        {
+         "who": "you",
+         "en": "I would like chicken and rice, please.",
+         "bn": "أريد دجاجًا وأرزًا من فضلك."
+        },
+        {
+         "who": "them",
+         "en": "Anything to drink?",
+         "bn": "أي شيء للشرب؟"
+        },
+        {
+         "who": "you",
+         "en": "A glass of water, please.",
+         "bn": "كوب ماء من فضلك."
+        }
+       ],
+       "wrong": [
+        "I am a water.",
+        "Yes, drink is me."
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

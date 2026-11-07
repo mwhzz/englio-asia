@@ -21,6 +21,7 @@ export const NAV: { group?: string; items: NavItem[] }[] = [
     group: 'কনটেন্ট',
     items: [
       { page: 'languages', label: 'ভাষা', icon: 'globe', roles: CONTENT },
+      { page: 'ui-text', label: 'অ্যাপের লেখা', icon: 'chat', roles: CONTENT },
       { page: 'content', label: 'লেসন', icon: 'path', roles: CONTENT },
       { page: 'words', label: 'শব্দ', icon: 'bookmark', roles: CONTENT },
       { page: 'audio', label: 'অডিও', icon: 'speaker', roles: CONTENT },

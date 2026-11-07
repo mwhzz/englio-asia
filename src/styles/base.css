@@ -110,3 +110,12 @@ body,
   font-weight: 700;
   line-height: 1;
 }
+
+/* Arabic learners: Naskh, the familiar book style, when chosen (Profile → আরবি লেখার ধরন); a little more
+   line height, since Arabic letters reach higher and lower than Latin ones. */
+html[data-ar-font='naskh'] {
+  --font-ar: 'Noto Naskh Arabic Variable', 'Noto Sans Arabic Variable', serif;
+}
+html[lang='ar'] body {
+  line-height: 1.6;
+}

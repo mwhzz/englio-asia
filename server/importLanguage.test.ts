@@ -106,9 +106,9 @@ describe('Bangla batch 01 (units 12–21, A1+ to A2)', () => {
     seedCourse(db);
     const before = readCourse(db, 'bn', { drafts: false }).flatMap((u) => u.lessons).length;
     const added = importMore(db, { body: { ...BATCH, lang: 'bn' } });
-    expect(added).toMatchObject({ units: 10, lessons: 20 });
+    expect(added).toMatchObject({ units: 10, lessons: 40 });
     expect(readCourse(db, 'bn', { drafts: false }).flatMap((u) => u.lessons).length).toBe(before);
-    expect(readCourse(db, 'bn').flatMap((u) => u.lessons).length).toBe(before + 20);
+    expect(readCourse(db, 'bn').flatMap((u) => u.lessons).length).toBe(before + 40);
   });
 
   it('every question in it can be answered', () => {
@@ -122,5 +122,62 @@ describe('Bangla batch 01 (units 12–21, A1+ to A2)', () => {
             const answer = solve(ex);
             if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
           }
+  });
+});
+
+describe('Arabic batch 01 (units 4–11, A1 to A2)', () => {
+  const BATCH = JSON.parse(readFileSync(new URL('../content/ar-batch-01.json', import.meta.url), 'utf8'));
+
+  it('comes after the Arabic starter, as drafts, and every question in it can be answered', async () => {
+    const { importMore } = await import('./importLanguage.ts');
+    const db = openDb(':memory:');
+    importLanguage(db, ARABIC);
+    expect(importMore(db, { body: { ...BATCH, lang: 'ar' } })).toMatchObject({ units: 8, lessons: 32 });
+    const units = readCourse(db, 'ar');
+    expect(units).toHaveLength(11);
+    setCourse(units);
+    for (const lesson of units.slice(3).flatMap((u) => u.lessons))
+      for (let run = 0; run < 10; run++)
+        for (const ex of buildLesson(lesson.id)) {
+          const answer = solve(ex);
+          if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
+        }
+  });
+});
+
+describe('every new unit is complete (docs/SYLLABUS.md)', () => {
+  // A unit: words 1, words 2, grammar, conversation (and the unit test the app builds from them), tips.
+  for (const file of ['ar-batch-01.json', 'bn-batch-01.json']) {
+    it(file, () => {
+      const { units } = JSON.parse(readFileSync(new URL(`../content/${file}`, import.meta.url), 'utf8')) as LanguageFile;
+      for (const u of units) {
+        expect(u.lessons.length, `${u.title}: 4 lessons`).toBeGreaterThanOrEqual(4);
+        expect(u.tips?.length ?? 0, `${u.title}: tips`).toBeGreaterThanOrEqual(2);
+        const all = u.lessons;
+        expect(all.flatMap((l) => l.vocab ?? []).length, `${u.title}: words`).toBeGreaterThanOrEqual(16);
+        expect(all.flatMap((l) => l.grammar ?? []).length, `${u.title}: grammar`).toBeGreaterThanOrEqual(1);
+        expect(all.flatMap((l) => l.dialogs ?? []).length, `${u.title}: conversation`).toBeGreaterThanOrEqual(1);
+        expect(all.flatMap((l) => l.gaps ?? []).length, `${u.title}: gap text`).toBeGreaterThanOrEqual(1);
+      }
+    });
+  }
+});
+
+describe('Arabic starter, completed (lessons 3–4 added to units 1–3)', () => {
+  it('adds the lessons to the existing units, and every question can be answered', async () => {
+    const { importMore } = await import('./importLanguage.ts');
+    const MORE = JSON.parse(readFileSync(new URL('../content/ar-starter-more.json', import.meta.url), 'utf8'));
+    const db = openDb(':memory:');
+    importLanguage(db, ARABIC);
+    expect(importMore(db, { body: { ...MORE, lang: 'ar' } })).toMatchObject({ lessons: 6 });
+    const units = readCourse(db, 'ar');
+    expect(units.map((u) => u.lessons.length)).toEqual([4, 4, 4]);
+    setCourse(units);
+    for (const lesson of units.flatMap((u) => u.lessons))
+      for (let run = 0; run < 10; run++)
+        for (const ex of buildLesson(lesson.id)) {
+          const answer = solve(ex);
+          if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
+        }
   });
 });

@@ -279,6 +279,220 @@
       }
      ],
      "dialogs": []
+    },
+    {
+     "title": "Is there…? Are there…?",
+     "titleBn": "আছে কি?",
+     "vocab": [
+      {
+       "en": "sofa",
+       "bn": "সোফা",
+       "emoji": "🛋️"
+      },
+      {
+       "en": "garden",
+       "bn": "বাগান",
+       "emoji": "🌷"
+      },
+      {
+       "en": "stairs",
+       "bn": "সিঁড়ি",
+       "emoji": "🪜"
+      },
+      {
+       "en": "balcony",
+       "bn": "বারান্দা",
+       "emoji": "🏙️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Is there a garden?",
+       "bn": "বাগান আছে কি?",
+       "alt": []
+      },
+      {
+       "en": "Are there any chairs in the room?",
+       "bn": "ঘরে কি কোনো চেয়ার আছে?",
+       "alt": []
+      },
+      {
+       "en": "There isn't a balcony.",
+       "bn": "কোনো বারান্দা নেই।",
+       "alt": []
+      },
+      {
+       "en": "There aren't any pictures on the wall.",
+       "bn": "দেয়ালে কোনো ছবি নেই।",
+       "alt": []
+      },
+      {
+       "en": "Yes, there is a big sofa.",
+       "bn": "হ্যাঁ, একটা বড় সোফা আছে।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ there a garden?",
+       "answer": "Is",
+       "options": [
+        "Is",
+        "Are",
+        "Am"
+       ],
+       "bn": "বাগান আছে কি?",
+       "why": "a garden একটা, তাই Is there।"
+      },
+      {
+       "text": "There ___ any pictures.",
+       "answer": "aren't",
+       "options": [
+        "aren't",
+        "isn't",
+        "not"
+       ],
+       "bn": "কোনো ছবি নেই।",
+       "why": "pictures একাধিক, না বোঝাতে aren't।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "___ there a TV? No, there ___.",
+       "answers": [
+        "Is",
+        "isn't"
+       ],
+       "extra": [
+        "Are",
+        "aren't"
+       ],
+       "bn": "টিভি আছে কি? না, নেই।",
+       "why": "একটা জিনিস: Is there? উত্তরে isn't।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "প্রশ্নে is/are আগে আসে: Is there…? Are there…?",
+       "correct": "Are there two bedrooms?",
+       "wrong": [
+        "There are two bedrooms?",
+        "Is there two bedrooms?"
+       ],
+       "why": "two bedrooms একাধিক, প্রশ্নে Are there।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Looking for a room",
+     "titleBn": "ঘর ভাড়া খোঁজা",
+     "vocab": [
+      {
+       "en": "rent",
+       "bn": "ভাড়া",
+       "emoji": "💵"
+      },
+      {
+       "en": "flat",
+       "bn": "ফ্ল্যাট",
+       "emoji": "🏢"
+      },
+      {
+       "en": "floor",
+       "bn": "তলা",
+       "emoji": "🔢"
+      },
+      {
+       "en": "near",
+       "bn": "কাছে",
+       "emoji": "📍"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I am looking for a flat.",
+       "bn": "আমি একটা ফ্ল্যাট খুঁজছি।",
+       "alt": []
+      },
+      {
+       "en": "How much is the rent?",
+       "bn": "ভাড়া কত?",
+       "alt": []
+      },
+      {
+       "en": "It is on the third floor.",
+       "bn": "এটা তিনতলায়।",
+       "alt": []
+      },
+      {
+       "en": "Is it near the school?",
+       "bn": "এটা কি স্কুলের কাছে?",
+       "alt": []
+      },
+      {
+       "en": "Can I see the kitchen?",
+       "bn": "রান্নাঘরটা দেখতে পারি?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "How much is the ___?",
+       "answer": "rent",
+       "options": [
+        "rent",
+        "floor",
+        "near"
+       ],
+       "bn": "ভাড়া কত?",
+       "why": "ভাড়া = rent।"
+      },
+      {
+       "text": "It is on the third ___.",
+       "answer": "floor",
+       "options": [
+        "floor",
+        "rent",
+        "roof"
+       ],
+       "bn": "এটা তিনতলায়।",
+       "why": "তলা = floor।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Landlord",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Hello. Are you looking for a flat?",
+         "bn": "হ্যালো। ফ্ল্যাট খুঁজছেন?"
+        },
+        {
+         "who": "you",
+         "en": "Yes. How much is the rent?",
+         "bn": "হ্যাঁ। ভাড়া কত?"
+        },
+        {
+         "who": "them",
+         "en": "Ten thousand taka a month.",
+         "bn": "মাসে দশ হাজার টাকা।"
+        },
+        {
+         "who": "you",
+         "en": "Can I see the rooms, please?",
+         "bn": "ঘরগুলো একটু দেখতে পারি?"
+        }
+       ],
+       "wrong": [
+        "I am a flat.",
+        "Yes, rent is me."
+       ]
+      }
+     ]
     }
    ]
   },
@@ -535,6 +749,220 @@
        "wrong": [
         "I am a bigger size.",
         "Yes, I am fine."
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Bigger, smaller",
+     "titleBn": "বড়, ছোট মাপ",
+     "vocab": [
+      {
+       "en": "long",
+       "bn": "লম্বা",
+       "emoji": "📏"
+      },
+      {
+       "en": "short",
+       "bn": "খাটো",
+       "emoji": "✂️"
+      },
+      {
+       "en": "tight",
+       "bn": "আঁটসাঁট",
+       "emoji": "🤏"
+      },
+      {
+       "en": "loose",
+       "bn": "ঢিলা",
+       "emoji": "👐"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "This shirt is too tight.",
+       "bn": "এই শার্টটা খুব আঁটসাঁট।",
+       "alt": []
+      },
+      {
+       "en": "These trousers are too long.",
+       "bn": "এই প্যান্টটা খুব লম্বা।",
+       "alt": []
+      },
+      {
+       "en": "Do you have a smaller one?",
+       "bn": "ছোট মাপের আছে?",
+       "alt": []
+      },
+      {
+       "en": "That dress is too short.",
+       "bn": "ওই জামাটা খুব খাটো।",
+       "alt": []
+      },
+      {
+       "en": "I want a looser one.",
+       "bn": "আমি একটু ঢিলা একটা চাই।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "This shirt is ___ tight.",
+       "answer": "too",
+       "options": [
+        "too",
+        "to",
+        "two"
+       ],
+       "bn": "এই শার্টটা খুব আঁটসাঁট।",
+       "why": "বেশি বোঝাতে too।"
+      },
+      {
+       "text": "Do you have a smaller ___?",
+       "answer": "one",
+       "options": [
+        "one",
+        "once",
+        "it"
+       ],
+       "bn": "ছোট মাপের আছে?",
+       "why": "আগের জিনিসের বদলে one।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "___ trousers are too long. Do you have shorter ___?",
+       "answers": [
+        "These",
+        "ones"
+       ],
+       "extra": [
+        "This",
+        "one"
+       ],
+       "bn": "এই প্যান্টটা খুব লম্বা। খাটো আছে?",
+       "why": "trousers বহুবচন: these আর ones।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "বেশি বোঝাতে too + বিশেষণ।",
+       "correct": "The shoes are too big.",
+       "wrong": [
+        "The shoes are to big.",
+        "The shoes too are big."
+       ],
+       "why": "too big = বেশি বড়।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Paying",
+     "titleBn": "টাকা দেওয়া",
+     "vocab": [
+      {
+       "en": "cash",
+       "bn": "নগদ",
+       "emoji": "💵"
+      },
+      {
+       "en": "card",
+       "bn": "কার্ড",
+       "emoji": "💳"
+      },
+      {
+       "en": "receipt",
+       "bn": "রসিদ",
+       "emoji": "🧾"
+      },
+      {
+       "en": "discount",
+       "bn": "ছাড়",
+       "emoji": "🏷️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Can I pay in cash?",
+       "bn": "নগদে দিতে পারি?",
+       "alt": []
+      },
+      {
+       "en": "Is there a discount?",
+       "bn": "কোনো ছাড় আছে?",
+       "alt": []
+      },
+      {
+       "en": "Can I have a receipt, please?",
+       "bn": "একটা রসিদ দেবেন?",
+       "alt": []
+      },
+      {
+       "en": "I will take this one.",
+       "bn": "আমি এটা নেব।",
+       "alt": []
+      },
+      {
+       "en": "Can I change it later?",
+       "bn": "পরে কি বদলাতে পারব?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Can I pay ___ cash?",
+       "answer": "in",
+       "options": [
+        "in",
+        "by",
+        "on"
+       ],
+       "bn": "নগদে দিতে পারি?",
+       "why": "নগদে = in cash।"
+      },
+      {
+       "text": "Is there a ___?",
+       "answer": "discount",
+       "options": [
+        "discount",
+        "receipt",
+        "card"
+       ],
+       "bn": "কোনো ছাড় আছে?",
+       "why": "ছাড় = discount।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Shopkeeper",
+       "lines": [
+        {
+         "who": "them",
+         "en": "That is eight hundred taka.",
+         "bn": "আটশো টাকা।"
+        },
+        {
+         "who": "you",
+         "en": "Is there a discount?",
+         "bn": "কোনো ছাড় আছে?"
+        },
+        {
+         "who": "them",
+         "en": "Okay, seven hundred.",
+         "bn": "ঠিক আছে, সাতশো।"
+        },
+        {
+         "who": "you",
+         "en": "Good. I will take it.",
+         "bn": "ভালো। আমি নেব।"
+        }
+       ],
+       "wrong": [
+        "Yes, I am discount.",
+        "Seven is a shirt."
        ]
       }
      ]
@@ -801,6 +1229,210 @@
        ]
       }
      ]
+    },
+    {
+     "title": "Do you like…?",
+     "titleBn": "তোমার কি ভালো লাগে?",
+     "vocab": [
+      {
+       "en": "music",
+       "bn": "গান",
+       "emoji": "🎵"
+      },
+      {
+       "en": "film",
+       "bn": "সিনেমা",
+       "emoji": "🎬"
+      },
+      {
+       "en": "game",
+       "bn": "খেলা",
+       "emoji": "🎮"
+      },
+      {
+       "en": "weekend",
+       "bn": "ছুটির দিন",
+       "emoji": "🗓️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Do you like music?",
+       "bn": "তোমার কি গান ভালো লাগে?",
+       "alt": []
+      },
+      {
+       "en": "Yes, I do.",
+       "bn": "হ্যাঁ, লাগে।",
+       "alt": []
+      },
+      {
+       "en": "No, I don't like films.",
+       "bn": "না, আমার সিনেমা ভালো লাগে না।",
+       "alt": []
+      },
+      {
+       "en": "Does she like games?",
+       "bn": "তার কি খেলা ভালো লাগে?",
+       "alt": []
+      },
+      {
+       "en": "What do you do at the weekend?",
+       "bn": "ছুটির দিনে কী করো?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ you like music?",
+       "answer": "Do",
+       "options": [
+        "Do",
+        "Does",
+        "Are"
+       ],
+       "bn": "তোমার কি গান ভালো লাগে?",
+       "why": "you-এর প্রশ্নে Do।"
+      },
+      {
+       "text": "___ she like games?",
+       "answer": "Does",
+       "options": [
+        "Does",
+        "Do",
+        "Is"
+       ],
+       "bn": "তার কি খেলা ভালো লাগে?",
+       "why": "she-এর প্রশ্নে Does।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "___ he play football? Yes, he ___.",
+       "answers": [
+        "Does",
+        "does"
+       ],
+       "extra": [
+        "Do",
+        "do"
+       ],
+       "bn": "সে কি ফুটবল খেলে? হ্যাঁ, খেলে।",
+       "why": "he-এর সাথে Does … does।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "Does-এর পরে কাজে -s হয় না।",
+       "correct": "Does she like music?",
+       "wrong": [
+        "Does she likes music?",
+        "Do she like music?"
+       ],
+       "why": "Does থাকলে like, likes নয়।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Making a plan to play",
+     "titleBn": "খেলার পরিকল্পনা",
+     "vocab": [
+      {
+       "en": "match",
+       "bn": "ম্যাচ",
+       "emoji": "🏏"
+      },
+      {
+       "en": "team",
+       "bn": "দল",
+       "emoji": "👥"
+      },
+      {
+       "en": "win",
+       "bn": "জেতা",
+       "emoji": "🏆"
+      },
+      {
+       "en": "lose",
+       "bn": "হারা",
+       "emoji": "😞"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Let's play a match on Friday.",
+       "bn": "চলো শুক্রবার একটা ম্যাচ খেলি।",
+       "alt": []
+      },
+      {
+       "en": "Which team do you like?",
+       "bn": "কোন দল তোমার পছন্দ?",
+       "alt": []
+      },
+      {
+       "en": "Our team won yesterday.",
+       "bn": "আমাদের দল গতকাল জিতেছে।",
+       "alt": []
+      },
+      {
+       "en": "We lost the game.",
+       "bn": "আমরা খেলাটা হেরে গেছি।",
+       "alt": []
+      },
+      {
+       "en": "Can I join your team?",
+       "bn": "আমি কি তোমাদের দলে খেলতে পারি?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Which ___ do you like?",
+       "answer": "team",
+       "options": [
+        "team",
+        "win",
+        "match"
+       ],
+       "bn": "কোন দল তোমার পছন্দ?",
+       "why": "দল = team।"
+      },
+      {
+       "text": "Can I ___ your team?",
+       "answer": "join",
+       "options": [
+        "join",
+        "joins",
+        "joining"
+       ],
+       "bn": "আমি কি তোমাদের দলে খেলতে পারি?",
+       "why": "can-এর পরে কাজটা যেমন আছে।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Rafi",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Do you want to play cricket?",
+         "bn": "ক্রিকেট খেলবে?"
+        },
+        {
+         "who": "you",
+         "en": "Yes! Can I join your team?",
+         "bn": "হ্যাঁ! আমি কি তোমাদের দলে খেলতে পারি?"
+        }
+       ],
+       "wrong": [
+        "Yes, I am cricket.",
+        "No, team is me."
+       ]
+      }
+     ]
     }
    ]
   },
@@ -1059,6 +1691,210 @@
        ]
       }
      ]
+    },
+    {
+     "title": "Does he work…?",
+     "titleBn": "সে কি কাজ করে?",
+     "vocab": [
+      {
+       "en": "doctor",
+       "bn": "ডাক্তার",
+       "emoji": "👨‍⚕️"
+      },
+      {
+       "en": "teacher",
+       "bn": "শিক্ষক",
+       "emoji": "👩‍🏫"
+      },
+      {
+       "en": "hospital",
+       "bn": "হাসপাতাল",
+       "emoji": "🏥"
+      },
+      {
+       "en": "shop",
+       "bn": "দোকান",
+       "emoji": "🏪"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Does your father work in a hospital?",
+       "bn": "তোমার বাবা কি হাসপাতালে কাজ করেন?",
+       "alt": []
+      },
+      {
+       "en": "No, he doesn't.",
+       "bn": "না, করেন না।",
+       "alt": []
+      },
+      {
+       "en": "She doesn't work on Friday.",
+       "bn": "সে শুক্রবার কাজ করে না।",
+       "alt": []
+      },
+      {
+       "en": "Where does your sister work?",
+       "bn": "তোমার বোন কোথায় কাজ করে?",
+       "alt": []
+      },
+      {
+       "en": "She works in a shop.",
+       "bn": "সে একটা দোকানে কাজ করে।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "She ___ work on Friday.",
+       "answer": "doesn't",
+       "options": [
+        "doesn't",
+        "don't",
+        "isn't"
+       ],
+       "bn": "সে শুক্রবার কাজ করে না।",
+       "why": "she-এর সাথে না বোঝাতে doesn't।"
+      },
+      {
+       "text": "Where ___ your sister work?",
+       "answer": "does",
+       "options": [
+        "does",
+        "do",
+        "is"
+       ],
+       "bn": "তোমার বোন কোথায় কাজ করে?",
+       "why": "your sister মানে she, তাই does।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "My brother ___ in a bank. He ___ work on Friday.",
+       "answers": [
+        "works",
+        "doesn't"
+       ],
+       "extra": [
+        "work",
+        "don't"
+       ],
+       "bn": "আমার ভাই ব্যাংকে কাজ করে। সে শুক্রবার কাজ করে না।",
+       "why": "he-এর সাথে works, না বোঝাতে doesn't।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "doesn't-এর পরে কাজে -s হয় না।",
+       "correct": "He doesn't work on Sunday.",
+       "wrong": [
+        "He doesn't works on Sunday.",
+        "He don't work on Sunday."
+       ],
+       "why": "doesn't + work।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "A job interview",
+     "titleBn": "চাকরির ইন্টারভিউ",
+     "vocab": [
+      {
+       "en": "experience",
+       "bn": "অভিজ্ঞতা",
+       "emoji": "📈"
+      },
+      {
+       "en": "skill",
+       "bn": "দক্ষতা",
+       "emoji": "🛠️"
+      },
+      {
+       "en": "apply",
+       "bn": "আবেদন করা",
+       "emoji": "📝"
+      },
+      {
+       "en": "hire",
+       "bn": "নিয়োগ দেওয়া",
+       "emoji": "🤝"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Tell me about yourself.",
+       "bn": "আপনার সম্পর্কে বলুন।",
+       "alt": []
+      },
+      {
+       "en": "I have two years of experience.",
+       "bn": "আমার দুই বছরের অভিজ্ঞতা আছে।",
+       "alt": []
+      },
+      {
+       "en": "I can use a computer.",
+       "bn": "আমি কম্পিউটার চালাতে পারি।",
+       "alt": []
+      },
+      {
+       "en": "Why do you want this job?",
+       "bn": "আপনি এই চাকরিটা কেন চান?",
+       "alt": []
+      },
+      {
+       "en": "I want to learn and grow.",
+       "bn": "আমি শিখতে আর এগিয়ে যেতে চাই।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I have two years of ___.",
+       "answer": "experience",
+       "options": [
+        "experience",
+        "skill",
+        "hire"
+       ],
+       "bn": "আমার দুই বছরের অভিজ্ঞতা আছে।",
+       "why": "অভিজ্ঞতা = experience।"
+      },
+      {
+       "text": "Why do you ___ this job?",
+       "answer": "want",
+       "options": [
+        "want",
+        "wants",
+        "wanting"
+       ],
+       "bn": "আপনি এই চাকরিটা কেন চান?",
+       "why": "do-এর পরে কাজটা যেমন আছে।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Manager",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Why do you want this job?",
+         "bn": "আপনি এই চাকরিটা কেন চান?"
+        },
+        {
+         "who": "you",
+         "en": "I like this work and I want to learn more.",
+         "bn": "এই কাজটা আমার ভালো লাগে আর আমি আরও শিখতে চাই।"
+        }
+       ],
+       "wrong": [
+        "I am a job.",
+        "Yes, I want job you."
+       ]
+      }
+     ]
     }
    ]
   },
@@ -1310,6 +2146,220 @@
        "wrong": [
         "Yes, I am a bus.",
         "Turn left, please."
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Where is it?",
+     "titleBn": "কোথায়?",
+     "vocab": [
+      {
+       "en": "between",
+       "bn": "মাঝখানে",
+       "emoji": "↔️"
+      },
+      {
+       "en": "behind",
+       "bn": "পেছনে",
+       "emoji": "🔙"
+      },
+      {
+       "en": "in front of",
+       "bn": "সামনে",
+       "emoji": "🔜"
+      },
+      {
+       "en": "pharmacy",
+       "bn": "ফার্মেসি",
+       "emoji": "💊"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "The pharmacy is between the bank and the school.",
+       "bn": "ফার্মেসিটা ব্যাংক আর স্কুলের মাঝখানে।",
+       "alt": []
+      },
+      {
+       "en": "The park is behind the mosque.",
+       "bn": "পার্কটা মসজিদের পেছনে।",
+       "alt": []
+      },
+      {
+       "en": "Wait in front of the shop.",
+       "bn": "দোকানের সামনে অপেক্ষা করো।",
+       "alt": []
+      },
+      {
+       "en": "Is the bank far from here?",
+       "bn": "ব্যাংক কি এখান থেকে দূরে?",
+       "alt": []
+      },
+      {
+       "en": "It is near the bus stop.",
+       "bn": "এটা বাস স্ট্যান্ডের কাছে।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "The park is ___ the mosque.",
+       "answer": "behind",
+       "options": [
+        "behind",
+        "between",
+        "front"
+       ],
+       "bn": "পার্কটা মসজিদের পেছনে।",
+       "why": "পেছনে = behind।"
+      },
+      {
+       "text": "Wait in front ___ the shop.",
+       "answer": "of",
+       "options": [
+        "of",
+        "to",
+        "at"
+       ],
+       "bn": "দোকানের সামনে অপেক্ষা করো।",
+       "why": "সামনে = in front of।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "The shop is ___ the bank and the school, ___ the bus stop.",
+       "answers": [
+        "between",
+        "near"
+       ],
+       "extra": [
+        "behind",
+        "of"
+       ],
+       "bn": "দোকানটা ব্যাংক আর স্কুলের মাঝখানে, বাস স্ট্যান্ডের কাছে।",
+       "why": "দুটোর মাঝখানে between, কাছে near।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "দুটো জিনিসের মাঝখানে between … and …।",
+       "correct": "The shop is between the bank and the park.",
+       "wrong": [
+        "The shop is between the bank or the park.",
+        "The shop is between of the bank and the park."
+       ],
+       "why": "between-এর সাথে and বসে।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "In a rickshaw or taxi",
+     "titleBn": "রিকশা বা ট্যাক্সিতে",
+     "vocab": [
+      {
+       "en": "stop",
+       "bn": "থামা",
+       "emoji": "🛑"
+      },
+      {
+       "en": "fare",
+       "bn": "ভাড়া",
+       "emoji": "💵"
+      },
+      {
+       "en": "here",
+       "bn": "এখানে",
+       "emoji": "📍"
+      },
+      {
+       "en": "slowly",
+       "bn": "আস্তে",
+       "emoji": "🐢"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Please stop here.",
+       "bn": "দয়া করে এখানে থামুন।",
+       "alt": []
+      },
+      {
+       "en": "How much is the fare?",
+       "bn": "ভাড়া কত?",
+       "alt": []
+      },
+      {
+       "en": "Please go slowly.",
+       "bn": "দয়া করে আস্তে চালান।",
+       "alt": []
+      },
+      {
+       "en": "Take me to the station.",
+       "bn": "আমাকে স্টেশনে নিয়ে চলুন।",
+       "alt": []
+      },
+      {
+       "en": "Keep the change.",
+       "bn": "বাকি টাকা রেখে দিন।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Please ___ here.",
+       "answer": "stop",
+       "options": [
+        "stop",
+        "stops",
+        "stopping"
+       ],
+       "bn": "দয়া করে এখানে থামুন।",
+       "why": "অনুরোধে কাজটা যেমন আছে।"
+      },
+      {
+       "text": "Take me ___ the station.",
+       "answer": "to",
+       "options": [
+        "to",
+        "at",
+        "in"
+       ],
+       "bn": "আমাকে স্টেশনে নিয়ে চলুন।",
+       "why": "কোথাও নিয়ে যেতে to।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Driver",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Where do you want to go?",
+         "bn": "কোথায় যাবেন?"
+        },
+        {
+         "who": "you",
+         "en": "Take me to the station, please.",
+         "bn": "দয়া করে আমাকে স্টেশনে নিয়ে চলুন।"
+        },
+        {
+         "who": "them",
+         "en": "Okay.",
+         "bn": "আচ্ছা।"
+        },
+        {
+         "who": "you",
+         "en": "How much is the fare?",
+         "bn": "ভাড়া কত?"
+        }
+       ],
+       "wrong": [
+        "I am the station.",
+        "Yes, fare is go."
        ]
       }
      ]
@@ -1572,6 +2622,210 @@
        ]
       }
      ]
+    },
+    {
+     "title": "Went, saw, ate",
+     "titleBn": "গেলাম, দেখলাম, খেলাম",
+     "vocab": [
+      {
+       "en": "went",
+       "bn": "গেলাম",
+       "emoji": "🚶"
+      },
+      {
+       "en": "saw",
+       "bn": "দেখলাম",
+       "emoji": "👀"
+      },
+      {
+       "en": "ate",
+       "bn": "খেলাম",
+       "emoji": "🍛"
+      },
+      {
+       "en": "bought",
+       "bn": "কিনলাম",
+       "emoji": "🛍️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I went to the market yesterday.",
+       "bn": "আমি গতকাল বাজারে গিয়েছিলাম।",
+       "alt": []
+      },
+      {
+       "en": "We saw a big ship.",
+       "bn": "আমরা একটা বড় জাহাজ দেখেছিলাম।",
+       "alt": []
+      },
+      {
+       "en": "She ate fish and rice.",
+       "bn": "সে মাছ-ভাত খেয়েছিল।",
+       "alt": []
+      },
+      {
+       "en": "He bought a new phone.",
+       "bn": "সে একটা নতুন ফোন কিনেছিল।",
+       "alt": []
+      },
+      {
+       "en": "They went home late.",
+       "bn": "তারা দেরিতে বাড়ি গিয়েছিল।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I ___ to the market yesterday.",
+       "answer": "went",
+       "options": [
+        "went",
+        "go",
+        "goed"
+       ],
+       "bn": "আমি গতকাল বাজারে গিয়েছিলাম।",
+       "why": "go-এর অতীত went, goed নয়।"
+      },
+      {
+       "text": "He ___ a new phone.",
+       "answer": "bought",
+       "options": [
+        "bought",
+        "buyed",
+        "buy"
+       ],
+       "bn": "সে একটা নতুন ফোন কিনেছিল।",
+       "why": "buy-এর অতীত bought।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "Yesterday I ___ to Cox's Bazar and ___ the sea.",
+       "answers": [
+        "went",
+        "saw"
+       ],
+       "extra": [
+        "go",
+        "see"
+       ],
+       "bn": "গতকাল আমি কক্সবাজার গিয়ে সমুদ্র দেখেছিলাম।",
+       "why": "অতীতে go → went, see → saw।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "কিছু কাজের অতীত -ed দিয়ে হয় না: go → went, eat → ate।",
+       "correct": "We ate biryani last night.",
+       "wrong": [
+        "We eated biryani last night.",
+        "We eat biryani last night."
+       ],
+       "why": "eat-এর অতীত ate।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Did you…?",
+     "titleBn": "তুমি কি…?",
+     "vocab": [
+      {
+       "en": "did",
+       "bn": "করেছিলে কি (প্রশ্ন)",
+       "emoji": "❓"
+      },
+      {
+       "en": "didn't",
+       "bn": "করিনি",
+       "emoji": "🚫"
+      },
+      {
+       "en": "fun",
+       "bn": "মজা",
+       "emoji": "🎉"
+      },
+      {
+       "en": "trip",
+       "bn": "ভ্রমণ",
+       "emoji": "🧳"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Did you have fun?",
+       "bn": "তোমার কি মজা হয়েছিল?",
+       "alt": []
+      },
+      {
+       "en": "Yes, I did.",
+       "bn": "হ্যাঁ, হয়েছিল।",
+       "alt": []
+      },
+      {
+       "en": "I didn't go to school.",
+       "bn": "আমি স্কুলে যাইনি।",
+       "alt": []
+      },
+      {
+       "en": "Did she call you?",
+       "bn": "সে কি তোমাকে ফোন করেছিল?",
+       "alt": []
+      },
+      {
+       "en": "How was your trip?",
+       "bn": "তোমার ভ্রমণ কেমন ছিল?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ you have fun?",
+       "answer": "Did",
+       "options": [
+        "Did",
+        "Do",
+        "Was"
+       ],
+       "bn": "তোমার কি মজা হয়েছিল?",
+       "why": "অতীতের প্রশ্নে Did।"
+      },
+      {
+       "text": "I didn't ___ to school.",
+       "answer": "go",
+       "options": [
+        "go",
+        "went",
+        "goes"
+       ],
+       "bn": "আমি স্কুলে যাইনি।",
+       "why": "didn't-এর পরে কাজটা যেমন আছে: go।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Mim",
+       "lines": [
+        {
+         "who": "them",
+         "en": "How was your weekend?",
+         "bn": "তোমার ছুটির দিন কেমন কাটল?"
+        },
+        {
+         "who": "you",
+         "en": "It was great. I went to my village.",
+         "bn": "দারুণ। আমি গ্রামের বাড়ি গিয়েছিলাম।"
+        }
+       ],
+       "wrong": [
+        "It is great. I go village.",
+        "Yes, I weekend."
+       ]
+      }
+     ]
     }
    ]
   },
@@ -1830,6 +3084,220 @@
        ]
       }
      ]
+    },
+    {
+     "title": "Should and shouldn't",
+     "titleBn": "উচিত, উচিত নয়",
+     "vocab": [
+      {
+       "en": "exercise",
+       "bn": "ব্যায়াম",
+       "emoji": "🏃"
+      },
+      {
+       "en": "sugar",
+       "bn": "চিনি",
+       "emoji": "🍬"
+      },
+      {
+       "en": "sleep",
+       "bn": "ঘুম",
+       "emoji": "😴"
+      },
+      {
+       "en": "fruit",
+       "bn": "ফল",
+       "emoji": "🍎"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "You should exercise every day.",
+       "bn": "তোমার প্রতিদিন ব্যায়াম করা উচিত।",
+       "alt": []
+      },
+      {
+       "en": "You shouldn't eat too much sugar.",
+       "bn": "বেশি চিনি খাওয়া উচিত নয়।",
+       "alt": []
+      },
+      {
+       "en": "Children should sleep early.",
+       "bn": "বাচ্চাদের তাড়াতাড়ি ঘুমানো উচিত।",
+       "alt": []
+      },
+      {
+       "en": "We should eat more fruit.",
+       "bn": "আমাদের আরও ফল খাওয়া উচিত।",
+       "alt": []
+      },
+      {
+       "en": "Should I take this medicine?",
+       "bn": "আমার কি এই ওষুধটা খাওয়া উচিত?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "You ___ eat too much sugar.",
+       "answer": "shouldn't",
+       "options": [
+        "shouldn't",
+        "should",
+        "don't should"
+       ],
+       "bn": "বেশি চিনি খাওয়া উচিত নয়।",
+       "why": "উচিত নয় = shouldn't।"
+      },
+      {
+       "text": "___ I take this medicine?",
+       "answer": "Should",
+       "options": [
+        "Should",
+        "Do should",
+        "Am"
+       ],
+       "bn": "আমার কি এই ওষুধটা খাওয়া উচিত?",
+       "why": "প্রশ্নে Should আগে আসে।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "You ___ drink water and you ___ stay up late.",
+       "answers": [
+        "should",
+        "shouldn't"
+       ],
+       "extra": [
+        "are",
+        "has"
+       ],
+       "bn": "তোমার পানি খাওয়া উচিত আর দেরি করে জেগে থাকা উচিত নয়।",
+       "why": "পরামর্শে should, না বোঝাতে shouldn't।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "প্রশ্নে should বাক্যের শুরুতে আসে।",
+       "correct": "Should I see a doctor?",
+       "wrong": [
+        "I should see a doctor?",
+        "Do I should see a doctor?"
+       ],
+       "why": "Should I …? দিয়ে প্রশ্ন।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "At the pharmacy",
+     "titleBn": "ফার্মেসিতে",
+     "vocab": [
+      {
+       "en": "tablet",
+       "bn": "বড়ি",
+       "emoji": "💊"
+      },
+      {
+       "en": "syrup",
+       "bn": "সিরাপ",
+       "emoji": "🧴"
+      },
+      {
+       "en": "prescription",
+       "bn": "প্রেসক্রিপশন",
+       "emoji": "📄"
+      },
+      {
+       "en": "pain",
+       "bn": "ব্যথা",
+       "emoji": "🤕"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I need something for a headache.",
+       "bn": "মাথাব্যথার জন্য কিছু দরকার।",
+       "alt": []
+      },
+      {
+       "en": "Do you have a prescription?",
+       "bn": "আপনার কাছে প্রেসক্রিপশন আছে?",
+       "alt": []
+      },
+      {
+       "en": "Take one tablet after meals.",
+       "bn": "খাওয়ার পরে একটা বড়ি খাবেন।",
+       "alt": []
+      },
+      {
+       "en": "This syrup is for children.",
+       "bn": "এই সিরাপটা বাচ্চাদের জন্য।",
+       "alt": []
+      },
+      {
+       "en": "The pain is much better now.",
+       "bn": "ব্যথা এখন অনেক কম।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Take one tablet ___ meals.",
+       "answer": "after",
+       "options": [
+        "after",
+        "at",
+        "on"
+       ],
+       "bn": "খাওয়ার পরে একটা বড়ি খাবেন।",
+       "why": "পরে = after।"
+      },
+      {
+       "text": "I need something ___ a headache.",
+       "answer": "for",
+       "options": [
+        "for",
+        "to",
+        "of"
+       ],
+       "bn": "মাথাব্যথার জন্য কিছু দরকার।",
+       "why": "কিছুর জন্য = for।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Pharmacist",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Can I help you?",
+         "bn": "কীভাবে সাহায্য করতে পারি?"
+        },
+        {
+         "who": "you",
+         "en": "I need something for a cough.",
+         "bn": "কাশির জন্য কিছু দরকার।"
+        },
+        {
+         "who": "them",
+         "en": "Take this syrup twice a day.",
+         "bn": "এই সিরাপটা দিনে দুবার খাবেন।"
+        },
+        {
+         "who": "you",
+         "en": "Thank you. How much is it?",
+         "bn": "ধন্যবাদ। দাম কত?"
+        }
+       ],
+       "wrong": [
+        "I am a cough.",
+        "Yes, syrup is me."
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2078,6 +3546,210 @@
        "wrong": [
         "Yes, I am Friday.",
         "No, I am a cricket."
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Will or going to?",
+     "titleBn": "will না going to?",
+     "vocab": [
+      {
+       "en": "decide",
+       "bn": "সিদ্ধান্ত নেওয়া",
+       "emoji": "🤔"
+      },
+      {
+       "en": "promise",
+       "bn": "কথা দেওয়া",
+       "emoji": "🤞"
+      },
+      {
+       "en": "probably",
+       "bn": "সম্ভবত",
+       "emoji": "🎲"
+      },
+      {
+       "en": "help",
+       "bn": "সাহায্য করা",
+       "emoji": "🤝"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I am going to study medicine.",
+       "bn": "আমি ডাক্তারি পড়ব (ঠিক করা আছে)।",
+       "alt": []
+      },
+      {
+       "en": "I will help you.",
+       "bn": "আমি তোমাকে সাহায্য করব।",
+       "alt": []
+      },
+      {
+       "en": "It will probably rain tomorrow.",
+       "bn": "কাল সম্ভবত বৃষ্টি হবে।",
+       "alt": []
+      },
+      {
+       "en": "I promise I will call you.",
+       "bn": "কথা দিচ্ছি, তোমাকে ফোন করব।",
+       "alt": []
+      },
+      {
+       "en": "The phone is ringing. I will answer it.",
+       "bn": "ফোন বাজছে। আমি ধরছি।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I promise I ___ call you.",
+       "answer": "will",
+       "options": [
+        "will",
+        "am going",
+        "going"
+       ],
+       "bn": "কথা দিচ্ছি, তোমাকে ফোন করব।",
+       "why": "কথা দিতে will।"
+      },
+      {
+       "text": "It will ___ rain tomorrow.",
+       "answer": "probably",
+       "options": [
+        "probably",
+        "promise",
+        "decide"
+       ],
+       "bn": "কাল সম্ভবত বৃষ্টি হবে।",
+       "why": "সম্ভবত = probably।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "Next year I ___ going to study, and I ___ work hard.",
+       "answers": [
+        "am",
+        "will"
+       ],
+       "extra": [
+        "is",
+        "are"
+       ],
+       "bn": "আগামী বছর আমি পড়াশোনা করব, আর খুব খাটব।",
+       "why": "ঠিক করা পরিকল্পনা am going to, প্রতিজ্ঞায় will।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "আগে থেকে ঠিক করা কাজে going to, এখনই নেওয়া সিদ্ধান্তে will।",
+       "correct": "I am going to visit Sylhet next month.",
+       "wrong": [
+        "I going to visit Sylhet next month.",
+        "I will going to visit Sylhet next month."
+       ],
+       "why": "আগে থেকে ঠিক করা: am going to।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Inviting",
+     "titleBn": "দাওয়াত দেওয়া",
+     "vocab": [
+      {
+       "en": "invite",
+       "bn": "দাওয়াত দেওয়া",
+       "emoji": "💌"
+      },
+      {
+       "en": "party",
+       "bn": "অনুষ্ঠান",
+       "emoji": "🎉"
+      },
+      {
+       "en": "birthday",
+       "bn": "জন্মদিন",
+       "emoji": "🎂"
+      },
+      {
+       "en": "would like",
+       "bn": "চাই (ভদ্রভাবে)",
+       "emoji": "🙏"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Would you like to come to my party?",
+       "bn": "তুমি কি আমার অনুষ্ঠানে আসতে চাও?",
+       "alt": []
+      },
+      {
+       "en": "It is my birthday on Friday.",
+       "bn": "শুক্রবার আমার জন্মদিন।",
+       "alt": []
+      },
+      {
+       "en": "I would love to come.",
+       "bn": "আমি অবশ্যই আসতে চাই।",
+       "alt": []
+      },
+      {
+       "en": "Sorry, I can't. I am busy.",
+       "bn": "দুঃখিত, পারব না। আমি ব্যস্ত।",
+       "alt": []
+      },
+      {
+       "en": "What time does it start?",
+       "bn": "কয়টায় শুরু?",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Would you like ___ come?",
+       "answer": "to",
+       "options": [
+        "to",
+        "for",
+        "at"
+       ],
+       "bn": "তুমি কি আসতে চাও?",
+       "why": "would like-এর পরে to + কাজ।"
+      },
+      {
+       "text": "It is my birthday ___ Friday.",
+       "answer": "on",
+       "options": [
+        "on",
+        "in",
+        "at"
+       ],
+       "bn": "শুক্রবার আমার জন্মদিন।",
+       "why": "দিনের আগে on।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Nila",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Would you like to come to my birthday party?",
+         "bn": "আমার জন্মদিনের অনুষ্ঠানে আসবে?"
+        },
+        {
+         "who": "you",
+         "en": "I would love to. What time does it start?",
+         "bn": "অবশ্যই। কয়টায় শুরু?"
+        }
+       ],
+       "wrong": [
+        "I am a party.",
+        "Yes, birthday is time."
        ]
       }
      ]
@@ -2337,6 +4009,209 @@
        ]
       }
      ]
+    },
+    {
+     "title": "So and because",
+     "titleBn": "তাই আর কারণ",
+     "vocab": [
+      {
+       "en": "so",
+       "bn": "তাই",
+       "emoji": "➡️"
+      },
+      {
+       "en": "but",
+       "bn": "কিন্তু",
+       "emoji": "↔️"
+      },
+      {
+       "en": "happy",
+       "bn": "খুশি",
+       "emoji": "😊"
+      },
+      {
+       "en": "nervous",
+       "bn": "ঘাবড়ানো",
+       "emoji": "😬"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I was tired, so I went to bed.",
+       "bn": "আমি ক্লান্ত ছিলাম, তাই ঘুমাতে গেলাম।",
+       "alt": []
+      },
+      {
+       "en": "I am nervous because I have an exam.",
+       "bn": "আমি ঘাবড়ে আছি কারণ আমার পরীক্ষা আছে।",
+       "alt": []
+      },
+      {
+       "en": "She is happy but tired.",
+       "bn": "সে খুশি কিন্তু ক্লান্ত।",
+       "alt": []
+      },
+      {
+       "en": "It was raining, so we stayed home.",
+       "bn": "বৃষ্টি হচ্ছিল, তাই আমরা বাড়িতে ছিলাম।",
+       "alt": []
+      },
+      {
+       "en": "I like him because he is kind.",
+       "bn": "আমি তাকে পছন্দ করি কারণ সে দয়ালু।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I was tired, ___ I went to bed.",
+       "answer": "so",
+       "options": [
+        "so",
+        "because",
+        "but"
+       ],
+       "bn": "আমি ক্লান্ত ছিলাম, তাই ঘুমাতে গেলাম।",
+       "why": "ফল বোঝাতে so।"
+      },
+      {
+       "text": "She is happy ___ tired.",
+       "answer": "but",
+       "options": [
+        "but",
+        "so",
+        "because"
+       ],
+       "bn": "সে খুশি কিন্তু ক্লান্ত।",
+       "why": "উল্টো কথা জুড়তে but।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "I studied hard, ___ I passed, ___ I was still nervous.",
+       "answers": [
+        "so",
+        "but"
+       ],
+       "extra": [
+        "because",
+        "or"
+       ],
+       "bn": "আমি খুব পড়েছিলাম, তাই পাস করলাম, কিন্তু তবু ঘাবড়ে ছিলাম।",
+       "why": "ফল so, উল্টো কথা but।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "কারণ বলতে because, ফল বলতে so।",
+       "correct": "It was late, so I took a rickshaw.",
+       "wrong": [
+        "It was late, because I took a rickshaw."
+       ],
+       "why": "দেরি হয়েছিল বলে রিকশা নিলাম: so।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Agreeing and disagreeing",
+     "titleBn": "একমত, ভিন্নমত",
+     "vocab": [
+      {
+       "en": "agree",
+       "bn": "একমত",
+       "emoji": "👍"
+      },
+      {
+       "en": "disagree",
+       "bn": "ভিন্নমত",
+       "emoji": "👎"
+      },
+      {
+       "en": "maybe",
+       "bn": "হয়তো",
+       "emoji": "🤔"
+      },
+      {
+       "en": "right",
+       "bn": "ঠিক",
+       "emoji": "✅"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I agree with you.",
+       "bn": "আমি তোমার সাথে একমত।",
+       "alt": []
+      },
+      {
+       "en": "I don't agree.",
+       "bn": "আমি একমত নই।",
+       "alt": []
+      },
+      {
+       "en": "You are right.",
+       "bn": "তুমি ঠিক বলেছ।",
+       "alt": []
+      },
+      {
+       "en": "Maybe you are right.",
+       "bn": "হয়তো তুমি ঠিক।",
+       "alt": []
+      },
+      {
+       "en": "In my opinion, English is useful.",
+       "bn": "আমার মতে, ইংরেজি কাজের।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I agree ___ you.",
+       "answer": "with",
+       "options": [
+        "with",
+        "to",
+        "at"
+       ],
+       "bn": "আমি তোমার সাথে একমত।",
+       "why": "কারো সাথে একমত: agree with।"
+      },
+      {
+       "text": "In my ___, English is useful.",
+       "answer": "opinion",
+       "options": [
+        "opinion",
+        "agree",
+        "right"
+       ],
+       "bn": "আমার মতে, ইংরেজি কাজের।",
+       "why": "আমার মতে = in my opinion।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Friend",
+       "lines": [
+        {
+         "who": "them",
+         "en": "I think this film is boring.",
+         "bn": "আমার মনে হয় ছবিটা একঘেয়ে।"
+        },
+        {
+         "who": "you",
+         "en": "I don't agree. I think it is interesting.",
+         "bn": "আমি একমত নই। আমার মনে হয় এটা আকর্ষণীয়।"
+        }
+       ],
+       "wrong": [
+        "I am agree boring.",
+        "Yes, I film."
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2583,6 +4458,210 @@
        "wrong": [
         "Dhaka is big than Sylhet.",
         "Sylhet is the Dhaka."
+       ]
+      }
+     ]
+    },
+    {
+     "title": "More and most",
+     "titleBn": "আরও আর সবচেয়ে",
+     "vocab": [
+      {
+       "en": "beautiful",
+       "bn": "সুন্দর",
+       "emoji": "🌸"
+      },
+      {
+       "en": "important",
+       "bn": "গুরুত্বপূর্ণ",
+       "emoji": "❗"
+      },
+      {
+       "en": "dangerous",
+       "bn": "বিপজ্জনক",
+       "emoji": "⚠️"
+      },
+      {
+       "en": "famous",
+       "bn": "বিখ্যাত",
+       "emoji": "⭐"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Sylhet is more beautiful than Dhaka.",
+       "bn": "সিলেট ঢাকার চেয়ে বেশি সুন্দর।",
+       "alt": []
+      },
+      {
+       "en": "This is the most important lesson.",
+       "bn": "এটা সবচেয়ে গুরুত্বপূর্ণ লেসন।",
+       "alt": []
+      },
+      {
+       "en": "A tiger is more dangerous than a cat.",
+       "bn": "বাঘ বিড়ালের চেয়ে বেশি বিপজ্জনক।",
+       "alt": []
+      },
+      {
+       "en": "He is the most famous singer here.",
+       "bn": "সে এখানকার সবচেয়ে বিখ্যাত গায়ক।",
+       "alt": []
+      },
+      {
+       "en": "Health is more important than money.",
+       "bn": "টাকার চেয়ে স্বাস্থ্য বেশি গুরুত্বপূর্ণ।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Sylhet is ___ beautiful than Dhaka.",
+       "answer": "more",
+       "options": [
+        "more",
+        "most",
+        "the"
+       ],
+       "bn": "সিলেট ঢাকার চেয়ে বেশি সুন্দর।",
+       "why": "বড় শব্দের তুলনায় more … than।"
+      },
+      {
+       "text": "This is the ___ important lesson.",
+       "answer": "most",
+       "options": [
+        "most",
+        "more",
+        "much"
+       ],
+       "bn": "এটা সবচেয়ে গুরুত্বপূর্ণ লেসন।",
+       "why": "সবচেয়ে = the most।"
+      }
+     ],
+     "gaps": [
+      {
+       "text": "A river is ___ than a pond, but the sea is the ___.",
+       "answers": [
+        "bigger",
+        "biggest"
+       ],
+       "extra": [
+        "big",
+        "more big"
+       ],
+       "bn": "নদী পুকুরের চেয়ে বড়, কিন্তু সমুদ্র সবচেয়ে বড়।",
+       "why": "ছোট শব্দে -er আর -est।"
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "বড় শব্দে (beautiful, important) -er নয়, more/most বসে।",
+       "correct": "This flower is more beautiful.",
+       "wrong": [
+        "This flower is beautifuller.",
+        "This flower is more beautifuller."
+       ],
+       "why": "beautiful-এর তুলনা more beautiful।"
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Our environment",
+     "titleBn": "আমাদের পরিবেশ",
+     "vocab": [
+      {
+       "en": "pollution",
+       "bn": "দূষণ",
+       "emoji": "🏭"
+      },
+      {
+       "en": "plant",
+       "bn": "গাছ লাগানো",
+       "emoji": "🌱"
+      },
+      {
+       "en": "flood",
+       "bn": "বন্যা",
+       "emoji": "🌊"
+      },
+      {
+       "en": "clean",
+       "bn": "পরিষ্কার",
+       "emoji": "🧹"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Pollution is a big problem in cities.",
+       "bn": "শহরে দূষণ একটা বড় সমস্যা।",
+       "alt": []
+      },
+      {
+       "en": "We should plant more trees.",
+       "bn": "আমাদের আরও গাছ লাগানো উচিত।",
+       "alt": []
+      },
+      {
+       "en": "There was a flood last year.",
+       "bn": "গত বছর বন্যা হয়েছিল।",
+       "alt": []
+      },
+      {
+       "en": "Keep your area clean.",
+       "bn": "তোমার এলাকা পরিষ্কার রাখো।",
+       "alt": []
+      },
+      {
+       "en": "Don't throw plastic in the river.",
+       "bn": "নদীতে প্লাস্টিক ফেলো না।",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "We should ___ more trees.",
+       "answer": "plant",
+       "options": [
+        "plant",
+        "plants",
+        "planting"
+       ],
+       "bn": "আমাদের আরও গাছ লাগানো উচিত।",
+       "why": "should-এর পরে কাজটা যেমন আছে।"
+      },
+      {
+       "text": "Don't ___ plastic in the river.",
+       "answer": "throw",
+       "options": [
+        "throw",
+        "throws",
+        "threw"
+       ],
+       "bn": "নদীতে প্লাস্টিক ফেলো না।",
+       "why": "Don't-এর পরে কাজটা যেমন আছে।"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Teacher",
+       "lines": [
+        {
+         "who": "them",
+         "en": "What can we do for our environment?",
+         "bn": "পরিবেশের জন্য আমরা কী করতে পারি?"
+        },
+        {
+         "who": "you",
+         "en": "We can plant trees and keep our area clean.",
+         "bn": "আমরা গাছ লাগাতে আর এলাকা পরিষ্কার রাখতে পারি।"
+        }
+       ],
+       "wrong": [
+        "I am a tree.",
+        "Yes, environment is clean me."
        ]
       }
      ]

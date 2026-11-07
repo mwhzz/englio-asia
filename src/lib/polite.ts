@@ -1,3 +1,5 @@
+import { learnerLang } from './learnerLang';
+
 /**
  * "আপনি" for adult learners: the app's Bangla is written with তুমি; for a learner who chose "চাকরি / অন্যান্য"
  * (or switched it on in Profile) every Bangla text on screen is turned into the polite form, word by word.
@@ -129,6 +131,8 @@ export function setPoliteChoice(v: 'on' | 'off'): void {
 
 /** Whether to speak to this learner as আপনি: their choice, else yes for job / other learners. */
 export const wantsPolite = (stage: string | undefined) => {
+  // Bangla only (other languages have their own text).
+  if (learnerLang() !== 'bn') return false;
   const choice = politeChoice();
   return choice ? choice === 'on' : stage === 'other';
 };

@@ -1,6 +1,7 @@
 import { deviceId } from '../state/useProgressSync';
 import { API_BASE } from './api';
 import { isAndroidApp } from './playApp';
+import { learnerLang } from './learnerLang';
 
 const KEY = 'englio-plus-until';
 
@@ -49,7 +50,8 @@ export async function plusInfo(): Promise<PlusInfo | null> {
     const res = await fetch(`${API_BASE}/premium/info`);
     const info = res.ok ? ((await res.json()) as PlusInfo) : null;
     // Inside the Android (Play) app there is no bKash (Google requires Play Billing there); trials and codes stay.
-    return info && isAndroidApp() ? { ...info, available: false } : info;
+    // bKash is for Bangladesh: other languages' learners get trials and codes.
+    return info && (isAndroidApp() || learnerLang() !== 'bn') ? { ...info, available: false } : info;
   } catch {
     return null;
   }

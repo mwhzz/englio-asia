@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { dateLocale } from '../../lib/learnerLang';
 import { Modal } from '../../components/Modal';
 import { toBanglaDigits } from '../../lib/bangla';
 import { haptic } from '../../lib/haptics';
 import { buyPlus, plusInfo, redeemCode, startTrial, trialUsed, type PlusInfo } from '../../lib/premium';
 
-const dateOf = (iso: string) => new Intl.DateTimeFormat('bn-BD', { day: 'numeric', month: 'long' }).format(new Date(iso));
+const dateOf = (iso: string) => new Intl.DateTimeFormat(dateLocale(), { day: 'numeric', month: 'long' }).format(new Date(iso));
 
 /**
  * Getting Englio Plus: the free trial (once), the monthly or yearly plan with bKash (website only), and a

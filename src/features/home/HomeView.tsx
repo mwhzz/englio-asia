@@ -15,6 +15,7 @@ import { StreakLost } from './StreakLost';
 import { NoticeBanner } from '../notice/NoticeBanner';
 import { ReplyCard } from '../help/ReplyCard';
 import { QuestsCard } from './QuestsCard';
+import { isBangla } from '../../lib/learnerLang';
 import { BackupNudge } from './BackupNudge';
 import { SyncNote } from './SyncNote';
 import { VoiceHint } from './VoiceHint';
@@ -57,7 +58,7 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
         {anyDone && <QuestsCard />}
         <BackupNudge />
         <ReviewCard onStart={onReview} />
-        {feature('board') && boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
+        {feature('board') && isBangla() && boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
         {feature('stories') && anyDone && <StoriesCard />}
         {feature('league') && anyDone && <LeagueCard />}
         <section className="home-path home-rise" style={{ animationDelay: '220ms' }}>

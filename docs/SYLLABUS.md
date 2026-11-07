@@ -2,6 +2,17 @@
 
 The whole English course for Bangla speakers, from the first words (A1) to confident everyday and exam English (B2), on the CEFR scale. Each unit has 2–3 lessons of about 15 questions (6 words, 5 sentences, blanks, one gap text, one grammar point, one dialogue) and tips. About 80 units in all; a learner doing one lesson a day needs about 6 months to finish.
 
+## What a unit is
+
+Every unit is complete on its own: when a learner finishes its lessons, they know everything in it.
+
+1. **Words 1** and **Words 2**: 6 words each, with 5 sentences using them and blanks (each blank says *why*).
+2. **Grammar**: the unit's grammar point, with a gap text and 1–2 "which sentence is right?" questions.
+3. **Conversation**: the words and grammar in a real-life dialogue or two.
+4. **Unit test**: built by the app from all four lessons; passing it gives the unit's certificate.
+
+Plus at least 2 tips (the unit's guidebook). `server/importLanguage.test.ts` checks every batch file against this (4+ lessons, 16+ words, grammar, a gap text, a dialogue, 2+ tips) and that every question can be answered.
+
 Status: **live** = learners have it; **draft** = written, waiting for a teacher's check (admin → লেসন, it shows খসড়া); **planned** = not written yet.
 
 ## How a batch is added and checked
@@ -27,7 +38,7 @@ Status: **live** = learners have it; **draft** = written, waiting for a teacher'
 | 10 | On the Phone | phone phrases, can I speak to…? | live |
 | 11 | At the Doctor | body, I have a fever | live |
 
-## A1+ to A2: everyday life (batch 01, `content/bn-batch-01.json`)
+## A1+ to A2: everyday life (batch 01, `content/bn-batch-01.json`, 4 lessons per unit, 40 lessons)
 
 | # | Unit | Grammar and focus | Status |
 | --- | --- | --- | --- |
@@ -110,6 +121,18 @@ Status: **live** = learners have it; **draft** = written, waiting for a teacher'
 | 73 | Listening to fast English | connected speech |
 | 74 | Pronunciation | stress and intonation |
 | 75 | Review B2 | mixed review + unit test |
+
+## Arabic (for Arabic speakers)
+
+Meanings, tips and explanations in Modern Standard Arabic, drafted by AI: a native speaker checks them in the admin before Arabic goes live (admin → ভাষা → আরবি → চালু).
+
+| Units | File | What | Status |
+| --- | --- | --- | --- |
+| 1–3 First Steps, Family, Food & Drink | `content/ar-starter.json` + `content/ar-starter-more.json` | 4 lessons each | draft (starter on the server; add the "more" file) |
+| 4–11 Numbers & Time, Daily Life, At the Market, At School, Weather, Travel, On the Phone, At the Doctor | `content/ar-batch-01.json` | 4 lessons each, 32 lessons | draft |
+| 12+ | the Bangla plan above, translated | | planned |
+
+The app's own text in Arabic: `content/ui/ar.json` (editable in admin → অ্যাপের লেখা).
 
 ## Beside the path
 

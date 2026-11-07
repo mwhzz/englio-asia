@@ -1,0 +1,3418 @@
+{
+ "language": {
+  "code": "ar",
+  "name": "Arabic",
+  "native": "العربية",
+  "dir": "rtl"
+ },
+ "units": [
+  {
+   "title": "Numbers & Time",
+   "titleBn": "الأعداد والوقت",
+   "color": "#ff9500",
+   "tips": [
+    {
+     "title": "What time is it?",
+     "body": "لمعرفة الساعة نقول: What time is it? والجواب: It is ... o'clock. ونستخدم at قبل الوقت: at seven.",
+     "examples": [
+      "It is ten o'clock.",
+      "I wake up at six."
+     ]
+    },
+    {
+     "title": "Numbers 1–100",
+     "body": "من 13 إلى 19 تنتهي الأعداد بـ teen: thirteen, fourteen. والعشرات تنتهي بـ ty: twenty, thirty.",
+     "examples": [
+      "I am fifteen years old.",
+      "There are thirty students."
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "Numbers",
+     "titleBn": "الأعداد",
+     "vocab": [
+      {
+       "en": "one",
+       "bn": "واحد",
+       "emoji": "1️⃣"
+      },
+      {
+       "en": "two",
+       "bn": "اثنان",
+       "emoji": "2️⃣"
+      },
+      {
+       "en": "three",
+       "bn": "ثلاثة",
+       "emoji": "3️⃣"
+      },
+      {
+       "en": "ten",
+       "bn": "عشرة",
+       "emoji": "🔟"
+      },
+      {
+       "en": "twenty",
+       "bn": "عشرون",
+       "emoji": "🔢"
+      },
+      {
+       "en": "hundred",
+       "bn": "مئة",
+       "emoji": "💯"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I have two brothers.",
+       "bn": "عندي أخوان اثنان.",
+       "alt": []
+      },
+      {
+       "en": "She is ten years old.",
+       "bn": "عمرها عشر سنوات.",
+       "alt": []
+      },
+      {
+       "en": "There are twenty students in the class.",
+       "bn": "في الصف عشرون طالبًا.",
+       "alt": []
+      },
+      {
+       "en": "This book is one hundred pages.",
+       "bn": "هذا الكتاب مئة صفحة.",
+       "alt": []
+      },
+      {
+       "en": "I have three apples.",
+       "bn": "عندي ثلاث تفاحات.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "She is ten years ___.",
+       "answer": "old",
+       "options": [
+        "old",
+        "age",
+        "year"
+       ],
+       "bn": "عمرها عشر سنوات.",
+       "why": "للعمر نقول: years old."
+      },
+      {
+       "text": "I have two ___.",
+       "answer": "brothers",
+       "options": [
+        "brothers",
+        "brother",
+        "a brother"
+       ],
+       "bn": "عندي أخوان اثنان.",
+       "why": "بعد two يأتي الاسم بالجمع: brothers."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Telling the time",
+     "titleBn": "معرفة الوقت",
+     "vocab": [
+      {
+       "en": "o'clock",
+       "bn": "تمامًا (الساعة)",
+       "emoji": "🕐"
+      },
+      {
+       "en": "morning",
+       "bn": "الصباح",
+       "emoji": "🌅"
+      },
+      {
+       "en": "afternoon",
+       "bn": "بعد الظهر",
+       "emoji": "🌤️"
+      },
+      {
+       "en": "evening",
+       "bn": "المساء",
+       "emoji": "🌆"
+      },
+      {
+       "en": "night",
+       "bn": "الليل",
+       "emoji": "🌙"
+      },
+      {
+       "en": "minute",
+       "bn": "دقيقة",
+       "emoji": "⏱️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "What time is it?",
+       "bn": "كم الساعة؟",
+       "alt": []
+      },
+      {
+       "en": "It is seven o'clock.",
+       "bn": "الساعة السابعة.",
+       "alt": [
+        "It's seven o'clock."
+       ]
+      },
+      {
+       "en": "I wake up at six in the morning.",
+       "bn": "أستيقظ في السادسة صباحًا.",
+       "alt": []
+      },
+      {
+       "en": "We eat dinner at night.",
+       "bn": "نتناول العشاء في الليل.",
+       "alt": []
+      },
+      {
+       "en": "Wait five minutes, please.",
+       "bn": "انتظر خمس دقائق من فضلك.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I wake up ___ six.",
+       "answer": "at",
+       "options": [
+        "at",
+        "in",
+        "on"
+       ],
+       "bn": "أستيقظ في السادسة.",
+       "why": "قبل الساعة نستخدم at."
+      },
+      {
+       "text": "What ___ is it?",
+       "answer": "time",
+       "options": [
+        "time",
+        "clock",
+        "hour"
+       ],
+       "bn": "كم الساعة؟",
+       "why": "السؤال عن الساعة: What time is it?"
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Days of the week",
+     "titleBn": "أيام الأسبوع",
+     "vocab": [
+      {
+       "en": "Monday",
+       "bn": "الاثنين",
+       "emoji": "📅"
+      },
+      {
+       "en": "Friday",
+       "bn": "الجمعة",
+       "emoji": "📅"
+      },
+      {
+       "en": "Saturday",
+       "bn": "السبت",
+       "emoji": "📅"
+      },
+      {
+       "en": "today",
+       "bn": "اليوم",
+       "emoji": "📍"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Today is Monday.",
+       "bn": "اليوم هو الاثنين.",
+       "alt": []
+      },
+      {
+       "en": "We go to school on Sunday.",
+       "bn": "نذهب إلى المدرسة يوم الأحد.",
+       "alt": []
+      },
+      {
+       "en": "I visit my grandmother on Friday.",
+       "bn": "أزور جدتي يوم الجمعة.",
+       "alt": []
+      },
+      {
+       "en": "The shop is closed on Saturday.",
+       "bn": "المتجر مغلق يوم السبت.",
+       "alt": []
+      },
+      {
+       "en": "What day is it today?",
+       "bn": "ما اليوم؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I visit my grandmother ___ Friday.",
+       "answer": "on",
+       "options": [
+        "on",
+        "at",
+        "in"
+       ],
+       "bn": "أزور جدتي يوم الجمعة.",
+       "why": "قبل أيام الأسبوع نستخدم on."
+      },
+      {
+       "text": "Today ___ Monday.",
+       "answer": "is",
+       "options": [
+        "is",
+        "are",
+        "am"
+       ],
+       "bn": "اليوم هو الاثنين.",
+       "why": "Today مفرد، لذلك is."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "I go to school ___ Sunday ___ eight o'clock.",
+       "answers": [
+        "on",
+        "at"
+       ],
+       "extra": [
+        "in",
+        "of"
+       ],
+       "bn": "أذهب إلى المدرسة يوم الأحد في الثامنة.",
+       "why": "on قبل اليوم، و at قبل الساعة."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "نستخدم on مع الأيام و at مع الساعات.",
+       "correct": "The class starts at nine on Monday.",
+       "wrong": [
+        "The class starts on nine at Monday.",
+        "The class starts in nine in Monday."
+       ],
+       "why": "at nine للساعة، و on Monday لليوم."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Making plans",
+     "titleBn": "تحديد المواعيد",
+     "vocab": [
+      {
+       "en": "when",
+       "bn": "متى",
+       "emoji": "❓"
+      },
+      {
+       "en": "late",
+       "bn": "متأخر",
+       "emoji": "⏰"
+      },
+      {
+       "en": "early",
+       "bn": "مبكر",
+       "emoji": "🐓"
+      },
+      {
+       "en": "tomorrow",
+       "bn": "غدًا",
+       "emoji": "➡️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "When is the meeting?",
+       "bn": "متى الاجتماع؟",
+       "alt": []
+      },
+      {
+       "en": "The bus is late.",
+       "bn": "الحافلة متأخرة.",
+       "alt": []
+      },
+      {
+       "en": "Come early tomorrow.",
+       "bn": "تعال مبكرًا غدًا.",
+       "alt": []
+      },
+      {
+       "en": "See you at five.",
+       "bn": "أراك في الخامسة.",
+       "alt": []
+      },
+      {
+       "en": "Is it far?",
+       "bn": "هل هو بعيد؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "See you ___ five.",
+       "answer": "at",
+       "options": [
+        "at",
+        "on",
+        "in"
+       ],
+       "bn": "أراك في الخامسة.",
+       "why": "مع الساعة نستخدم at."
+      },
+      {
+       "text": "Come ___ tomorrow.",
+       "answer": "early",
+       "options": [
+        "early",
+        "late",
+        "when"
+       ],
+       "bn": "تعال مبكرًا غدًا.",
+       "why": "early تعني مبكرًا."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Sara",
+       "lines": [
+        {
+         "who": "them",
+         "en": "What time is the class?",
+         "bn": "متى الحصة؟"
+        },
+        {
+         "who": "you",
+         "en": "It is at nine o'clock.",
+         "bn": "إنها في الساعة التاسعة."
+        }
+       ],
+       "wrong": [
+        "It is Monday nine.",
+        "Yes, I am nine."
+       ],
+       "why": "للجواب عن الوقت: It is at + الساعة."
+      },
+      {
+       "with": "Omar",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Can we meet tomorrow?",
+         "bn": "هل يمكن أن نلتقي غدًا؟"
+        },
+        {
+         "who": "you",
+         "en": "Yes, see you at five.",
+         "bn": "نعم، أراك في الخامسة."
+        }
+       ],
+       "wrong": [
+        "Yes, I am tomorrow.",
+        "No, five is late me."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Daily Life",
+   "titleBn": "الحياة اليومية",
+   "color": "#34c759",
+   "tips": [
+    {
+     "title": "Present simple",
+     "body": "للعادات اليومية نستخدم المضارع البسيط: I work. ومع he/she/it نضيف s: She works.",
+     "examples": [
+      "I get up at six.",
+      "He goes to work by bus."
+     ]
+    },
+    {
+     "title": "every day",
+     "body": "every day / usually / always تدل على العادة.",
+     "examples": [
+      "I always drink tea.",
+      "We usually eat at home."
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "My morning",
+     "titleBn": "صباحي",
+     "vocab": [
+      {
+       "en": "wake up",
+       "bn": "يستيقظ",
+       "emoji": "⏰"
+      },
+      {
+       "en": "wash",
+       "bn": "يغسل",
+       "emoji": "🧼"
+      },
+      {
+       "en": "breakfast",
+       "bn": "الفطور",
+       "emoji": "🍳"
+      },
+      {
+       "en": "brush",
+       "bn": "ينظّف (بالفرشاة)",
+       "emoji": "🪥"
+      },
+      {
+       "en": "dress",
+       "bn": "يلبس",
+       "emoji": "👕"
+      },
+      {
+       "en": "leave",
+       "bn": "يغادر",
+       "emoji": "🚪"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I wake up at six.",
+       "bn": "أستيقظ في السادسة.",
+       "alt": []
+      },
+      {
+       "en": "I wash my face.",
+       "bn": "أغسل وجهي.",
+       "alt": []
+      },
+      {
+       "en": "I eat breakfast with my family.",
+       "bn": "أتناول الفطور مع عائلتي.",
+       "alt": []
+      },
+      {
+       "en": "I brush my teeth.",
+       "bn": "أنظّف أسناني.",
+       "alt": []
+      },
+      {
+       "en": "I leave home at seven.",
+       "bn": "أغادر البيت في السابعة.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I ___ my teeth.",
+       "answer": "brush",
+       "options": [
+        "brush",
+        "wash",
+        "eat"
+       ],
+       "bn": "أنظّف أسناني.",
+       "why": "للأسنان نقول brush."
+      },
+      {
+       "text": "I eat ___ with my family.",
+       "answer": "breakfast",
+       "options": [
+        "breakfast",
+        "morning",
+        "teeth"
+       ],
+       "bn": "أتناول الفطور مع عائلتي.",
+       "why": "breakfast هو الفطور."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "My day",
+     "titleBn": "يومي",
+     "vocab": [
+      {
+       "en": "work",
+       "bn": "يعمل",
+       "emoji": "💼"
+      },
+      {
+       "en": "study",
+       "bn": "يدرس",
+       "emoji": "📚"
+      },
+      {
+       "en": "lunch",
+       "bn": "الغداء",
+       "emoji": "🍱"
+      },
+      {
+       "en": "rest",
+       "bn": "يرتاح",
+       "emoji": "🛋️"
+      },
+      {
+       "en": "sleep",
+       "bn": "ينام",
+       "emoji": "😴"
+      },
+      {
+       "en": "home",
+       "bn": "البيت",
+       "emoji": "🏠"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I work in an office.",
+       "bn": "أعمل في مكتب.",
+       "alt": []
+      },
+      {
+       "en": "She studies English every day.",
+       "bn": "تدرس الإنجليزية كل يوم.",
+       "alt": []
+      },
+      {
+       "en": "We eat lunch at one.",
+       "bn": "نتناول الغداء في الواحدة.",
+       "alt": []
+      },
+      {
+       "en": "He rests after work.",
+       "bn": "يرتاح بعد العمل.",
+       "alt": []
+      },
+      {
+       "en": "I go to sleep at ten.",
+       "bn": "أنام في العاشرة.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "She ___ English every day.",
+       "answer": "studies",
+       "options": [
+        "studies",
+        "study",
+        "studying"
+       ],
+       "bn": "تدرس الإنجليزية كل يوم.",
+       "why": "مع she نضيف es: studies."
+      },
+      {
+       "text": "He rests ___ work.",
+       "answer": "after",
+       "options": [
+        "after",
+        "at",
+        "on"
+       ],
+       "bn": "يرتاح بعد العمل.",
+       "why": "after تعني بعد."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "He works, she works",
+     "titleBn": "هو يعمل، هي تعمل",
+     "vocab": [
+      {
+       "en": "always",
+       "bn": "دائمًا",
+       "emoji": "🔁"
+      },
+      {
+       "en": "usually",
+       "bn": "عادةً",
+       "emoji": "📆"
+      },
+      {
+       "en": "never",
+       "bn": "أبدًا",
+       "emoji": "🚫"
+      },
+      {
+       "en": "sometimes",
+       "bn": "أحيانًا",
+       "emoji": "🔀"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "He always drinks tea in the morning.",
+       "bn": "يشرب الشاي دائمًا في الصباح.",
+       "alt": []
+      },
+      {
+       "en": "She usually walks to work.",
+       "bn": "تمشي عادةً إلى العمل.",
+       "alt": []
+      },
+      {
+       "en": "I never eat late.",
+       "bn": "لا آكل متأخرًا أبدًا.",
+       "alt": []
+      },
+      {
+       "en": "My father works in a bank.",
+       "bn": "يعمل أبي في بنك.",
+       "alt": []
+      },
+      {
+       "en": "Sometimes we watch TV.",
+       "bn": "أحيانًا نشاهد التلفاز.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "My father ___ in a bank.",
+       "answer": "works",
+       "options": [
+        "works",
+        "work",
+        "working"
+       ],
+       "bn": "يعمل أبي في بنك.",
+       "why": "my father = he، لذلك works."
+      },
+      {
+       "text": "I ___ eat late.",
+       "answer": "never",
+       "options": [
+        "never",
+        "always",
+        "usually"
+       ],
+       "bn": "لا آكل متأخرًا أبدًا.",
+       "why": "never تعني أبدًا."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "She ___ to work and he ___ the bus.",
+       "answers": [
+        "walks",
+        "takes"
+       ],
+       "extra": [
+        "walk",
+        "take"
+       ],
+       "bn": "هي تمشي إلى العمل وهو يركب الحافلة.",
+       "why": "مع she و he نضيف s للفعل."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "مع he و she و it يأخذ الفعل s في المضارع البسيط.",
+       "correct": "She goes to school every day.",
+       "wrong": [
+        "She go to school every day.",
+        "She going to school every day."
+       ],
+       "why": "she + goes (نضيف es بعد o)."
+      },
+      {
+       "rule": "كلمات التكرار تأتي قبل الفعل.",
+       "correct": "I always drink tea.",
+       "wrong": [
+        "I drink always tea.",
+        "Always I drink tea always."
+       ],
+       "why": "always قبل الفعل drink."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Talking about my day",
+     "titleBn": "الحديث عن يومي",
+     "vocab": [
+      {
+       "en": "busy",
+       "bn": "مشغول",
+       "emoji": "⏳"
+      },
+      {
+       "en": "free",
+       "bn": "متفرغ",
+       "emoji": "🙌"
+      },
+      {
+       "en": "tired",
+       "bn": "متعب",
+       "emoji": "😩"
+      },
+      {
+       "en": "after",
+       "bn": "بعد",
+       "emoji": "➡️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Are you busy today?",
+       "bn": "هل أنت مشغول اليوم؟",
+       "alt": []
+      },
+      {
+       "en": "I am free after five.",
+       "bn": "أنا متفرغ بعد الخامسة.",
+       "alt": []
+      },
+      {
+       "en": "I am tired after work.",
+       "bn": "أنا متعب بعد العمل.",
+       "alt": []
+      },
+      {
+       "en": "What do you do in the evening?",
+       "bn": "ماذا تفعل في المساء؟",
+       "alt": []
+      },
+      {
+       "en": "I read and then I sleep.",
+       "bn": "أقرأ ثم أنام.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I am free ___ five.",
+       "answer": "after",
+       "options": [
+        "after",
+        "on",
+        "of"
+       ],
+       "bn": "أنا متفرغ بعد الخامسة.",
+       "why": "after تعني بعد."
+      },
+      {
+       "text": "What do you ___ in the evening?",
+       "answer": "do",
+       "options": [
+        "do",
+        "does",
+        "doing"
+       ],
+       "bn": "ماذا تفعل في المساء؟",
+       "why": "مع you نستخدم do."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Lina",
+       "lines": [
+        {
+         "who": "them",
+         "en": "What do you do in the evening?",
+         "bn": "ماذا تفعل في المساء؟"
+        },
+        {
+         "who": "you",
+         "en": "I usually read a book.",
+         "bn": "عادةً أقرأ كتابًا."
+        }
+       ],
+       "wrong": [
+        "I usually a book.",
+        "Yes, I evening."
+       ],
+       "why": "الجواب: I + usually + فعل."
+      },
+      {
+       "with": "Karim",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Are you busy now?",
+         "bn": "هل أنت مشغول الآن؟"
+        },
+        {
+         "who": "you",
+         "en": "No, I am free.",
+         "bn": "لا، أنا متفرغ."
+        }
+       ],
+       "wrong": [
+        "No, I free am.",
+        "Yes, I busy now you."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "At the Market",
+   "titleBn": "في السوق",
+   "color": "#ff2d55",
+   "tips": [
+    {
+     "title": "How much?",
+     "body": "لسؤال السعر: How much is this? للمفرد، و How much are these? للجمع.",
+     "examples": [
+      "How much is this bag?",
+      "How much are these apples?"
+     ]
+    },
+    {
+     "title": "some / any",
+     "body": "some في الجملة المثبتة، و any في السؤال والنفي.",
+     "examples": [
+      "I want some rice.",
+      "Do you have any eggs?"
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "Food at the market",
+     "titleBn": "الطعام في السوق",
+     "vocab": [
+      {
+       "en": "rice",
+       "bn": "أرز",
+       "emoji": "🍚"
+      },
+      {
+       "en": "fish",
+       "bn": "سمك",
+       "emoji": "🐟"
+      },
+      {
+       "en": "egg",
+       "bn": "بيضة",
+       "emoji": "🥚"
+      },
+      {
+       "en": "onion",
+       "bn": "بصل",
+       "emoji": "🧅"
+      },
+      {
+       "en": "potato",
+       "bn": "بطاطس",
+       "emoji": "🥔"
+      },
+      {
+       "en": "milk",
+       "bn": "حليب",
+       "emoji": "🥛"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I want some rice.",
+       "bn": "أريد بعض الأرز.",
+       "alt": []
+      },
+      {
+       "en": "The fish is fresh.",
+       "bn": "السمك طازج.",
+       "alt": []
+      },
+      {
+       "en": "Do you have any eggs?",
+       "bn": "هل عندك بيض؟",
+       "alt": []
+      },
+      {
+       "en": "Give me one kilo of onions.",
+       "bn": "أعطني كيلو بصل.",
+       "alt": []
+      },
+      {
+       "en": "Milk is good for children.",
+       "bn": "الحليب مفيد للأطفال.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Do you have ___ eggs?",
+       "answer": "any",
+       "options": [
+        "any",
+        "some",
+        "a"
+       ],
+       "bn": "هل عندك بيض؟",
+       "why": "في السؤال نستخدم any."
+      },
+      {
+       "text": "I want ___ rice.",
+       "answer": "some",
+       "options": [
+        "some",
+        "any",
+        "a"
+       ],
+       "bn": "أريد بعض الأرز.",
+       "why": "في الجملة المثبتة نستخدم some."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Prices",
+     "titleBn": "الأسعار",
+     "vocab": [
+      {
+       "en": "price",
+       "bn": "السعر",
+       "emoji": "🏷️"
+      },
+      {
+       "en": "cheap",
+       "bn": "رخيص",
+       "emoji": "👍"
+      },
+      {
+       "en": "expensive",
+       "bn": "غالٍ",
+       "emoji": "💰"
+      },
+      {
+       "en": "money",
+       "bn": "مال",
+       "emoji": "💵"
+      },
+      {
+       "en": "change",
+       "bn": "الباقي (من النقود)",
+       "emoji": "🪙"
+      },
+      {
+       "en": "kilo",
+       "bn": "كيلو",
+       "emoji": "⚖️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "How much is this?",
+       "bn": "بكم هذا؟",
+       "alt": []
+      },
+      {
+       "en": "It is too expensive.",
+       "bn": "إنه غالٍ جدًا.",
+       "alt": []
+      },
+      {
+       "en": "Can you make it cheaper?",
+       "bn": "هل يمكن أن تخفّض السعر؟",
+       "alt": []
+      },
+      {
+       "en": "Here is your change.",
+       "bn": "تفضّل الباقي.",
+       "alt": []
+      },
+      {
+       "en": "How much are these mangoes?",
+       "bn": "بكم هذا المانجو؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "How much ___ these mangoes?",
+       "answer": "are",
+       "options": [
+        "are",
+        "is",
+        "am"
+       ],
+       "bn": "بكم هذا المانجو؟",
+       "why": "mangoes جمع، لذلك are."
+      },
+      {
+       "text": "It is too ___.",
+       "answer": "expensive",
+       "options": [
+        "expensive",
+        "change",
+        "money"
+       ],
+       "bn": "إنه غالٍ جدًا.",
+       "why": "expensive تعني غالٍ."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "This, that, these, those",
+     "titleBn": "هذا وذلك",
+     "vocab": [
+      {
+       "en": "this",
+       "bn": "هذا (قريب)",
+       "emoji": "👇"
+      },
+      {
+       "en": "that",
+       "bn": "ذلك (بعيد)",
+       "emoji": "👉"
+      },
+      {
+       "en": "these",
+       "bn": "هؤلاء/هذه (قريبة، جمع)",
+       "emoji": "👇"
+      },
+      {
+       "en": "those",
+       "bn": "أولئك/تلك (بعيدة، جمع)",
+       "emoji": "👉"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "This apple is red.",
+       "bn": "هذه التفاحة حمراء.",
+       "alt": []
+      },
+      {
+       "en": "That shop is big.",
+       "bn": "ذلك المتجر كبير.",
+       "alt": []
+      },
+      {
+       "en": "These bananas are cheap.",
+       "bn": "هذا الموز رخيص.",
+       "alt": []
+      },
+      {
+       "en": "Those oranges are sweet.",
+       "bn": "ذلك البرتقال حلو.",
+       "alt": []
+      },
+      {
+       "en": "Is this your bag?",
+       "bn": "هل هذه حقيبتك؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ bananas are cheap.",
+       "answer": "These",
+       "options": [
+        "These",
+        "This",
+        "That"
+       ],
+       "bn": "هذا الموز رخيص.",
+       "why": "bananas جمع وقريب: these."
+      },
+      {
+       "text": "___ shop is big.",
+       "answer": "That",
+       "options": [
+        "That",
+        "Those",
+        "These"
+       ],
+       "bn": "ذلك المتجر كبير.",
+       "why": "shop مفرد وبعيد: that."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "___ bag is mine and ___ shoes are yours.",
+       "answers": [
+        "This",
+        "those"
+       ],
+       "extra": [
+        "these",
+        "that"
+       ],
+       "bn": "هذه حقيبتي وتلك الأحذية لك.",
+       "why": "bag مفرد قريب: this؛ shoes جمع بعيد: those."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "this/that للمفرد، و these/those للجمع.",
+       "correct": "These apples are fresh.",
+       "wrong": [
+        "This apples are fresh.",
+        "These apples is fresh."
+       ],
+       "why": "apples جمع، لذلك these و are."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Buying things",
+     "titleBn": "الشراء",
+     "vocab": [
+      {
+       "en": "buy",
+       "bn": "يشتري",
+       "emoji": "🛍️"
+      },
+      {
+       "en": "sell",
+       "bn": "يبيع",
+       "emoji": "🏪"
+      },
+      {
+       "en": "bag",
+       "bn": "كيس/حقيبة",
+       "emoji": "👜"
+      },
+      {
+       "en": "pay",
+       "bn": "يدفع",
+       "emoji": "💳"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I want to buy some fruit.",
+       "bn": "أريد أن أشتري بعض الفاكهة.",
+       "alt": []
+      },
+      {
+       "en": "Do you sell bread?",
+       "bn": "هل تبيع الخبز؟",
+       "alt": []
+      },
+      {
+       "en": "Can I have a bag, please?",
+       "bn": "هل يمكن أن آخذ كيسًا من فضلك؟",
+       "alt": []
+      },
+      {
+       "en": "I will pay now.",
+       "bn": "سأدفع الآن.",
+       "alt": []
+      },
+      {
+       "en": "Thank you, have a nice day.",
+       "bn": "شكرًا، طاب يومك.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Do you ___ bread?",
+       "answer": "sell",
+       "options": [
+        "sell",
+        "buy",
+        "pay"
+       ],
+       "bn": "هل تبيع الخبز؟",
+       "why": "البائع يبيع: sell."
+      },
+      {
+       "text": "Can I ___ a bag, please?",
+       "answer": "have",
+       "options": [
+        "have",
+        "has",
+        "having"
+       ],
+       "bn": "هل يمكن أن آخذ كيسًا من فضلك؟",
+       "why": "بعد can يأتي الفعل كما هو: have."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Seller",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Can I help you?",
+         "bn": "كيف أساعدك؟"
+        },
+        {
+         "who": "you",
+         "en": "How much are these tomatoes?",
+         "bn": "بكم هذه الطماطم؟"
+        },
+        {
+         "who": "them",
+         "en": "Fifty taka a kilo.",
+         "bn": "خمسون تاكا للكيلو."
+        },
+        {
+         "who": "you",
+         "en": "Give me two kilos, please.",
+         "bn": "أعطني كيلوين من فضلك."
+        }
+       ],
+       "wrong": [
+        "I am two kilos.",
+        "Yes, tomato is me."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "At School",
+   "titleBn": "في المدرسة",
+   "color": "#007aff",
+   "tips": [
+    {
+     "title": "Classroom language",
+     "body": "جمل الصف تبدأ غالبًا بالفعل: Open your book. Listen. Sit down.",
+     "examples": [
+      "Open your books, please.",
+      "Please sit down."
+     ]
+    },
+    {
+     "title": "Can I...?",
+     "body": "لطلب الإذن نقول: Can I ...? ثم الفعل كما هو.",
+     "examples": [
+      "Can I go out?",
+      "Can I ask a question?"
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "In the classroom",
+     "titleBn": "في الصف",
+     "vocab": [
+      {
+       "en": "teacher",
+       "bn": "المعلم",
+       "emoji": "👩‍🏫"
+      },
+      {
+       "en": "student",
+       "bn": "الطالب",
+       "emoji": "🧑‍🎓"
+      },
+      {
+       "en": "book",
+       "bn": "كتاب",
+       "emoji": "📕"
+      },
+      {
+       "en": "pen",
+       "bn": "قلم",
+       "emoji": "🖊️"
+      },
+      {
+       "en": "desk",
+       "bn": "مكتب/طاولة",
+       "emoji": "🪑"
+      },
+      {
+       "en": "board",
+       "bn": "السبورة",
+       "emoji": "🧑‍🏫"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "The teacher is kind.",
+       "bn": "المعلم لطيف.",
+       "alt": []
+      },
+      {
+       "en": "I have a blue pen.",
+       "bn": "عندي قلم أزرق.",
+       "alt": []
+      },
+      {
+       "en": "My book is on the desk.",
+       "bn": "كتابي على الطاولة.",
+       "alt": []
+      },
+      {
+       "en": "Look at the board.",
+       "bn": "انظر إلى السبورة.",
+       "alt": []
+      },
+      {
+       "en": "There are thirty students.",
+       "bn": "هناك ثلاثون طالبًا.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Look ___ the board.",
+       "answer": "at",
+       "options": [
+        "at",
+        "on",
+        "to"
+       ],
+       "bn": "انظر إلى السبورة.",
+       "why": "نقول look at."
+      },
+      {
+       "text": "My book is ___ the desk.",
+       "answer": "on",
+       "options": [
+        "on",
+        "at",
+        "in"
+       ],
+       "bn": "كتابي على الطاولة.",
+       "why": "على = on."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "School subjects",
+     "titleBn": "المواد الدراسية",
+     "vocab": [
+      {
+       "en": "English",
+       "bn": "الإنجليزية",
+       "emoji": "🇬🇧"
+      },
+      {
+       "en": "maths",
+       "bn": "الرياضيات",
+       "emoji": "➗"
+      },
+      {
+       "en": "science",
+       "bn": "العلوم",
+       "emoji": "🔬"
+      },
+      {
+       "en": "history",
+       "bn": "التاريخ",
+       "emoji": "🏛️"
+      },
+      {
+       "en": "lesson",
+       "bn": "درس",
+       "emoji": "📖"
+      },
+      {
+       "en": "homework",
+       "bn": "واجب منزلي",
+       "emoji": "📝"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I like science.",
+       "bn": "أحب العلوم.",
+       "alt": []
+      },
+      {
+       "en": "Maths is my favourite subject.",
+       "bn": "الرياضيات مادتي المفضلة.",
+       "alt": []
+      },
+      {
+       "en": "We have English today.",
+       "bn": "عندنا إنجليزية اليوم.",
+       "alt": []
+      },
+      {
+       "en": "I do my homework at night.",
+       "bn": "أكتب واجبي في الليل.",
+       "alt": []
+      },
+      {
+       "en": "The history lesson is interesting.",
+       "bn": "درس التاريخ ممتع.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I do my ___ at night.",
+       "answer": "homework",
+       "options": [
+        "homework",
+        "lesson",
+        "maths"
+       ],
+       "bn": "أكتب واجبي في الليل.",
+       "why": "homework هو الواجب المنزلي."
+      },
+      {
+       "text": "Maths is my ___ subject.",
+       "answer": "favourite",
+       "options": [
+        "favourite",
+        "homework",
+        "teacher"
+       ],
+       "bn": "الرياضيات مادتي المفضلة.",
+       "why": "favourite تعني المفضّل."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Classroom instructions",
+     "titleBn": "تعليمات الصف",
+     "vocab": [
+      {
+       "en": "open",
+       "bn": "افتح",
+       "emoji": "📖"
+      },
+      {
+       "en": "close",
+       "bn": "أغلق",
+       "emoji": "📕"
+      },
+      {
+       "en": "listen",
+       "bn": "استمع",
+       "emoji": "👂"
+      },
+      {
+       "en": "repeat",
+       "bn": "كرّر",
+       "emoji": "🔁"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Open your book, please.",
+       "bn": "افتح كتابك من فضلك.",
+       "alt": []
+      },
+      {
+       "en": "Close the door.",
+       "bn": "أغلق الباب.",
+       "alt": []
+      },
+      {
+       "en": "Listen and repeat.",
+       "bn": "استمع وكرّر.",
+       "alt": []
+      },
+      {
+       "en": "Don't talk in class.",
+       "bn": "لا تتكلم في الصف.",
+       "alt": []
+      },
+      {
+       "en": "Write your name here.",
+       "bn": "اكتب اسمك هنا.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ and repeat.",
+       "answer": "Listen",
+       "options": [
+        "Listen",
+        "Listens",
+        "Listening"
+       ],
+       "bn": "استمع وكرّر.",
+       "why": "الأمر يبدأ بالفعل كما هو: Listen."
+      },
+      {
+       "text": "___ talk in class.",
+       "answer": "Don't",
+       "options": [
+        "Don't",
+        "Not",
+        "No"
+       ],
+       "bn": "لا تتكلم في الصف.",
+       "why": "النهي: Don't + الفعل."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "___ your book and ___ the first page.",
+       "answers": [
+        "Open",
+        "read"
+       ],
+       "extra": [
+        "Opens",
+        "reading"
+       ],
+       "bn": "افتح كتابك واقرأ الصفحة الأولى.",
+       "why": "في الأمر يأتي الفعل كما هو."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "للنهي نستخدم Don't قبل الفعل.",
+       "correct": "Don't run in the classroom.",
+       "wrong": [
+        "Not run in the classroom.",
+        "Don't running in the classroom."
+       ],
+       "why": "Don't + الفعل كما هو: run."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Asking the teacher",
+     "titleBn": "سؤال المعلم",
+     "vocab": [
+      {
+       "en": "question",
+       "bn": "سؤال",
+       "emoji": "❓"
+      },
+      {
+       "en": "answer",
+       "bn": "جواب",
+       "emoji": "✅"
+      },
+      {
+       "en": "again",
+       "bn": "مرة أخرى",
+       "emoji": "🔁"
+      },
+      {
+       "en": "understand",
+       "bn": "يفهم",
+       "emoji": "💡"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Can I ask a question?",
+       "bn": "هل يمكن أن أسأل سؤالًا؟",
+       "alt": []
+      },
+      {
+       "en": "I don't understand.",
+       "bn": "لا أفهم.",
+       "alt": []
+      },
+      {
+       "en": "Can you say it again, please?",
+       "bn": "هل يمكن أن تقولها مرة أخرى من فضلك؟",
+       "alt": []
+      },
+      {
+       "en": "What does this word mean?",
+       "bn": "ماذا تعني هذه الكلمة؟",
+       "alt": []
+      },
+      {
+       "en": "Is my answer right?",
+       "bn": "هل جوابي صحيح؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Can I ___ a question?",
+       "answer": "ask",
+       "options": [
+        "ask",
+        "asks",
+        "asking"
+       ],
+       "bn": "هل يمكن أن أسأل سؤالًا؟",
+       "why": "بعد can الفعل كما هو: ask."
+      },
+      {
+       "text": "I don't ___.",
+       "answer": "understand",
+       "options": [
+        "understand",
+        "understands",
+        "understanding"
+       ],
+       "bn": "لا أفهم.",
+       "why": "بعد don't الفعل كما هو."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Teacher",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Do you understand?",
+         "bn": "هل تفهم؟"
+        },
+        {
+         "who": "you",
+         "en": "No. Can you say it again, please?",
+         "bn": "لا. هل يمكن أن تقولها مرة أخرى من فضلك؟"
+        }
+       ],
+       "wrong": [
+        "No, I am again.",
+        "Yes, again me please."
+       ],
+       "why": "لطلب الإعادة: Can you say it again?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Weather",
+   "titleBn": "الطقس",
+   "color": "#5ac8fa",
+   "tips": [
+    {
+     "title": "It is ...",
+     "body": "للطقس نبدأ بـ It: It is hot. It is raining.",
+     "examples": [
+      "It is sunny today.",
+      "It is raining now."
+     ]
+    },
+    {
+     "title": "Present continuous",
+     "body": "لما يحدث الآن: am/is/are + فعل ing.",
+     "examples": [
+      "It is raining.",
+      "The children are playing."
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "The weather",
+     "titleBn": "الطقس",
+     "vocab": [
+      {
+       "en": "hot",
+       "bn": "حار",
+       "emoji": "🥵"
+      },
+      {
+       "en": "cold",
+       "bn": "بارد",
+       "emoji": "🥶"
+      },
+      {
+       "en": "sunny",
+       "bn": "مشمس",
+       "emoji": "☀️"
+      },
+      {
+       "en": "rain",
+       "bn": "مطر",
+       "emoji": "🌧️"
+      },
+      {
+       "en": "wind",
+       "bn": "ريح",
+       "emoji": "💨"
+      },
+      {
+       "en": "cloud",
+       "bn": "غيمة",
+       "emoji": "☁️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "It is hot today.",
+       "bn": "الجو حار اليوم.",
+       "alt": []
+      },
+      {
+       "en": "It is cold in winter.",
+       "bn": "الجو بارد في الشتاء.",
+       "alt": []
+      },
+      {
+       "en": "It is sunny and warm.",
+       "bn": "الجو مشمس ودافئ.",
+       "alt": []
+      },
+      {
+       "en": "There are many clouds.",
+       "bn": "هناك غيوم كثيرة.",
+       "alt": []
+      },
+      {
+       "en": "The wind is strong.",
+       "bn": "الريح قوية.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "___ is hot today.",
+       "answer": "It",
+       "options": [
+        "It",
+        "He",
+        "This"
+       ],
+       "bn": "الجو حار اليوم.",
+       "why": "للطقس نبدأ بـ It."
+      },
+      {
+       "text": "It is cold ___ winter.",
+       "answer": "in",
+       "options": [
+        "in",
+        "on",
+        "at"
+       ],
+       "bn": "الجو بارد في الشتاء.",
+       "why": "مع الفصول نستخدم in."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Seasons",
+     "titleBn": "الفصول",
+     "vocab": [
+      {
+       "en": "summer",
+       "bn": "الصيف",
+       "emoji": "🏖️"
+      },
+      {
+       "en": "winter",
+       "bn": "الشتاء",
+       "emoji": "❄️"
+      },
+      {
+       "en": "spring",
+       "bn": "الربيع",
+       "emoji": "🌸"
+      },
+      {
+       "en": "autumn",
+       "bn": "الخريف",
+       "emoji": "🍂"
+      },
+      {
+       "en": "season",
+       "bn": "فصل",
+       "emoji": "🗓️"
+      },
+      {
+       "en": "umbrella",
+       "bn": "مظلة",
+       "emoji": "☂️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Summer is very hot here.",
+       "bn": "الصيف حار جدًا هنا.",
+       "alt": []
+      },
+      {
+       "en": "I like spring.",
+       "bn": "أحب الربيع.",
+       "alt": []
+      },
+      {
+       "en": "Take an umbrella.",
+       "bn": "خذ مظلة.",
+       "alt": []
+      },
+      {
+       "en": "It snows in winter in some countries.",
+       "bn": "تثلج في الشتاء في بعض البلدان.",
+       "alt": []
+      },
+      {
+       "en": "Which season do you like?",
+       "bn": "أي فصل تحب؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Take an ___.",
+       "answer": "umbrella",
+       "options": [
+        "umbrella",
+        "summer",
+        "season"
+       ],
+       "bn": "خذ مظلة.",
+       "why": "umbrella تبدأ بحرف علة، لذلك an."
+      },
+      {
+       "text": "___ season do you like?",
+       "answer": "Which",
+       "options": [
+        "Which",
+        "Who",
+        "Where"
+       ],
+       "bn": "أي فصل تحب؟",
+       "why": "للاختيار بين أشياء: Which."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "It is raining",
+     "titleBn": "إنها تمطر",
+     "vocab": [
+      {
+       "en": "now",
+       "bn": "الآن",
+       "emoji": "⏱️"
+      },
+      {
+       "en": "raining",
+       "bn": "تمطر",
+       "emoji": "🌧️"
+      },
+      {
+       "en": "shining",
+       "bn": "تسطع",
+       "emoji": "🌞"
+      },
+      {
+       "en": "blowing",
+       "bn": "تهب",
+       "emoji": "🌬️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "It is raining now.",
+       "bn": "إنها تمطر الآن.",
+       "alt": []
+      },
+      {
+       "en": "The sun is shining.",
+       "bn": "الشمس تسطع.",
+       "alt": []
+      },
+      {
+       "en": "The wind is blowing.",
+       "bn": "الريح تهب.",
+       "alt": []
+      },
+      {
+       "en": "The children are playing outside.",
+       "bn": "الأطفال يلعبون في الخارج.",
+       "alt": []
+      },
+      {
+       "en": "Are you wearing a coat?",
+       "bn": "هل تلبس معطفًا؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "It is ___ now.",
+       "answer": "raining",
+       "options": [
+        "raining",
+        "rain",
+        "rains"
+       ],
+       "bn": "إنها تمطر الآن.",
+       "why": "لما يحدث الآن: is + ing."
+      },
+      {
+       "text": "The children ___ playing outside.",
+       "answer": "are",
+       "options": [
+        "are",
+        "is",
+        "am"
+       ],
+       "bn": "الأطفال يلعبون في الخارج.",
+       "why": "children جمع، لذلك are."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "The sun ___ shining and the birds ___ singing.",
+       "answers": [
+        "is",
+        "are"
+       ],
+       "extra": [
+        "am",
+        "be"
+       ],
+       "bn": "الشمس تسطع والطيور تغرّد.",
+       "why": "sun مفرد: is؛ birds جمع: are."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "المضارع المستمر: am/is/are + الفعل مع ing.",
+       "correct": "She is reading now.",
+       "wrong": [
+        "She reading now.",
+        "She is read now."
+       ],
+       "why": "نحتاج is ثم reading."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Talking about the weather",
+     "titleBn": "الحديث عن الطقس",
+     "vocab": [
+      {
+       "en": "weather",
+       "bn": "الطقس",
+       "emoji": "🌦️"
+      },
+      {
+       "en": "outside",
+       "bn": "في الخارج",
+       "emoji": "🌳"
+      },
+      {
+       "en": "warm",
+       "bn": "دافئ",
+       "emoji": "🌡️"
+      },
+      {
+       "en": "storm",
+       "bn": "عاصفة",
+       "emoji": "⛈️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "How is the weather today?",
+       "bn": "كيف الطقس اليوم؟",
+       "alt": []
+      },
+      {
+       "en": "It is warm outside.",
+       "bn": "الجو دافئ في الخارج.",
+       "alt": []
+      },
+      {
+       "en": "There is a storm tonight.",
+       "bn": "هناك عاصفة الليلة.",
+       "alt": []
+      },
+      {
+       "en": "Stay at home, it is raining.",
+       "bn": "ابقَ في البيت، إنها تمطر.",
+       "alt": []
+      },
+      {
+       "en": "What a beautiful day!",
+       "bn": "ما أجمل هذا اليوم!",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "How ___ the weather today?",
+       "answer": "is",
+       "options": [
+        "is",
+        "are",
+        "does"
+       ],
+       "bn": "كيف الطقس اليوم؟",
+       "why": "weather مفرد، لذلك is."
+      },
+      {
+       "text": "It is warm ___.",
+       "answer": "outside",
+       "options": [
+        "outside",
+        "storm",
+        "weather"
+       ],
+       "bn": "الجو دافئ في الخارج.",
+       "why": "outside تعني في الخارج."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Friend",
+       "lines": [
+        {
+         "who": "them",
+         "en": "How is the weather in your city?",
+         "bn": "كيف الطقس في مدينتك؟"
+        },
+        {
+         "who": "you",
+         "en": "It is hot and sunny.",
+         "bn": "الجو حار ومشمس."
+        }
+       ],
+       "wrong": [
+        "It is a city.",
+        "Yes, I am weather."
+       ],
+       "why": "نصف الطقس بـ It is + صفة."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Travel",
+   "titleBn": "السفر",
+   "color": "#af52de",
+   "tips": [
+    {
+     "title": "by bus, by train",
+     "body": "لوسيلة السفر نقول by: by bus, by car, by plane. لكن on foot للمشي.",
+     "examples": [
+      "I go to work by bus.",
+      "She goes to school on foot."
+     ]
+    },
+    {
+     "title": "Where is...?",
+     "body": "للسؤال عن مكان: Where is the station? والجواب بـ next to, near, opposite.",
+     "examples": [
+      "Where is the airport?",
+      "The station is near the market."
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "Transport",
+     "titleBn": "المواصلات",
+     "vocab": [
+      {
+       "en": "bus",
+       "bn": "حافلة",
+       "emoji": "🚌"
+      },
+      {
+       "en": "train",
+       "bn": "قطار",
+       "emoji": "🚆"
+      },
+      {
+       "en": "car",
+       "bn": "سيارة",
+       "emoji": "🚗"
+      },
+      {
+       "en": "plane",
+       "bn": "طائرة",
+       "emoji": "✈️"
+      },
+      {
+       "en": "boat",
+       "bn": "قارب",
+       "emoji": "⛵"
+      },
+      {
+       "en": "bike",
+       "bn": "دراجة",
+       "emoji": "🚲"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I go to work by bus.",
+       "bn": "أذهب إلى العمل بالحافلة.",
+       "alt": []
+      },
+      {
+       "en": "The train is fast.",
+       "bn": "القطار سريع.",
+       "alt": []
+      },
+      {
+       "en": "We travel by plane.",
+       "bn": "نسافر بالطائرة.",
+       "alt": []
+      },
+      {
+       "en": "He rides a bike to school.",
+       "bn": "يركب دراجة إلى المدرسة.",
+       "alt": []
+      },
+      {
+       "en": "The boat is on the river.",
+       "bn": "القارب على النهر.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I go to work ___ bus.",
+       "answer": "by",
+       "options": [
+        "by",
+        "on",
+        "in"
+       ],
+       "bn": "أذهب إلى العمل بالحافلة.",
+       "why": "لوسيلة النقل نقول by."
+      },
+      {
+       "text": "He ___ a bike to school.",
+       "answer": "rides",
+       "options": [
+        "rides",
+        "ride",
+        "riding"
+       ],
+       "bn": "يركب دراجة إلى المدرسة.",
+       "why": "مع he نضيف s: rides."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "At the station",
+     "titleBn": "في المحطة",
+     "vocab": [
+      {
+       "en": "ticket",
+       "bn": "تذكرة",
+       "emoji": "🎫"
+      },
+      {
+       "en": "station",
+       "bn": "محطة",
+       "emoji": "🚉"
+      },
+      {
+       "en": "airport",
+       "bn": "مطار",
+       "emoji": "🛫"
+      },
+      {
+       "en": "passport",
+       "bn": "جواز سفر",
+       "emoji": "🛂"
+      },
+      {
+       "en": "bag",
+       "bn": "حقيبة",
+       "emoji": "🧳"
+      },
+      {
+       "en": "seat",
+       "bn": "مقعد",
+       "emoji": "💺"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "One ticket to Dhaka, please.",
+       "bn": "تذكرة واحدة إلى دكا من فضلك.",
+       "alt": []
+      },
+      {
+       "en": "Where is the station?",
+       "bn": "أين المحطة؟",
+       "alt": []
+      },
+      {
+       "en": "Show me your passport, please.",
+       "bn": "أرني جواز سفرك من فضلك.",
+       "alt": []
+      },
+      {
+       "en": "My bag is heavy.",
+       "bn": "حقيبتي ثقيلة.",
+       "alt": []
+      },
+      {
+       "en": "Is this seat free?",
+       "bn": "هل هذا المقعد فارغ؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "One ___ to Dhaka, please.",
+       "answer": "ticket",
+       "options": [
+        "ticket",
+        "station",
+        "seat"
+       ],
+       "bn": "تذكرة واحدة إلى دكا من فضلك.",
+       "why": "ticket هي التذكرة."
+      },
+      {
+       "text": "___ is the station?",
+       "answer": "Where",
+       "options": [
+        "Where",
+        "What",
+        "Who"
+       ],
+       "bn": "أين المحطة؟",
+       "why": "للمكان نسأل بـ Where."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Directions",
+     "titleBn": "الاتجاهات",
+     "vocab": [
+      {
+       "en": "left",
+       "bn": "يسار",
+       "emoji": "⬅️"
+      },
+      {
+       "en": "right",
+       "bn": "يمين",
+       "emoji": "➡️"
+      },
+      {
+       "en": "straight",
+       "bn": "إلى الأمام",
+       "emoji": "⬆️"
+      },
+      {
+       "en": "near",
+       "bn": "قريب من",
+       "emoji": "📍"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Go straight and turn left.",
+       "bn": "امشِ إلى الأمام ثم انعطف يسارًا.",
+       "alt": []
+      },
+      {
+       "en": "Turn right at the bank.",
+       "bn": "انعطف يمينًا عند البنك.",
+       "alt": []
+      },
+      {
+       "en": "The hotel is near the station.",
+       "bn": "الفندق قريب من المحطة.",
+       "alt": []
+      },
+      {
+       "en": "It is next to the mosque.",
+       "bn": "إنه بجانب المسجد.",
+       "alt": []
+      },
+      {
+       "en": "The bank is opposite the school.",
+       "bn": "البنك مقابل المدرسة.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Turn right ___ the bank.",
+       "answer": "at",
+       "options": [
+        "at",
+        "on",
+        "in"
+       ],
+       "bn": "انعطف يمينًا عند البنك.",
+       "why": "عند مكان معيّن نقول at."
+      },
+      {
+       "text": "It is next ___ the mosque.",
+       "answer": "to",
+       "options": [
+        "to",
+        "of",
+        "at"
+       ],
+       "bn": "إنه بجانب المسجد.",
+       "why": "بجانب = next to."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "Go ___ and turn ___ at the corner.",
+       "answers": [
+        "straight",
+        "left"
+       ],
+       "extra": [
+        "near",
+        "opposite"
+       ],
+       "bn": "امشِ إلى الأمام وانعطف يسارًا عند الزاوية.",
+       "why": "straight للأمام، و left لليسار."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "next to تعني بجانب، و opposite تعني مقابل.",
+       "correct": "The bank is next to the school.",
+       "wrong": [
+        "The bank is next the school.",
+        "The bank is next of the school."
+       ],
+       "why": "نقول next to دائمًا."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Asking for help",
+     "titleBn": "طلب المساعدة",
+     "vocab": [
+      {
+       "en": "lost",
+       "bn": "تائه",
+       "emoji": "😕"
+      },
+      {
+       "en": "map",
+       "bn": "خريطة",
+       "emoji": "🗺️"
+      },
+      {
+       "en": "help",
+       "bn": "مساعدة",
+       "emoji": "🆘"
+      },
+      {
+       "en": "far",
+       "bn": "بعيد",
+       "emoji": "🛣️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Excuse me, I am lost.",
+       "bn": "عفوًا، أنا تائه.",
+       "alt": []
+      },
+      {
+       "en": "Can you help me, please?",
+       "bn": "هل يمكن أن تساعدني من فضلك؟",
+       "alt": []
+      },
+      {
+       "en": "Is it far from here?",
+       "bn": "هل هو بعيد من هنا؟",
+       "alt": []
+      },
+      {
+       "en": "Can you show me on the map?",
+       "bn": "هل يمكن أن تريني على الخريطة؟",
+       "alt": []
+      },
+      {
+       "en": "Thank you for your help.",
+       "bn": "شكرًا على مساعدتك.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Is it far ___ here?",
+       "answer": "from",
+       "options": [
+        "from",
+        "to",
+        "of"
+       ],
+       "bn": "هل هو بعيد من هنا؟",
+       "why": "نقول far from."
+      },
+      {
+       "text": "Can you ___ me, please?",
+       "answer": "help",
+       "options": [
+        "help",
+        "helps",
+        "helping"
+       ],
+       "bn": "هل يمكن أن تساعدني من فضلك؟",
+       "why": "بعد can الفعل كما هو."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Stranger",
+       "lines": [
+        {
+         "who": "you",
+         "en": "Excuse me, where is the airport?",
+         "bn": "عفوًا، أين المطار؟"
+        },
+        {
+         "who": "them",
+         "en": "Take the bus. It is far from here.",
+         "bn": "اركب الحافلة. إنه بعيد من هنا."
+        },
+        {
+         "who": "you",
+         "en": "Thank you very much.",
+         "bn": "شكرًا جزيلًا."
+        }
+       ],
+       "wrong": [
+        "I am the airport.",
+        "Yes, the bus me."
+       ]
+      },
+      {
+       "with": "Officer",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Can I see your passport, please?",
+         "bn": "هل يمكن أن أرى جواز سفرك من فضلك؟"
+        },
+        {
+         "who": "you",
+         "en": "Yes, here it is.",
+         "bn": "نعم، تفضّل."
+        }
+       ],
+       "wrong": [
+        "Yes, I am passport.",
+        "No, here are me."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "On the Phone",
+   "titleBn": "على الهاتف",
+   "color": "#30b0c7",
+   "tips": [
+    {
+     "title": "Phone phrases",
+     "body": "على الهاتف نقول: This is ... (أنا ...). ولطلب شخص: Can I speak to ...?",
+     "examples": [
+      "Hello, this is Ahmad.",
+      "Can I speak to Sara, please?"
+     ]
+    },
+    {
+     "title": "will for offers",
+     "body": "للعرض أو الوعد السريع نستخدم will: I will call you later.",
+     "examples": [
+      "I will call you back.",
+      "I will send a message."
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "Calling",
+     "titleBn": "الاتصال",
+     "vocab": [
+      {
+       "en": "phone",
+       "bn": "هاتف",
+       "emoji": "📱"
+      },
+      {
+       "en": "call",
+       "bn": "يتصل",
+       "emoji": "📞"
+      },
+      {
+       "en": "message",
+       "bn": "رسالة",
+       "emoji": "💬"
+      },
+      {
+       "en": "number",
+       "bn": "رقم",
+       "emoji": "🔢"
+      },
+      {
+       "en": "answer",
+       "bn": "يرد",
+       "emoji": "✅"
+      },
+      {
+       "en": "busy",
+       "bn": "مشغول",
+       "emoji": "⛔"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Please call me tonight.",
+       "bn": "من فضلك اتصل بي الليلة.",
+       "alt": []
+      },
+      {
+       "en": "What is your phone number?",
+       "bn": "ما رقم هاتفك؟",
+       "alt": []
+      },
+      {
+       "en": "I sent you a message.",
+       "bn": "أرسلت لك رسالة.",
+       "alt": []
+      },
+      {
+       "en": "She doesn't answer the phone.",
+       "bn": "لا ترد على الهاتف.",
+       "alt": []
+      },
+      {
+       "en": "The line is busy.",
+       "bn": "الخط مشغول.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "What is your phone ___?",
+       "answer": "number",
+       "options": [
+        "number",
+        "call",
+        "message"
+       ],
+       "bn": "ما رقم هاتفك؟",
+       "why": "number هو الرقم."
+      },
+      {
+       "text": "She doesn't ___ the phone.",
+       "answer": "answer",
+       "options": [
+        "answer",
+        "answers",
+        "answering"
+       ],
+       "bn": "لا ترد على الهاتف.",
+       "why": "بعد doesn't الفعل كما هو."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Who is calling?",
+     "titleBn": "من المتصل؟",
+     "vocab": [
+      {
+       "en": "hello",
+       "bn": "ألو/مرحبًا",
+       "emoji": "👋"
+      },
+      {
+       "en": "speak",
+       "bn": "يتكلم",
+       "emoji": "🗣️"
+      },
+      {
+       "en": "wait",
+       "bn": "ينتظر",
+       "emoji": "⏳"
+      },
+      {
+       "en": "later",
+       "bn": "لاحقًا",
+       "emoji": "🕒"
+      },
+      {
+       "en": "sorry",
+       "bn": "آسف",
+       "emoji": "🙏"
+      },
+      {
+       "en": "wrong",
+       "bn": "خطأ",
+       "emoji": "❌"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Hello, this is Ahmad.",
+       "bn": "ألو، معك أحمد.",
+       "alt": []
+      },
+      {
+       "en": "Can I speak to Sara, please?",
+       "bn": "هل يمكن أن أتكلم مع سارة من فضلك؟",
+       "alt": []
+      },
+      {
+       "en": "Please wait a minute.",
+       "bn": "انتظر دقيقة من فضلك.",
+       "alt": []
+      },
+      {
+       "en": "Sorry, wrong number.",
+       "bn": "آسف، رقم خطأ.",
+       "alt": []
+      },
+      {
+       "en": "I will call you later.",
+       "bn": "سأتصل بك لاحقًا.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Can I ___ to Sara, please?",
+       "answer": "speak",
+       "options": [
+        "speak",
+        "speaks",
+        "speaking"
+       ],
+       "bn": "هل يمكن أن أتكلم مع سارة من فضلك؟",
+       "why": "بعد can الفعل كما هو."
+      },
+      {
+       "text": "Sorry, ___ number.",
+       "answer": "wrong",
+       "options": [
+        "wrong",
+        "busy",
+        "later"
+       ],
+       "bn": "آسف، رقم خطأ.",
+       "why": "wrong number = رقم خطأ."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "I will call you",
+     "titleBn": "سأتصل بك",
+     "vocab": [
+      {
+       "en": "will",
+       "bn": "سوف",
+       "emoji": "🔜"
+      },
+      {
+       "en": "send",
+       "bn": "يرسل",
+       "emoji": "📤"
+      },
+      {
+       "en": "back",
+       "bn": "مجددًا/بالمقابل",
+       "emoji": "↩️"
+      },
+      {
+       "en": "soon",
+       "bn": "قريبًا",
+       "emoji": "⏩"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I will call you back.",
+       "bn": "سأعاود الاتصال بك.",
+       "alt": []
+      },
+      {
+       "en": "She will send a message.",
+       "bn": "سترسل رسالة.",
+       "alt": []
+      },
+      {
+       "en": "We will meet soon.",
+       "bn": "سنلتقي قريبًا.",
+       "alt": []
+      },
+      {
+       "en": "Will you come tomorrow?",
+       "bn": "هل ستأتي غدًا؟",
+       "alt": []
+      },
+      {
+       "en": "I won't be late.",
+       "bn": "لن أتأخر.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I ___ call you back.",
+       "answer": "will",
+       "options": [
+        "will",
+        "am",
+        "do"
+       ],
+       "bn": "سأعاود الاتصال بك.",
+       "why": "للوعد نستخدم will."
+      },
+      {
+       "text": "She will ___ a message.",
+       "answer": "send",
+       "options": [
+        "send",
+        "sends",
+        "sending"
+       ],
+       "bn": "سترسل رسالة.",
+       "why": "بعد will الفعل كما هو."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "I ___ call you and I ___ be late.",
+       "answers": [
+        "will",
+        "won't"
+       ],
+       "extra": [
+        "am",
+        "does"
+       ],
+       "bn": "سأتصل بك ولن أتأخر.",
+       "why": "will للمستقبل، و won't للنفي."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "بعد will يأتي الفعل كما هو.",
+       "correct": "He will come tomorrow.",
+       "wrong": [
+        "He will comes tomorrow.",
+        "He will coming tomorrow."
+       ],
+       "why": "will + come، بدون s أو ing."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "Phone conversations",
+     "titleBn": "مكالمات",
+     "vocab": [
+      {
+       "en": "free",
+       "bn": "متفرغ",
+       "emoji": "🙌"
+      },
+      {
+       "en": "meeting",
+       "bn": "اجتماع",
+       "emoji": "👥"
+      },
+      {
+       "en": "tonight",
+       "bn": "الليلة",
+       "emoji": "🌙"
+      },
+      {
+       "en": "text",
+       "bn": "يراسل",
+       "emoji": "✉️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "Are you free tonight?",
+       "bn": "هل أنت متفرغ الليلة؟",
+       "alt": []
+      },
+      {
+       "en": "I am in a meeting now.",
+       "bn": "أنا في اجتماع الآن.",
+       "alt": []
+      },
+      {
+       "en": "Text me the address.",
+       "bn": "أرسل لي العنوان برسالة.",
+       "alt": []
+      },
+      {
+       "en": "Can you hear me?",
+       "bn": "هل تسمعني؟",
+       "alt": []
+      },
+      {
+       "en": "Talk to you soon.",
+       "bn": "أكلمك قريبًا.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "Can you ___ me?",
+       "answer": "hear",
+       "options": [
+        "hear",
+        "hears",
+        "hearing"
+       ],
+       "bn": "هل تسمعني؟",
+       "why": "بعد can الفعل كما هو."
+      },
+      {
+       "text": "I am in a ___ now.",
+       "answer": "meeting",
+       "options": [
+        "meeting",
+        "tonight",
+        "free"
+       ],
+       "bn": "أنا في اجتماع الآن.",
+       "why": "meeting هو الاجتماع."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Sara",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Hello, can I speak to Ahmad?",
+         "bn": "ألو، هل يمكن أن أتكلم مع أحمد؟"
+        },
+        {
+         "who": "you",
+         "en": "Sorry, he is not here. I will tell him.",
+         "bn": "آسف، ليس هنا. سأخبره."
+        }
+       ],
+       "wrong": [
+        "Sorry, I am Ahmad not.",
+        "Yes, he is a phone."
+       ],
+       "why": "للاعتذار والوعد: Sorry ... I will ..."
+      },
+      {
+       "with": "Boss",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Can you call me back later?",
+         "bn": "هل يمكن أن تعاود الاتصال بي لاحقًا؟"
+        },
+        {
+         "who": "you",
+         "en": "Yes, I will call you at four.",
+         "bn": "نعم، سأتصل بك في الرابعة."
+        }
+       ],
+       "wrong": [
+        "Yes, I call will four.",
+        "No, four is me."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "At the Doctor",
+   "titleBn": "عند الطبيب",
+   "color": "#ff3b30",
+   "tips": [
+    {
+     "title": "I have a ...",
+     "body": "لوصف المرض: I have a headache / a fever / a cough. ومع he/she: has.",
+     "examples": [
+      "I have a headache.",
+      "She has a fever."
+     ]
+    },
+    {
+     "title": "should",
+     "body": "للنصيحة: should + الفعل: You should rest.",
+     "examples": [
+      "You should drink water.",
+      "You should see a doctor."
+     ]
+    }
+   ],
+   "lessons": [
+    {
+     "title": "My body",
+     "titleBn": "جسمي",
+     "vocab": [
+      {
+       "en": "head",
+       "bn": "رأس",
+       "emoji": "🙂"
+      },
+      {
+       "en": "stomach",
+       "bn": "بطن/معدة",
+       "emoji": "🫃"
+      },
+      {
+       "en": "back",
+       "bn": "ظهر",
+       "emoji": "🧍"
+      },
+      {
+       "en": "arm",
+       "bn": "ذراع",
+       "emoji": "💪"
+      },
+      {
+       "en": "leg",
+       "bn": "رِجل",
+       "emoji": "🦵"
+      },
+      {
+       "en": "eye",
+       "bn": "عين",
+       "emoji": "👁️"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "My head hurts.",
+       "bn": "رأسي يؤلمني.",
+       "alt": []
+      },
+      {
+       "en": "My back hurts after work.",
+       "bn": "ظهري يؤلمني بعد العمل.",
+       "alt": []
+      },
+      {
+       "en": "I hurt my arm.",
+       "bn": "آذيت ذراعي.",
+       "alt": []
+      },
+      {
+       "en": "He has a pain in his leg.",
+       "bn": "عنده ألم في رجله.",
+       "alt": []
+      },
+      {
+       "en": "My eyes are tired.",
+       "bn": "عيناي متعبتان.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "My head ___.",
+       "answer": "hurts",
+       "options": [
+        "hurts",
+        "hurt",
+        "hurting"
+       ],
+       "bn": "رأسي يؤلمني.",
+       "why": "head مفرد (it)، لذلك hurts."
+      },
+      {
+       "text": "My eyes ___ tired.",
+       "answer": "are",
+       "options": [
+        "are",
+        "is",
+        "am"
+       ],
+       "bn": "عيناي متعبتان.",
+       "why": "eyes جمع، لذلك are."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Feeling ill",
+     "titleBn": "الشعور بالمرض",
+     "vocab": [
+      {
+       "en": "headache",
+       "bn": "صداع",
+       "emoji": "🤕"
+      },
+      {
+       "en": "fever",
+       "bn": "حمّى",
+       "emoji": "🤒"
+      },
+      {
+       "en": "cough",
+       "bn": "سعال",
+       "emoji": "😷"
+      },
+      {
+       "en": "cold",
+       "bn": "زكام",
+       "emoji": "🤧"
+      },
+      {
+       "en": "medicine",
+       "bn": "دواء",
+       "emoji": "💊"
+      },
+      {
+       "en": "pharmacy",
+       "bn": "صيدلية",
+       "emoji": "🏥"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I have a headache.",
+       "bn": "عندي صداع.",
+       "alt": []
+      },
+      {
+       "en": "She has a fever.",
+       "bn": "عندها حمّى.",
+       "alt": []
+      },
+      {
+       "en": "He has a bad cough.",
+       "bn": "عنده سعال شديد.",
+       "alt": []
+      },
+      {
+       "en": "Take this medicine twice a day.",
+       "bn": "خذ هذا الدواء مرتين في اليوم.",
+       "alt": []
+      },
+      {
+       "en": "Where is the pharmacy?",
+       "bn": "أين الصيدلية؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "She ___ a fever.",
+       "answer": "has",
+       "options": [
+        "has",
+        "have",
+        "is"
+       ],
+       "bn": "عندها حمّى.",
+       "why": "مع she نستخدم has."
+      },
+      {
+       "text": "Take this medicine ___ a day.",
+       "answer": "twice",
+       "options": [
+        "twice",
+        "two",
+        "second"
+       ],
+       "bn": "خذ هذا الدواء مرتين في اليوم.",
+       "why": "مرتين = twice."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": []
+    },
+    {
+     "title": "Advice",
+     "titleBn": "النصيحة",
+     "vocab": [
+      {
+       "en": "should",
+       "bn": "ينبغي",
+       "emoji": "👉"
+      },
+      {
+       "en": "rest",
+       "bn": "يرتاح",
+       "emoji": "🛌"
+      },
+      {
+       "en": "water",
+       "bn": "ماء",
+       "emoji": "💧"
+      },
+      {
+       "en": "healthy",
+       "bn": "صحي",
+       "emoji": "🥗"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "You should rest.",
+       "bn": "ينبغي أن ترتاح.",
+       "alt": []
+      },
+      {
+       "en": "You should drink more water.",
+       "bn": "ينبغي أن تشرب ماءً أكثر.",
+       "alt": []
+      },
+      {
+       "en": "You shouldn't eat too much sugar.",
+       "bn": "لا ينبغي أن تأكل سكرًا كثيرًا.",
+       "alt": []
+      },
+      {
+       "en": "Eat healthy food.",
+       "bn": "كُل طعامًا صحيًا.",
+       "alt": []
+      },
+      {
+       "en": "You should see a doctor.",
+       "bn": "ينبغي أن ترى طبيبًا.",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "You ___ rest.",
+       "answer": "should",
+       "options": [
+        "should",
+        "are",
+        "has"
+       ],
+       "bn": "ينبغي أن ترتاح.",
+       "why": "للنصيحة: should."
+      },
+      {
+       "text": "You should ___ more water.",
+       "answer": "drink",
+       "options": [
+        "drink",
+        "drinks",
+        "to drink"
+       ],
+       "bn": "ينبغي أن تشرب ماءً أكثر.",
+       "why": "بعد should الفعل كما هو."
+      }
+     ],
+     "gaps": [
+      {
+       "text": "You have a cold. You ___ stay home and you ___ go out.",
+       "answers": [
+        "should",
+        "shouldn't"
+       ],
+       "extra": [
+        "are",
+        "has"
+       ],
+       "bn": "عندك زكام. ينبغي أن تبقى في البيت ولا ينبغي أن تخرج.",
+       "why": "should للنصيحة، و shouldn't للنهي."
+      }
+     ],
+     "grammar": [
+      {
+       "rule": "بعد should يأتي الفعل كما هو بدون to.",
+       "correct": "You should see a doctor.",
+       "wrong": [
+        "You should to see a doctor.",
+        "You should sees a doctor."
+       ],
+       "why": "should + see مباشرة."
+      }
+     ],
+     "dialogs": []
+    },
+    {
+     "title": "At the clinic",
+     "titleBn": "في العيادة",
+     "vocab": [
+      {
+       "en": "appointment",
+       "bn": "موعد",
+       "emoji": "📅"
+      },
+      {
+       "en": "doctor",
+       "bn": "طبيب",
+       "emoji": "👨‍⚕️"
+      },
+      {
+       "en": "better",
+       "bn": "أفضل",
+       "emoji": "🙂"
+      },
+      {
+       "en": "worse",
+       "bn": "أسوأ",
+       "emoji": "🙁"
+      }
+     ],
+     "sentences": [
+      {
+       "en": "I have an appointment at ten.",
+       "bn": "عندي موعد في العاشرة.",
+       "alt": []
+      },
+      {
+       "en": "What is the matter?",
+       "bn": "ما المشكلة؟",
+       "alt": []
+      },
+      {
+       "en": "I feel worse today.",
+       "bn": "أشعر أنني أسوأ اليوم.",
+       "alt": []
+      },
+      {
+       "en": "I feel better now.",
+       "bn": "أشعر أنني أفضل الآن.",
+       "alt": []
+      },
+      {
+       "en": "How long have you had the fever?",
+       "bn": "منذ متى عندك الحمّى؟",
+       "alt": []
+      }
+     ],
+     "fills": [
+      {
+       "text": "I have an ___ at ten.",
+       "answer": "appointment",
+       "options": [
+        "appointment",
+        "doctor",
+        "better"
+       ],
+       "bn": "عندي موعد في العاشرة.",
+       "why": "appointment هو الموعد."
+      },
+      {
+       "text": "I feel ___ now.",
+       "answer": "better",
+       "options": [
+        "better",
+        "good than",
+        "more good"
+       ],
+       "bn": "أشعر أنني أفضل الآن.",
+       "why": "مقارنة good هي better."
+      }
+     ],
+     "gaps": [],
+     "grammar": [],
+     "dialogs": [
+      {
+       "with": "Doctor",
+       "lines": [
+        {
+         "who": "them",
+         "en": "What is the matter?",
+         "bn": "ما المشكلة؟"
+        },
+        {
+         "who": "you",
+         "en": "I have a headache and a fever.",
+         "bn": "عندي صداع وحمّى."
+        },
+        {
+         "who": "them",
+         "en": "You should rest and drink water.",
+         "bn": "ينبغي أن ترتاح وتشرب الماء."
+        },
+        {
+         "who": "you",
+         "en": "Thank you, doctor.",
+         "bn": "شكرًا يا دكتور."
+        }
+       ],
+       "wrong": [
+        "I am a headache.",
+        "Yes, I should doctor."
+       ]
+      },
+      {
+       "with": "Pharmacist",
+       "lines": [
+        {
+         "who": "them",
+         "en": "Take this twice a day.",
+         "bn": "خذ هذا مرتين في اليوم."
+        },
+        {
+         "who": "you",
+         "en": "Before or after food?",
+         "bn": "قبل الأكل أم بعده؟"
+        }
+       ],
+       "wrong": [
+        "Yes, I am twice.",
+        "Food is a day."
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

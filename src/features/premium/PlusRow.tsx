@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { dateLocale } from '../../lib/learnerLang';
 import { Glyph } from '../../components/Glyph';
 import { toBanglaDigits } from '../../lib/bangla';
 import { haptic } from '../../lib/haptics';
@@ -22,7 +23,7 @@ export function PlusRow() {
 
   const on = isPlus();
   if (!on && !feature('plus')) return null;
-  const date = until ? new Intl.DateTimeFormat('bn-BD', { day: 'numeric', month: 'long' }).format(new Date(until)) : '';
+  const date = until ? new Intl.DateTimeFormat(dateLocale(), { day: 'numeric', month: 'long' }).format(new Date(until)) : '';
   const offer = info?.available
     ? `অফুরন্ত হার্ট আর সব ইউনিট · ${toBanglaDigits(info.price)} টাকায় ${toBanglaDigits(info.days)} দিন`
     : info && info.trialDays > 0

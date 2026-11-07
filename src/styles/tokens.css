@@ -24,8 +24,9 @@
   --locked-dark: #c7c7cc;
 
   --radius: 16px;
-  --font: 'Inter Variable', 'Inter', 'Anek Bangla Variable', 'Anek Bangla', -apple-system, system-ui, 'Segoe UI', sans-serif;
-  --font-bn: 'Anek Bangla Variable', 'Anek Bangla', 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-ar: 'Noto Sans Arabic Variable', 'Noto Naskh Arabic Variable', 'Noto Sans Arabic', sans-serif;
+  --font: 'Inter Variable', 'Inter', 'Anek Bangla Variable', 'Anek Bangla', var(--font-ar), -apple-system, system-ui, 'Segoe UI', sans-serif;
+  --font-bn: 'Anek Bangla Variable', 'Anek Bangla', 'Inter Variable', 'Inter', var(--font-ar), system-ui, sans-serif;
   color-scheme: light;
 }
 

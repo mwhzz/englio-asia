@@ -3,6 +3,7 @@ import type { GrammarCourse } from '../data/grammarCourses/types';
 import type { WritingTask } from '../data/writing/types';
 import type { GrammarTopic, Story, Unit } from '../types';
 import { API_BASE } from './api';
+import { learnerLang, type LiveLanguage } from './learnerLang';
 
 const CACHE_KEY = 'englio-course-v1';
 /** How long startup waits for the server before using the saved copy. */
@@ -23,6 +24,10 @@ export interface Content {
   settings?: unknown;
   /** Recordings by English text, from the admin's Words and Audio pages. */
   audio?: Record<string, string>;
+  /** The language this course is for, the learner languages that are live, and the app's text in it (lib/uiText.ts). */
+  lang?: string;
+  languages?: LiveLanguage[];
+  ui?: Record<string, string>;
 }
 
 interface Cached extends Content {
@@ -98,9 +103,12 @@ export function isStories(stories: unknown): stories is Story[] {
   return Array.isArray(stories) && stories.every((s) => typeof s?.id === 'string' && Array.isArray(s.lines) && s.lines.length > 0 && Array.isArray(s.quiz));
 }
 
+// Each language's course is kept apart (Bangla keeps the original key, so phones keep their copy).
+const cacheKey = () => (learnerLang() === 'bn' ? CACHE_KEY : `${CACHE_KEY}-${learnerLang()}`);
+
 function readCache(): Cached | null {
   try {
-    const cached = JSON.parse(localStorage.getItem(CACHE_KEY) ?? 'null') as Cached | null;
+    const cached = JSON.parse(localStorage.getItem(cacheKey()) ?? 'null') as Cached | null;
     return cached && isCourse(cached.units) ? cached : null;
   } catch {
     return null;
@@ -109,7 +117,7 @@ function readCache(): Cached | null {
 
 function writeCache(cached: Cached): void {
   try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cached));
+    localStorage.setItem(cacheKey(), JSON.stringify(cached));
   } catch {
     // Storage full or blocked: the app keeps working from the network or the built-in course.
   }
@@ -121,7 +129,11 @@ function writeCache(cached: Cached): void {
  */
 export async function loadCourse(): Promise<Content | null> {
   const cached = readCache();
-  const request = fetch(`${API_BASE}/course`, { headers: cached ? { 'if-none-match': `"course-${cached.version}"` } : {} })
+  const lang = learnerLang();
+  // The same tags the server sends: Bangla's without the language (older apps send that), others with it.
+  const tag = (v: string) => (lang === 'bn' ? `"course-${v}"` : `"course-${v}-${lang}"`);
+  const url = lang === 'bn' ? `${API_BASE}/course` : `${API_BASE}/course?lang=${encodeURIComponent(lang)}`;
+  const request = fetch(url, { headers: cached ? { 'if-none-match': tag(cached.version) } : {} })
     .then(async (res) => {
       if (res.status === 304) return cached;
       if (!res.ok) return null;

@@ -53,6 +53,8 @@ export interface DueReminder {
   subscription: unknown;
   /** Days since they last practised (0 = yesterday or never). */
   away: number;
+  /** The learner's language, for the message. */
+  lang?: string;
 }
 
 const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000) - 1;
@@ -67,10 +69,10 @@ export function dueReminders(db: DatabaseSync, now = new Date()): DueReminder[] 
   // Only the few columns needed (never the whole progress), and one at a time, so 100k sign-ups stay small.
   const rows = db
     .prepare(
-      `SELECT p.user_id, p.subscription, p.hour, p.time_zone, u.name, u.streak, u.last_xp_day
+      `SELECT p.user_id, p.subscription, p.hour, p.time_zone, u.name, u.streak, u.last_xp_day, u.lang
        FROM push_subs p JOIN users u ON u.id = p.user_id`,
     )
-    .iterate() as Iterable<{ user_id: string; subscription: string; hour: number; time_zone: string; name: string | null; streak: number; last_xp_day: string | null }>;
+    .iterate() as Iterable<{ user_id: string; subscription: string; hour: number; time_zone: string; name: string | null; streak: number; last_xp_day: string | null; lang: string }>;
   const due: DueReminder[] = [];
   const zones = new Map<string, { day: string; hour: number }>();
   for (const r of rows) {
@@ -81,7 +83,7 @@ export function dueReminders(db: DatabaseSync, now = new Date()): DueReminder[] 
     if (r.last_xp_day && r.last_xp_day >= local.day) continue;
     const away = r.last_xp_day ? Math.max(0, daysBetween(r.last_xp_day, local.day)) : 0;
     if (away > 2 && !COME_BACK_DAYS.has(away)) continue;
-    due.push({ userId: r.user_id, name: r.name, streak: r.streak, subscription: JSON.parse(r.subscription), away });
+    due.push({ userId: r.user_id, name: r.name, streak: r.streak, subscription: JSON.parse(r.subscription), away, ...(r.lang && r.lang !== 'bn' ? { lang: r.lang } : {}) });
   }
   return due;
 }
@@ -91,7 +93,8 @@ export function dueReminders(db: DatabaseSync, now = new Date()): DueReminder[] 
  * days away, otherwise one of a few everyday wordings. `variant` names the wording, so the admin can compare
  * how often each one is opened.
  */
-export function reminderMessage(r: Pick<DueReminder, 'name' | 'streak'> & { away?: number }, pick = Math.random()): { title: string; body: string; variant: string } {
+export function reminderMessage(r: Pick<DueReminder, 'name' | 'streak'> & { away?: number; lang?: string }, pick = Math.random()): { title: string; body: string; variant: string } {
+  if (r.lang === 'ar') return arabicMessage(r);
   const first = r.name?.split(' ')[0];
   const hi = first ? `${first}, ` : '';
   const away = r.away ?? 0;
@@ -109,4 +112,14 @@ export function reminderMessage(r: Pick<DueReminder, 'name' | 'streak'> & { away
     { title: 'একটু ইংরেজি হয়ে যাক?', body: `${hi}রোজ ৫ মিনিট = এক মাসে অনেক শব্দ।`, variant: 'daily-c' },
   ];
   return everyday[Math.min(everyday.length - 1, Math.floor(pick * everyday.length))];
+}
+
+/** The same messages for Arabic-speaking learners. */
+function arabicMessage(r: Pick<DueReminder, 'name' | 'streak'> & { away?: number }): { title: string; body: string; variant: string } {
+  const first = r.name?.split(' ')[0];
+  const hi = first ? `${first}، ` : '';
+  const away = r.away ?? 0;
+  if (away >= 3) return { title: 'اشتقنا إليك', body: `${hi}ابدأ من حيث توقفت. خمس دقائق فقط.`, variant: `ar-back-${away}` };
+  if (r.streak > 1) return { title: `احمِ سلسلة ${r.streak} أيام!`, body: `${hi}بقي درس اليوم. خمس دقائق فقط.`, variant: 'ar-streak' };
+  return { title: 'إنجليزية اليوم تنتظرك!', body: `${hi}خمس دقائق فقط. أنهِ درسًا واحدًا.`, variant: 'ar-daily' };
 }

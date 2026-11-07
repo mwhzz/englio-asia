@@ -26,6 +26,7 @@ import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
 import * as team from './team.ts';
 import { checkUserId, clientOf, loadProgress, saveProgress } from './users.ts';
 import { health } from './health.ts';
+import { listUiTexts, saveUiText, uiTexts } from './uiTexts.ts';
 import { login, logout, twoStepConfirm, twoStepOff, twoStepOn, twoStepStart, twoStepStatus } from './adminAuth.ts';
 import { importMore } from './importLanguage.ts';
 import { stats } from './stats.ts';
@@ -66,6 +67,8 @@ function routes(db: DatabaseSync, ADMIN: string): Route[] {
           settings: readSettings(db),
           // Recordings by English text (adminAudio.ts), played instead of the phone's voice.
           audio: readClips(db),
+          // The app's own text in this language (uiTexts.ts); none for Bangla, the source.
+          ui: uiTexts(db, lang),
         };
       },
     },
@@ -203,6 +206,8 @@ function routes(db: DatabaseSync, ADMIN: string): Route[] {
     // Content history: every change and delete is kept, and can be put back (history.ts).
     { method: 'GET', pattern: '/api/admin/history', admin: 'content', handler: (r) => listHistory(db, r) },
     { method: 'POST', pattern: '/api/admin/history/:id/restore', admin: 'content', handler: (r) => restoreHistory(db, r) },
+    { method: 'GET', pattern: '/api/admin/ui', admin: 'content', handler: (r) => listUiTexts(db, r) },
+    { method: 'PUT', pattern: '/api/admin/ui', admin: 'content', handler: (r) => saveUiText(db, r) },
     { method: 'GET', pattern: '/api/admin/units', admin: 'content', handler: (r) => content.listUnits(db, langOf(db, r.query.get('lang'))) },
     { method: 'POST', pattern: '/api/admin/units', admin: 'content', handler: (r) => content.createUnit(db, r) },
     { method: 'PUT', pattern: '/api/admin/units/:id', admin: 'content', handler: (r) => content.updateUnit(db, r) },

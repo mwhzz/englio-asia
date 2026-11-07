@@ -10,6 +10,8 @@ import './lib/install';
 import { ProgressProvider } from './state/ProgressContext';
 import './styles/index.css';
 import { setAppSettings } from './lib/appSettings';
+import { learnerLang, setLiveLanguages } from './lib/learnerLang';
+import { applyUiText, setUiText } from './lib/uiText';
 import { detectAndroidApp } from './lib/playApp';
 import { captureSource } from './lib/source';
 import { AppGate } from './features/notice/AppGate';
@@ -26,6 +28,18 @@ async function start() {
     registerRecordings(content.units, content.audio);
   }
   setAppSettings(content?.settings);
+  // Another learner language: the app's text swapped into it, right-to-left when it's written that way.
+  const lang = learnerLang();
+  setLiveLanguages(content?.languages);
+  if (lang !== 'bn' && content?.lang === lang) {
+    setUiText(content.ui ?? {});
+    applyUiText(lang, content.languages?.find((l) => l.code === lang)?.dir ?? 'ltr');
+  }
+  try {
+    if (localStorage.getItem('englio-ar-font') === 'naskh') document.documentElement.dataset.arFont = 'naskh';
+  } catch {
+    // Default font.
+  }
   // Read later by the grammar, course and story modules (see data/serverContent.d.ts).
   globalThis.englioServerContent = {
     grammar: content?.grammar?.length ? content.grammar : undefined,

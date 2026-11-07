@@ -3,6 +3,8 @@ import { Logo } from '../../components/Logo';
 import { ObButton } from './ObButton';
 import { RestoreSheet } from './RestoreSheet';
 import { TextSizeToggle } from './TextSizeToggle';
+import { LanguagePick } from './LanguagePick';
+import { isBangla } from '../../lib/learnerLang';
 
 interface Props {
   mapSlot: (el: HTMLDivElement | null) => void;
@@ -18,7 +20,8 @@ export function WelcomeStep({ mapSlot, onNext }: Props) {
         <TextSizeToggle />
       </header>
 
-      <div ref={mapSlot} className="ob-map-slot" />
+      <LanguagePick />
+      {isBangla() ? <div ref={mapSlot} className="ob-map-slot" /> : <div className="ob-grow" />}
 
       <div className="ob-copy">
         <h1 className="ob-title ob-rise" style={{ '--i': 1 } as CSSProperties} lang="bn">

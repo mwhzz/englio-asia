@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isBangla } from '../../lib/learnerLang';
 import { Glyph } from '../../components/Glyph';
 import { toBanglaDigits } from '../../lib/bangla';
 import { haptic } from '../../lib/haptics';
@@ -9,6 +10,7 @@ import { AccountRow } from '../account/AccountRow';
 import { BackupCode } from './BackupCode';
 import { DeleteAccount } from './DeleteAccount';
 import { PoliteRow } from './PoliteRow';
+import { LanguageRows } from './LanguageRows';
 import { InstallRow } from './InstallRow';
 import { OfflineRows } from './OfflineRows';
 import { RedoSetup } from './RedoSetup';
@@ -116,7 +118,8 @@ export function SettingsList({ onPlacement }: { onPlacement: () => void }) {
           />
         </label>
 
-        <PoliteRow />
+        <LanguageRows />
+        {isBangla() && <PoliteRow />}
         {feature('reminders') && <ReminderRow />}
         <OfflineRows />
       </div>

@@ -97,6 +97,7 @@ export function saveProgress(db: DatabaseSync, id: string, progress: unknown, no
     typeof p.profile?.source === 'string' ? p.profile.source.slice(0, 60) : null,
     now.toISOString(),
   );
+  if (typeof p.profile?.lang === 'string' && /^[a-z]{2,3}$/.test(p.profile.lang)) db.prepare('UPDATE users SET lang = ? WHERE id = ?').run(p.profile.lang, id);
   // A new league week: last week's XP moves the learner up or down a tier (tiers.ts).
   if (stored) {
     const tier = nextTier(stored.tier ?? 0, stored.week_since, stored.week_xp ?? 0, act.weekSince);

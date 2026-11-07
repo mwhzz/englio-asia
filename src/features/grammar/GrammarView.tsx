@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from 'react';
+import { isBangla } from '../../lib/learnerLang';
 import { Glyph } from '../../components/Glyph';
 import { GRAMMAR, LEVELS } from '../../data/grammar';
 import { COURSES, lessonsOf } from '../../data/grammarCourses';
@@ -62,7 +63,7 @@ export default function GrammarView() {
         <small>Grammar</small>
       </header>
 
-      {feature('board') && <BoardCard />}
+      {feature('board') && isBangla() && <BoardCard />}
 
       <label className="gr-search">
         <Glyph name="search" size={18} />

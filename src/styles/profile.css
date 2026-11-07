@@ -753,3 +753,13 @@ a.pf-row {
 .plus-cta {
   --c: #e2136e;
 }
+
+/* Language and Arabic letter style in settings (LanguageRows). */
+.lr-seg {
+  flex: none;
+  margin: 0;
+}
+.lr-seg button {
+  padding: 0 10px;
+  font-size: 15px;
+}

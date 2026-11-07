@@ -4,6 +4,10 @@
    for the narrow labels on the onboarding map, so that file is a separate font loaded only there. */
 @import '@fontsource-variable/inter/opsz.css';
 @import '@fontsource-variable/anek-bangla/wght.css';
+/* Arabic, for Arabic-speaking learners: a clean modern sans (the default) and Naskh, the familiar book style
+   (Profile → আরবি লেখার ধরন). Each file has a unicode-range, so a phone only downloads it when Arabic is on screen. */
+@import '@fontsource-variable/noto-sans-arabic/index.css';
+@import '@fontsource-variable/noto-naskh-arabic/index.css';
 
 @font-face {
   font-family: 'Anek Bangla Condensed';

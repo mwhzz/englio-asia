@@ -28,6 +28,7 @@ import { WordsPage } from './WordsPage';
 import { AudioPage } from './AudioPage';
 import { WritingAdmin } from './WritingAdmin';
 import { HistoryPage } from './HistoryPage';
+import { UiTextPage } from './UiTextPage';
 import { WritingEditor } from './WritingEditor';
 
 /** The admin panel: sign in with the token, then dashboard, lessons, grammar, stories and learners. */
@@ -102,6 +103,8 @@ export function AdminApp() {
           <BoardAdmin onUnauthorized={signOut} />
         ) : page === 'board-topic' ? (
           <BoardEditor key={id} id={id} onUnauthorized={signOut} />
+        ) : page === 'ui-text' ? (
+          <UiTextPage onUnauthorized={signOut} />
         ) : page === 'history' ? (
           <HistoryPage onUnauthorized={signOut} />
         ) : page === 'writing' ? (

@@ -97,7 +97,9 @@ function addContent(db: DatabaseSync, code: string, file: Omit<LanguageFile, 'la
   let items = 0;
   const hide = (table: string, id: string) => draft && db.prepare(`UPDATE ${table} SET draft = 1 WHERE id = ?`).run(id);
   for (const u of file.units) {
-    const { id: unitId } = content.createUnit(db, req({ body: { ...u, lang: code } }));
+    // A unit that already exists in this language (same English title) gets the new lessons added to it.
+    const existing = db.prepare('SELECT id FROM units WHERE lang = ? AND title = ?').get(code, u.title) as { id: string } | undefined;
+    const unitId = existing?.id ?? content.createUnit(db, req({ body: { ...u, lang: code } })).id;
     for (const l of u.lessons) {
       const { id: lessonId } = content.createLesson(db, req({ params: { id: unitId }, body: { title: l.title, titleBn: l.titleBn } }));
       hide('lessons', lessonId);
