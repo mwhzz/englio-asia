@@ -49,7 +49,8 @@ const list = [...found].sort();
 const text = JSON.stringify(list, null, 1) + '\n';
 // --check (the tests): only says whether the list is out of date.
 if (process.argv.includes('--check')) {
-  const same = readFileSync('content/ui-strings.json', 'utf8') === text;
+  // Line endings don't count (git on Windows may check the file out with CRLF).
+  const same = readFileSync('content/ui-strings.json', 'utf8').replace(/\r\n/g, '\n') === text;
   if (!same) console.error('content/ui-strings.json is out of date: run node scripts/extract-ui-text.mjs and translate the new texts');
   process.exit(same ? 0 : 1);
 }
