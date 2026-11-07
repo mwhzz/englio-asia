@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.8.0 (2026-11-07)
+
 - The app in Arabic: when Arabic is live, a learner picks العربية on the first screen (or in Profile → আমার ভাষা) and the whole app is in Arabic, right to left, with dates in Arabic; Bangladesh-only parts (district map, SSC/HSC board prep, bKash) are left out; reminders come in Arabic. Two clean Arabic fonts: a modern one and Naskh, the familiar book style (Profile).
 - Admin: অ্যাপের লেখা, every text of the app next to its translation, to check and fix (Arabic is drafted, 712 texts).
 - Arabic course: units 4–11 (A1 to A2, 32 lessons) and lessons 3–4 for units 1–3, as drafts for a native speaker's check.
