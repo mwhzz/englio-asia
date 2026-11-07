@@ -20,3 +20,17 @@ export function answerOf(ex: Exercise): { en: string; bn: string } | null {
       return { en: ex.sentence.en, bn: ex.sentence.bn };
   }
 }
+
+/** Why the right answer is right (written by the content team), for a wrong answer; grammar shows its own. */
+export function whyOf(ex: Exercise): string | null {
+  switch (ex.kind) {
+    case 'fill':
+      return ex.fill.why ?? null;
+    case 'gaps':
+      return ex.gaps.why ?? null;
+    case 'dialog':
+      return ex.dialog.why ?? null;
+    default:
+      return null;
+  }
+}

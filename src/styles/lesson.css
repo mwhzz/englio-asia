@@ -499,3 +499,13 @@
   font-weight: 700;
   line-height: 1;
 }
+
+/* "Why" under a wrong answer (answerOf.ts whyOf). */
+.feedback-why {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  font-size: 15px;
+  line-height: 1.45;
+}

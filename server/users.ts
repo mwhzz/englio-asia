@@ -3,6 +3,7 @@ import { mergeProgress } from '../src/lib/mergeProgress.ts';
 import type { Progress } from '../src/lib/progress.ts';
 import { fairTotalXp, fairXpByDay } from './fairPlay.ts';
 import { activitySummary } from './activity.ts';
+import { nextTier } from './tiers.ts';
 import { HttpError } from './http.ts';
 
 const ID = /^[A-Za-z0-9-]{8,64}$/;
@@ -56,7 +57,9 @@ export function checkUserId(id: string): string {
  */
 export function saveProgress(db: DatabaseSync, id: string, progress: unknown, now = new Date(), client?: Client): unknown {
   if (!progress || typeof progress !== 'object') throw new HttpError(400, '"progress" must be an object');
-  const stored = db.prepare('SELECT xp, progress FROM users WHERE id = ?').get(id) as { xp: number; progress: string } | undefined;
+  const stored = db.prepare('SELECT xp, progress, tier, week_since, week_xp FROM users WHERE id = ?').get(id) as
+    | { xp: number; progress: string; tier: number; week_since: string | null; week_xp: number }
+    | undefined;
   const p = trimOld((stored ? mergeProgress(JSON.parse(stored.progress), progress as Progress) : progress) as Partial<Progress>, now);
   // The XP column others see (admin rankings) only counts what a real learner could have earned (see fairPlay.ts).
   const previous = stored;
@@ -94,6 +97,11 @@ export function saveProgress(db: DatabaseSync, id: string, progress: unknown, no
     typeof p.profile?.source === 'string' ? p.profile.source.slice(0, 60) : null,
     now.toISOString(),
   );
+  // A new league week: last week's XP moves the learner up or down a tier (tiers.ts).
+  if (stored) {
+    const tier = nextTier(stored.tier ?? 0, stored.week_since, stored.week_xp ?? 0, act.weekSince);
+    if (tier !== (stored.tier ?? 0)) db.prepare('UPDATE users SET tier = ? WHERE id = ?').run(tier, id);
+  }
   // The recent days practised (older ones were recorded when they happened).
   const recent = new Date(now.getTime() - 3 * 86_400_000).toISOString().slice(0, 10);
   const addDay = db.prepare('INSERT OR IGNORE INTO active_days (user_id, day) VALUES (?, ?)');

@@ -43,7 +43,7 @@ export function LeagueCard() {
           <Glyph name="trophy" size={20} />
         </span>
         <span className="rc-text">
-          <strong lang="bn">জেলা লিগ</strong>
+          <strong lang="bn">জেলা লিগ{view.tier ? ` · ${view.tier.bn}` : ''}</strong>
           <small lang="bn">
             {view.myDistrictRank ? `এই সপ্তাহে ${district.bn} ${toBanglaDigits(view.myDistrictRank)} নম্বরে` : `${possessive(district.bn)} হয়ে প্রথম পয়েন্ট আনো`}
             {view.me ? ` · তুমি ${toBanglaDigits(view.me.rank)} নম্বরে` : ''}

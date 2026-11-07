@@ -279,6 +279,8 @@ function migrate(db: DatabaseSync): void {
   // When the server first saw the learner (the app's own joinedAt can't be trusted for the league).
   if (!has('users', 'created_at')) db.exec('ALTER TABLE users ADD COLUMN created_at TEXT');
   if (!has('users', 'source')) db.exec('ALTER TABLE users ADD COLUMN source TEXT');
+  // League tier (tiers.ts): 0 ব্রোঞ্জ … 3 ডায়মন্ড.
+  if (!has('users', 'tier')) db.exec('ALTER TABLE users ADD COLUMN tier INTEGER NOT NULL DEFAULT 0');
   if (!has('users', 'blocked')) db.exec('ALTER TABLE users ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0');
   // খসড়া (draft): lessons, stories and grammar topics hidden from learners until the admin publishes them.
   for (const table of ['lessons', 'stories', 'grammar']) if (!has(table, 'draft')) db.exec(`ALTER TABLE ${table} ADD COLUMN draft INTEGER NOT NULL DEFAULT 0`);

@@ -56,6 +56,7 @@ export const SCHEMAS: Record<ItemKind, Schema> = {
       { key: 'answer', label: 'Right word', type: 'text' },
       { key: 'options', label: 'Choices', type: 'words', hint: 'Comma separated, including the right word.' },
       { key: 'bn', label: 'Bangla meaning', type: 'text', bn: true },
+      { key: 'why', label: 'Why it is right (Bangla, optional)', type: 'area', bn: true, hint: 'Shown when a learner gets it wrong.' },
     ],
     summary: (d) => `${d.text} → ${d.answer}`,
   },
@@ -67,6 +68,7 @@ export const SCHEMAS: Record<ItemKind, Schema> = {
       { key: 'answers', label: 'Right words, in order', type: 'words', hint: 'Comma separated, one per ___.' },
       { key: 'extra', label: 'Wrong words for the bank', type: 'words', hint: 'Comma separated.' },
       { key: 'bn', label: 'Bangla meaning', type: 'text', bn: true },
+      { key: 'why', label: 'Why it is right (Bangla, optional)', type: 'area', bn: true, hint: 'Shown when a learner gets it wrong.' },
     ],
     summary: (d) => `${d.text} → ${(d.answers as string[]).join(', ')}`,
   },
@@ -93,6 +95,7 @@ export const SCHEMAS: Record<ItemKind, Schema> = {
         hint: 'One line per row: "them: English | বাংলা" or "you: English | বাংলা". The last line is the learner’s answer.',
       },
       { key: 'wrong', label: 'Wrong replies', type: 'lines', hint: 'One per line.' },
+      { key: 'why', label: 'Why it is right (Bangla, optional)', type: 'area', bn: true, hint: 'Shown when a learner gets it wrong.' },
     ],
     summary: (d) => {
       const lines = d.lines as { en: string }[];

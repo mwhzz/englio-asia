@@ -4,7 +4,8 @@ import * as content from './adminContent.ts';
 import { openDb } from './db.ts';
 import * as grammar from './adminGrammar.ts';
 import type { Request } from './http.ts';
-import { createLanguage, listLanguages } from './languages.ts';
+import { createLanguage, idIn, langOf, listLanguages } from './languages.ts';
+import { HttpError } from './http.ts';
 import { validateItem } from './validate.ts';
 import { validateTopic } from './validateTopic.ts';
 import { validateStory } from './validateStory.ts';
@@ -57,10 +58,9 @@ const KINDS = [
 
 const req = (parts: Partial<Request>) => ({ params: {}, query: new URLSearchParams(), ...parts }) as Request;
 
-/** Adds the file's content; returns what was added. Throws (adding nothing) when anything is wrong. */
-export function importLanguage(db: DatabaseSync, file: LanguageFile) {
-  const { code } = file.language;
-  // 1. Check everything before adding anything.
+/** Checks every unit, lesson, item, topic, story and writing task of a file; throws on the first problem. */
+export function checkContent(file: Omit<LanguageFile, 'language'>): void {
+  if (!Array.isArray(file.units)) throw new Error('"units" must be a list');
   file.units.forEach((u, ui) => {
     if (!u.title || !u.titleBn || !u.lessons?.length) throw new Error(`Unit ${ui + 1} needs a title, its meaning and lessons`);
     u.lessons.forEach((l, li) => {
@@ -75,38 +75,32 @@ export function importLanguage(db: DatabaseSync, file: LanguageFile) {
         });
     });
   });
-  (file.grammar ?? []).forEach((t, i) => {
-    try {
-      validateTopic(t);
-    } catch (error) {
-      throw new Error(`Grammar topic ${i + 1}: ${(error as Error).message}`);
-    }
-  });
-  (file.stories ?? []).forEach((t, i) => {
-    try {
-      validateStory(t);
-    } catch (error) {
-      throw new Error(`Story ${i + 1}: ${(error as Error).message}`);
-    }
-  });
-  (file.writing ?? []).forEach((t, i) => {
-    try {
-      writing.validateWriting(t);
-    } catch (error) {
-      throw new Error(`Writing task ${i + 1}: ${(error as Error).message}`);
-    }
-  });
-  const existing = listLanguages(db).find((l) => l.code === code);
-  if (existing && existing.units + existing.grammar + existing.stories + existing.writing > 0) throw new Error(`"${code}" already has content; nothing was added`);
+  const each = (list: unknown[] | undefined, name: string, check: (x: unknown) => unknown) =>
+    (list ?? []).forEach((t, i) => {
+      try {
+        check(t);
+      } catch (error) {
+        throw new Error(`${name} ${i + 1}: ${(error as Error).message}`);
+      }
+    });
+  each(file.grammar, 'Grammar topic', validateTopic);
+  each(file.stories, 'Story', validateStory);
+  each(file.writing, 'Writing task', writing.validateWriting);
+}
 
-  // 2. Add it, through the admin's own functions (same ids, positions and checks).
-  if (!existing) createLanguage(db, req({ body: file.language }));
+/**
+ * Adds checked content to a language, through the admin's own functions (same ids, positions and checks).
+ * With `draft`, the new lessons, grammar topics and stories are খসড়া: hidden from learners until published.
+ */
+function addContent(db: DatabaseSync, code: string, file: Omit<LanguageFile, 'language'>, draft = false) {
   let lessons = 0;
   let items = 0;
+  const hide = (table: string, id: string) => draft && db.prepare(`UPDATE ${table} SET draft = 1 WHERE id = ?`).run(id);
   for (const u of file.units) {
     const { id: unitId } = content.createUnit(db, req({ body: { ...u, lang: code } }));
     for (const l of u.lessons) {
       const { id: lessonId } = content.createLesson(db, req({ params: { id: unitId }, body: { title: l.title, titleBn: l.titleBn } }));
+      hide('lessons', lessonId);
       lessons++;
       for (const [field, kind] of KINDS)
         for (const data of l[field] ?? []) {
@@ -115,10 +109,40 @@ export function importLanguage(db: DatabaseSync, file: LanguageFile) {
         }
     }
   }
-  for (const t of file.grammar ?? []) grammar.createTopic(db, req({ body: { ...(t as object), lang: code } }));
-  for (const t of file.stories ?? []) stories.createStory(db, req({ body: { ...(t as object), lang: code } }));
+  for (const t of file.grammar ?? []) hide('grammar', grammar.createTopic(db, req({ body: { ...(t as object), lang: code } })).id);
+  for (const t of file.stories ?? []) hide('stories', stories.createStory(db, req({ body: { ...(t as object), lang: code } })).id);
   for (const t of file.writing ?? []) writing.createWriting(db, req({ body: { ...(t as object), lang: code } }));
   return { language: code, units: file.units.length, lessons, items, grammar: (file.grammar ?? []).length, stories: (file.stories ?? []).length, writing: (file.writing ?? []).length };
+}
+
+/** Adds the file's content; returns what was added. Throws (adding nothing) when anything is wrong. */
+export function importLanguage(db: DatabaseSync, file: LanguageFile) {
+  const { code } = file.language;
+  checkContent(file);
+  const existing = listLanguages(db).find((l) => l.code === code);
+  if (existing && existing.units + existing.grammar + existing.stories + existing.writing > 0) throw new Error(`"${code}" already has content; nothing was added`);
+  if (!existing) createLanguage(db, req({ body: file.language }));
+  return addContent(db, code, file);
+}
+
+/**
+ * The admin's "JSON থেকে যোগ করো": more units (and topics, stories, writing) for a language that already has
+ * content, e.g. a new batch from a writer. Everything is checked first; nothing is added if anything is
+ * wrong or an id is taken. New lessons, topics and stories come in as drafts unless `draft: false`.
+ */
+export function importMore(db: DatabaseSync, { body }: Pick<Request, 'body'>) {
+  const b = (body ?? {}) as Omit<LanguageFile, 'language'> & { lang?: string; draft?: boolean };
+  const code = langOf(db, b.lang);
+  try {
+    checkContent(b);
+  } catch (error) {
+    throw new HttpError(400, (error as Error).message);
+  }
+  const taken = (table: string, list: unknown[] | undefined) =>
+    (list ?? []).map((t) => idIn(code, String((t as { id?: unknown }).id ?? ''))).find((id) => db.prepare(`SELECT 1 FROM ${table} WHERE id = ?`).get(id));
+  const clash = taken('grammar', b.grammar) ?? taken('stories', b.stories) ?? taken('writing_tasks', b.writing);
+  if (clash) throw new HttpError(409, `"${clash}" already exists; nothing was added`);
+  return addContent(db, code, b, b.draft !== false);
 }
 
 // Run directly (not when the tests import it).

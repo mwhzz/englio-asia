@@ -652,3 +652,45 @@ p.cq-sentence:not(:has(button)) {
 .bd-page .cta {
   --c: var(--u);
 }
+
+/* Board practice: the exam plan (ExamPlan): today's round and 14 days of scores. */
+.ep {
+  display: grid;
+  gap: 10px;
+}
+.ep h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.ep-note {
+  margin: 0;
+  color: var(--ios-secondary);
+  font-size: 14px;
+}
+.ep-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 64px;
+}
+.ep-day {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 4px;
+  background: var(--ios-fill);
+}
+.ep-day i {
+  display: block;
+  width: 100%;
+  min-height: 2px;
+  border-radius: 4px;
+  background: #ff9500;
+}
+.ep-day i.is-good {
+  background: var(--ios-green);
+}
+.ep-day i.is-empty {
+  background: none;
+}

@@ -23,6 +23,12 @@ function list(o: Obj, key: string, min = 0): string[] {
 
 const blanks = (s: string) => s.split('___').length - 1;
 
+/** The optional "why it's right" note, kept only when written. */
+const why = (o: Obj): Obj => {
+  const w = str(o, 'why', true);
+  return w ? { why: w } : {};
+};
+
 /** An optional uploaded file (see media.ts): kept only if it names one. */
 function media(o: Obj, key: 'image' | 'audio'): Obj {
   const v = o[key];
@@ -47,13 +53,13 @@ export function validateItem(kind: string, data: unknown): Obj {
     case 'sentence':
       return { en: str(o, 'en'), bn: str(o, 'bn'), alt: list(o, 'alt'), ...media(o, 'audio') };
     case 'fill': {
-      const out = { text: str(o, 'text'), answer: str(o, 'answer'), options: list(o, 'options', 2), bn: str(o, 'bn') };
+      const out = { text: str(o, 'text'), answer: str(o, 'answer'), options: list(o, 'options', 2), bn: str(o, 'bn'), ...why(o) };
       if (blanks(out.text) !== 1) throw new HttpError(400, 'The text needs exactly one ___');
       if (!out.options.includes(out.answer)) throw new HttpError(400, 'The options must include the answer');
       return out;
     }
     case 'gaps': {
-      const out = { text: str(o, 'text'), answers: list(o, 'answers', 1), extra: list(o, 'extra'), bn: str(o, 'bn') };
+      const out = { text: str(o, 'text'), answers: list(o, 'answers', 1), extra: list(o, 'extra'), bn: str(o, 'bn'), ...why(o) };
       if (blanks(out.text) !== out.answers.length) throw new HttpError(400, 'Each ___ needs exactly one answer, in order');
       if (out.extra.some((w) => out.answers.includes(w))) throw new HttpError(400, 'Wrong words must not be answers');
       return out;
@@ -72,7 +78,7 @@ export function validateItem(kind: string, data: unknown): Obj {
       });
       const reply = lines.length - 1;
       if (lines[reply].who !== 'you') throw new HttpError(400, 'The last line must be yours ("you")');
-      const out = { with: str(o, 'with'), lines, reply, wrong: list(o, 'wrong', 1) };
+      const out = { with: str(o, 'with'), lines, reply, wrong: list(o, 'wrong', 1), ...why(o) };
       if (out.wrong.includes(lines[reply].en)) throw new HttpError(400, 'A wrong reply is the same as the right one');
       return out;
     }

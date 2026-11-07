@@ -113,3 +113,24 @@ describe('names others see', () => {
     expect(shownName('Shit Head', '2026-01-01T00:00:00Z', now)).toBe('Learner');
   });
 });
+
+describe('league tiers', () => {
+  it('moves up after a strong week, down after a quiet or skipped one', async () => {
+    const { nextTier } = await import('./tiers.ts');
+    expect(nextTier(0, '2026-10-24', 200, '2026-10-31')).toBe(1);
+    expect(nextTier(1, '2026-10-24', 80, '2026-10-31')).toBe(1);
+    expect(nextTier(2, '2026-10-24', 10, '2026-10-31')).toBe(1);
+    expect(nextTier(2, '2026-10-10', 500, '2026-10-31')).toBe(1);
+    expect(nextTier(3, '2026-10-24', 900, '2026-10-31')).toBe(3);
+    expect(nextTier(1, '2026-10-31', 900, '2026-10-31')).toBe(1);
+  });
+
+  it('a learner’s first save in a new week applies last week, and the league shows their tier', () => {
+    const d = openDb(':memory:');
+    saveProgress(d, 'device-0009', { profile: { name: 'Tania', districtId: 'dhaka' }, xpByDay: { '2026-10-26': 200 }, completed: {} }, new Date('2026-10-27T08:00:00Z'));
+    saveProgress(d, 'device-0009', { profile: { name: 'Tania', districtId: 'dhaka' }, xpByDay: { '2026-10-26': 200, '2026-11-02': 20 }, completed: {} }, new Date('2026-11-02T08:00:00Z'));
+    clearLeaderboardCache();
+    const board = leaderboard(d, 'dhaka', 'device-0009', new Date('2026-11-02T08:00:00Z'));
+    expect(board.tier).toMatchObject({ index: 1, bn: 'সিলভার', rank: 1 });
+  });
+});

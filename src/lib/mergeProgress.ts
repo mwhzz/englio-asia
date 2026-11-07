@@ -53,6 +53,14 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
     review: { ...older.review, ...newer.review },
     unitTests,
     boardScores: maxEach(a.boardScores, b.boardScores),
+    // Per day, the copy that practised more.
+    boardDays: Object.fromEntries(
+      [...new Set([...Object.keys(a.boardDays ?? {}), ...Object.keys(b.boardDays ?? {})])].map((day) => {
+        const x = a.boardDays?.[day];
+        const y = b.boardDays?.[day];
+        return [day, !x ? y! : !y ? x : x.total >= y.total ? x : y];
+      }),
+    ),
     savedAt: Math.max(a.savedAt ?? 0, b.savedAt ?? 0),
     resetAt: resetA,
   };

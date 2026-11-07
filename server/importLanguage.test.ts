@@ -12,6 +12,31 @@ import type { Exercise } from '../src/types.ts';
 
 const ARABIC = JSON.parse(readFileSync(new URL('../content/ar-starter.json', import.meta.url), 'utf8')) as LanguageFile;
 
+/** The right answer to an exercise as the learner would give it (null: checked elsewhere). */
+const solve = (ex: Exercise): string | null => {
+  switch (ex.kind) {
+    case 'select':
+      return ex.word.en;
+    case 'translate':
+    case 'listen':
+    case 'type':
+    case 'dictate':
+      return ex.sentence.en;
+    case 'choice':
+      return ex.sentence.bn;
+    case 'fill':
+      return ex.fill.answer;
+    case 'gaps':
+      return ex.gaps.answers.join('|');
+    case 'grammar':
+      return ex.grammar.correct;
+    case 'dialog':
+      return ex.dialog.lines[ex.dialog.reply].en;
+    default:
+      return null; // matching pairs and speaking are checked elsewhere
+  }
+};
+
 describe('importing a language', () => {
   it('adds the Arabic starter course in draft, apart from Bangla, and only once', () => {
     const db = openDb(':memory:');
@@ -45,29 +70,7 @@ describe('importing a language', () => {
     importLanguage(db, ARABIC);
     const units = readCourse(db, 'ar');
     setCourse(units);
-    const right = (ex: Exercise): string | null => {
-      switch (ex.kind) {
-        case 'select':
-          return ex.word.en;
-        case 'translate':
-        case 'listen':
-        case 'type':
-        case 'dictate':
-          return ex.sentence.en;
-        case 'choice':
-          return ex.sentence.bn;
-        case 'fill':
-          return ex.fill.answer;
-        case 'gaps':
-          return ex.gaps.answers.join('|');
-        case 'grammar':
-          return ex.grammar.correct;
-        case 'dialog':
-          return ex.dialog.lines[ex.dialog.reply].en;
-        default:
-          return null; // matching pairs and speaking are checked elsewhere
-      }
-    };
+    const right = solve;
     for (const lesson of units.flatMap((u) => u.lessons))
       for (let run = 0; run < 30; run++)
         for (const ex of buildLesson(lesson.id)) {
@@ -90,5 +93,34 @@ describe('exporting a language', () => {
     expect(file.units).toHaveLength(3);
     const copy = { ...file, language: { code: 'ur', name: 'Urdu', native: 'اردو', dir: 'rtl' as const } };
     expect(importLanguage(db, copy)).toMatchObject({ language: 'ur', units: 3, lessons: 6, items: 86, grammar: 3 });
+  });
+});
+
+describe('Bangla batch 01 (units 12–21, A1+ to A2)', () => {
+  const BATCH = JSON.parse(readFileSync(new URL('../content/bn-batch-01.json', import.meta.url), 'utf8'));
+
+  it('passes the admin checks and comes in as drafts, hidden from learners', async () => {
+    const { seedCourse } = await import('./seed.ts');
+    const { importMore } = await import('./importLanguage.ts');
+    const db = openDb(':memory:');
+    seedCourse(db);
+    const before = readCourse(db, 'bn', { drafts: false }).flatMap((u) => u.lessons).length;
+    const added = importMore(db, { body: { ...BATCH, lang: 'bn' } });
+    expect(added).toMatchObject({ units: 10, lessons: 20 });
+    expect(readCourse(db, 'bn', { drafts: false }).flatMap((u) => u.lessons).length).toBe(before);
+    expect(readCourse(db, 'bn').flatMap((u) => u.lessons).length).toBe(before + 20);
+  });
+
+  it('every question in it can be answered', () => {
+    const db = openDb(':memory:');
+    importLanguage(db, { ...BATCH, language: { code: 'xb', name: 'Batch', native: 'Batch', dir: 'ltr' } });
+    setCourse(readCourse(db, 'xb'));
+    for (const unit of readCourse(db, 'xb'))
+      for (const lesson of unit.lessons)
+        for (let run = 0; run < 20; run++)
+          for (const ex of buildLesson(lesson.id)) {
+            const answer = solve(ex);
+            if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
+          }
   });
 });

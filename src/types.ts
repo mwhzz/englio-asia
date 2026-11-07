@@ -22,6 +22,8 @@ export interface Fill {
   answer: string;
   options: string[];
   bn: string;
+  /** Why the answer is right, in the learner's language: shown after a wrong answer. */
+  why?: string;
 }
 
 /** One or two sentences with several blanks, filled from a shared word bank. */
@@ -33,6 +35,8 @@ export interface Gaps {
   /** Wrong words mixed into the bank. */
   extra: string[];
   bn: string;
+  /** Why these words go there: shown after a wrong answer. */
+  why?: string;
 }
 
 /** A grammar point: a short rule in Bangla, then "which sentence is correct?". */
@@ -60,6 +64,8 @@ export interface Dialog {
   reply: number;
   /** Wrong replies offered next to the right one. */
   wrong: string[];
+  /** Why that reply fits: shown after a wrong answer. */
+  why?: string;
 }
 
 /** One letter of the alphabet, with how it sounds and words that start with it. */

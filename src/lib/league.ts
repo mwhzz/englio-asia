@@ -10,6 +10,8 @@ export interface League {
   learners: { name: string; xp: number; isMe: boolean }[];
   me: { rank: number; xp: number } | null;
   myDistrictRank: number | null;
+  /** My tier's league (missing from older servers). */
+  tier?: { index: number; bn: string; learners: { name: string; xp: number; isMe: boolean }[]; rank: number | null; promote: number; keep: number } | null;
 }
 
 /** Fetches the league for a district; null when offline or the server can't be reached. */

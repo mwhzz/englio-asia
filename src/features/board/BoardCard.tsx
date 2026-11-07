@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
 import { Glyph } from '../../components/Glyph';
-import { examFor } from '../../lib/board';
+import { boardToday, examFor } from '../../lib/board';
 import { haptic } from '../../lib/haptics';
 import { useProgress } from '../../state/ProgressContext';
 
@@ -28,7 +28,7 @@ export function BoardCard({ delay = 0 }: { delay?: number }) {
         </span>
         <span className="rc-text">
           <strong lang="bn">{exam} বোর্ড প্রস্তুতি</strong>
-          <small lang="bn">ইংরেজি ২য় পত্রের সব টপিক, মডেল টেস্টসহ</small>
+          <small lang="bn">{boardToday(progress) ? 'আজকের রাউন্ড হয়ে গেছে · সব টপিক, মডেল টেস্ট' : 'আজকের ১০টা প্রশ্নের রাউন্ড বাকি'}</small>
         </span>
         <Glyph name="chevron" size={16} className="pf-chevron" />
       </button>

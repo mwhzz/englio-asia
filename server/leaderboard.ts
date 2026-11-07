@@ -1,5 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite';
 import { shownName } from './nameFilter.ts';
+import { KEEP, PROMOTE, TIERS } from './tiers.ts';
 
 /** How long one count of the week's XP is reused (the count itself is a quick indexed read). */
 const CACHE_MS = 60 * 1000;
@@ -10,6 +11,7 @@ interface Row {
   name: string | null;
   district: string | null;
   joinedAt: string | null;
+  tier: number;
   xp: number;
 }
 
@@ -23,6 +25,8 @@ export interface Leaderboard {
   me: { rank: number; xp: number } | null;
   /** My district's place among districts. */
   myDistrictRank: number | null;
+  /** My tier's league (tiers.ts): everyone in my tier this week, and what moves me up or down. Null without `me`. */
+  tier: { index: number; bn: string; learners: { name: string; xp: number; isMe: boolean }[]; rank: number | null; promote: number; keep: number } | null;
 }
 
 const dhakaDay = (at: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dhaka' }).format(at);
@@ -44,7 +48,7 @@ export function weekXp(db: DatabaseSync, now: Date, ids?: string[]): Row[] {
   const only = ids ? `AND id IN (${ids.map(() => '?').join(',') || "''"})` : '';
   return db
     .prepare(
-      `SELECT id, name, district_id AS district, created_at AS joinedAt, week_xp AS xp FROM users
+      `SELECT id, name, district_id AS district, created_at AS joinedAt, tier, week_xp AS xp FROM users
        WHERE week_since = ? AND week_xp > 0 AND blocked = 0 ${only}
        ORDER BY week_xp DESC`,
     )
@@ -89,5 +93,22 @@ export function leaderboard(db: DatabaseSync, districtId: string | null, me: str
     learners: local.slice(0, TOP).map((r) => ({ name: r.id === me ? r.name?.trim().split(/\s+/)[0] || 'Learner' : shownName(r.name, r.joinedAt, now), xp: r.xp, isMe: r.id === me })),
     me: myIndex >= 0 ? { rank: myIndex + 1, xp: local[myIndex].xp } : null,
     myDistrictRank: districtIndex >= 0 ? districtIndex + 1 : null,
+    tier: tierLeague(db, rows, me, now),
+  };
+}
+
+/** The league of my tier this week: the top learners of the same tier, and my place among them. */
+function tierLeague(db: DatabaseSync, rows: Row[], me: string | null, now: Date): Leaderboard['tier'] {
+  if (!me) return null;
+  const mine = (db.prepare('SELECT tier FROM users WHERE id = ?').get(me) as { tier: number } | undefined)?.tier ?? 0;
+  const peers = rows.filter((r) => (r.tier ?? 0) === mine);
+  const index = peers.findIndex((r) => r.id === me);
+  return {
+    index: mine,
+    bn: TIERS[mine].bn,
+    learners: peers.slice(0, TOP).map((r) => ({ name: r.id === me ? r.name?.trim().split(/\s+/)[0] || 'Learner' : shownName(r.name, r.joinedAt, now), xp: r.xp, isMe: r.id === me })),
+    rank: index >= 0 ? index + 1 : null,
+    promote: PROMOTE,
+    keep: KEEP,
   };
 }

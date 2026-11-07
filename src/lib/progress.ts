@@ -39,6 +39,8 @@ export interface Progress {
   storiesRead: string[];
   /** Daily reminder: on or off, and the local hour (0–23) to send it if the learner hasn't practised yet. */
   reminder: { on: boolean; hour: number };
+  /** Board questions answered right and asked, per day (the exam plan's trend, lib/board.ts). */
+  boardDays?: Record<string, { right: number; total: number }>;
   /** Best score (0–100) in each SSC/HSC board practice topic, by topic id. */
   boardScores: Record<string, number>;
   /** The last day the learner collected the daily quests' reward (lib/quests.ts). */

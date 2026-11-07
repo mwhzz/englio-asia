@@ -1,7 +1,7 @@
 import { findClassLevel } from '../data/classLevels';
 import type { BoardTopic, Exam } from '../data/board/types';
 import type { QuizQuestion } from '../types';
-import { dayKey } from './days';
+import { dayKey, shiftDay } from './days';
 import { recordLesson, type Progress } from './progress';
 import { sample } from './random';
 
@@ -41,5 +41,34 @@ export function modelTest(topics: BoardTopic[], exam: Exam): QuizQuestion[] {
 export function applyBoardRound(p: Progress, key: string, right: number, total: number, seconds = 0, today = dayKey()): Progress {
   const score = Math.round((100 * right) / Math.max(1, total));
   const after = recordLesson(p, null, right, today, seconds);
-  return { ...after, boardScores: { ...(p.boardScores ?? {}), [key]: Math.max(p.boardScores?.[key] ?? 0, score) } };
+  const day = p.boardDays?.[today] ?? { right: 0, total: 0 };
+  return {
+    ...after,
+    boardScores: { ...(p.boardScores ?? {}), [key]: Math.max(p.boardScores?.[key] ?? 0, score) },
+    boardDays: { ...(p.boardDays ?? {}), [today]: { right: day.right + right, total: day.total + total } },
+  };
+}
+
+/** boardScores key of the daily round. */
+export const dailyKey = (exam: Exam) => `daily-${exam}`;
+
+/** The exam plan's daily round: ROUND questions mixed from every topic of the exam. */
+export function dailyRound(topics: BoardTopic[], exam: Exam): QuizQuestion[] {
+  const list = topicsFor(topics, exam);
+  return sample(
+    list.flatMap((t) => sample(t.questions, 2)),
+    ROUND,
+  );
+}
+
+/** Whether the learner did any board practice today. */
+export const boardToday = (p: Progress, today = dayKey()) => (p.boardDays?.[today]?.total ?? 0) > 0;
+
+/** The last `days` days' board scores (percent right, null when not practised), oldest first. */
+export function boardTrend(p: Progress, days = 14, today = dayKey()): { day: string; percent: number | null }[] {
+  return Array.from({ length: days }, (_, i) => {
+    const day = shiftDay(today, i - days + 1);
+    const d = p.boardDays?.[day];
+    return { day, percent: d && d.total ? Math.round((100 * d.right) / d.total) : null };
+  });
 }

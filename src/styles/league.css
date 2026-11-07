@@ -260,3 +260,10 @@
   font-size: 16px;
   cursor: pointer;
 }
+
+/* ধাপের লিগ (TierLeague). */
+.lgp-tiers {
+  margin: 6px 0 0;
+  color: var(--ios-secondary);
+  font-size: 13px;
+}

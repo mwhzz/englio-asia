@@ -5,6 +5,7 @@ import { findDistrict, type District } from "../../data/districts";
 import { toBanglaDigits, possessive } from "../../lib/bangla";
 import { daysLeft, type League } from "../../lib/league";
 import { FriendsLeague } from "./FriendsLeague";
+import { TierLeague } from "./TierLeague";
 import { useBackButton } from "../../lib/backButton";
 
 const GOLD = "#ffcc00";
@@ -20,7 +21,7 @@ export function LeaguePage({
   onClose: () => void;
 }) {
   useBackButton(onClose);
-  const [tab, setTab] = useState<"district" | "friends">("district");
+  const [tab, setTab] = useState<"tier" | "district" | "friends">(league.tier ? "tier" : "district");
   const top = league.districts[0]?.xp || 1;
   const left = daysLeft(league.ends);
 
@@ -45,6 +46,7 @@ export function LeaguePage({
         <div className="pf-segmented lgp-tabs" role="tablist">
           {(
             [
+              ...(league.tier ? ([["tier", "ধাপ"]] as const) : []),
               ["district", "জেলা"],
               ["friends", "বন্ধু"],
             ] as const
@@ -65,7 +67,9 @@ export function LeaguePage({
           সপ্তাহ, সবার XP শূন্য থেকে
         </p>
 
-        {tab === "friends" ? (
+        {tab === "tier" && league.tier ? (
+          <TierLeague tier={league.tier} />
+        ) : tab === "friends" ? (
           <FriendsLeague />
         ) : (
           <>

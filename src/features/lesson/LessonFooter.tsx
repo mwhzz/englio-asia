@@ -3,7 +3,7 @@ import { Glyph } from '../../components/Glyph';
 import { MixedText } from '../../components/MixedText';
 import { SpeakButton } from '../../components/SpeakButton';
 import type { Exercise, Grade } from '../../types';
-import { answerOf } from './answerOf';
+import { answerOf, whyOf } from './answerOf';
 import { ComboPill } from './ComboPill';
 import { ReportButton } from '../report/ReportButton';
 
@@ -33,6 +33,7 @@ export function LessonFooter({ exercise, canCheck, feedback, combo, where, onChe
   const wrong = feedback?.result === 'wrong';
   const tone = feedback ? (wrong ? ' is-wrong' : ' is-right') : '';
   const right = answerOf(exercise);
+  const why = whyOf(exercise);
 
   return (
     <footer className={`lesson-foot${tone}`}>
@@ -62,6 +63,11 @@ export function LessonFooter({ exercise, canCheck, feedback, combo, where, onChe
                     </span>
                   </span>
                 </div>
+              )}
+              {wrong && why && (
+                <p className="feedback-why" lang="bn">
+                  <MixedText text={why} />
+                </p>
               )}
               <ReportButton where={`${where} · ${exercise.kind}`} question={right?.en ?? `${exercise.kind} ${exercise.id}`} />
             </div>

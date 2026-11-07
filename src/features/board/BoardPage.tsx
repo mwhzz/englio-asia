@@ -12,6 +12,7 @@ import { haptic } from '../../lib/haptics';
 import { useProgress } from '../../state/ProgressContext';
 import type { QuizQuestion } from '../../types';
 import { QuizScreen } from '../quiz/QuizScreen';
+import { ExamPlan } from './ExamPlan';
 
 const COLOR = '#ff9500';
 const EXAMS: [Exam, string][] = [
@@ -79,6 +80,8 @@ export function BoardPage({ onClose }: { onClose: () => void }) {
             </span>
           </button>
         </div>
+
+        <ExamPlan exam={exam} onStart={start} />
 
         <div className="pf-list">
           {topics.map((t, i) => {

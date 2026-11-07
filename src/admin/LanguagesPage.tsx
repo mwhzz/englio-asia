@@ -89,6 +89,10 @@ export function LanguagesPage({ owner }: { owner: boolean }) {
               )}
               {empty && <p className="ad-muted">এখনো কোনো কনটেন্ট নেই। লেসন পাতায় এই ভাষা বেছে ইউনিট যোগ করো।</p>}
               <div className="ad-row">
+                <label className="ad-btn ad-file-btn" title="লেখকের বানানো ইউনিটের JSON ফাইল: সব চেক করে খসড়া হিসেবে যোগ হবে">
+                  JSON থেকে যোগ করো
+                  <input type="file" accept="application/json,.json" hidden onChange={(e) => e.target.files?.[0] && importFile(l.code, e.target.files[0]).then(() => setVersion((v) => v + 1))} />
+                </label>
                 {!empty && (
                   <button className="ad-btn" title="অনুবাদকের জন্য পুরো কোর্স একটা ফাইলে (server/importLanguage.ts দিয়ে আবার যোগ করা যায়)" onClick={() => exportContent(l.code)}>
                     JSON নামাও
@@ -184,3 +188,16 @@ async function exportContent(code: string) {
     alert((e as Error).message);
   }
 }
+
+/** Adds a writer's batch (units, topics, stories, writing) to a language from a JSON file, as drafts. */
+async function importFile(code: string, file: File) {
+  try {
+    const data = JSON.parse(await file.text()) as Record<string, unknown>;
+    const { language: _, ...rest } = data;
+    const r = await adminApi<{ units: number; lessons: number; items: number; grammar: number; stories: number }>('POST', '/import', { ...rest, lang: code });
+    alert(`যোগ হয়েছে (খসড়া): ${r.units}টা ইউনিট, ${r.lessons}টা লেসন, ${r.items}টা শব্দ/বাক্য, ${r.grammar}টা ব্যাকরণ, ${r.stories}টা গল্প। লেসন পাতায় দেখে "প্রকাশিত" করো।`);
+  } catch (e) {
+    alert(`কিছুই যোগ হয়নি: ${(e as Error).message}`);
+  }
+}
+

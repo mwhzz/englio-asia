@@ -25,6 +25,7 @@ import { backupCode, deleteByCode, restore } from './restoreCodes.ts';
 import * as team from './team.ts';
 import { checkUserId, clientOf, loadProgress, saveProgress } from './users.ts';
 import { health } from './health.ts';
+import { importMore } from './importLanguage.ts';
 import { stats } from './stats.ts';
 import { draftIds, listHistory, restoreHistory, setDraft, snapshotFor } from './history.ts';
 import { readSettings, saveSettings } from './settings.ts';
@@ -125,6 +126,8 @@ function routes(db: DatabaseSync): Route[] {
         };
       },
     },
+    // More content for a language from a JSON file (a writer's batch), as drafts by default.
+    { method: 'POST', pattern: '/api/admin/import', admin: 'content', handler: (r) => importMore(db, r) },
     { method: 'GET', pattern: '/api/admin/export/tickets', admin: 'people', handler: () => exportTickets(db) },
     { method: 'GET', pattern: '/api/admin/export/users', admin: 'owner', handler: () => people.exportUsers(db) },
     { method: 'GET', pattern: '/api/admin/export/payments', admin: 'owner', handler: () => people.exportPayments(db) },

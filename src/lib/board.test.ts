@@ -42,3 +42,19 @@ describe('board practice', () => {
     expect(p2.xp).toBe(13);
   });
 });
+
+describe('exam plan', () => {
+  it('keeps each day’s board score and shows the last 14 days', async () => {
+    const { applyBoardRound, boardTrend, boardToday, dailyRound } = await import('./board');
+    const { DEFAULT_PROGRESS } = await import('./progress');
+    const { BOARD } = await import('../data/board');
+    let p = applyBoardRound(DEFAULT_PROGRESS, 'daily-ssc', 6, 10, 60, '2026-11-01');
+    p = applyBoardRound(p, 'daily-ssc', 9, 10, 60, '2026-11-07');
+    const trend = boardTrend(p, 14, '2026-11-07');
+    expect(trend).toHaveLength(14);
+    expect(trend.at(-1)).toEqual({ day: '2026-11-07', percent: 90 });
+    expect(trend.find((d) => d.day === '2026-11-01')?.percent).toBe(60);
+    expect(boardToday(p, '2026-11-07')).toBe(true);
+    expect(dailyRound(BOARD, 'ssc')).toHaveLength(10);
+  });
+});
