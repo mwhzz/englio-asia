@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.7.0 (2026-11-07)
+
 - New content, waiting for a teacher's check: units 12–21 (A1+ to A2: home, clothes and shopping, free time, jobs, in town, last weekend, health, plans, feelings, comparing), 20 lessons, every blank with a "why". The whole A1–B2 plan is in docs/SYLLABUS.md.
 - Admin: ভাষা → "JSON থেকে যোগ করো" adds a writer's batch of units, topics and stories to a language, checked first, as drafts.
 - A wrong answer to a blank, a gap text or a dialogue shows why the right answer is right (when the lesson has it).
