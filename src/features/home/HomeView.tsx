@@ -15,6 +15,7 @@ import { StreakLost } from './StreakLost';
 import { NoticeBanner } from '../notice/NoticeBanner';
 import { ReplyCard } from '../help/ReplyCard';
 import { QuestsCard } from './QuestsCard';
+import { BackupNudge } from './BackupNudge';
 import { SyncNote } from './SyncNote';
 import { VoiceHint } from './VoiceHint';
 import { feature } from '../../lib/appSettings';
@@ -38,6 +39,10 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
       <HomeHeader onProfile={onProfile} />
       <div className="home-body">
         <SyncNote />
+        {/* The next lesson first, so it's in reach without scrolling, even with large text on a small phone. */}
+        <div className="home-rise" style={{ animationDelay: '140ms' }}>
+          <UpNextCard onStart={onStart} onPractice={onPractice} />
+        </div>
         {!anyDone && !progress.placementTaken && (
           <div className="home-rise" style={{ animationDelay: '100ms' }}>
             <PlacementCard onStart={onPlacement} />
@@ -47,12 +52,10 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
         <ReplyCard />
         <StreakNudge onStart={onStart} />
         <StreakLost onStart={onStart} />
-        <div className="home-rise" style={{ animationDelay: '140ms' }}>
-          <UpNextCard onStart={onStart} onPractice={onPractice} />
-        </div>
         {Object.keys(progress.completed).length < 3 && <HowItWorks />}
         <VoiceHint />
         {anyDone && <QuestsCard />}
+        <BackupNudge />
         <ReviewCard onStart={onReview} />
         {feature('board') && boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
         {feature('stories') && anyDone && <StoriesCard />}

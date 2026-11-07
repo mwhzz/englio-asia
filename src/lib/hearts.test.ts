@@ -30,3 +30,11 @@ describe('hearts', () => {
     expect(gainHeart(DEFAULT_PROGRESS)).toBe(DEFAULT_PROGRESS);
   });
 });
+
+describe('the first lessons', () => {
+  it('don’t cost hearts', async () => {
+    const { beginner } = await import('./hearts');
+    expect(beginner({ completed: {} })).toBe(true);
+    expect(beginner({ completed: { a: 1, b: 1, c: 1 } })).toBe(false);
+  });
+});

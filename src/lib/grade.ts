@@ -32,7 +32,7 @@ export function grade(ex: Exercise, answer: string): Grade {
       return { result: compare(answer, answersOf(ex.sentence), true), solution: ex.sentence.en };
     case 'speak':
       // "Can't speak now" passes the exercise without checking.
-      if (answer === SKIP_SPEAKING) return { result: 'correct', solution: ex.sentence.en };
+      if (answer === SKIP_SPEAKING) return { result: 'correct', solution: ex.sentence.en, skipped: true };
       return { result: compare(answer, answersOf(ex.sentence), true), solution: ex.sentence.en };
     case 'gaps':
       return verdict(answer === ex.gaps.answers.join('|'), fillGaps(ex.gaps.text, ex.gaps.answers));

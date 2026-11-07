@@ -57,6 +57,10 @@ describe('league after a learner is deleted', () => {
   it('drops them straight away, not after the cache expires', async () => {
     const { createApi } = await import('./app.ts');
     const d = db();
+    // The server uses today's league week, so Karim needs XP today (not only in the fixed test week).
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dhaka' }).format(new Date());
+    saveProgress(d, 'device-0002', { profile: { name: 'Karim Uddin', districtId: 'dhaka' }, xpByDay: { [today]: 60 }, completed: {} });
+    d.exec("UPDATE users SET created_at = '2026-01-01T00:00:00Z'");
     const server = createApi(d, 'owner');
     await new Promise<void>((done) => server.listen(0, done));
     const base = `http://localhost:${(server.address() as import('node:net').AddressInfo).port}`;

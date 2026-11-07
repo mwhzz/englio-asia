@@ -36,3 +36,7 @@ export function nextHeartAt(p: Progress): number | null {
 export function minutesUntil(time: number, now = Date.now()): number {
   return Math.max(1, Math.ceil((time - now) / 60000));
 }
+
+/** Lessons a new learner finishes before mistakes cost hearts (so the first day can't end in "out of hearts"). */
+export const FREE_LESSONS = 3;
+export const beginner = (p: { completed: Record<string, number> }) => Object.keys(p.completed ?? {}).length < FREE_LESSONS;

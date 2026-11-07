@@ -170,4 +170,6 @@ export type ExerciseOf<K extends Exercise['kind']> = Extract<Exercise, { kind: K
 export interface Grade {
   result: 'correct' | 'typo' | 'wrong';
   solution: string;
+  /** "Can't speak now": passed without checking (no praise, doesn't add to the combo). */
+  skipped?: boolean;
 }

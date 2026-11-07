@@ -22,7 +22,7 @@ export function DoneStep({ name, onDone }: { name: string; onDone: () => void })
         <span lang="bn">সব প্রস্তুত,</span> {name}!
       </h1>
       <p className="ob-sub ob-rise" style={{ textAlign: 'center' }}>
-        Your English journey starts now.
+        <span lang="bn">তোমার ইংরেজি শেখা শুরু হলো।</span>
       </p>
     </div>
   );

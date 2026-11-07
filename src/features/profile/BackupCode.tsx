@@ -4,6 +4,7 @@ import { getBackupCode } from '../../lib/backup';
 import { haptic } from '../../lib/haptics';
 import { useProgress } from '../../state/ProgressContext';
 import { RestoreSheet } from '../onboarding/RestoreSheet';
+import { markBackupSeen } from '../home/BackupNudge';
 
 /** Shows this learner's backup code, to bring their progress to a new phone. */
 export function BackupCode({ onClose }: { onClose: () => void }) {
@@ -14,6 +15,7 @@ export function BackupCode({ onClose }: { onClose: () => void }) {
   const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
+    markBackupSeen();
     getBackupCode(progress)
       .then(setCode)
       .catch(() => setFailed(true));
@@ -27,7 +29,7 @@ export function BackupCode({ onClose }: { onClose: () => void }) {
       <div className="bk">
         <h2 lang="bn">ব্যাকআপ কোড</h2>
         <p className="muted" lang="bn">
-          নতুন ফোনে Englio খুলে "আগের অগ্রগতি ফিরিয়ে আনো" চাপো আর এই কোডটা দাও। কোডটা কাউকে দেখিও না।
+          নতুন ফোনে Englio খুলে "আগে শিখেছ? অগ্রগতি ফিরিয়ে আনো" চাপো আর এই কোডটা দাও। কোডটা কাউকে দেখিও না।
         </p>
         <div className="bk-code" aria-live="polite">
           {code ?? (failed ? '–' : '·····-·····')}

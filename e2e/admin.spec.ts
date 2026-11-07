@@ -119,9 +119,9 @@ test('the owner switches a feature off and makes a unit Plus-only, and the app f
   const app = await context.newPage();
   await signIn(app);
   await expect(app.locator('.lgc')).toHaveCount(0);
-  await expect(app.locator('.upnext .plus-badge')).toBeVisible();
-  await app.locator('.upnext').click();
-  await expect(app.getByText('এই ইউনিট Englio Plus-এ')).toBeVisible();
+  // Up Next skips the Plus-only unit 1 and offers unit 2, which is free.
+  await expect(app.locator('.upnext')).toContainText('ইউনিট ২');
+  await expect(app.locator('.upnext .plus-badge')).toHaveCount(0);
 
   // Back to everything on and free, for the other tests.
   const res = await request.put('http://localhost:8799/api/admin/settings', {

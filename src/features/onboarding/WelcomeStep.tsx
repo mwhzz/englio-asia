@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from 'react';
 import { Logo } from '../../components/Logo';
 import { ObButton } from './ObButton';
 import { RestoreSheet } from './RestoreSheet';
+import { TextSizeToggle } from './TextSizeToggle';
 
 interface Props {
   mapSlot: (el: HTMLDivElement | null) => void;
@@ -14,6 +15,7 @@ export function WelcomeStep({ mapSlot, onNext }: Props) {
     <div className="ob-screen ob-welcome">
       <header className="ob-brand ob-rise">
         <Logo size={38} />
+        <TextSizeToggle />
       </header>
 
       <div ref={mapSlot} className="ob-map-slot" />
@@ -25,7 +27,7 @@ export function WelcomeStep({ mapSlot, onNext }: Props) {
           নিজের মতো করে।
         </h1>
         <p className="ob-sub ob-rise" style={{ '--i': 2 } as CSSProperties}>
-          Learn English, made for learners in all 64 districts of Bangladesh.
+          <span lang="bn">বাংলাদেশের ৬৪ জেলার শিক্ষার্থীদের জন্য, বাংলায় বুঝিয়ে।</span>
         </p>
       </div>
 

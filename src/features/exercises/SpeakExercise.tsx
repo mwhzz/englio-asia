@@ -7,9 +7,13 @@ import { listenOnce } from '../../lib/listen';
 import type { ExerciseOf } from '../../types';
 import type { ExerciseProps } from './props';
 import { SpokenWords } from './SpokenWords';
+import { isAndroidApp } from '../../lib/playApp';
 
 const MIC_BLOCKED: Record<string, string> = {
-  'not-allowed': 'মাইক্রোফোনের অনুমতি দাও (ব্রাউজারের ঠিকানার পাশের চিহ্নে চাপ দাও)।',
+  // The Android app has no address bar: there it's the phone's app settings.
+  'not-allowed': isAndroidApp()
+    ? 'মাইক্রোফোনের অনুমতি দাও: ফোনের সেটিংস → অ্যাপ → Englio → অনুমতি → মাইক্রোফোন।'
+    : 'মাইক্রোফোনের অনুমতি দাও (ব্রাউজারের ঠিকানার পাশের চিহ্নে চাপ দাও)।',
   'audio-capture': 'মাইক্রোফোন পাওয়া যায়নি।',
   network: 'ইন্টারনেট লাগবে, আবার চেষ্টা করো।',
 };

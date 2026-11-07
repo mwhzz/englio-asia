@@ -26,7 +26,7 @@ export function NameStep({ name, districtId, onChange, onNext }: Props) {
         <h1 className="ob-title" lang="bn">
           তোমার নাম কী?
         </h1>
-        <p className="ob-sub">Your Englio student pass is being made.</p>
+        <p className="ob-sub" lang="bn">তোমার Englio কার্ড তৈরি হচ্ছে।</p>
       </header>
 
       <div className="ob-rise" style={{ '--i': 1 } as CSSProperties}>

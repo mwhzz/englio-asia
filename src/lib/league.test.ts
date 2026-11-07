@@ -21,4 +21,9 @@ describe('league with my own XP', () => {
     const synced = { ...LEAGUE, me: { rank: 2, xp: 30 } };
     expect(withMyXp(synced, { '2026-11-05': 30 }, 'Rina')).toBe(synced);
   });
+
+  it('gives my district a place once I have XP, instead of "-"', () => {
+    const l = withMyXp({ ...LEAGUE, districts: [{ districtId: 'sylhet', xp: 100, learners: 2 }] }, { '2026-11-05': 70 }, 'Rina', 'dhaka');
+    expect(l.myDistrictRank).toBe(2);
+  });
 });

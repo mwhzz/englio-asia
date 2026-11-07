@@ -119,7 +119,7 @@ export function HelpPage({ onClose }: { onClose: () => void }) {
               value={text}
               onChange={(e) => (setText(e.target.value), setState('idle'))}
             />
-            <input className="rp-note hp-contact" lang="bn" maxLength={80} placeholder="ফোন বা ইমেইল (চাইলে, উত্তর এই পেজেও পাবে)" value={contact} onChange={(e) => setContact(e.target.value)} />
+            <input className="rp-note hp-contact" lang="bn" maxLength={80} placeholder="ফোন বা ইমেইল (না দিলেও চলবে)" value={contact} onChange={(e) => setContact(e.target.value)} />
             {state === 'sent' && (
               <p className="hp-note is-ok" lang="bn">
                 ধন্যবাদ! পেয়েছি। উত্তর এলে এই পেজের উপরে দেখতে পাবে।

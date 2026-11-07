@@ -152,3 +152,10 @@ describe('buildPractice', () => {
     }
   });
 });
+
+describe('practice for a beginner', () => {
+  it('works before any lesson is finished (out of hearts in lesson 1)', async () => {
+    const { buildPractice } = await import('./lesson');
+    expect(buildPractice({}).length).toBeGreaterThan(0);
+  });
+});

@@ -117,3 +117,11 @@ Also seen: a wrong answer shows a check mark in its radio circle; stray bullet p
 
 **Still open from section 5:** 10 (more content: people's work), league tiers, adaptive difficulty, per-learner event funnels and the Play install referrer (needs native code), course download in parts, CEFR tags and coverage, rollout percentages and A/B tests, promo codes / yearly / trial / school plans / Play Billing, two-step admin login and token rotation, a support email on Englio's own domain, Families-policy paperwork, Postgres and a CDN.
 
+## 6. Five learner personas (persona-learners, 2026-11-07)
+
+Rina (class 8, cheap phone, large text), Karim (garage owner, little English), Nusrat (HSC), Mr. Hossain (58, larger text), Tania (going abroad, often offline), each over 3–5 simulated days.
+
+**Done (branch `agents3`):** practice crash for a beginner out of hearts; no heart loss in the first 3 lessons; resume kept 24 h; the home card is never a dead end; offline from the first visit (service worker saves every app file on install, `CACHE` v3) and a calm offline page instead of a crash; StreakNudge uses the current streak; Up Next skips Plus-locked units; large text on 360×640: next lesson at the top, search "বাতিল" on screen, class dial fits, placement buttons wrap; Bangla onboarding subtitles and home card labels, Bangla digits in quests; text-size button on the welcome screen; adult card wording; backup-code card after 3 lessons; HowItWorks folded; skipping speaking isn't praised; Android microphone steps; league district rank; "উত্তর দেওয়া হয়েছে" for answered questions; district search best match first.
+
+**Still open:** "আপনি" for adult learners (every screen's wording), a real adult course (market, phone, doctor, travel, work abroad first), an exam plan for SSC/HSC students (daily board round, score trend), "why" explanations for wrong answers outside grammar (content work), speaking without the network.
+

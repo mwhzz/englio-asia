@@ -13,7 +13,10 @@ interface Props {
 export function DistrictSearch({ selectedId, onPick, onClose }: Props) {
   const [query, setQuery] = useState('');
   const results = searchDistricts(query);
-  const divisions = (Object.keys(DIVISIONS) as DivisionId[]).filter((div) => results.some((d) => d.division === div));
+  // Divisions in the order of their best match (all of them, in the usual order, before anything is typed).
+  const divisions = query.trim()
+    ? [...new Set(results.map((d) => d.division))]
+    : (Object.keys(DIVISIONS) as DivisionId[]).filter((div) => results.some((d) => d.division === div));
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();

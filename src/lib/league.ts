@@ -62,7 +62,7 @@ export const daysLeft = (ends: string, today = new Date()) => {
  * The league with this phone's own XP of the week counted in, so a lesson just done shows at once
  * (the server only knows it after the next sync). `xpByDay` is the learner's own progress.
  */
-export function withMyXp(league: League, xpByDay: Record<string, number>, name: string): League {
+export function withMyXp(league: League, xpByDay: Record<string, number>, name: string, districtId?: string | null): League {
   const mine = Object.entries(xpByDay)
     .filter(([day]) => day >= league.since && day <= league.ends)
     .reduce((sum, [, xp]) => sum + xp, 0);
@@ -71,5 +71,9 @@ export function withMyXp(league: League, xpByDay: Record<string, number>, name: 
   const me = { name: name.trim().split(/\s+/)[0] || 'Learner', xp: mine, isMe: true };
   const ranked = [...others, me].sort((a, b) => b.xp - a.xp || Number(b.isMe) - Number(a.isMe));
   const rank = ranked.indexOf(me) + 1;
-  return { ...league, learners: ranked.slice(0, Math.max(10, league.learners.length)), me: { rank: league.me ? Math.min(league.me.rank, rank) : rank, xp: mine } };
+  // My district's place: if the server doesn't rank it yet, it has at least my XP now.
+  const ownXp = league.districts.find((d) => d.districtId === districtId)?.xp ?? 0;
+  const districtXp = Math.max(ownXp, mine);
+  const myDistrictRank = league.myDistrictRank ?? (districtId ? league.districts.filter((d) => d.districtId !== districtId && d.xp > districtXp).length + 1 : null);
+  return { ...league, myDistrictRank, learners: ranked.slice(0, Math.max(10, league.learners.length)), me: { rank: league.me ? Math.min(league.me.rank, rank) : rank, xp: mine } };
 }

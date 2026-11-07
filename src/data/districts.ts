@@ -113,5 +113,9 @@ export function searchDistricts(query: string): District[] {
   const q = query.trim().toLowerCase().replace(/[^a-zঀ-৿]/g, '');
   if (!q) return DISTRICTS;
   const key = (s: string) => s.toLowerCase().replace(/[^a-zঀ-৿]/g, '');
-  return DISTRICTS.filter((x) => [x.en, x.bn, ...(x.aliases ?? [])].some((name) => key(name).includes(q)));
+  const names = (x: District) => [x.en, x.bn, ...(x.aliases ?? [])].map(key);
+  // Best matches first: a name that starts with what was typed, and among those a division's capital
+  // ("Raj" → Rajshahi before Rajbari).
+  const rank = (x: District) => (names(x).some((n) => n.startsWith(q)) ? 0 : 2) + (x.en === DIVISIONS[x.division].en ? 0 : 1);
+  return DISTRICTS.filter((x) => names(x).some((n) => n.includes(q))).sort((a, b) => rank(a) - rank(b));
 }

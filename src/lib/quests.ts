@@ -1,4 +1,5 @@
 import { dayKey } from './days';
+import { toBanglaDigits } from './bangla';
 import type { Progress } from './progress';
 import { MAX_FREEZES } from './streak';
 
@@ -15,7 +16,7 @@ export interface Quest {
  */
 export function todaysQuests(p: Progress, today = dayKey()): Quest[] {
   return [
-    { id: 'goal', bn: `দৈনিক লক্ষ্য: ${p.dailyGoal} XP`, done: p.xpByDay[today] ?? 0, target: p.dailyGoal },
+    { id: 'goal', bn: `দৈনিক লক্ষ্য: ${toBanglaDigits(p.dailyGoal)} XP`, done: p.xpByDay[today] ?? 0, target: p.dailyGoal },
     { id: 'lessons', bn: '২টা লেসন বা অনুশীলন শেষ করো', done: p.lessonsByDay[today] ?? 0, target: 2 },
     { id: 'minutes', bn: '১০ মিনিট শেখো', done: Math.floor((p.secondsByDay[today] ?? 0) / 60), target: 10 },
   ];

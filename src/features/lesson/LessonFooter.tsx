@@ -43,8 +43,9 @@ export function LessonFooter({ exercise, canCheck, feedback, combo, where, onChe
               <Glyph name={wrong ? 'close' : 'check'} size={22} />
             </span>
             <div className="feedback-text">
-              {!wrong && combo >= 3 && <ComboPill combo={combo} />}
-              {feedback.result === 'correct' && (
+              {!wrong && !feedback.skipped && combo >= 3 && <ComboPill combo={combo} />}
+              {feedback.skipped && <h3 lang="bn">ঠিক আছে, পরে বলবে</h3>}
+              {feedback.result === 'correct' && !feedback.skipped && (
                 <h3>
                   <span lang="bn">{praise[0]}</span> <small>{praise[1]}</small>
                 </h3>

@@ -17,16 +17,22 @@ interface Props {
 /** One big card that resumes learning with a single tap. */
 export function UpNextCard({ onStart, onPractice }: Props) {
   const { progress } = useProgress();
-  const next = nextLesson(progress.completed);
+  // Plus-only units are skipped: "next" is the next lesson the learner can actually open.
+  const next = nextLesson(progress.completed, unitLocked);
+  const lockedAhead = !next && !!nextLesson(progress.completed);
   const outOfHearts = progress.hearts <= 0 && !unlimitedHearts();
   const refill = nextHeartAt(progress);
-  const canPractice = Object.keys(progress.completed).length > 0;
+  // Practice works from the first day (it uses the first lesson's words before anything is finished).
+  const canPractice = true;
 
   if (!next || outOfHearts) {
-    const title = !next ? 'সব লেসন শেষ!' : 'হার্ট শেষ';
-    const sub = !next
-      ? 'অনুশীলন করে শেখা ধরে রাখো'
-      : `${toBanglaDigits(refill ? minutesUntil(refill) : 0)} মিনিটে একটি হার্ট ফিরবে`;
+    const title = outOfHearts && next ? 'হার্ট শেষ' : lockedAhead ? 'ফ্রি লেসন সব শেষ!' : 'সব লেসন শেষ!';
+    const sub =
+      outOfHearts && next
+        ? `${toBanglaDigits(refill ? minutesUntil(refill) : 0)} মিনিটে একটা হার্ট ফিরবে · এখনই অনুশীলন করে হার্ট নাও`
+        : lockedAhead
+          ? 'পরের ইউনিটগুলো Plus-এ। ততক্ষণ অনুশীলন, গল্প আর ব্যাকরণে শেখা ধরে রাখো'
+          : 'অনুশীলন করে শেখা ধরে রাখো';
     return (
       <button
         className="upnext is-muted"
@@ -34,7 +40,9 @@ export function UpNextCard({ onStart, onPractice }: Props) {
         disabled={!canPractice}
         style={{ '--u': '#5856d6' } as CSSProperties}
       >
-        <span className="upnext-kicker">{!next ? 'COURSE COMPLETE' : 'OUT OF HEARTS'}</span>
+        <span className="upnext-kicker" lang="bn">
+          {outOfHearts && next ? 'হার্ট শেষ' : 'অনুশীলন'}
+        </span>
         <strong className="upnext-title" lang="bn">
           {title}
         </strong>
@@ -64,7 +72,7 @@ export function UpNextCard({ onStart, onPractice }: Props) {
       aria-label={`Start ${lesson.title}, unit ${unitNumber}`}
     >
       <span className="upnext-kicker">
-        UP NEXT · UNIT {unitNumber} · <span lang="bn">{unit.titleBn}</span> {unitLocked(unit.id) && <PlusBadge />}
+        <span lang="bn">পরের লেসন · ইউনিট {toBanglaDigits(unitNumber)}</span> · <span lang="bn">{unit.titleBn}</span> {unitLocked(unit.id) && <PlusBadge />}
       </span>
       <strong className="upnext-title">{lesson.title}</strong>
       <span className="upnext-bn" lang="bn">

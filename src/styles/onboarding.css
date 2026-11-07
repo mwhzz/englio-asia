@@ -779,6 +779,8 @@
 
 .ob-search-field {
   flex: 1;
+  /* Lets the field shrink, so the "বাতিল" button stays on screen with large text. */
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1489,4 +1491,57 @@
   .ob-welcome .ob-restore {
     margin-left: 0;
   }
+}
+
+/*
+ * Onboarding is laid out to fit one phone screen (map, card, dial). With the largest text on a short phone it
+ * would spill over, so there the zoom is capped at 1.08 (base.css --zoom); the app after it uses the full size.
+ */
+@media (max-height: 760px) {
+  html[data-text-size='large'] :is(.ob, .ob-sheet-backdrop) {
+    --zoom: 1.08;
+    zoom: calc(1.08 / 1.12);
+  }
+  html[data-text-size='larger'] :is(.ob, .ob-sheet-backdrop) {
+    --zoom: 1.08;
+    zoom: calc(1.08 / 1.25);
+  }
+}
+
+/* Short phone with large text: the class screen drops the card preview so the dial, chips and button fit. */
+@media (max-height: 700px) {
+  html[data-text-size] .ob-class-step .ob-card-compact {
+    display: none;
+  }
+}
+
+/* Text size, on the welcome screen's top right (TextSizeToggle). */
+.ob-brand {
+  position: relative;
+}
+.ob-textsize {
+  position: absolute;
+  right: 16px;
+  top: calc(6px + env(safe-area-inset-top));
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 999px;
+  background: var(--ob-glass, rgba(255, 255, 255, 0.8));
+  color: var(--ob-label);
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+.ob-textsize-big {
+  font-size: 19px;
+}
+.ob-textsize small {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ob-secondary);
 }

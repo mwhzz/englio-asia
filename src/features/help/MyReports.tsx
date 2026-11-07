@@ -34,7 +34,8 @@ export function MyReports({ reports }: { reports: MyReport[] }) {
           <li key={r.id} className="hp-report">
             <div className="hp-report-top">
               <span className={`hp-status is-${r.status}`} lang="bn">
-                {STATUS[r.status] ?? r.status}
+                {/* A question that was answered isn't "fixed": it was answered. */}
+                {r.status === 'fixed' && r.place === 'help' && ['idea', 'other', 'account'].includes(r.kind) ? 'উত্তর দেওয়া হয়েছে' : (STATUS[r.status] ?? r.status)}
               </span>
               <small>{date(r.at)}</small>
             </div>

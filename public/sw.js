@@ -3,10 +3,21 @@
 // - the page itself tries the network for a moment, then uses the saved copy (no endless waiting on 2G);
 // - uploaded pictures and recordings (/api/media/) and Google's handwriting fonts are kept once downloaded;
 // - other API calls are left to the app (it keeps its own copy of the course), the admin is always live.
-const CACHE = 'englio-v2';
+const CACHE = 'englio-v3';
 const PAGE_WAIT_MS = 3000;
 
-self.addEventListener('install', () => self.skipWaiting());
+// On first install, save the page and every app file right away (offline-files.json is written by the
+// build), so the app opens offline from the very first visit and every tab works on a bus with no signal.
+// Pictures and recordings stay for "download for offline". A failed download never stops the install.
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(
+    fetch('./offline-files.json')
+      .then((r) => r.json())
+      .then((files) => caches.open(CACHE).then((cache) => Promise.all(files.map((f) => cache.add(new URL(f, self.location).href).catch(() => undefined)))))
+      .catch(() => undefined),
+  );
+});
 self.addEventListener('activate', (event) =>
   event.waitUntil(
     caches

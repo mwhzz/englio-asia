@@ -2,7 +2,7 @@ import type { Exercise } from '../types';
 
 const KEY = 'englio-lesson-resume';
 /** An unfinished lesson is picked up again for this long; after that it starts over. */
-const KEEP_MS = 6 * 60 * 60 * 1000;
+const KEEP_MS = 24 * 60 * 60 * 1000;
 
 /** Where a lesson stopped: its exercises (missed ones re-queued at the end), the current one, and the counts so far. */
 export interface LessonSnapshot {

@@ -6,6 +6,12 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Day one can't fail: the first 3 lessons cost no hearts; practice works before any lesson is finished (it crashed for a beginner out of hearts); a half-done lesson waits 24 hours instead of 6.
+- Offline from the first visit: the app saves all its files when first opened; a page that still needs the internet says so calmly instead of "something went wrong".
+- Home: the next lesson is at the top; it never points at a Plus-locked unit; "Englio কীভাবে চলে" is folded to one row; the streak cards no longer contradict each other; a one-time card asks to write down the backup code after 3 lessons. Card labels are in Bangla.
+- Onboarding: a text-size button on the first screen; Bangla subtitles; on a short phone with large text the search's "বাতিল" and the class dial fit; job/other learners get an "Englio pass" card. "Raj" finds Rajshahi first.
+- "এখন বলতে পারছি না" no longer counts as a right answer; the microphone message gives the Android app's steps; the league shows your district's place right away; an answered question says "উত্তর দেওয়া হয়েছে".
+
 - Inside the Android (Play) app the bKash buy button never shows (Google requires Play Billing there); the owner chooses whether Plus-only units are open in the app until then.
 - League: rude names are hidden ("Learner"), new learners show as "নতুন শিক্ষার্থী" for 3 days, and one address can create at most 40 new learners a day.
 - bKash: a payment can't give its days twice, and a payment left halfway (browser closed after paying) gets its Plus from a check every 10 minutes; unfinished ones expire after a day.

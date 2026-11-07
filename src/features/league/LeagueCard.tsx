@@ -24,7 +24,7 @@ export function LeagueCard() {
     };
   }, [districtId, open]);
   // This phone's XP of the week counts at once, before the server hears of it.
-  const view = league ? withMyXp(league, progress.xpByDay, progress.profile?.name ?? '') : null;
+  const view = league ? withMyXp(league, progress.xpByDay, progress.profile?.name ?? '', districtId) : null;
 
   const district = findDistrict(districtId);
   if (!view || !district) return null;

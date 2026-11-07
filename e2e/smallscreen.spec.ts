@@ -49,3 +49,31 @@ test('with the largest text on a small phone, a story fits the screen', async ({
   await fits(page, '.gt.st .st-next');
   await noSideScroll(page);
 });
+
+test('with the largest text on a small phone, onboarding fits: text size on the first screen, search with its Cancel', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('.ob-textsize').click();
+  await page.locator('.ob-textsize').click();
+  expect(await page.evaluate(() => document.documentElement.dataset.textSize)).toBe('larger');
+  await page.locator('.ob button').filter({ hasText: 'শুরু করো' }).first().click();
+  await page.getByRole('button', { name: 'খুঁজো' }).click();
+  await fits(page, '.ob-text-btn');
+  await noSideScroll(page);
+});
+
+test('a beginner out of hearts can practise (no crash), and the first lessons cost no hearts', async ({ page }) => {
+  await signIn(page, 'Karim', { completed: {}, hearts: 0, heartsUpdatedAt: Date.now() });
+  await page.locator('.upnext').click();
+  await page.locator('.lesson-stage').waitFor();
+  await page.goBack().catch(() => undefined);
+  await page.goto('/');
+  await page.evaluate(() => {
+    const p = JSON.parse(localStorage.getItem('englio-progress-v1')!);
+    localStorage.setItem('englio-progress-v1', JSON.stringify({ ...p, completed: { 'u1-l1': 1, 'u1-l2': 1, 'u1-l3': 1 }, hearts: 0, heartsUpdatedAt: Date.now() }));
+  });
+  await page.reload();
+  await expect(page.locator('.upnext')).toContainText('হার্ট শেষ');
+  await page.locator('.upnext').click();
+  await expect(page.locator('.lesson-stage')).toBeVisible();
+  await expect(page.locator('.crash')).toHaveCount(0);
+});

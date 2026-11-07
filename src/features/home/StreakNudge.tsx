@@ -5,6 +5,7 @@ import { haptic } from '../../lib/haptics';
 import { useProgress } from '../../state/ProgressContext';
 import { nextLesson } from './nextLesson';
 import { useNow } from './useNow';
+import { currentStreak } from '../../lib/streak';
 
 /** From 5 pm on a day nothing's been learned yet: "one lesson keeps your streak", with a button to do it now. */
 export function StreakNudge({ onStart }: { onStart: (lessonId: string) => void }) {
@@ -12,7 +13,9 @@ export function StreakNudge({ onStart }: { onStart: (lessonId: string) => void }
   const now = useNow();
   const next = nextLesson(progress.completed);
   const learnedToday = (progress.xpByDay[dayKey(now)] ?? 0) > 0;
-  if (progress.streak < 1 || learnedToday || now.getHours() < 17 || !next) return null;
+  // The streak that still counts (a broken one is StreakLost's to tell, not this card's).
+  const streak = currentStreak(progress);
+  if (streak < 1 || learnedToday || now.getHours() < 17 || !next) return null;
 
   return (
     <button
@@ -26,7 +29,7 @@ export function StreakNudge({ onStart }: { onStart: (lessonId: string) => void }
         <Glyph name="flame" size={20} />
       </span>
       <span className="rc-text">
-        <strong lang="bn">{toBanglaDigits(progress.streak)} দিনের স্ট্রিক বাঁচাও</strong>
+        <strong lang="bn">{toBanglaDigits(streak)} দিনের স্ট্রিক বাঁচাও</strong>
         <small lang="bn">
           আজ এখনো শেখা হয়নি। একটা লেসন করলেই স্ট্রিক থাকবে
           {progress.streakFreezes > 0 ? ` (না করলে একটা ফ্রিজ খরচ হবে)।` : '।'}

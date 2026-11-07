@@ -25,6 +25,7 @@ export function LearnerCard({ name, districtId, level, typing = false, joinedAt 
   const index = DISTRICTS.findIndex((d) => d.id === districtId);
   const district = DISTRICTS[index];
   const colors = level ? STAGES[level.stage].colors : DEFAULT_COLORS;
+  const adult = level?.stage === 'other';
   const shown = cleanName(name);
   const joined = (joinedAt ? new Date(joinedAt) : new Date()).toLocaleDateString('en', { month: 'short', year: 'numeric' });
 
@@ -45,8 +46,9 @@ export function LearnerCard({ name, districtId, level, typing = false, joinedAt 
           <div className="lc-top">
             <Logo size={22} />
             <span className="lc-kind">
-              STUDENT PASS
-              <small lang="bn">শিক্ষার্থী কার্ড</small>
+              {/* Adults (job / other) get a learner's card, not a student's. */}
+              {adult ? 'ENGLIO PASS' : 'STUDENT PASS'}
+              <small lang="bn">{adult ? 'শেখার কার্ড' : 'শিক্ষার্থী কার্ড'}</small>
             </span>
           </div>
 
@@ -69,13 +71,13 @@ export function LearnerCard({ name, districtId, level, typing = false, joinedAt 
 
           <dl className="lc-fields">
             <div>
-              <dt>CLASS</dt>
+              <dt lang="bn">{adult ? 'ধরন' : 'ক্লাস'}</dt>
               <dd key={level?.id ?? 'none'} className={level ? 'is-stamped' : undefined} lang="bn">
                 {level ? level.bn : '—'}
               </dd>
             </div>
             <div>
-              <dt>JOINED</dt>
+              <dt lang="bn">শুরু</dt>
               <dd>{joined}</dd>
             </div>
             <div>

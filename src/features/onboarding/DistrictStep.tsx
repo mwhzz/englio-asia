@@ -21,7 +21,7 @@ export function DistrictStep({ mapSlot, districtId, onPick, onNext }: Props) {
         <h1 className="ob-title" lang="bn">
           তুমি কোন জেলার?
         </h1>
-        <p className="ob-sub">Tap your district on the map.</p>
+        <p className="ob-sub" lang="bn">ম্যাপে তোমার জেলায় চাপ দাও।</p>
       </header>
 
       <div ref={mapSlot} className="ob-map-slot" />

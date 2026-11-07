@@ -28,7 +28,7 @@ export function ClassStep({ name, districtId, classId, onChange, onNext }: Props
         <h1 className="ob-title" lang="bn">
           তুমি কোন শ্রেণিতে পড়ো?
         </h1>
-        <p className="ob-sub">Turn the dial to your class.</p>
+        <p className="ob-sub" lang="bn">ডায়াল ঘুরিয়ে তোমার ক্লাস বেছে নাও।</p>
       </header>
 
       <div className="ob-rise ob-card-compact" style={{ '--i': 1 } as CSSProperties}>

@@ -109,7 +109,9 @@ export function buildLesson(lessonId: string, { speak = false } = {}): Exercise[
 
 /** A review session mixing material from every completed lesson. */
 export function buildPractice(completed: Record<string, number>): Exercise[] {
-  const lessons = ALL_LESSONS.map((x) => x.lesson).filter((l) => completed[l.id]);
+  const done = ALL_LESSONS.map((x) => x.lesson).filter((l) => completed[l.id]);
+  // Nothing finished yet (a beginner out of hearts in lesson 1): practise the first lesson's words.
+  const lessons = done.length ? done : ALL_LESSONS.slice(0, 1).map((x) => x.lesson);
   const vocab = lessons.flatMap((l) => l.vocab);
   const sentences = lessons.flatMap((l) => l.sentences);
   const fills = lessons.flatMap((l) => l.fills);
