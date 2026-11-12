@@ -131,7 +131,7 @@ html[lang='ar'] body {
   background: color-mix(in srgb, var(--ios-yellow, #ffcc00) 30%, transparent);
   color: var(--ios-label);
   font-family: var(--font-ar, 'Noto Sans Arabic Variable', serif);
-  font-size: 1.6em;
+  font-size: 2em;
   font-weight: 700;
   line-height: 1.25;
   text-align: center;
