@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.17.2 (2026-11-12)
+
 - Arabic: যবর and যের were drawn as flat lines; the marks now sit on a short line (ـَ) in the Arabic font, slanted as in the Quran.
 
 ## 1.17.1 (2026-11-12)
