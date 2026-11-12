@@ -57,6 +57,8 @@ export function useLessonSession(
     // Missed words and sentences come back in a later review; right ones move a step on.
     const key = reviewKey(exercise);
     if (key) update((p) => (result.result === 'wrong' ? noteMistake(p, key) : noteRight(p, key)));
+    // Words matched again (a lesson's "coming back" part) move a step on too (only those on the review list).
+    if (exercise.kind === 'match') update((p) => exercise.pairs.reduce((q, w) => noteRight(q, `w:${w.en}`), p));
 
     if (result.result === 'wrong') {
       track('mistake', key ?? `${exercise.kind}:${exercise.id.replace(/r+$/, '')}`);

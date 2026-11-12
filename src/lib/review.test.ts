@@ -6,17 +6,17 @@ import { buildReview, dueKeys, noteMistake, noteRight, reviewKey } from './revie
 const today = '2026-11-03';
 
 describe('mistake review', () => {
-  it('brings a missed item back tomorrow, then after 3, 7 and 14 days, then lets it go', () => {
+  it('brings a missed item back tomorrow, then after 2, 4 and 7 days, then lets it go', () => {
     let p = noteMistake(DEFAULT_PROGRESS, 'w:hello', today);
     expect(p.review['w:hello']).toEqual({ due: '2026-11-04', step: 0 });
     expect(dueKeys(p, today)).toEqual([]);
     expect(dueKeys(p, '2026-11-04')).toEqual(['w:hello']);
     p = noteRight(p, 'w:hello', '2026-11-04');
-    expect(p.review['w:hello']).toEqual({ due: '2026-11-07', step: 1 });
-    p = noteRight(p, 'w:hello', '2026-11-07');
-    p = noteRight(p, 'w:hello', '2026-11-14');
-    expect(p.review['w:hello'].step).toBe(3);
-    p = noteRight(p, 'w:hello', '2026-11-28');
+    expect(p.review['w:hello']).toEqual({ due: '2026-11-06', step: 1 });
+    p = noteRight(p, 'w:hello', '2026-11-06');
+    p = noteRight(p, 'w:hello', '2026-11-10');
+    expect(p.review['w:hello']).toEqual({ due: '2026-11-17', step: 3 });
+    p = noteRight(p, 'w:hello', '2026-11-17');
     expect(p.review['w:hello']).toBeUndefined();
   });
 

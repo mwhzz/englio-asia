@@ -156,7 +156,9 @@ describe('every new unit is complete (docs/SYLLABUS.md)', () => {
         const all = u.lessons;
         expect(all.flatMap((l) => l.vocab ?? []).length, `${u.title}: words`).toBeGreaterThanOrEqual(16);
         expect(all.flatMap((l) => l.grammar ?? []).length, `${u.title}: grammar`).toBeGreaterThanOrEqual(1);
-        expect(all.flatMap((l) => l.dialogs ?? []).length, `${u.title}: conversation`).toBeGreaterThanOrEqual(1);
+        // Letter and reading units teach reading, not conversation (bn-ar-letters.json, units 1–4).
+        const reading = file === 'bn-ar-letters.json' && u.title !== 'أَوَّلُ كَلَام';
+        if (!reading) expect(all.flatMap((l) => l.dialogs ?? []).length, `${u.title}: conversation`).toBeGreaterThanOrEqual(1);
         expect(all.flatMap((l) => l.gaps ?? []).length, `${u.title}: gap text`).toBeGreaterThanOrEqual(1);
       }
     });
@@ -252,18 +254,18 @@ describe('Bangla batch 02 (units 22–28, A2)', () => {
 });
 
 describe('Arabic letters (bn-ar-letters.json), the first units of course bn-ar', () => {
-  it('comes first, batch 01 follows, and every question can be answered', async () => {
+  it('letters and reading come first, batch 01 follows, and every question can be answered', async () => {
     const { importMore } = await import('./importLanguage.ts');
     const { setTarget } = await import('../src/lib/target.ts');
     const db = openDb(':memory:');
-    expect(importLanguage(db, contentFile('bn-ar-letters.json'))).toMatchObject({ language: 'bn-ar', units: 2, lessons: 8 });
+    expect(importLanguage(db, contentFile('bn-ar-letters.json'))).toMatchObject({ language: 'bn-ar', units: 5, lessons: 21 });
     importMore(db, { body: { ...contentFile('bn-ar-batch-01.json'), lang: 'bn-ar' } });
     const units = readCourse(db, 'bn-ar');
-    expect(units.slice(0, 2).map((u) => u.title)).toEqual(['الحروف ١', 'الحروف ٢']);
-    expect(units.length).toBe(8);
+    expect(units.slice(0, 5).map((u) => u.title)).toEqual(['الحروف ١', 'الحروف ٢', 'الحروف ٣', 'اِقْرَأْ', 'أَوَّلُ كَلَام']);
+    expect(units.length).toBe(11);
     // All 28 letters are taught.
-    const letters = units.slice(0, 2).flatMap((u) => u.lessons.flatMap((l) => l.vocab.map((v) => v.en))).filter((t) => [...t].length === 1);
-    expect(new Set(letters).size).toBe(29); // 28 letters + ة
+    const letters = units.slice(0, 3).flatMap((u) => u.lessons.flatMap((l) => l.vocab.map((v) => v.en))).filter((t) => [...t].length === 1);
+    expect(new Set(letters).size).toBe(30); // 28 letters + ة + ء
     setTarget('ar');
     try {
       allAnswerable(units);

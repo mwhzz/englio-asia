@@ -4,6 +4,7 @@ import { initialOf } from '../../lib/profile';
 import { speak } from '../../lib/speech';
 import type { ExerciseOf } from '../../types';
 import type { ExerciseProps } from './props';
+import { GlossText } from '../gloss/GlossText';
 
 /**
  * A short chat: the other person's lines on the left, yours on the right.
@@ -32,7 +33,9 @@ export function DialogExercise({ ex, disabled, onChange }: ExerciseProps<Exercis
                 <span className={`chat-bubble is-reply${picked ? ' filled' : ''}`}>{picked ?? '…'}</span>
               ) : (
                 <button type="button" className="chat-bubble" onClick={() => speak(line.en)}>
-                  {line.en}
+                  <span>
+                    <GlossText text={line.en} />
+                  </span>
                   <small lang="bn">{line.bn}</small>
                 </button>
               )}

@@ -32,6 +32,16 @@ Every lesson is free. No unit is locked behind Plus (admin → সেটিং�
 
 What the app already does for motivation (keep it): the first day can't be failed, hearts refill, streak and league, XP, unit certificates, adaptive lessons (easier mix when a learner struggles, `lib/difficulty.ts`), reminders. If hearts make beginners quit, the owner can switch hearts off (admin → সেটিংস → হার্ট).
 
+## How the engine does it
+
+- **A lesson** (`src/lib/lesson.ts`): every new word is picked once (wrong choices are the lesson's other new words), matched, used in sentences and blanks, then a second look at the end (match all, pick three again). Earlier words of the unit are matched again (`src/lib/unitReview.ts`).
+- **Coming back over the days** (`src/lib/review.ts`, `src/lib/returning.ts`): when a lesson is finished its 5 words join the review list and come back after 1, 2, 4 and 7 days; a missed item starts over. Every lesson ends with what's due today: up to 4 matches (20 words) and 2 other items.
+- **Measured** (`server/wordExposure.test.ts`): a learner doing a lesson a day sees each word 6+ times in its lesson and 15+ times in its first two weeks.
+- **Nothing before it's taught** (`server/taughtFirst.test.ts`): every word (and in Arabic every letter) in a lesson was taught in it or before; `وَ` and `ال` in front of a taught word count once taught.
+- **New words highlighted, tap for the meaning** (`src/lib/gloss.ts`, `src/features/gloss/GlossText.tsx`) in sentences, blanks and conversations.
+- **Arabic: letters, then reading, then words.** Reading lessons pair Arabic with its sound in Bangla letters (بَاب = বাব), so a learner can read any text with marks without knowing the meaning.
+- The plan for what comes next (lesson designer in the admin, FSRS later): the engine report of 2026-11-12.
+
 ## Checklist for a new lesson
 
 - [ ] One new idea; 4–7 words; 5 short, real sentences.

@@ -4,6 +4,7 @@ import { MixedText } from '../../components/MixedText';
 import { haptic } from '../../lib/haptics';
 import { speak } from '../../lib/speech';
 import { useFlip } from './useFlip';
+import { GlossText } from '../gloss/GlossText';
 
 interface Props {
   /** The English sentence, with ___ for each blank. */
@@ -65,7 +66,7 @@ export function SentenceDrop({ text, bn, bank, disabled, onChange }: Props) {
         <p className="drop-sentence">
           {parts.map((part, i) => (
             <span key={i}>
-              {part}
+              <GlossText text={part} />
               {i < slots && (
                 <button
                   ref={track(`slot${i}`)}

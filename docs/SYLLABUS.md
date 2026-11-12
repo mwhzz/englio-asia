@@ -145,8 +145,10 @@ Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar
 
 | # | Unit | Focus | File | Status |
 | --- | --- | --- | --- | --- |
-| L1 | الحروف ١ · আরবি হরফ ১ | ا ب ت ث ن ي, ج ح خ د ذ ر ز, zabar / zer / pesh / sukun, first words (بَاب، بَيْت، خُبْز) | `content/bn-ar-letters.json` | draft |
-| L2 | الحروف ٢ · আরবি হরফ ২ | س ش ص ض ط ظ, ع غ ف ق ك ل, م ه و ة, هَذَا / هَذِهِ, عِنْدِي | same | draft |
+| L1–L3 | الحروف ١–٣ · আরবি হরফ | letters 5 at a time (ا ب ت ن ي → د ر و م ه → س ش ك ل ذ → ع ج ح خ ة → ث ز ص ض ط → ظ غ ف ق ء), zabar/zer/pesh/sukun/tashdid, long vowels, and reading lessons (Arabic → its sound in Bangla letters, no meaning needed) | `content/bn-ar-letters.json` | live |
+| L4 | اِقْرَأْ · পড়া অনুশীলন | all letters, ال (sun and moon letters), tanween, reading বিসমিল্লাহ | same | live |
+| L5 | أَوَّلُ كَلَام · প্রথম কথা | first words with meaning: أَنَا, وَ, هَذَا/هَذِهِ, هَلْ/نَعَمْ/لَا, عِنْدِي | same | live |
+| 1–6 (below) | | | `content/bn-ar-batch-01.json` | to rewrite: 475 of 852 words come before they are taught (`server/taughtFirst.test.ts`) |
 | 1 | السلام عليكم · সালাম ও পরিচয় | greetings, أنا/أنت/هو/هي, no "is" in Arabic | `content/bn-ar-batch-01.json` | draft |
 | 2 | العائلة · পরিবার | family, هذا/هذه, ة for feminine, ـي = my | same | draft |
 | 3 | الأرقام والوقت · সংখ্যা ও সময় | numbers 1–10, time, days | same | draft |

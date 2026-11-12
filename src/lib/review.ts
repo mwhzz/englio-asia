@@ -6,7 +6,7 @@ import type { Progress } from './progress';
 import { sample, shuffle, uniqueBy } from './random';
 
 /** Days until a missed item comes back, step by step; after the last step it counts as learned. */
-export const INTERVALS = [1, 3, 7, 14];
+export const INTERVALS = [1, 2, 4, 7];
 
 /** The word, sentence, blank or grammar point an exercise is about (matching isn't tracked). */
 export function reviewKey(ex: Exercise): string | null {
@@ -46,6 +46,16 @@ export function noteRight(p: Progress, key: string, today = dayKey()): Progress 
   return { ...p, review };
 }
 
+/**
+ * A finished lesson's new words join the review list, so every taught word comes back after 1, 2, 4 and
+ * 7 days, not only the missed ones (docs/LEARNING_DESIGN.md). A word already on the list keeps its place.
+ */
+export function scheduleTaught(p: Progress, words: string[], today = dayKey()): Progress {
+  const review = { ...p.review };
+  for (const en of words) review[`w:${en}`] ??= { due: shiftDay(today, INTERVALS[0]), step: 0 };
+  return { ...p, review };
+}
+
 export function dueKeys(p: Progress, today = dayKey()): string[] {
   return Object.entries(p.review ?? {})
     .filter(([, item]) => item.due <= today)
@@ -55,8 +65,11 @@ export function dueKeys(p: Progress, today = dayKey()): string[] {
 
 const SENTENCE_KINDS = ['translate', 'choice', 'type', 'listen'] as const;
 
-/** Up to 10 exercises for the items due today, each asked a different way than a plain repeat. */
-export function buildReview(p: Progress, today = dayKey()): Exercise[] {
+/**
+ * Up to `max` exercises for the items due today, each asked a different way than a plain repeat; `skip`
+ * leaves out items (a lesson's own words, when its review part is built).
+ */
+export function buildReview(p: Progress, today = dayKey(), { max = 10, skip = new Set<string>() } = {}): Exercise[] {
   const vocab = uniqueBy(
     ALL_LESSONS.flatMap((x) => x.lesson.vocab),
     (v) => v.en,
@@ -69,7 +82,8 @@ export function buildReview(p: Progress, today = dayKey()): Exercise[] {
   const grammars = ALL_LESSONS.flatMap((x) => x.lesson.grammar ?? []);
   const bodies: ExerciseBody[] = [];
   dueKeys(p, today)
-    .slice(0, 10)
+    .filter((key) => !skip.has(key))
+    .slice(0, max)
     .forEach((key, i) => {
       const en = key.slice(2);
       if (key.startsWith('f:')) {

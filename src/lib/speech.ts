@@ -56,10 +56,20 @@ export function speak(text: string, slow = false, onEnd?: () => void): void {
   speakAloud(text, slow, onEnd);
 }
 
+/** Only the language being learned is read aloud: Bangla in a text ("ب = ব") is left out. */
+export const spokenPart = (text: string) =>
+  text
+    .replace(/[ঀ-৿]+/g, ' ')
+    .replace(/(^|\s)[=,]+(?=\s|$)/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 function speakAloud(text: string, slow: boolean, onEnd?: () => void): void {
   if (!('speechSynthesis' in window)) return;
+  const said = spokenPart(text);
+  if (!said) return onEnd?.();
   voice ??= pickVoice();
-  const utterance = new SpeechSynthesisUtterance(text);
+  const utterance = new SpeechSynthesisUtterance(said);
   utterance.lang = speechLang();
   if (voice) utterance.voice = voice;
   utterance.rate = slow ? 0.6 : 0.95;

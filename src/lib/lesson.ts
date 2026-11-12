@@ -4,6 +4,7 @@ import { tokens } from './answer';
 import { sample, shuffle, uniqueBy } from './random';
 import { wordInSentence } from './wordInSentence';
 import type { Level } from './difficulty';
+import { unitReview } from './unitReview';
 
 // One sentence exercise per sentence, cycling through these kinds; easier and harder mixes by level (difficulty.ts).
 const SENTENCE_KINDS = ['translate', 'listen', 'translate', 'choice', 'type'] as const;
@@ -75,12 +76,15 @@ function generate(
   extras: Extras = {},
   speak = false,
   level: Level = 'normal',
+  review: ExerciseBody[] = [],
 ): Exercise[] {
   const words = uniqueBy(vocab, (w) => w.bn);
-  const intro: ExerciseBody[] = sample(words, 3).map((word) => ({
+  // Every new word (5 in a lesson) is picked once (and heard when tapped).
+  const intro: ExerciseBody[] = sample(words, 5).map((word) => ({
     kind: 'select',
     word,
-    choices: shuffle([word, ...sample(uniqueBy(vocabPool, (o) => o.bn).filter((o) => o.bn !== word.bn), 2)]),
+    // Wrong choices are the lesson's other new words when it has enough, so each new word is seen again and again.
+    choices: shuffle([word, ...sample(uniqueBy(words.length >= 3 ? words : vocabPool, (o) => o.bn).filter((o) => o.bn !== word.bn), 2)]),
   }));
 
   const rest: ExerciseBody[] = [];
@@ -96,8 +100,16 @@ function generate(
     .filter((fill): fill is Fill => fill !== null);
   for (const fill of inSentences.slice(0, 2)) rest.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
   rest.push(...extraExercises(extras, sentences, speak, level));
+  rest.push(...review);
+  // A second look at the new words near the end (match all, pick three again), so each is seen 6+ times.
+  const again: ExerciseBody[] = [];
+  if (words.length >= 3) {
+    again.push({ kind: 'match', pairs: shuffle(words).slice(0, 5) });
+    for (const word of sample(words, 3))
+      again.push({ kind: 'select', word, choices: shuffle([word, ...sample(words.filter((o) => o.bn !== word.bn), 2)]) });
+  }
 
-  return [...intro, ...shuffle(rest)].map((ex, i) => ({ ...ex, id: `ex${i}` }));
+  return [...intro, ...shuffle(rest), ...again].map((ex, i) => ({ ...ex, id: `ex${i}` }));
 }
 
 /**
@@ -117,6 +129,7 @@ export function buildLesson(lessonId: string, { speak = false, level = 'normal' 
     lesson,
     speak,
     level,
+    unitReview(unit, unit.lessons.indexOf(lesson)),
   );
 }
 

@@ -2,6 +2,8 @@ import { nextSkill } from '../../lib/difficulty';
 import { gainHeart } from '../../lib/hearts';
 import { recordLesson, type Progress } from '../../lib/progress';
 import { currentStreak } from '../../lib/streak';
+import { ALL_LESSONS } from '../../data/course';
+import { scheduleTaught } from '../../lib/review';
 import type { LessonStats } from './useLessonSession';
 
 export const LESSON_XP = 10;
@@ -25,7 +27,10 @@ export function applyRewards(p: Progress, lessonId: string | null, stats: Lesson
   const xp = practice ? PRACTICE_XP : LESSON_XP + (perfect ? PERFECT_BONUS_XP : 0);
   const recorded = recordLesson(practice ? gainHeart(p) : p, lessonId, xp, today, stats.seconds);
   // How well it went sets how hard the next lessons are.
-  const next = { ...recorded, skill: nextSkill(p.skill, stats.attempts - stats.mistakes, stats.attempts) };
+  const skilled = { ...recorded, skill: nextSkill(p.skill, stats.attempts - stats.mistakes, stats.attempts) };
+  // The lesson's new words come back after 1, 2, 4 and 7 days (4 times in the first two weeks) (lib/review.ts).
+  const taught = ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.lesson.vocab.map((v) => v.en) ?? [];
+  const next = practice ? skilled : scheduleTaught(skilled, taught, today);
   const result: LessonResult = {
     xp,
     perfect,

@@ -6,6 +6,8 @@ import { levelFor } from '../../lib/difficulty';
 import { canListen } from '../../lib/listen';
 import { clearResume, loadResume, saveResume } from '../../lib/lessonResume';
 import { buildReview } from '../../lib/review';
+import { setGloss } from '../../lib/gloss';
+import { withReturning } from '../../lib/returning';
 import { buildListening, buildSpeaking } from '../../lib/speakListen';
 import { track } from '../../lib/track';
 import { useProgress } from '../../state/ProgressContext';
@@ -33,11 +35,13 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
   const { progress, update } = useProgress();
   // A lesson left halfway in the last few hours carries on where it stopped.
   const [resume] = useState(() => (lessonId ? loadResume(lessonId) : null));
+  // Word meanings for this lesson (taught words can be tapped, new ones are highlighted); set before drawing.
+  useState(() => setGloss(lessonId ?? null));
   const [exercises] = useState(() =>
     resume
       ? resume.queue
       : lessonId
-      ? buildLesson(lessonId, { speak: canListen() && navigator.onLine, level: levelFor(progress) })
+      ? withReturning(buildLesson(lessonId, { speak: canListen() && navigator.onLine, level: levelFor(progress) }), progress, lessonId)
       : mode === 'listening'
         ? buildListening(progress)
         : mode === 'speaking'
