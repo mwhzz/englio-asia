@@ -6,11 +6,14 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.15.0 (2026-11-12)
+
 - First run in two parts: welcome, taste, why, name, daily goal, then the first lesson right away; district and class come after that lesson.
 - After a lesson, one next step: the unit test when the unit is done, “goal reached, come back tomorrow” when today's goal is met, else the next lesson (with “not now, home”).
 - Back on Home, the lesson just finished pops on the path.
 - Home in order: next lesson, what comes back today, only urgent notes, the path; tasks, league, stories and board prep below the path under “আরও”.
 - The শোনা-বলা tab also shows what comes back today.
+
 ## 1.14.0 (2026-11-12)
 
 - The path in sections (“সেকশন ১ · A1 · শুরু: নিজের কথা”) with what each teaches and how far along; a checkpoint test at the end of each section.
