@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readCourse } from './course.ts';
 import { openDb } from './db.ts';
 import { importLanguage, type LanguageFile } from './importLanguage.ts';
@@ -15,7 +15,17 @@ import type { Exercise, Unit } from '../src/types.ts';
 // docs/LEARNING_DESIGN.md: 5 new words a lesson, at least 15 a unit, and every word is seen 15–20 times
 // over its first two weeks: 6–8 times in its own lesson, then coming back after 1, 2, 4 and 7 days.
 
-const RUNS = 10;
+const RUNS = 20;
+
+/** The same "random" lessons every run (a fixed seed), so the result never depends on luck. */
+function seeded(seed: number) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 const MIN_IN_LESSON = 6;
 const MIN_TWO_WEEKS = 15;
 
@@ -93,6 +103,7 @@ function twoWeeks(units: Unit[]): { word: string; inLesson: number; total: numbe
 }
 
 describe('every word keeps coming back (Arabic letters, reading and first words)', () => {
+  afterEach(() => vi.restoreAllMocks());
   const db = openDb(':memory:');
   importLanguage(db, file('bn-ar-letters.json'));
   const units = readCourse(db, 'bn-ar');
@@ -107,6 +118,7 @@ describe('every word keeps coming back (Arabic letters, reading and first words)
   it(`each word: ${MIN_IN_LESSON}+ times in its lesson, ${MIN_TWO_WEEKS}+ in two weeks`, () => {
     setCourse(units);
     setTarget('ar');
+    vi.spyOn(Math, 'random').mockImplementation(seeded(2026));
     try {
       const rows = twoWeeks(units);
       if (process.env.SHOW_EXPOSURE) console.log(rows.map((r) => `${r.word} ${r.inLesson.toFixed(1)} ${r.total.toFixed(1)}`).join('\n'));
