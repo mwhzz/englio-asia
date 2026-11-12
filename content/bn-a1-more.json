@@ -1,0 +1,2290 @@
+{
+  "units": [
+    {
+      "title": "First Steps",
+      "titleBn": "প্রথম ধাপ",
+      "color": "#34c759",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "All about me",
+          "titleBn": "আমার পরিচয়",
+          "vocab": [
+            {
+              "en": "years old",
+              "bn": "বছর বয়সী"
+            },
+            {
+              "en": "live",
+              "bn": "থাকা / বাস করা"
+            },
+            {
+              "en": "like",
+              "bn": "পছন্দ করা"
+            },
+            {
+              "en": "a little",
+              "bn": "একটু"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I am twenty years old.",
+              "bn": "আমার বয়স বিশ বছর।",
+              "alt": []
+            },
+            {
+              "en": "I live in Sylhet.",
+              "bn": "আমি সিলেটে থাকি।",
+              "alt": []
+            },
+            {
+              "en": "I like cricket.",
+              "bn": "আমি ক্রিকেট পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "I work in a shop.",
+              "bn": "আমি একটা দোকানে কাজ করি।",
+              "alt": []
+            },
+            {
+              "en": "I speak a little English.",
+              "bn": "আমি একটু ইংরেজি বলতে পারি।",
+              "alt": [
+                "I can speak a little English."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ in Khulna.",
+              "answer": "live",
+              "options": [
+                "live",
+                "am",
+                "name"
+              ],
+              "bn": "আমি খুলনায় থাকি।",
+              "why": "থাকি = live।"
+            },
+            {
+              "text": "My ___ is Sumi.",
+              "answer": "name",
+              "options": [
+                "name",
+                "live",
+                "like"
+              ],
+              "bn": "আমার নাম সুমি।",
+              "why": "নাম = name।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "My name ___ Rahim. I ___ from Bangladesh.",
+              "answers": [
+                "is",
+                "am"
+              ],
+              "extra": [
+                "are",
+                "be"
+              ],
+              "bn": "আমার নাম রহিম। আমি বাংলাদেশ থেকে।",
+              "why": "my name (একটা জিনিস) → is; I → am।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "নিজের কথা বলতে I am…, I live…, I like…",
+              "correct": "I am a student and I live in Dhaka.",
+              "wrong": [
+                "I is a student and I live in Dhaka.",
+                "Me am a student and I live in Dhaka."
+              ],
+              "why": "I-এর সাথে am, আর নিজেকে বলতে I (me নয়)।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "New friend",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Hi! What is your name?",
+                  "bn": "হাই! তোমার নাম কী?"
+                },
+                {
+                  "who": "you",
+                  "en": "My name is Rahim. I am from Bogura.",
+                  "bn": "আমার নাম রহিম। আমি বগুড়া থেকে।"
+                },
+                {
+                  "who": "them",
+                  "en": "Nice to meet you. What do you do?",
+                  "bn": "তোমার সাথে দেখা হয়ে ভালো লাগল। তুমি কী করো?"
+                },
+                {
+                  "who": "you",
+                  "en": "I am a student. I like football.",
+                  "bn": "আমি ছাত্র। আমি ফুটবল পছন্দ করি।"
+                }
+              ],
+              "wrong": [
+                "I is a student. I likes football.",
+                "My name is a student."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Family",
+      "titleBn": "পরিবার",
+      "color": "#af52de",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "His name, her name",
+          "titleBn": "তার নাম",
+          "vocab": [
+            {
+              "en": "uncle",
+              "bn": "চাচা / মামা"
+            },
+            {
+              "en": "aunt",
+              "bn": "চাচি / খালা"
+            },
+            {
+              "en": "grandmother",
+              "bn": "দাদি / নানি"
+            },
+            {
+              "en": "grandfather",
+              "bn": "দাদা / নানা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "His name is Karim.",
+              "bn": "তার (ছেলের) নাম করিম।",
+              "alt": []
+            },
+            {
+              "en": "Her name is Lima.",
+              "bn": "তার (মেয়ের) নাম লিমা।",
+              "alt": []
+            },
+            {
+              "en": "Is this your sister?",
+              "bn": "এ কি তোমার বোন?",
+              "alt": []
+            },
+            {
+              "en": "My uncle lives in a village.",
+              "bn": "আমার চাচা গ্রামে থাকেন।",
+              "alt": []
+            },
+            {
+              "en": "My grandmother is very kind.",
+              "bn": "আমার দাদি খুব ভালো মানুষ।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "This is my brother. ___ name is Rafi.",
+              "answer": "His",
+              "options": [
+                "His",
+                "Her",
+                "My"
+              ],
+              "bn": "এ আমার ভাই। তার নাম রাফি।",
+              "why": "ভাই ছেলে, তাই his।"
+            },
+            {
+              "text": "This is my aunt. ___ name is Rina.",
+              "answer": "Her",
+              "options": [
+                "Her",
+                "His",
+                "Your"
+              ],
+              "bn": "ইনি আমার খালা। তার নাম রিনা।",
+              "why": "খালা মেয়ে, তাই her।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "My father is a farmer. ___ name is Kamal. My mother is a teacher. ___ name is Rina.",
+              "answers": [
+                "His",
+                "Her"
+              ],
+              "extra": [
+                "She",
+                "He"
+              ],
+              "bn": "আমার বাবা কৃষক। তার নাম কামাল। আমার মা শিক্ষক। তার নাম রিনা।",
+              "why": "বাবা → his, মা → her। he/she-এর পরে name বসে না।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "ছেলের জন্য his, মেয়ের জন্য her।",
+              "correct": "This is my sister. Her name is Lima.",
+              "wrong": [
+                "This is my sister. His name is Lima.",
+                "This is my sister. She name is Lima."
+              ],
+              "why": "বোন মেয়ে, তাই her name।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Talking about my family",
+          "titleBn": "পরিবার নিয়ে কথা",
+          "vocab": [
+            {
+              "en": "married",
+              "bn": "বিবাহিত"
+            },
+            {
+              "en": "children",
+              "bn": "সন্তান / বাচ্চারা"
+            },
+            {
+              "en": "cousin",
+              "bn": "কাজিন (চাচাতো/মামাতো ভাইবোন)"
+            },
+            {
+              "en": "only",
+              "bn": "শুধু / একমাত্র"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I have two children.",
+              "bn": "আমার দুটো সন্তান আছে।",
+              "alt": []
+            },
+            {
+              "en": "Are you married?",
+              "bn": "তুমি কি বিবাহিত?",
+              "alt": []
+            },
+            {
+              "en": "Yes, I am married.",
+              "bn": "হ্যাঁ, আমি বিবাহিত।",
+              "alt": []
+            },
+            {
+              "en": "I have one sister and two brothers.",
+              "bn": "আমার এক বোন আর দুই ভাই।",
+              "alt": []
+            },
+            {
+              "en": "I am the only son.",
+              "bn": "আমি একমাত্র ছেলে।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ two brothers.",
+              "answer": "have",
+              "options": [
+                "have",
+                "am",
+                "has"
+              ],
+              "bn": "আমার দুই ভাই আছে।",
+              "why": "আমার আছে = I have।"
+            },
+            {
+              "text": "Are you ___? — No, I am single.",
+              "answer": "married",
+              "options": [
+                "married",
+                "cousin",
+                "children"
+              ],
+              "bn": "তুমি কি বিবাহিত? — না, আমি অবিবাহিত।",
+              "why": "বিবাহিত = married।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Colleague",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Do you have brothers or sisters?",
+                  "bn": "তোমার কি ভাইবোন আছে?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, I have one sister.",
+                  "bn": "হ্যাঁ, আমার এক বোন আছে।"
+                },
+                {
+                  "who": "them",
+                  "en": "Is she married?",
+                  "bn": "সে কি বিবাহিত?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, she has two children.",
+                  "bn": "হ্যাঁ, তার দুটো সন্তান আছে।"
+                }
+              ],
+              "wrong": [
+                "Yes, she have two children.",
+                "Yes, I am a sister."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Food & Drink",
+      "titleBn": "খাবার ও পানীয়",
+      "color": "#ff9500",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "I like, I don't like",
+          "titleBn": "পছন্দ, অপছন্দ",
+          "vocab": [
+            {
+              "en": "bread",
+              "bn": "রুটি"
+            },
+            {
+              "en": "banana",
+              "bn": "কলা"
+            },
+            {
+              "en": "juice",
+              "bn": "জুস"
+            },
+            {
+              "en": "sweet",
+              "bn": "মিষ্টি"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I like bananas.",
+              "bn": "আমি কলা পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "I don't like milk.",
+              "bn": "আমি দুধ পছন্দ করি না।",
+              "alt": [
+                "I do not like milk."
+              ]
+            },
+            {
+              "en": "Do you like tea?",
+              "bn": "তুমি কি চা পছন্দ করো?",
+              "alt": []
+            },
+            {
+              "en": "She likes sweet food.",
+              "bn": "সে মিষ্টি খাবার পছন্দ করে।",
+              "alt": []
+            },
+            {
+              "en": "He doesn't like fish.",
+              "bn": "সে মাছ পছন্দ করে না।",
+              "alt": [
+                "He does not like fish."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ like milk.",
+              "answer": "don't",
+              "options": [
+                "don't",
+                "doesn't",
+                "not"
+              ],
+              "bn": "আমি দুধ পছন্দ করি না।",
+              "why": "I-এর সাথে না বলতে don't।"
+            },
+            {
+              "text": "My sister ___ juice.",
+              "answer": "likes",
+              "options": [
+                "likes",
+                "like",
+                "liking"
+              ],
+              "bn": "আমার বোন জুস পছন্দ করে।",
+              "why": "my sister (she)-এর সাথে verb-এ s: likes।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I like rice, but I ___ like bread. My brother ___ bread.",
+              "answers": [
+                "don't",
+                "likes"
+              ],
+              "extra": [
+                "doesn't",
+                "liking"
+              ],
+              "bn": "আমি ভাত পছন্দ করি, কিন্তু রুটি না। আমার ভাই রুটি পছন্দ করে।",
+              "why": "I → don't; my brother (he) → likes।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "he / she-এর পরে verb-এ s বসে।",
+              "correct": "She likes bananas.",
+              "wrong": [
+                "She like bananas.",
+                "She liking bananas."
+              ],
+              "why": "she-এর সাথে likes।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Breakfast together",
+          "titleBn": "একসাথে নাস্তা",
+          "vocab": [
+            {
+              "en": "breakfast",
+              "bn": "সকালের নাস্তা"
+            },
+            {
+              "en": "lunch",
+              "bn": "দুপুরের খাবার"
+            },
+            {
+              "en": "dinner",
+              "bn": "রাতের খাবার"
+            },
+            {
+              "en": "full",
+              "bn": "পেট ভরা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "What do you eat for breakfast?",
+              "bn": "তুমি নাস্তায় কী খাও?",
+              "alt": []
+            },
+            {
+              "en": "I eat bread and eggs.",
+              "bn": "আমি রুটি আর ডিম খাই।",
+              "alt": []
+            },
+            {
+              "en": "Would you like some tea?",
+              "bn": "একটু চা খাবে?",
+              "alt": []
+            },
+            {
+              "en": "Yes, please.",
+              "bn": "হ্যাঁ, দাও।",
+              "alt": []
+            },
+            {
+              "en": "No, thank you. I am full.",
+              "bn": "না, ধন্যবাদ। আমার পেট ভরা।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "We eat ___ at night.",
+              "answer": "dinner",
+              "options": [
+                "dinner",
+                "breakfast",
+                "lunch"
+              ],
+              "bn": "আমরা রাতে রাতের খাবার খাই।",
+              "why": "রাতের খাবার = dinner।"
+            },
+            {
+              "text": "No, thank you. I am ___.",
+              "answer": "full",
+              "options": [
+                "full",
+                "hungry",
+                "thirsty"
+              ],
+              "bn": "না, ধন্যবাদ। আমার পেট ভরা।",
+              "why": "আর খেতে চাই না, পেট ভরা = full।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Guest",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Good morning! Would you like some tea?",
+                  "bn": "শুভ সকাল! একটু চা খাবে?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, please. Thank you.",
+                  "bn": "হ্যাঁ, দাও। ধন্যবাদ।"
+                },
+                {
+                  "who": "them",
+                  "en": "Would you like some bread too?",
+                  "bn": "রুটিও খাবে?"
+                },
+                {
+                  "who": "you",
+                  "en": "No, thank you. I am full.",
+                  "bn": "না, ধন্যবাদ। আমার পেট ভরা।"
+                }
+              ],
+              "wrong": [
+                "No, thank you. I am hungry bread.",
+                "Yes, I am tea."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Numbers & Time",
+      "titleBn": "সংখ্যা ও সময়",
+      "color": "#007aff",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "How old? How many?",
+          "titleBn": "বয়স কত? কয়টা?",
+          "vocab": [
+            {
+              "en": "six",
+              "bn": "ছয়"
+            },
+            {
+              "en": "seven",
+              "bn": "সাত"
+            },
+            {
+              "en": "eight",
+              "bn": "আট"
+            },
+            {
+              "en": "twenty",
+              "bn": "বিশ"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "How old are you?",
+              "bn": "তোমার বয়স কত?",
+              "alt": []
+            },
+            {
+              "en": "I am twenty years old.",
+              "bn": "আমার বয়স বিশ বছর।",
+              "alt": []
+            },
+            {
+              "en": "How many sisters do you have?",
+              "bn": "তোমার কয়জন বোন?",
+              "alt": []
+            },
+            {
+              "en": "I have seven books.",
+              "bn": "আমার সাতটা বই আছে।",
+              "alt": []
+            },
+            {
+              "en": "My son is eight.",
+              "bn": "আমার ছেলের বয়স আট।",
+              "alt": [
+                "My son is eight years old."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "How ___ are you?",
+              "answer": "old",
+              "options": [
+                "old",
+                "many",
+                "much"
+              ],
+              "bn": "তোমার বয়স কত?",
+              "why": "বয়স জানতে How old।"
+            },
+            {
+              "text": "How ___ brothers do you have?",
+              "answer": "many",
+              "options": [
+                "many",
+                "old",
+                "time"
+              ],
+              "bn": "তোমার কয়জন ভাই?",
+              "why": "কয়টা/কয়জন = How many।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "My brother ___ eight and my sisters ___ six.",
+              "answers": [
+                "is",
+                "are"
+              ],
+              "extra": [
+                "am",
+                "has"
+              ],
+              "bn": "আমার ভাইয়ের বয়স আট আর আমার বোনদের বয়স ছয়।",
+              "why": "brother একজন → is; sisters একাধিক → are।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "বয়স বলতে am / is / are + years old (have নয়)।",
+              "correct": "I am twenty years old.",
+              "wrong": [
+                "I have twenty years old.",
+                "I twenty years old."
+              ],
+              "why": "ইংরেজিতে বয়স \"আমি বিশ বছর\" ভাবে বলা হয়: I am…"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Making a time",
+          "titleBn": "সময় ঠিক করা",
+          "vocab": [
+            {
+              "en": "half past",
+              "bn": "সাড়ে"
+            },
+            {
+              "en": "minute",
+              "bn": "মিনিট"
+            },
+            {
+              "en": "hour",
+              "bn": "ঘণ্টা"
+            },
+            {
+              "en": "late",
+              "bn": "দেরি"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "It is half past nine.",
+              "bn": "এখন সাড়ে নয়টা।",
+              "alt": []
+            },
+            {
+              "en": "The class starts at ten.",
+              "bn": "ক্লাস দশটায় শুরু হয়।",
+              "alt": []
+            },
+            {
+              "en": "I will come at five.",
+              "bn": "আমি পাঁচটায় আসব।",
+              "alt": []
+            },
+            {
+              "en": "Please wait five minutes.",
+              "bn": "দয়া করে পাঁচ মিনিট অপেক্ষা করো।",
+              "alt": [
+                "Wait five minutes, please."
+              ]
+            },
+            {
+              "en": "Don't be late.",
+              "bn": "দেরি কোরো না।",
+              "alt": [
+                "Do not be late."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "The class starts ___ ten.",
+              "answer": "at",
+              "options": [
+                "at",
+                "in",
+                "on"
+              ],
+              "bn": "ক্লাস দশটায় শুরু হয়।",
+              "why": "ঘড়ির সময়ের আগে at।"
+            },
+            {
+              "text": "It is half ___ nine.",
+              "answer": "past",
+              "options": [
+                "past",
+                "time",
+                "hour"
+              ],
+              "bn": "এখন সাড়ে নয়টা।",
+              "why": "সাড়ে = half past।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Friend",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What time is the class?",
+                  "bn": "ক্লাস কয়টায়?"
+                },
+                {
+                  "who": "you",
+                  "en": "It starts at ten o'clock.",
+                  "bn": "দশটায় শুরু।"
+                },
+                {
+                  "who": "them",
+                  "en": "OK. See you at ten.",
+                  "bn": "ঠিক আছে। দশটায় দেখা হবে।"
+                },
+                {
+                  "who": "you",
+                  "en": "See you. Don't be late!",
+                  "bn": "দেখা হবে। দেরি কোরো না!"
+                }
+              ],
+              "wrong": [
+                "See you. Don't late be!",
+                "It is ten years old."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Daily Life",
+      "titleBn": "প্রতিদিনের জীবন",
+      "color": "#ff2d55",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "I get up, he gets up",
+          "titleBn": "আমি উঠি, সে ওঠে",
+          "vocab": [
+            {
+              "en": "get up",
+              "bn": "ঘুম থেকে ওঠা"
+            },
+            {
+              "en": "wash",
+              "bn": "ধোয়া"
+            },
+            {
+              "en": "early",
+              "bn": "তাড়াতাড়ি / ভোরে"
+            },
+            {
+              "en": "every day",
+              "bn": "প্রতিদিন"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I get up early.",
+              "bn": "আমি ভোরে ঘুম থেকে উঠি।",
+              "alt": []
+            },
+            {
+              "en": "He goes to work by bus.",
+              "bn": "সে বাসে কাজে যায়।",
+              "alt": []
+            },
+            {
+              "en": "She cooks every day.",
+              "bn": "সে প্রতিদিন রান্না করে।",
+              "alt": []
+            },
+            {
+              "en": "I wash my face.",
+              "bn": "আমি মুখ ধুই।",
+              "alt": []
+            },
+            {
+              "en": "We go to bed at eleven.",
+              "bn": "আমরা এগারোটায় ঘুমাতে যাই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "He ___ to work every day.",
+              "answer": "goes",
+              "options": [
+                "goes",
+                "go",
+                "going"
+              ],
+              "bn": "সে প্রতিদিন কাজে যায়।",
+              "why": "he-এর সাথে go → goes।"
+            },
+            {
+              "text": "I ___ up at six.",
+              "answer": "get",
+              "options": [
+                "get",
+                "gets",
+                "getting"
+              ],
+              "bn": "আমি ছয়টায় উঠি।",
+              "why": "I-এর সাথে verb-এ s বসে না।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I ___ up at six and my brother ___ up at seven.",
+              "answers": [
+                "get",
+                "gets"
+              ],
+              "extra": [
+                "getting",
+                "got"
+              ],
+              "bn": "আমি ছয়টায় উঠি আর আমার ভাই সাতটায় ওঠে।",
+              "why": "I → get; my brother (he) → gets।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "he / she-এর সাথে go হয় goes।",
+              "correct": "She goes to school.",
+              "wrong": [
+                "She go to school.",
+                "She gos to school."
+              ],
+              "why": "go, do-এর শেষে es: goes, does।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "My day",
+          "titleBn": "আমার দিন",
+          "vocab": [
+            {
+              "en": "then",
+              "bn": "তারপর"
+            },
+            {
+              "en": "after",
+              "bn": "পরে"
+            },
+            {
+              "en": "before",
+              "bn": "আগে"
+            },
+            {
+              "en": "evening",
+              "bn": "সন্ধ্যা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I wash my face and then I eat.",
+              "bn": "আমি মুখ ধুই, তারপর খাই।",
+              "alt": []
+            },
+            {
+              "en": "After work I watch TV.",
+              "bn": "কাজের পরে আমি টিভি দেখি।",
+              "alt": []
+            },
+            {
+              "en": "I study before dinner.",
+              "bn": "আমি রাতের খাবারের আগে পড়ি।",
+              "alt": []
+            },
+            {
+              "en": "In the evening we talk.",
+              "bn": "সন্ধ্যায় আমরা গল্প করি।",
+              "alt": []
+            },
+            {
+              "en": "What do you do in the evening?",
+              "bn": "সন্ধ্যায় তুমি কী করো?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I study ___ dinner.",
+              "answer": "before",
+              "options": [
+                "before",
+                "then",
+                "every"
+              ],
+              "bn": "আমি রাতের খাবারের আগে পড়ি।",
+              "why": "আগে = before।"
+            },
+            {
+              "text": "___ work, I go home.",
+              "answer": "After",
+              "options": [
+                "After",
+                "Then",
+                "Every"
+              ],
+              "bn": "কাজের পরে আমি বাড়ি যাই।",
+              "why": "পরে = after।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Neighbour",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What do you do in the evening?",
+                  "bn": "সন্ধ্যায় তুমি কী করো?"
+                },
+                {
+                  "who": "you",
+                  "en": "I study, and then I watch TV.",
+                  "bn": "আমি পড়ি, তারপর টিভি দেখি।"
+                }
+              ],
+              "wrong": [
+                "I studies, and then I watches TV.",
+                "It is evening."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "At the Market",
+      "titleBn": "বাজারে",
+      "color": "#00c7be",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "This and these",
+          "titleBn": "এটা আর এগুলো",
+          "vocab": [
+            {
+              "en": "this",
+              "bn": "এটা"
+            },
+            {
+              "en": "these",
+              "bn": "এগুলো"
+            },
+            {
+              "en": "fresh",
+              "bn": "তাজা"
+            },
+            {
+              "en": "half",
+              "bn": "অর্ধেক / আধা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "How much is this?",
+              "bn": "এটার দাম কত?",
+              "alt": []
+            },
+            {
+              "en": "How much are these mangoes?",
+              "bn": "এই আমগুলোর দাম কত?",
+              "alt": []
+            },
+            {
+              "en": "This fish is fresh.",
+              "bn": "এই মাছটা তাজা।",
+              "alt": []
+            },
+            {
+              "en": "Give me half a kilo.",
+              "bn": "আমাকে আধা কেজি দাও।",
+              "alt": []
+            },
+            {
+              "en": "These bananas are sweet.",
+              "bn": "এই কলাগুলো মিষ্টি।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "How much ___ these bananas?",
+              "answer": "are",
+              "options": [
+                "are",
+                "is",
+                "am"
+              ],
+              "bn": "এই কলাগুলোর দাম কত?",
+              "why": "these (একাধিক) → are।"
+            },
+            {
+              "text": "How much ___ this shirt?",
+              "answer": "is",
+              "options": [
+                "is",
+                "are",
+                "these"
+              ],
+              "bn": "এই শার্টটার দাম কত?",
+              "why": "this (একটা) → is।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "___ mango is sweet and ___ bananas are fresh.",
+              "answers": [
+                "This",
+                "these"
+              ],
+              "extra": [
+                "is",
+                "are"
+              ],
+              "bn": "এই আমটা মিষ্টি আর এই কলাগুলো তাজা।",
+              "why": "একটা আম → this; একাধিক কলা → these।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "একাধিক জিনিসের জন্য these + are।",
+              "correct": "These apples are fresh.",
+              "wrong": [
+                "This apples are fresh.",
+                "These apples is fresh."
+              ],
+              "why": "apples একাধিক, তাই these আর are।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Buying vegetables",
+          "titleBn": "সবজি কেনা",
+          "vocab": [
+            {
+              "en": "last price",
+              "bn": "শেষ দাম"
+            },
+            {
+              "en": "bag",
+              "bn": "ব্যাগ"
+            },
+            {
+              "en": "take",
+              "bn": "নেওয়া"
+            },
+            {
+              "en": "enough",
+              "bn": "যথেষ্ট"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "What is the last price?",
+              "bn": "শেষ দাম কত?",
+              "alt": []
+            },
+            {
+              "en": "That is enough, thank you.",
+              "bn": "এতেই হবে, ধন্যবাদ।",
+              "alt": []
+            },
+            {
+              "en": "Please give me a bag.",
+              "bn": "দয়া করে একটা ব্যাগ দাও।",
+              "alt": []
+            },
+            {
+              "en": "I will take two kilos.",
+              "bn": "আমি দুই কেজি নেব।",
+              "alt": []
+            },
+            {
+              "en": "Here is the money.",
+              "bn": "এই নাও টাকা।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "What is the last ___?",
+              "answer": "price",
+              "options": [
+                "price",
+                "bag",
+                "kilo"
+              ],
+              "bn": "শেষ দাম কত?",
+              "why": "দাম = price।"
+            },
+            {
+              "text": "I will ___ one kilo.",
+              "answer": "take",
+              "options": [
+                "take",
+                "takes",
+                "enough"
+              ],
+              "bn": "আমি এক কেজি নেব।",
+              "why": "will-এর পরে verb-এর মূল রূপ: take।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Shopkeeper",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Potatoes are forty taka a kilo.",
+                  "bn": "আলু চল্লিশ টাকা কেজি।"
+                },
+                {
+                  "who": "you",
+                  "en": "That is expensive. What is the last price?",
+                  "bn": "দাম বেশি। শেষ দাম কত?"
+                },
+                {
+                  "who": "them",
+                  "en": "Thirty-five taka. How many kilos?",
+                  "bn": "পঁয়ত্রিশ টাকা। কয় কেজি?"
+                },
+                {
+                  "who": "you",
+                  "en": "I will take two kilos, please.",
+                  "bn": "আমি দুই কেজি নেব।"
+                }
+              ],
+              "wrong": [
+                "I will takes two kilos.",
+                "Two kilos is my name."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "At School",
+      "titleBn": "স্কুলে",
+      "color": "#5856d6",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "Sit down, please",
+          "titleBn": "বসো, প্লিজ",
+          "vocab": [
+            {
+              "en": "sit down",
+              "bn": "বসা"
+            },
+            {
+              "en": "stand up",
+              "bn": "দাঁড়ানো"
+            },
+            {
+              "en": "open",
+              "bn": "খোলা"
+            },
+            {
+              "en": "close",
+              "bn": "বন্ধ করা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Sit down, please.",
+              "bn": "দয়া করে বসো।",
+              "alt": [
+                "Please sit down."
+              ]
+            },
+            {
+              "en": "Stand up, please.",
+              "bn": "দয়া করে দাঁড়াও।",
+              "alt": [
+                "Please stand up."
+              ]
+            },
+            {
+              "en": "Open the window.",
+              "bn": "জানালাটা খোলো।",
+              "alt": []
+            },
+            {
+              "en": "Close your books.",
+              "bn": "তোমাদের বই বন্ধ করো।",
+              "alt": []
+            },
+            {
+              "en": "Don't talk in class.",
+              "bn": "ক্লাসে কথা বোলো না।",
+              "alt": [
+                "Do not talk in class."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "Please ___ down.",
+              "answer": "sit",
+              "options": [
+                "sit",
+                "stand",
+                "open"
+              ],
+              "bn": "দয়া করে বসো।",
+              "why": "বসো = sit down।"
+            },
+            {
+              "text": "___ your book, please.",
+              "answer": "Open",
+              "options": [
+                "Open",
+                "Sit",
+                "Stand"
+              ],
+              "bn": "দয়া করে বই খোলো।",
+              "why": "বই খোলো = Open your book।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "Please ___ the door and ___ down.",
+              "answers": [
+                "close",
+                "sit"
+              ],
+              "extra": [
+                "closes",
+                "sitting"
+              ],
+              "bn": "দয়া করে দরজাটা বন্ধ করো আর বসো।",
+              "why": "নির্দেশ দিতে verb-এর মূল রূপ: close, sit।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "কিছু না করতে বলতে Don't + verb।",
+              "correct": "Don't run in the class.",
+              "wrong": [
+                "Not run in the class.",
+                "No run you in the class."
+              ],
+              "why": "নিষেধ = Don't + verb।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Talking to the teacher",
+          "titleBn": "শিক্ষকের সাথে কথা",
+          "vocab": [
+            {
+              "en": "exam",
+              "bn": "পরীক্ষা"
+            },
+            {
+              "en": "class",
+              "bn": "ক্লাস"
+            },
+            {
+              "en": "go out",
+              "bn": "বাইরে যাওয়া"
+            },
+            {
+              "en": "sick",
+              "bn": "অসুস্থ"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Sorry, I am late.",
+              "bn": "দুঃখিত, আমার দেরি হয়েছে।",
+              "alt": []
+            },
+            {
+              "en": "When is the exam?",
+              "bn": "পরীক্ষা কবে?",
+              "alt": []
+            },
+            {
+              "en": "Can I go out, please?",
+              "bn": "আমি কি একটু বাইরে যেতে পারি?",
+              "alt": [
+                "May I go out, please?"
+              ]
+            },
+            {
+              "en": "I was sick yesterday.",
+              "bn": "গতকাল আমি অসুস্থ ছিলাম।",
+              "alt": []
+            },
+            {
+              "en": "Thank you, teacher.",
+              "bn": "ধন্যবাদ, স্যার।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "When is the ___?",
+              "answer": "exam",
+              "options": [
+                "exam",
+                "sick",
+                "late"
+              ],
+              "bn": "পরীক্ষা কবে?",
+              "why": "পরীক্ষা = exam।"
+            },
+            {
+              "text": "I was ___ yesterday.",
+              "answer": "sick",
+              "options": [
+                "sick",
+                "exam",
+                "class"
+              ],
+              "bn": "গতকাল আমি অসুস্থ ছিলাম।",
+              "why": "অসুস্থ = sick।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Teacher",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "You are late. Why?",
+                  "bn": "তোমার দেরি হলো কেন?"
+                },
+                {
+                  "who": "you",
+                  "en": "Sorry, sir. The bus was late.",
+                  "bn": "দুঃখিত স্যার। বাস দেরি করেছিল।"
+                },
+                {
+                  "who": "them",
+                  "en": "OK. Sit down, please.",
+                  "bn": "ঠিক আছে। বসো।"
+                },
+                {
+                  "who": "you",
+                  "en": "Thank you, sir.",
+                  "bn": "ধন্যবাদ, স্যার।"
+                }
+              ],
+              "wrong": [
+                "Sit down, sir.",
+                "Sorry, I am a bus."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Weather",
+      "titleBn": "আবহাওয়া",
+      "color": "#32ade6",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "It is sunny",
+          "titleBn": "রোদ উঠেছে",
+          "vocab": [
+            {
+              "en": "sunny",
+              "bn": "রোদেলা"
+            },
+            {
+              "en": "rainy",
+              "bn": "বৃষ্টির"
+            },
+            {
+              "en": "windy",
+              "bn": "বাতাসের / ঝড়ো হাওয়া"
+            },
+            {
+              "en": "weather",
+              "bn": "আবহাওয়া"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "It is sunny today.",
+              "bn": "আজ রোদ উঠেছে।",
+              "alt": []
+            },
+            {
+              "en": "Is it raining?",
+              "bn": "বৃষ্টি হচ্ছে কি?",
+              "alt": []
+            },
+            {
+              "en": "It is not cold.",
+              "bn": "ঠান্ডা নেই।",
+              "alt": [
+                "It isn't cold."
+              ]
+            },
+            {
+              "en": "What is the weather like?",
+              "bn": "আবহাওয়া কেমন?",
+              "alt": []
+            },
+            {
+              "en": "It is a rainy day.",
+              "bn": "আজ বৃষ্টির দিন।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "___ is raining.",
+              "answer": "It",
+              "options": [
+                "It",
+                "He",
+                "This"
+              ],
+              "bn": "বৃষ্টি হচ্ছে।",
+              "why": "আবহাওয়ার কথায় It দিয়ে শুরু: It is raining।"
+            },
+            {
+              "text": "What is the ___ like today?",
+              "answer": "weather",
+              "options": [
+                "weather",
+                "sunny",
+                "windy"
+              ],
+              "bn": "আজ আবহাওয়া কেমন?",
+              "why": "আবহাওয়া = weather।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "___ is sunny today, but ___ is very windy.",
+              "answers": [
+                "It",
+                "it"
+              ],
+              "extra": [
+                "He",
+                "She"
+              ],
+              "bn": "আজ রোদ আছে, কিন্তু খুব বাতাস।",
+              "why": "আবহাওয়ার কথায় সবসময় it।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "আবহাওয়া বলতে It is… দিয়ে শুরু করো।",
+              "correct": "It is hot today.",
+              "wrong": [
+                "Is hot today.",
+                "It hot today."
+              ],
+              "why": "ইংরেজিতে বাক্যে it আর is দুটোই লাগে।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Small talk about weather",
+          "titleBn": "আবহাওয়া নিয়ে গল্প",
+          "vocab": [
+            {
+              "en": "outside",
+              "bn": "বাইরে"
+            },
+            {
+              "en": "inside",
+              "bn": "ভেতরে"
+            },
+            {
+              "en": "wet",
+              "bn": "ভেজা"
+            },
+            {
+              "en": "nice",
+              "bn": "সুন্দর / ভালো"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "It is raining outside.",
+              "bn": "বাইরে বৃষ্টি হচ্ছে।",
+              "alt": []
+            },
+            {
+              "en": "Come inside.",
+              "bn": "ভেতরে এসো।",
+              "alt": []
+            },
+            {
+              "en": "My clothes are wet.",
+              "bn": "আমার জামা ভিজে গেছে।",
+              "alt": []
+            },
+            {
+              "en": "It is a nice day.",
+              "bn": "আজ সুন্দর একটা দিন।",
+              "alt": []
+            },
+            {
+              "en": "Is it hot outside?",
+              "bn": "বাইরে কি গরম?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "It is raining. Come ___.",
+              "answer": "inside",
+              "options": [
+                "inside",
+                "outside",
+                "wet"
+              ],
+              "bn": "বৃষ্টি হচ্ছে। ভেতরে এসো।",
+              "why": "ভেতরে = inside।"
+            },
+            {
+              "text": "I have no umbrella. I am ___.",
+              "answer": "wet",
+              "options": [
+                "wet",
+                "nice",
+                "sunny"
+              ],
+              "bn": "আমার ছাতা নেই। আমি ভিজে গেছি।",
+              "why": "ভেজা = wet।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Neighbour",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "It is very hot today!",
+                  "bn": "আজ খুব গরম!"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes. Come inside, it is cool here.",
+                  "bn": "হ্যাঁ। ভেতরে আসুন, এখানে ঠান্ডা।"
+                }
+              ],
+              "wrong": [
+                "Yes. I am a hot.",
+                "No, it is my name."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Travel",
+      "titleBn": "ভ্রমণ",
+      "color": "#30b0c7",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "By bus, by train",
+          "titleBn": "বাসে, ট্রেনে",
+          "vocab": [
+            {
+              "en": "station",
+              "bn": "স্টেশন"
+            },
+            {
+              "en": "straight",
+              "bn": "সোজা"
+            },
+            {
+              "en": "next to",
+              "bn": "পাশে"
+            },
+            {
+              "en": "by bus",
+              "bn": "বাসে করে"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Where is the station?",
+              "bn": "স্টেশনটা কোথায়?",
+              "alt": []
+            },
+            {
+              "en": "Go straight.",
+              "bn": "সোজা যাও।",
+              "alt": []
+            },
+            {
+              "en": "It is next to the bank.",
+              "bn": "এটা ব্যাংকের পাশে।",
+              "alt": []
+            },
+            {
+              "en": "I go to work by bus.",
+              "bn": "আমি বাসে করে কাজে যাই।",
+              "alt": []
+            },
+            {
+              "en": "Which bus goes to Mirpur?",
+              "bn": "কোন বাস মিরপুর যায়?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I go to Chattogram ___ train.",
+              "answer": "by",
+              "options": [
+                "by",
+                "on",
+                "with"
+              ],
+              "bn": "আমি ট্রেনে চট্টগ্রাম যাই।",
+              "why": "যানবাহনে যাওয়া = by bus, by train।"
+            },
+            {
+              "text": "Go ___. Don't turn.",
+              "answer": "straight",
+              "options": [
+                "straight",
+                "left",
+                "next"
+              ],
+              "bn": "সোজা যাও। মোড় নিও না।",
+              "why": "সোজা = straight।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "Go ___ and the station is ___ to the mosque.",
+              "answers": [
+                "straight",
+                "next"
+              ],
+              "extra": [
+                "by",
+                "far"
+              ],
+              "bn": "সোজা যাও, স্টেশনটা মসজিদের পাশে।",
+              "why": "সোজা = straight, পাশে = next to।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "যানবাহনের আগে by বসে, the লাগে না।",
+              "correct": "I go to work by bus.",
+              "wrong": [
+                "I go to work by the bus.",
+                "I go to work with bus."
+              ],
+              "why": "by bus, by train, by car — the ছাড়া।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Buying a ticket",
+          "titleBn": "টিকিট কাটা",
+          "vocab": [
+            {
+              "en": "seat",
+              "bn": "সিট / আসন"
+            },
+            {
+              "en": "one ticket",
+              "bn": "একটা টিকিট"
+            },
+            {
+              "en": "leave",
+              "bn": "ছাড়া (রওনা দেওয়া)"
+            },
+            {
+              "en": "platform",
+              "bn": "প্ল্যাটফর্ম"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "One ticket to Sylhet, please.",
+              "bn": "সিলেটের একটা টিকিট, প্লিজ।",
+              "alt": []
+            },
+            {
+              "en": "When does the train leave?",
+              "bn": "ট্রেন কখন ছাড়বে?",
+              "alt": []
+            },
+            {
+              "en": "It leaves at eight.",
+              "bn": "আটটায় ছাড়বে।",
+              "alt": []
+            },
+            {
+              "en": "Which platform?",
+              "bn": "কোন প্ল্যাটফর্ম?",
+              "alt": []
+            },
+            {
+              "en": "Is this seat free?",
+              "bn": "এই সিটটা কি খালি?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "When does the train ___?",
+              "answer": "leave",
+              "options": [
+                "leave",
+                "leaves",
+                "seat"
+              ],
+              "bn": "ট্রেন কখন ছাড়বে?",
+              "why": "does-এর পরে মূল রূপ: leave।"
+            },
+            {
+              "text": "Is this ___ free?",
+              "answer": "seat",
+              "options": [
+                "seat",
+                "leave",
+                "straight"
+              ],
+              "bn": "এই সিটটা কি খালি?",
+              "why": "সিট = seat।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Ticket seller",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Where are you going?",
+                  "bn": "কোথায় যাবেন?"
+                },
+                {
+                  "who": "you",
+                  "en": "One ticket to Sylhet, please.",
+                  "bn": "সিলেটের একটা টিকিট, প্লিজ।"
+                },
+                {
+                  "who": "them",
+                  "en": "Five hundred taka, please.",
+                  "bn": "পাঁচশো টাকা।"
+                },
+                {
+                  "who": "you",
+                  "en": "Here you are. When does it leave?",
+                  "bn": "এই নিন। কখন ছাড়বে?"
+                }
+              ],
+              "wrong": [
+                "Here you are. When it leaves does?",
+                "I am Sylhet."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "On the Phone",
+      "titleBn": "ফোনে",
+      "color": "#a2845e",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "Can you hear me?",
+          "titleBn": "শুনতে পাচ্ছ?",
+          "vocab": [
+            {
+              "en": "hear",
+              "bn": "শোনা"
+            },
+            {
+              "en": "speak",
+              "bn": "কথা বলা"
+            },
+            {
+              "en": "wait",
+              "bn": "অপেক্ষা করা"
+            },
+            {
+              "en": "louder",
+              "bn": "আরও জোরে"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Can you hear me?",
+              "bn": "তুমি কি আমাকে শুনতে পাচ্ছ?",
+              "alt": []
+            },
+            {
+              "en": "Can I speak to Mr Karim?",
+              "bn": "আমি কি করিম সাহেবের সাথে কথা বলতে পারি?",
+              "alt": []
+            },
+            {
+              "en": "Please wait a minute.",
+              "bn": "দয়া করে এক মিনিট অপেক্ষা করুন।",
+              "alt": [
+                "Wait a minute, please."
+              ]
+            },
+            {
+              "en": "Can you speak louder?",
+              "bn": "আরেকটু জোরে বলবে?",
+              "alt": []
+            },
+            {
+              "en": "I can't hear you.",
+              "bn": "আমি তোমার কথা শুনতে পাচ্ছি না।",
+              "alt": [
+                "I cannot hear you."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "Can I ___ to Rina, please?",
+              "answer": "speak",
+              "options": [
+                "speak",
+                "speaking",
+                "speaks"
+              ],
+              "bn": "আমি কি রিনার সাথে কথা বলতে পারি?",
+              "why": "can-এর পরে verb-এর মূল রূপ: speak।"
+            },
+            {
+              "text": "I ___ hear you. Speak louder.",
+              "answer": "can't",
+              "options": [
+                "can't",
+                "can",
+                "don't can"
+              ],
+              "bn": "তোমার কথা শুনতে পাচ্ছি না। জোরে বলো।",
+              "why": "পারি না = can't।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "___ you hear me? — Sorry, I ___ hear you.",
+              "answers": [
+                "Can",
+                "can't"
+              ],
+              "extra": [
+                "Do",
+                "don't can"
+              ],
+              "bn": "শুনতে পাচ্ছ? — দুঃখিত, শুনতে পাচ্ছি না।",
+              "why": "প্রশ্নে Can শুরুতে; না বলতে can't।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "can দিয়ে প্রশ্নে Can শুরুতে, পরে verb-এর মূল রূপ।",
+              "correct": "Can I speak to Rina?",
+              "wrong": [
+                "Can I speaking to Rina?",
+                "I can speak to Rina is?"
+              ],
+              "why": "Can + I + speak।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "A phone call",
+          "titleBn": "একটা ফোনকল",
+          "vocab": [
+            {
+              "en": "wrong number",
+              "bn": "ভুল নম্বর"
+            },
+            {
+              "en": "call back",
+              "bn": "পরে ফোন করা"
+            },
+            {
+              "en": "who",
+              "bn": "কে"
+            },
+            {
+              "en": "bye",
+              "bn": "বাই / বিদায়"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Who is calling?",
+              "bn": "কে বলছেন?",
+              "alt": []
+            },
+            {
+              "en": "Sorry, wrong number.",
+              "bn": "দুঃখিত, ভুল নম্বর।",
+              "alt": []
+            },
+            {
+              "en": "He is not here.",
+              "bn": "উনি এখানে নেই।",
+              "alt": [
+                "He isn't here."
+              ]
+            },
+            {
+              "en": "I will call back later.",
+              "bn": "আমি পরে আবার ফোন করব।",
+              "alt": []
+            },
+            {
+              "en": "OK, bye.",
+              "bn": "ঠিক আছে, বাই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "Sorry, ___ number.",
+              "answer": "wrong",
+              "options": [
+                "wrong",
+                "who",
+                "back"
+              ],
+              "bn": "দুঃখিত, ভুল নম্বর।",
+              "why": "ভুল = wrong।"
+            },
+            {
+              "text": "I will call ___ later.",
+              "answer": "back",
+              "options": [
+                "back",
+                "bye",
+                "wrong"
+              ],
+              "bn": "আমি পরে আবার ফোন করব।",
+              "why": "আবার ফোন করা = call back।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Office",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Hello, who is calling?",
+                  "bn": "হ্যালো, কে বলছেন?"
+                },
+                {
+                  "who": "you",
+                  "en": "This is Rahim. Can I speak to Mr Karim?",
+                  "bn": "আমি রহিম। করিম সাহেবের সাথে কথা বলতে পারি?"
+                },
+                {
+                  "who": "them",
+                  "en": "Sorry, he is not here.",
+                  "bn": "দুঃখিত, উনি এখানে নেই।"
+                },
+                {
+                  "who": "you",
+                  "en": "OK. I will call back later. Bye.",
+                  "bn": "ঠিক আছে। পরে ফোন করব। বাই।"
+                }
+              ],
+              "wrong": [
+                "OK. I will calls back later.",
+                "I am a phone. Bye."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "At the Doctor",
+      "titleBn": "ডাক্তারের কাছে",
+      "color": "#ff453a",
+      "tips": [],
+      "lessons": [
+        {
+          "title": "My back hurts",
+          "titleBn": "আমার পিঠে ব্যথা",
+          "vocab": [
+            {
+              "en": "stomach",
+              "bn": "পেট"
+            },
+            {
+              "en": "back",
+              "bn": "পিঠ"
+            },
+            {
+              "en": "throat",
+              "bn": "গলা"
+            },
+            {
+              "en": "arm",
+              "bn": "হাত (বাহু)"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I have a stomach ache.",
+              "bn": "আমার পেট ব্যথা।",
+              "alt": []
+            },
+            {
+              "en": "My back hurts.",
+              "bn": "আমার পিঠে ব্যথা।",
+              "alt": []
+            },
+            {
+              "en": "I have a sore throat.",
+              "bn": "আমার গলা ব্যথা।",
+              "alt": []
+            },
+            {
+              "en": "My arm hurts.",
+              "bn": "আমার হাতে ব্যথা।",
+              "alt": []
+            },
+            {
+              "en": "Where does it hurt?",
+              "bn": "কোথায় ব্যথা?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "My back ___.",
+              "answer": "hurts",
+              "options": [
+                "hurts",
+                "hurt",
+                "have"
+              ],
+              "bn": "আমার পিঠে ব্যথা।",
+              "why": "my back (it)-এর সাথে verb-এ s: hurts।"
+            },
+            {
+              "text": "I ___ a sore throat.",
+              "answer": "have",
+              "options": [
+                "have",
+                "has",
+                "hurts"
+              ],
+              "bn": "আমার গলা ব্যথা।",
+              "why": "I-এর সাথে have।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I ___ a fever and my head ___.",
+              "answers": [
+                "have",
+                "hurts"
+              ],
+              "extra": [
+                "has",
+                "hurt"
+              ],
+              "bn": "আমার জ্বর আর মাথা ব্যথা।",
+              "why": "I → have; my head (it) → hurts।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "শরীরের কোথাও ব্যথা: My … hurts।",
+              "correct": "My leg hurts.",
+              "wrong": [
+                "My leg hurting.",
+                "Me leg hurts."
+              ],
+              "why": "My leg (it) + hurts।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Seeing the doctor",
+          "titleBn": "ডাক্তার দেখানো",
+          "vocab": [
+            {
+              "en": "since",
+              "bn": "থেকে (সময়)"
+            },
+            {
+              "en": "worse",
+              "bn": "আরও খারাপ"
+            },
+            {
+              "en": "medicine",
+              "bn": "ওষুধ"
+            },
+            {
+              "en": "two days",
+              "bn": "দুই দিন"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "What is the problem?",
+              "bn": "সমস্যা কী?",
+              "alt": []
+            },
+            {
+              "en": "I have a fever since Monday.",
+              "bn": "সোমবার থেকে আমার জ্বর।",
+              "alt": []
+            },
+            {
+              "en": "It is getting worse.",
+              "bn": "আরও খারাপ হচ্ছে।",
+              "alt": []
+            },
+            {
+              "en": "Take this medicine for two days.",
+              "bn": "এই ওষুধটা দুই দিন খাও।",
+              "alt": []
+            },
+            {
+              "en": "Drink a lot of water.",
+              "bn": "অনেক পানি খাও।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "What is the ___?",
+              "answer": "problem",
+              "options": [
+                "problem",
+                "medicine",
+                "worse"
+              ],
+              "bn": "সমস্যা কী?",
+              "why": "সমস্যা = problem।"
+            },
+            {
+              "text": "Take this ___ after meals.",
+              "answer": "medicine",
+              "options": [
+                "medicine",
+                "since",
+                "worse"
+              ],
+              "bn": "খাওয়ার পরে এই ওষুধটা খাও।",
+              "why": "ওষুধ = medicine।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Doctor",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Hello. What is the problem?",
+                  "bn": "হ্যালো। সমস্যা কী?"
+                },
+                {
+                  "who": "you",
+                  "en": "I have a fever and a headache.",
+                  "bn": "আমার জ্বর আর মাথা ব্যথা।"
+                },
+                {
+                  "who": "them",
+                  "en": "Take this medicine and rest.",
+                  "bn": "এই ওষুধটা খান আর বিশ্রাম নিন।"
+                },
+                {
+                  "who": "you",
+                  "en": "Thank you, doctor.",
+                  "bn": "ধন্যবাদ, ডাক্তার সাহেব।"
+                }
+              ],
+              "wrong": [
+                "I has a fever and a headache.",
+                "Thank you, medicine."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -124,4 +124,4 @@ They never edit files, push, or touch the live server. Their findings are collec
 
 ## Docs
 
-`README.md` (overview and layout) · `docs/STYLE_GUIDE.md` (design) · `docs/SERVER.md` (server settings) · `docs/DEPLOY_BN.md` (deploy guide in Bangla) · `docs/PLAY_STORE.md` (publishing). Update the relevant doc when you change how something works.
+`README.md` (overview and layout) · `docs/STYLE_GUIDE.md` (design) · `docs/LEARNING_DESIGN.md` (how lessons are arranged: A1 goal, psychology rules, no emoji, learning is free) · `docs/SERVER.md` (server settings) · `docs/DEPLOY_BN.md` (deploy guide in Bangla) · `docs/PLAY_STORE.md` (publishing). Update the relevant doc when you change how something works.

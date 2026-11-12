@@ -24,6 +24,8 @@ Status: **live** = learners have it; **draft** = written, waiting for a teacher'
 
 ## A1: first words and survival English
 
+The A1 goal and the rules for arranging lessons (so nobody gives up): `docs/LEARNING_DESIGN.md`. Lessons 1–2 (1–3 in unit 1) are live; lessons 3–4 of every unit (grammar + conversation; unit 1 gets "All about me", introducing yourself) are in `content/bn-a1-more.json`, draft.
+
 | # | Unit | Grammar and focus | Status |
 | --- | --- | --- | --- |
 | 1 | First Steps | greetings, I am / you are | live |
@@ -53,7 +55,7 @@ Status: **live** = learners have it; **draft** = written, waiting for a teacher'
 | 20 | Feelings & Opinions | because, I think…, -ed / -ing adjectives | draft |
 | 21 | Nature & Comparing | -er than, the -est | draft |
 
-## A2: telling stories and getting things done (batch 02–03, planned)
+## A2: telling stories and getting things done (batch 02 = units 22–28, `content/bn-batch-02.json`, draft; batch 03 = units 29–35, planned)
 
 | # | Unit | Grammar and focus |
 | --- | --- | --- |
@@ -139,10 +141,12 @@ The app's own text in Arabic: `content/ui/ar.json` (editable in admin → অ্
 A second course for Bangla speakers: the app stays in Bangla, and what's learned is Arabic (Modern Standard
 Arabic, the Gulf workplace in mind). In these files the `en` fields hold the Arabic, `bn` its Bangla meaning.
 The learner picks "কী শিখবে? English · العربية" on the first screen or in Profile; XP and streak are shared.
-Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar`), then import the file. Needs an Arabic teacher's check.
+Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar`), then import **the letters file first** (`bn-ar-letters.json`, so the letters come first), then `bn-ar-batch-01.json`. Needs an Arabic teacher's check.
 
 | # | Unit | Focus | File | Status |
 | --- | --- | --- | --- | --- |
+| L1 | الحروف ١ · আরবি হরফ ১ | ا ب ت ث ن ي, ج ح خ د ذ ر ز, zabar / zer / pesh / sukun, first words (بَاب، بَيْت، خُبْز) | `content/bn-ar-letters.json` | draft |
+| L2 | الحروف ٢ · আরবি হরফ ২ | س ش ص ض ط ظ, ع غ ف ق ك ل, م ه و ة, هَذَا / هَذِهِ, عِنْدِي | same | draft |
 | 1 | السلام عليكم · সালাম ও পরিচয় | greetings, أنا/أنت/هو/هي, no "is" in Arabic | `content/bn-ar-batch-01.json` | draft |
 | 2 | العائلة · পরিবার | family, هذا/هذه, ة for feminine, ـي = my | same | draft |
 | 3 | الأرقام والوقت · সংখ্যা ও সময় | numbers 1–10, time, days | same | draft |

@@ -147,7 +147,7 @@ describe('Arabic batch 01 (units 4–11, A1 to A2)', () => {
 
 describe('every new unit is complete (docs/SYLLABUS.md)', () => {
   // A unit: words 1, words 2, grammar, conversation (and the unit test the app builds from them), tips.
-  for (const file of ['ar-batch-01.json', 'bn-batch-01.json', 'bn-ar-batch-01.json']) {
+  for (const file of ['ar-batch-01.json', 'bn-batch-01.json', 'bn-batch-02.json', 'bn-ar-letters.json', 'bn-ar-batch-01.json']) {
     it(file, () => {
       const { units } = JSON.parse(readFileSync(new URL(`../content/${file}`, import.meta.url), 'utf8')) as LanguageFile;
       for (const u of units) {
@@ -211,4 +211,71 @@ describe('Arabic for Bangla speakers (course bn-ar), batch 01', () => {
     expect(compare('أنا من بنغلاديش', ['انا من بنغلاديش'], false)).toBe('correct');
     expect(compare('أنا طالب', ['أنا من بنغلاديش'], true)).toBe('wrong');
   });
+});
+
+/** Every question in every lesson of these units can be answered (each lesson built 10 times). */
+function allAnswerable(units: ReturnType<typeof readCourse>) {
+  setCourse(units);
+  for (const lesson of units.flatMap((u) => u.lessons))
+    for (let run = 0; run < 10; run++)
+      for (const ex of buildLesson(lesson.id)) {
+        const answer = solve(ex);
+        if (answer !== null) expect(grade(ex, answer).result, `${lesson.id} ${ex.kind}`).toBe('correct');
+      }
+}
+
+const contentFile = (name: string) => JSON.parse(readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8'));
+
+describe('English A1 completed (bn-a1-more.json: lessons added to units 1–11)', () => {
+  it('adds the lessons to the existing units as drafts, so every A1 unit has 4 lessons', async () => {
+    const { importMore } = await import('./importLanguage.ts');
+    const db = openDb(':memory:');
+    seedCourse(db);
+    const units = readCourse(db, 'bn').length;
+    expect(importMore(db, { body: { ...contentFile('bn-a1-more.json'), lang: 'bn' } })).toMatchObject({ lessons: 21 });
+    const after = readCourse(db, 'bn');
+    expect(after.length, 'no new units').toBe(units);
+    expect(after.every((u) => u.lessons.length === 4)).toBe(true);
+    expect(readCourse(db, 'bn', { drafts: false }).flatMap((u) => u.lessons).length).toBe(after.flatMap((u) => u.lessons).length - 21);
+    allAnswerable(after);
+  });
+});
+
+describe('Bangla batch 02 (units 22–28, A2)', () => {
+  it('passes the admin checks, and every question can be answered', async () => {
+    const { importMore } = await import('./importLanguage.ts');
+    const db = openDb(':memory:');
+    seedCourse(db);
+    expect(importMore(db, { body: { ...contentFile('bn-batch-02.json'), lang: 'bn' } })).toMatchObject({ units: 7, lessons: 28 });
+    allAnswerable(readCourse(db, 'bn'));
+  });
+});
+
+describe('Arabic letters (bn-ar-letters.json), the first units of course bn-ar', () => {
+  it('comes first, batch 01 follows, and every question can be answered', async () => {
+    const { importMore } = await import('./importLanguage.ts');
+    const { setTarget } = await import('../src/lib/target.ts');
+    const db = openDb(':memory:');
+    expect(importLanguage(db, contentFile('bn-ar-letters.json'))).toMatchObject({ language: 'bn-ar', units: 2, lessons: 8 });
+    importMore(db, { body: { ...contentFile('bn-ar-batch-01.json'), lang: 'bn-ar' } });
+    const units = readCourse(db, 'bn-ar');
+    expect(units.slice(0, 2).map((u) => u.title)).toEqual(['الحروف ١', 'الحروف ٢']);
+    expect(units.length).toBe(8);
+    // All 28 letters are taught.
+    const letters = units.slice(0, 2).flatMap((u) => u.lessons.flatMap((l) => l.vocab.map((v) => v.en))).filter((t) => [...t].length === 1);
+    expect(new Set(letters).size).toBe(29); // 28 letters + ة
+    setTarget('ar');
+    try {
+      allAnswerable(units);
+    } finally {
+      setTarget('en');
+    }
+  });
+});
+
+describe('new content has no emoji (owner: no emoji in lessons)', () => {
+  for (const file of ['bn-a1-more.json', 'bn-batch-02.json', 'bn-ar-letters.json'])
+    it(file, () => {
+      expect(readFileSync(new URL(`../content/${file}`, import.meta.url), 'utf8')).not.toMatch(/\p{Extended_Pictographic}/u);
+    });
 });
