@@ -28,7 +28,7 @@ function Runs({ text }: { text: string }) {
 /**
  * Bangla text with English words in it. The English runs get `lang="en"` so they use the
  * English font; in the Bangla font a capital "I" looks just like a danda (।). An Arabic mark
- * written alone ("( َ )") is shown big on a dotted circle, highlighted, so it can be seen.
+ * written alone ("( َ )") written alone is shown big on a tatweel (ـ, so the Arabic font draws it), highlighted, so it can be seen.
  */
 export function MixedText({ text }: { text: string }) {
   // All-English text (like a quiz sentence) needs no marking.
@@ -40,7 +40,7 @@ export function MixedText({ text }: { text: string }) {
       {parts.map((part, i) =>
         i % 3 === 2 ? (
           <span key={i} className="ar-mark" lang="ar" dir="rtl">
-            {'\u25CC' + part}
+            {'\u0640' + part}
           </span>
         ) : (
           <Runs key={i} text={part} />
