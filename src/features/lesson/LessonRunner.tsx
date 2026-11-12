@@ -55,7 +55,7 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
           ? buildSpeaking(progress)
           : review
             ? buildReview(progress)
-            : buildPractice(progress.completed),
+            : buildPractice(progress.completed, progress.profile?.goals),
   );
   const [result, setResult] = useState<LessonResult | null>(null);
   // After a real lesson, offer the daily reminder once per phone (see features/reminder).

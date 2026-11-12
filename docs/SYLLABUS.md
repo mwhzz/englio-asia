@@ -167,4 +167,4 @@ Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar
 
 ## Status (2026-11-12)
 
-Live: English 28 units / 112 lessons (units 1–28, 4 lessons each, 5 sections in `src/data/sections.ts`); Arabic for Bangla speakers 11 units / 45 lessons (3 sections). All AI-written content still wants a teacher's check.
+Live: English 28 units / 112 lessons (units 1–28, 4 lessons each, 5 sections in `src/data/sections.ts`); Arabic for Bangla speakers 11 units / 45 lessons (3 sections). English units 1–5 follow the rules (`content/bn-s1-rules.json`: 5 words a lesson, nothing before it is taught); units 6–28 are next. All AI-written content still wants a teacher's check.

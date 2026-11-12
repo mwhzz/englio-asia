@@ -37,10 +37,12 @@ What the app already does for motivation (keep it): the first day can't be faile
 - **A lesson** (`src/lib/lesson.ts`): every new word is picked once (wrong choices are the lesson's other new words), matched, used in sentences and blanks, then a second look at the end (match all, pick three again). Earlier words of the unit are matched again (`src/lib/unitReview.ts`).
 - **Coming back over the days** (`src/lib/review.ts`, `src/lib/returning.ts`): when a lesson is finished its 5 words join the review list and come back after 1, 2, 4 and 7 days; a missed item starts over. Every lesson ends with what's due today: up to 4 matches (20 words) and 2 other items.
 - **Measured** (`server/wordExposure.test.ts`): a learner doing a lesson a day sees each word 6+ times in its lesson and 15+ times in its first two weeks.
-- **Nothing before it's taught** (`server/taughtFirst.test.ts`): every word (and in Arabic every letter) in a lesson was taught in it or before; `وَ` and `ال` in front of a taught word count once taught.
+- **Nothing before it's taught** (`src/lib/lessonCheck.ts`, tested in `server/taughtFirst.test.ts`): every word (and in Arabic every letter) in a lesson was taught in it or before; `وَ` and `ال` in front of a taught word count once taught; people's names (Rina, Rahim, Karim) are free. Arabic and English units 1–5 pass; English units 6–28 still use about 350 untaught words and are being rewritten.
+- **Lesson check in the admin** (`src/admin/LessonCheck.tsx`, on every lesson page): new-word count (5), how often each word comes in the lesson and its unit (15+), and the words not taught yet. Use it while writing.
+- **The learner's goal** (onboarding "why", `src/data/goalTopics.ts`): practice picks up to 3 of its 5 sentences from the goal's words, and units that serve the goal say so on the lesson's first screen.
 - **New words highlighted, tap for the meaning** (`src/lib/gloss.ts`, `src/features/gloss/GlossText.tsx`) in sentences, blanks and conversations.
 - **Arabic: letters, then reading, then words.** Reading lessons pair Arabic with its sound in Bangla letters (بَاب = বাব), so a learner can read any text with marks without knowing the meaning.
-- The plan for what comes next (lesson designer in the admin, FSRS later): the engine report of 2026-11-12.
+- The plan for what comes next (FSRS later): the engine report of 2026-11-12.
 
 ## Checklist for a new lesson
 

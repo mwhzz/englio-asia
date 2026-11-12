@@ -673,3 +673,24 @@ body {
   gap: 6px;
   font-size: 14px;
 }
+
+/* ---------- Lesson check (LessonCheck.tsx) ---------- */
+
+.ad-check .ad-warn {
+  color: #ff3b30;
+  font-weight: 600;
+}
+.ad-check em {
+  font-style: normal;
+  font-size: 13px;
+  padding: 2px 10px;
+  border-radius: 99px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.ad-check em.is-ok {
+  color: #34c759;
+}
+.ad-check .ad-chips {
+  margin-top: 8px;
+  font-weight: 500;
+}

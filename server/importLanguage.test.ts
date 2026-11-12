@@ -294,3 +294,11 @@ describe('Arabic grammar for Bangla speakers (bn-ar-grammar.json)', () => {
     expect(topics.every((t) => t.id.startsWith('bn-ar-'))).toBe(true);
   });
 });
+
+describe('English section 1 by the rules (bn-s1-rules.json, units 1–5)', () => {
+  it('passes the admin checks, and every question can be answered', () => {
+    const db = openDb(':memory:');
+    expect(importLanguage(db, contentFile('bn-s1-rules.json'))).toMatchObject({ units: 5, lessons: 20 });
+    allAnswerable(readCourse(db, 'bn'));
+  });
+});

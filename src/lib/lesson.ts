@@ -5,6 +5,8 @@ import { sample, shuffle, uniqueBy } from './random';
 import { wordInSentence } from './wordInSentence';
 import type { Level } from './difficulty';
 import { unitReview } from './unitReview';
+import { normalize } from './answer';
+import { servesGoals } from '../data/goalTopics';
 
 // One sentence exercise per sentence, cycling through these kinds; easier and harder mixes by level (difficulty.ts).
 const SENTENCE_KINDS = ['translate', 'listen', 'translate', 'choice', 'type'] as const;
@@ -150,8 +152,11 @@ export function buildLesson(lessonId: string, { speak = false, level = 'normal' 
   );
 }
 
-/** A review session mixing material from every completed lesson. */
-export function buildPractice(completed: Record<string, number>): Exercise[] {
+/**
+ * A review session mixing material from every completed lesson. With the learner's goals (onboarding
+ * "why"), sentences useful for them come first: up to 3 of the 5, the rest at random.
+ */
+export function buildPractice(completed: Record<string, number>, goals?: string[]): Exercise[] {
   const done = ALL_LESSONS.map((x) => x.lesson).filter((l) => completed[l.id]);
   // Nothing finished yet (a beginner out of hearts in lesson 1): practise the first lesson's words.
   const lessons = done.length ? done : ALL_LESSONS.slice(0, 1).map((x) => x.lesson);
@@ -163,5 +168,8 @@ export function buildPractice(completed: Record<string, number>): Exercise[] {
     grammar: lessons.flatMap((l) => l.grammar ?? []),
     dialogs: lessons.flatMap((l) => l.dialogs ?? []),
   };
-  return generate(sample(vocab, 8), sample(sentences, 5), fills, vocab, sentences, extras);
+  const useful = goals?.length ? sentences.filter((x) => servesGoals(normalize(x.en), goals)) : [];
+  const picked = sample(useful, 3);
+  const rest = sample(sentences.filter((x) => !picked.includes(x)), 5 - picked.length);
+  return generate(sample(vocab, 8), [...picked, ...rest], fills, vocab, sentences, extras);
 }
