@@ -3,6 +3,8 @@ import { Glyph, type GlyphName } from '../../components/Glyph';
 import { toBanglaDigits } from '../../lib/bangla';
 import { playSound } from '../../lib/sounds';
 import { useTween } from '../home/useTween';
+import type { Vocab } from '../../types';
+import { LearnedWords } from './LearnedWords';
 import type { LessonResult } from './rewards';
 import { useEnterKey } from './useEnterKey';
 
@@ -24,7 +26,7 @@ function Row({ icon, color, label, value }: { icon: GlyphName; color: string; la
 }
 
 /** End of a lesson: a check in the unit's color, then the results as an iOS grouped list. */
-export function LessonComplete({ result, accent, onContinue }: { result: LessonResult; accent: string; onContinue: () => void }) {
+export function LessonComplete({ result, accent, words = [], onContinue }: { result: LessonResult; accent: string; words?: Vocab[]; onContinue: () => void }) {
   useEffect(() => {
     playSound('complete');
   }, []);
@@ -50,6 +52,7 @@ export function LessonComplete({ result, accent, onContinue }: { result: LessonR
           <Row icon="clock" color="var(--ios-blue)" label="সময়" value={formatTime(result.seconds)} />
           {result.streakUp && <Row icon="flame" color="var(--ios-red)" label="টানা দিন" value={toBanglaDigits(result.streak)} />}
         </ul>
+        {!result.practice && <LearnedWords words={words} />}
         {result.perfect && !result.practice && (
           <p className="done-note" lang="bn">
             একটাও ভুল হয়নি, তাই ৫ বোনাস XP যোগ হয়েছে।

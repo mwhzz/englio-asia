@@ -63,7 +63,7 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
     const next = () => (lessonId && feature('reminders') && shouldAskReminder(progress.reminder?.on ?? false) ? setAskReminder(true) : onExit());
     return (
       <>
-        <LessonComplete result={result} accent={accent} onContinue={next} />
+        <LessonComplete result={result} accent={accent} words={ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.lesson.vocab ?? []} onContinue={next} />
         {askReminder && <ReminderAsk onDone={onExit} />}
       </>
     );

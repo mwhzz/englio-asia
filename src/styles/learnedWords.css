@@ -1,0 +1,195 @@
+/* End of a lesson: the words just learned and when they come back (features/lesson/LearnedWords.tsx). */
+.lw {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: left;
+}
+.lw-title {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.lw-title + .lw-chips {
+  margin-bottom: 16px;
+}
+.lw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lw-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--u, var(--primary)) 12%, var(--surface));
+}
+.lw-en {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+html[data-target='ar'] .lw-en {
+  font-family: var(--font-ar);
+  font-size: 21px;
+}
+.lw-chip small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.lw-line {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  position: relative;
+}
+.lw-line::before {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 6px;
+  height: 2px;
+  background: var(--border);
+}
+.lw-line li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.lw-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2.5px solid var(--u, var(--primary));
+  background: var(--surface);
+}
+.lw-line li.is-next .lw-dot {
+  background: var(--u, var(--primary));
+}
+.lw-line li.is-next {
+  color: var(--text);
+  font-weight: 600;
+}
+/* Home: a few of the words coming back today (features/home/ReviewCard.tsx). */
+.rc-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.rc-word {
+  padding: 2px 10px;
+  border-radius: 99px;
+  background: var(--bg);
+  font-size: 14px;
+  font-weight: 600;
+}
+html[data-target='ar'] .rc-word {
+  font-family: var(--font-ar);
+  font-size: 16px;
+}
+/* Home: the course being learned, tap to switch (features/home/CourseSwitch.tsx). */
+.cs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 10px 0 4px;
+  margin-right: auto;
+  border: 0;
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+.cs-pill:active {
+  transform: scale(0.96);
+}
+.cs-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 800;
+  flex: none;
+}
+.cs-mark.is-ar {
+  background: color-mix(in srgb, var(--primary) 16%, var(--surface));
+  color: var(--primary-dark);
+  font-family: var(--font-ar);
+  font-size: 17px;
+}
+.cs-sheet h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+.cs-note {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.cs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cs-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.cs-row .cs-mark {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+.cs-row .cs-mark.is-ar {
+  font-size: 22px;
+}
+.cs-row.is-on {
+  border-color: var(--blue);
+}
+.cs-row-name {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 600;
+}
+.cs-now {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue);
+  background: var(--blue-soft);
+  border-radius: 99px;
+  padding: 2px 10px;
+}

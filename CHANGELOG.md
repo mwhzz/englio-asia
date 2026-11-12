@@ -6,6 +6,9 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Switch what you learn from the top of Home (like Duolingo): tap the course pill (English · العربية), pick another. Streak and XP are shared, each course keeps its own path.
+- End of a lesson: the words you just learned, and when they come back (tomorrow, the day after, in 4 and 7 days).
+- Home: “আজ Xটা জিনিস ফিরছে” with a few of the words coming back today.
 ## 1.10.1 (2026-11-12)
 
 - Arabic: the hamza (ء) lesson shows ء more often.

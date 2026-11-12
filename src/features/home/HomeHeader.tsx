@@ -4,6 +4,7 @@ import { findClassLevel } from '../../data/classLevels';
 import { findDistrict } from '../../data/districts';
 import { initialOf } from '../../lib/profile';
 import { useProgress } from '../../state/ProgressContext';
+import { CourseSwitch } from './CourseSwitch';
 import { GoalBar } from './GoalBar';
 import { greetingFor, skyFor } from './sky';
 import { StatusPills } from './StatusPills';
@@ -29,6 +30,7 @@ export function HomeHeader({ onProfile }: { onProfile: () => void }) {
           <button className="home-avatar" onClick={onProfile} aria-label="Open profile">
             {profile ? initialOf(profile.name) : '?'}
           </button>
+          <CourseSwitch />
           <StatusPills />
         </div>
 
