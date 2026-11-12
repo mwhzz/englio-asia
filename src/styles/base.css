@@ -119,3 +119,21 @@ html[data-ar-font='naskh'] {
 html[lang='ar'] body {
   line-height: 1.6;
 }
+
+/* An Arabic vowel mark explained on its own ("যবর ( َ )", MixedText): big, on a dotted circle, in a
+   highlighted chip, so the small mark can be seen. */
+.ar-mark {
+  display: inline-block;
+  min-width: 1.5em;
+  margin: 0 2px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ios-yellow, #ffcc00) 30%, transparent);
+  color: var(--ios-label);
+  font-family: var(--font-ar, 'Noto Sans Arabic Variable', serif);
+  font-size: 1.6em;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  vertical-align: middle;
+}
