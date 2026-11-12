@@ -11,7 +11,9 @@ const CHOICES = [7, 12, 18, 20];
 /** After the first lesson on a phone: "remind me every day?" with the hour, in one tap. */
 export function ReminderAsk({ onDone }: { onDone: () => void }) {
   const { reminder, note, turn } = useReminder();
-  const [hour, setHour] = useState(CHOICES.includes(reminder.hour) ? reminder.hour : 20);
+  // The time picked in the onboarding ("after Isha", 9 pm) is among the choices, and picked.
+  const choices = CHOICES.includes(reminder.hour) ? CHOICES : [...CHOICES, reminder.hour].sort((a, b) => a - b);
+  const [hour, setHour] = useState(reminder.hour);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -39,10 +41,10 @@ export function ReminderAsk({ onDone }: { onDone: () => void }) {
       </span>
       <h2 lang="bn">রোজ মনে করিয়ে দেব?</h2>
       <p className="muted" lang="bn">
-        যেদিন শেখা হবে না, শুধু সেদিন একটা নোটিফিকেশন আসবে। রোজ ৫ মিনিটেই ইংরেজি পাকা হয়।
+        যেদিন শেখা হবে না, শুধু সেদিন একটা নোটিফিকেশন আসবে। রোজ ৫ মিনিটেই শেখা পাকা হয়।
       </p>
       <div className="ra-hours" role="radiogroup" aria-label="Reminder time">
-        {CHOICES.map((h) => (
+        {choices.map((h) => (
           <button key={h} role="radio" aria-checked={hour === h} className={`ra-hour${hour === h ? ' is-on' : ''}`} onClick={() => setHour(h)} lang="bn">
             {hourLabel(h)}
           </button>

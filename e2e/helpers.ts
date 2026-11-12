@@ -2,11 +2,17 @@ import type { Page } from '@playwright/test';
 
 export const ADMIN_TOKEN = 'e2e-admin';
 
-/** A learner who finished onboarding and the first lesson, so the home page shows everything. */
+/**
+ * A learner who finished onboarding and the first lesson, so the home page shows everything (the courses'
+ * intros count as seen, features/courseIntro).
+ */
 export async function signIn(page: Page, name = 'Rina', extra: Record<string, unknown> = {}) {
   await page.goto('/');
   await page.evaluate(
-    ([name, extra]) =>
+    ([name, extra]) => {
+      localStorage.setItem('englio-intro:bn', '1');
+      localStorage.setItem('englio-intro:bn-ar', '1');
+      localStorage.setItem('englio-intro:ar', '1');
       localStorage.setItem(
         'englio-progress-v1',
         JSON.stringify({
@@ -18,7 +24,8 @@ export async function signIn(page: Page, name = 'Rina', extra: Record<string, un
           placementTaken: true,
           ...extra,
         }),
-      ),
+      );
+    },
     [name, extra] as const,
   );
   await page.reload();

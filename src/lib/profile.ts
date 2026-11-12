@@ -7,6 +7,8 @@ export interface Profile {
   source?: string;
   /** The learner's own language (lib/learnerLang.ts), for reminders in it. */
   lang?: string;
+  /** Why they learn (onboarding WhyStep): work, abroad, exam, quran, travel, fun. */
+  goals?: string[];
 }
 
 export const NAME_MAX = 30;

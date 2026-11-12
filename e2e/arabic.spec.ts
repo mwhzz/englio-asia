@@ -56,3 +56,25 @@ test('a Bangla speaker can learn Arabic too: picks it on the first screen, and l
 
   await request.put(`${API}/admin/languages/bn-ar`, { headers: auth, data: { status: 'draft' } });
 });
+
+test('switching to a course not started yet: the switch on Home, then its intro, a taste and its first lesson', async ({ page, request }) => {
+  // Arabic for Bangla speakers is live (its course was added by the test above).
+  await request.put(`${API}/admin/languages/bn-ar`, { headers: auth, data: { status: 'live' } });
+  await signIn(page, 'Rafi');
+  // This learner has never opened the Arabic course on this phone.
+  await page.evaluate(() => localStorage.removeItem('englio-intro:bn-ar'));
+
+  await page.locator('.cs-pill').click();
+  await page.locator('.cs-row').filter({ hasText: 'العربية' }).click();
+  await page.waitForLoadState('load');
+
+  await expect(page.getByText('নতুন ভাষা')).toBeVisible();
+  await page.getByRole('button', { name: 'শুরু করি' }).click();
+  await page.locator('.ob-taste-option').filter({ hasText: 'বা' }).click();
+  await page.getByRole('button', { name: 'দারুণ, চলো' }).click();
+  await page.locator('.ob-list-row').filter({ hasText: 'একদম নতুন' }).click();
+  // Its first lesson opens by itself.
+  await expect(page.locator('.lesson-stage')).toBeVisible();
+
+  await request.put(`${API}/admin/languages/bn-ar`, { headers: auth, data: { status: 'draft' } });
+});

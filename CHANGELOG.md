@@ -6,6 +6,9 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- New first run: a 30-second taste right after the welcome (hear a letter or word, pick it, can't fail) and the words you already know; why you learn; your name in Arabic letters (Arabic course); minutes a day, when to remind (after breakfast, after Isha…), আপনি and bigger text; then the first lesson opens by itself.
+- Starting a new course (e.g. Arabic after English) shows its own short intro: what it teaches, a taste, then "new" or a level test.
+- Reminders for the Arabic course say Arabic, and a new one: “আজ কয়েকটা শব্দ ফিরছে”.
 ## 1.11.0 (2026-11-12)
 
 - Switch what you learn from the top of Home (like Duolingo): tap the course pill (English · العربية), pick another. Streak and XP are shared, each course keeps its own path.

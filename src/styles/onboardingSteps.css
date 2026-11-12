@@ -1,0 +1,338 @@
+/* The onboarding's taste, why and daily steps, and a course's intro (features/onboarding, features/courseIntro). */
+.ob-kicker {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ob-blue);
+}
+.ob-ar {
+  font-family: var(--font-ar);
+}
+
+/* Taste: a big letter or word, read aloud on tap. */
+.ob-taste-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 210px;
+  border: none;
+  border-radius: 28px;
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.35);
+}
+.ob-taste-big {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.ob-taste-card.is-ar .ob-taste-big {
+  font-family: var(--font-ar);
+  font-size: 120px;
+  font-weight: 600;
+}
+.ob-taste-hear {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 99px;
+  background: var(--ob-blue-tint);
+  color: var(--ob-blue);
+  font-size: 15px;
+  font-weight: 600;
+}
+.ob-taste-options {
+  display: grid;
+  gap: 10px;
+}
+.ob-taste-option {
+  height: 56px;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ob-taste-option.is-wrong {
+  border-color: var(--ob-red);
+  color: var(--ob-red-deep);
+}
+.ob-taste-again {
+  margin: 0;
+  text-align: center;
+  color: var(--ob-secondary);
+}
+.ob-taste-win {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: ob-pop 0.35s ease-out both;
+}
+.ob-taste-right {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ob-green) 14%, var(--ob-cell));
+  font-size: 17px;
+  line-height: 1.5;
+}
+.ob-taste-known-title {
+  margin: 6px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ob-secondary);
+}
+.ob-taste-known {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ob-taste-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: var(--ob-cell);
+  font-size: 18px;
+  font-weight: 600;
+}
+.ob-taste-chip .ob-ar {
+  font-size: 21px;
+}
+.ob-taste-chip small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ob-secondary);
+}
+@keyframes ob-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* Why: goals as two-column chips. */
+.ob-why {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.ob-why-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 84px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ob-why-chip strong {
+  font-size: 17px;
+}
+.ob-why-chip small {
+  font-size: 13px;
+  color: var(--ob-secondary);
+}
+.ob-why-chip.is-on {
+  border-color: var(--ob-blue);
+  background: color-mix(in srgb, var(--ob-blue) 8%, var(--ob-cell));
+}
+
+/* Daily: an iOS grouped list, moments as pills, switches. */
+.ob-list {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ob-cell);
+}
+.ob-list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 16px;
+  border: none;
+  border-bottom: 0.5px solid var(--ob-separator);
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ob-list-row:last-child {
+  border-bottom: none;
+}
+.ob-list-plain {
+  cursor: default;
+}
+.ob-list-text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ob-list-text strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.ob-list-text small {
+  font-size: 14px;
+  color: var(--ob-secondary);
+}
+.ob-badge {
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 99px;
+  background: var(--ob-blue-tint);
+  color: var(--ob-blue);
+  font-size: 12px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.ob-radio {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--ob-tertiary);
+  box-sizing: border-box;
+}
+.ob-list-row.is-on .ob-radio {
+  border: 7px solid var(--ob-blue);
+}
+.ob-list-label {
+  margin: 4px 4px -4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ob-secondary);
+}
+.ob-moments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ob-moment {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 99px;
+  border: none;
+  background: var(--ob-cell);
+  color: var(--ob-label);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.ob-moment.is-on {
+  background: var(--ob-blue);
+  color: #fff;
+}
+.ob-switch {
+  flex: none;
+  position: relative;
+  width: 51px;
+  height: 31px;
+  border-radius: 99px;
+  background: var(--ob-fill-strong);
+  transition: background 0.2s;
+}
+.ob-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+.ob-switch.is-on {
+  background: var(--ob-green);
+}
+.ob-switch.is-on::after {
+  transform: translateX(20px);
+}
+
+/* Name: the name in Arabic letters (Arabic course). */
+.ob-name-ar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--ob-cell);
+  color: var(--ob-secondary);
+  font-size: 14px;
+}
+.ob-name-ar strong {
+  font-family: var(--font-ar);
+  font-size: 30px;
+  color: var(--ob-label);
+}
+
+/* Course intro: the course's mark and what it teaches. */
+.ob-intro-mark {
+  align-self: center;
+  width: 108px;
+  height: 108px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ob-cell);
+  color: var(--ob-blue);
+  font-size: 44px;
+  font-weight: 800;
+  box-shadow: 0 16px 36px -20px rgba(0, 0, 0, 0.4);
+}
+.ob-intro-mark .ob-ar {
+  font-size: 60px;
+  font-weight: 600;
+}
+.ob-what {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ob-what li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--ob-cell);
+  font-size: 17px;
+}
+.ob-what li span {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ob-blue-tint);
+  color: var(--ob-blue);
+  font-weight: 700;
+}

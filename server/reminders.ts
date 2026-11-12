@@ -98,18 +98,21 @@ export function reminderMessage(r: Pick<DueReminder, 'name' | 'streak'> & { away
   const first = r.name?.split(' ')[0];
   const hi = first ? `${first}, ` : '';
   const away = r.away ?? 0;
+  // A Bangla speaker learning Arabic (course bn-ar) is reminded of Arabic.
+  const subject = r.lang === 'bn-ar' ? 'আরবি' : 'ইংরেজি';
   if (away >= 3) {
     return away >= 14
-      ? { title: 'অনেক দিন দেখা নেই!', body: `${hi}ইংরেজি ভুলে যাওয়ার আগে ৫ মিনিটের একটা লেসন করে ফেলো।`, variant: `back-${away}` }
+      ? { title: 'অনেক দিন দেখা নেই!', body: `${hi}${subject} ভুলে যাওয়ার আগে ৫ মিনিটের একটা লেসন করে ফেলো।`, variant: `back-${away}` }
       : { title: 'তোমাকে মিস করছি', body: `${hi}যেখানে থেমেছিলে সেখান থেকেই শুরু করো। মাত্র ৫ মিনিট।`, variant: `back-${away}` };
   }
   if (r.streak > 1) {
     return { title: `${toBanglaDigits(r.streak)} দিনের স্ট্রিক বাঁচাও!`, body: `${hi}আজকের একটা লেসন বাকি। মাত্র ৫ মিনিট লাগবে।`, variant: 'streak' };
   }
   const everyday = [
-    { title: 'আজকের ইংরেজি বাকি!', body: `${hi}মাত্র ৫ মিনিট। একটা লেসন করে ফেলো।`, variant: 'daily-a' },
+    { title: `আজকের ${subject} বাকি!`, body: `${hi}মাত্র ৫ মিনিট। একটা লেসন করে ফেলো।`, variant: 'daily-a' },
     { title: 'নতুন ৫টা শব্দ অপেক্ষা করছে', body: `${hi}আজকের লেসনটা করে ফেলো। ৫ মিনিটেই হয়ে যাবে।`, variant: 'daily-b' },
-    { title: 'একটু ইংরেজি হয়ে যাক?', body: `${hi}রোজ ৫ মিনিট = এক মাসে অনেক শব্দ।`, variant: 'daily-c' },
+    { title: 'আজ কয়েকটা শব্দ ফিরছে', body: `${hi}ভুলে যাওয়ার আগে ২ মিনিটে ঝালাই করে নাও।`, variant: 'daily-review' },
+    { title: `একটু ${subject} হয়ে যাক?`, body: `${hi}রোজ ৫ মিনিট = এক মাসে অনেক শব্দ।`, variant: 'daily-c' },
   ];
   return everyday[Math.min(everyday.length - 1, Math.floor(pick * everyday.length))];
 }

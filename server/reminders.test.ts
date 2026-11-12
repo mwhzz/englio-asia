@@ -47,5 +47,6 @@ describe('daily reminders', () => {
     expect(dueReminders(setup({ '2026-10-29': 20 }), NOW)).toEqual([]);
     expect(reminderMessage({ name: 'Rina', streak: 0, away: 3 }).variant).toBe('back-3');
     expect(reminderMessage({ name: 'Rina', streak: 0 }, 0.99).variant).toBe('daily-c');
+    expect(reminderMessage({ name: 'Rina', streak: 0, lang: 'bn-ar' }, 0).title).toBe('আজকের আরবি বাকি!');
   });
 });

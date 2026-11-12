@@ -3,6 +3,8 @@ import { NAME_MAX, isValidName } from '../../lib/profile';
 import { LearnerCard } from '../../components/card/LearnerCard';
 import { ObButton } from './ObButton';
 import { Glyph } from '../../components/Glyph';
+import { arabicName } from '../../lib/arabicName';
+import { target } from '../../lib/target';
 
 interface Props {
   name: string;
@@ -14,6 +16,8 @@ interface Props {
 export function NameStep({ name, districtId, onChange, onNext }: Props) {
   const [focused, setFocused] = useState(true);
   const valid = isValidName(name);
+  // In the Arabic course, the name in Arabic letters as it's typed: the first thing written in Arabic.
+  const inArabic = target() === 'ar' && valid ? arabicName(name) : '';
 
   function submit(e: FormEvent) {
     e.preventDefault();
@@ -26,7 +30,7 @@ export function NameStep({ name, districtId, onChange, onNext }: Props) {
         <h1 className="ob-title" lang="bn">
           তোমার নাম কী?
         </h1>
-        <p className="ob-sub" lang="bn">তোমার Englio কার্ড তৈরি হচ্ছে।</p>
+        <p className="ob-sub" lang="bn">তোমার কার্ড তৈরি হচ্ছে।</p>
       </header>
 
       <div className="ob-rise" style={{ '--i': 1 } as CSSProperties}>
@@ -57,6 +61,12 @@ export function NameStep({ name, districtId, onChange, onNext }: Props) {
         <p className="ob-footnote" lang="bn">
           বন্ধুরা তোমাকে যে নামে ডাকে, সেটাই লেখো।
         </p>
+        {inArabic && (
+          <p className="ob-name-ar">
+            <span lang="bn">আরবিতে তোমার নাম প্রায় এভাবে লেখা হয়</span>
+            <strong lang="ar" dir="rtl">{inArabic}</strong>
+          </p>
+        )}
       </div>
 
       <div className="ob-grow" />

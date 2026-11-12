@@ -56,6 +56,10 @@ test('with the largest text on a small phone, onboarding fits: text size on the 
   await page.locator('.ob-textsize').click();
   expect(await page.evaluate(() => document.documentElement.dataset.textSize)).toBe('larger');
   await page.locator('.ob button').filter({ hasText: 'শুরু করো' }).first().click();
+  // The 30-second taste (can't fail), then why (can be skipped), then the district.
+  await page.locator('.ob-taste-option').filter({ hasText: 'ডাক্তার' }).click();
+  await page.getByRole('button', { name: 'দারুণ, চলো' }).click();
+  await page.getByRole('button', { name: 'পরে বলব' }).click();
   await page.getByRole('button', { name: 'খুঁজো' }).click();
   // The sheet slides up; measure once it has arrived.
   await page.locator('.ob-sheet').evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));

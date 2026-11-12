@@ -12,6 +12,9 @@ import { useProgress } from './state/ProgressContext';
 import { useBackButton } from './lib/backButton';
 import { lessonLocked, unitLocked } from './lib/appSettings';
 import { LockedUnitSheet } from './features/premium/LockedUnitSheet';
+import { introSeen, markIntroSeen, takeFirstLessonRequest } from './lib/courseIntro';
+import { learnerLang } from './lib/learnerLang';
+import { nextLesson } from './features/home/nextLesson';
 
 // Only first-time users need onboarding (and its map), so it loads on demand; so does the profile and its card.
 const Onboarding = lazy(() => import('./features/onboarding/Onboarding'));
@@ -19,6 +22,7 @@ const ProfileView = lazy(() => import('./features/profile/ProfileView'));
 const SpeakListenView = lazy(() => import('./features/speaking/SpeakListenView'));
 const GrammarView = lazy(() => import('./features/grammar/GrammarView'));
 const UnitTestRunner = lazy(() => import('./features/unittest/UnitTestRunner').then((m) => ({ default: m.UnitTestRunner })));
+const CourseIntro = lazy(() => import('./features/courseIntro/CourseIntro').then((m) => ({ default: m.CourseIntro })));
 const PlacementTest = lazy(() => import('./features/placement/PlacementTest').then((m) => ({ default: m.PlacementTest })));
 
 type Screen =
@@ -44,6 +48,20 @@ export default function App() {
   const unitOfLesson = (lessonId: string) => ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.unit;
   const home = () => setScreen({ name: 'learn' });
   const practice = () => setScreen({ name: 'practice' });
+  // A course started for the first time here gets its short intro (features/courseIntro); someone who's
+  // already learning it never sees it.
+  const [introDone, setIntroDone] = useState(false);
+  const startedHere = ALL_LESSONS.some((x) => progress.completed[x.lesson.id]);
+  const needsIntro = !!progress.profile && !introDone && !startedHere && !introSeen(learnerLang());
+  useEffect(() => {
+    if (startedHere && !introSeen(learnerLang())) markIntroSeen(learnerLang());
+  }, [startedHere]);
+  // Right after the onboarding or a course intro, the first lesson opens by itself.
+  useEffect(() => {
+    if (!progress.profile || needsIntro || !takeFirstLessonRequest()) return;
+    const next = nextLesson(progress.completed, unitLocked);
+    if (next) setScreen({ name: 'lesson', lessonId: next.lesson.id });
+  }, [progress.profile, needsIntro]);
   useBackButton(home, screen.name === 'speak' || screen.name === 'grammar' || screen.name === 'profile');
   // A broken screen shows a message and a way home instead of a blank page (and is reported).
   const guard = (node: ReactNode) => (
@@ -56,6 +74,20 @@ export default function App() {
     return (
       <Suspense fallback={<div className="ob-loading" />}>
         <Onboarding />
+      </Suspense>
+    );
+  }
+
+  if (needsIntro) {
+    return (
+      <Suspense fallback={<div className="ob-loading" />}>
+        <CourseIntro
+          onDone={() => setIntroDone(true)}
+          onPlacement={() => {
+            setIntroDone(true);
+            setScreen({ name: 'placement' });
+          }}
+        />
       </Suspense>
     );
   }
