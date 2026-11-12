@@ -21,6 +21,7 @@ export function CertificateView({ unit, unitNumber, score, date }: { unit: Unit;
         unitNumber={unitNumber}
         unitTitle={unit.title}
         unitTitleBn={unit.titleBn}
+        section={unit.id.startsWith('section:')}
         color={unit.color}
         score={score}
         date={date}

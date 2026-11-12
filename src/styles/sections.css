@@ -236,3 +236,13 @@ html[data-target='ar'] .li-en {
   background: var(--u);
   color: #fff;
 }
+.li-goal {
+  align-self: flex-start;
+  margin: -6px 0 12px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--ios-orange) 16%, var(--ios-cell));
+  color: color-mix(in srgb, var(--ios-orange) 70%, black);
+  font-size: 14px;
+  font-weight: 600;
+}

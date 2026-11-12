@@ -10,6 +10,8 @@ interface Props {
   score: number;
   date: string;
   place?: string;
+  /** A section's checkpoint (all its units) rather than one unit. */
+  section?: boolean;
 }
 
 const W = 600;
@@ -20,7 +22,7 @@ const H = 420;
  * It uses plain SVG text with system font fallbacks, since a saved image can't load web fonts.
  */
 export const Certificate = forwardRef<SVGSVGElement, Props>(function Certificate(
-  { name, unitNumber, unitTitle, unitTitleBn, color, score, date, place },
+  { name, unitNumber, unitTitle, unitTitleBn, color, score, date, place, section = false },
   ref,
 ) {
   const when = new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -56,10 +58,10 @@ export const Certificate = forwardRef<SVGSVGElement, Props>(function Certificate
       </text>
       <line x1="150" y1="238" x2={W - 150} y2="238" stroke={color} strokeOpacity="0.5" />
       <text x={W / 2} y="266" textAnchor="middle" fontFamily={sans} fontSize="15" fill="#3a3a3c">
-        has completed Unit {unitNumber}: {unitTitle}
+        has completed {section ? 'Section' : 'Unit'} {unitNumber}: {section ? unitTitleBn : unitTitle}
       </text>
       <text x={W / 2} y="290" textAnchor="middle" fontFamily={bangla} fontSize="15" fill="#6e6e73">
-        ইউনিট {toBanglaDigits(unitNumber)}: {unitTitleBn} সফলভাবে শেষ করেছে
+        {section ? 'সেকশন' : 'ইউনিট'} {toBanglaDigits(unitNumber)}: {unitTitleBn} সফলভাবে শেষ করেছে
       </text>
 
       <g fontFamily={sans} fill="#3a3a3c">

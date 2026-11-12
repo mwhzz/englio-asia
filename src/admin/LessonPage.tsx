@@ -8,6 +8,7 @@ import { openPreview } from '../preview/draft';
 import { BulkAdd } from './BulkAdd';
 import { BULK } from './bulkRows';
 import { DraftToggle } from './DraftToggle';
+import { LessonCheck } from './LessonCheck';
 import { forLang, useAdminLang, useMeaningLang } from './useAdminLang';
 
 interface Item {
@@ -93,6 +94,8 @@ export function LessonPage({ id, onUnauthorized }: { id: string; onUnauthorized:
           </button>
         </header>
       )}
+
+      <LessonCheck lessonId={lesson.id} lang={lang} stamp={JSON.stringify(lesson.items.map((i) => i.data))} onUnauthorized={onUnauthorized} />
 
       {KIND_ORDER.map((kind) => {
         const schema = SCHEMAS[kind];

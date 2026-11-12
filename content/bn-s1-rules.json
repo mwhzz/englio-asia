@@ -1,0 +1,2549 @@
+{
+  "language": {
+    "code": "bn",
+    "name": "Bangla",
+    "native": "বাংলা",
+    "dir": "ltr"
+  },
+  "units": [
+    {
+      "title": "First Steps",
+      "titleBn": "প্রথম ধাপ",
+      "color": "#34c759",
+      "tips": [
+        {
+          "title": "am / is / are",
+          "body": "I এর সাথে am, you এর সাথে are, আর একজন মানুষ বা নামের সাথে is। \"আমি\" অর্থে I সবসময় বড় হাতের।",
+          "examples": [
+            "I am Rina.",
+            "You are my friend.",
+            "My name is Rahim."
+          ]
+        },
+        {
+          "title": "a",
+          "body": "একজন বা একটা বোঝাতে a বসে: a student, a teacher।",
+          "examples": [
+            "I am a student."
+          ]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Greetings",
+          "titleBn": "শুভেচ্ছা",
+          "vocab": [
+            {
+              "en": "hello",
+              "bn": "হ্যালো"
+            },
+            {
+              "en": "good morning",
+              "bn": "শুভ সকাল"
+            },
+            {
+              "en": "thank you",
+              "bn": "ধন্যবাদ"
+            },
+            {
+              "en": "goodbye",
+              "bn": "বিদায়"
+            },
+            {
+              "en": "yes",
+              "bn": "হ্যাঁ"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Good morning.",
+              "bn": "শুভ সকাল।",
+              "alt": []
+            },
+            {
+              "en": "Thank you.",
+              "bn": "ধন্যবাদ।",
+              "alt": []
+            },
+            {
+              "en": "Hello, good morning.",
+              "bn": "হ্যালো, শুভ সকাল।",
+              "alt": []
+            },
+            {
+              "en": "Yes, thank you.",
+              "bn": "হ্যাঁ, ধন্যবাদ।",
+              "alt": []
+            },
+            {
+              "en": "Goodbye, thank you.",
+              "bn": "বিদায়, ধন্যবাদ।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "Good ___.",
+              "answer": "morning",
+              "options": [
+                "morning",
+                "thank",
+                "yes"
+              ],
+              "bn": "শুভ সকাল।"
+            },
+            {
+              "text": "___ you.",
+              "answer": "Thank",
+              "options": [
+                "Thank",
+                "Good",
+                "Yes"
+              ],
+              "bn": "ধন্যবাদ।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Hello, good morning.",
+                  "bn": "হ্যালো, শুভ সকাল।"
+                },
+                {
+                  "who": "you",
+                  "en": "Good morning.",
+                  "bn": "শুভ সকাল।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "Goodbye.",
+                "Yes."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Me",
+          "titleBn": "আমি",
+          "vocab": [
+            {
+              "en": "I",
+              "bn": "আমি"
+            },
+            {
+              "en": "am",
+              "bn": "হই / আছি (I এর সাথে)"
+            },
+            {
+              "en": "my",
+              "bn": "আমার"
+            },
+            {
+              "en": "name",
+              "bn": "নাম"
+            },
+            {
+              "en": "is",
+              "bn": "হয় / আছে (একজনের সাথে)"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I am Rina.",
+              "bn": "আমি রিনা।",
+              "alt": [
+                "I'm Rina."
+              ]
+            },
+            {
+              "en": "My name is Rahim.",
+              "bn": "আমার নাম রহিম।",
+              "alt": []
+            },
+            {
+              "en": "Hello, I am Karim.",
+              "bn": "হ্যালো, আমি করিম।",
+              "alt": [
+                "Hello, I'm Karim."
+              ]
+            },
+            {
+              "en": "Good morning, my name is Rina.",
+              "bn": "শুভ সকাল, আমার নাম রিনা।",
+              "alt": []
+            },
+            {
+              "en": "Yes, I am Rahim.",
+              "bn": "হ্যাঁ, আমি রহিম।",
+              "alt": [
+                "Yes, I'm Rahim."
+              ]
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ Rina.",
+              "answer": "am",
+              "options": [
+                "am",
+                "is",
+                "my"
+              ],
+              "bn": "আমি রিনা।"
+            },
+            {
+              "text": "My name ___ Rahim.",
+              "answer": "is",
+              "options": [
+                "is",
+                "am",
+                "I"
+              ],
+              "bn": "আমার নাম রহিম।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "I এর পরে am বসে।",
+              "correct": "I am Rahim.",
+              "wrong": [
+                "I is Rahim.",
+                "I my Rahim."
+              ],
+              "why": "I এর সাথে সবসময় am।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Hello, I am Karim.",
+                  "bn": "হ্যালো, আমি করিম।"
+                },
+                {
+                  "who": "you",
+                  "en": "Hello, my name is Rina.",
+                  "bn": "হ্যালো, আমার নাম রিনা।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "Goodbye.",
+                "Thank you."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "You",
+          "titleBn": "তুমি",
+          "vocab": [
+            {
+              "en": "are",
+              "bn": "হও / আছ (you এর সাথে)"
+            },
+            {
+              "en": "what",
+              "bn": "কী"
+            },
+            {
+              "en": "your",
+              "bn": "তোমার"
+            },
+            {
+              "en": "how",
+              "bn": "কেমন"
+            },
+            {
+              "en": "fine",
+              "bn": "ভালো"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "What is your name?",
+              "bn": "তোমার নাম কী?",
+              "alt": [
+                "What's your name?"
+              ]
+            },
+            {
+              "en": "How are you?",
+              "bn": "তুমি কেমন আছ?",
+              "alt": []
+            },
+            {
+              "en": "I am fine, thank you.",
+              "bn": "আমি ভালো আছি, ধন্যবাদ।",
+              "alt": [
+                "I'm fine, thank you."
+              ]
+            },
+            {
+              "en": "Are you Rahim?",
+              "bn": "তুমি কি রহিম?",
+              "alt": []
+            },
+            {
+              "en": "My name is Rina. What is your name?",
+              "bn": "আমার নাম রিনা। তোমার নাম কী?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "How ___ you?",
+              "answer": "are",
+              "options": [
+                "are",
+                "is",
+                "am"
+              ],
+              "bn": "তুমি কেমন আছ?"
+            },
+            {
+              "text": "What is ___ name?",
+              "answer": "your",
+              "options": [
+                "your",
+                "you",
+                "I"
+              ],
+              "bn": "তোমার নাম কী?"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "How ___ you? I ___ fine.",
+              "answers": [
+                "are",
+                "am"
+              ],
+              "extra": [
+                "is",
+                "my"
+              ],
+              "bn": "তুমি কেমন আছ? আমি ভালো আছি।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "you এর সাথে are বসে।",
+              "correct": "How are you?",
+              "wrong": [
+                "How is you?",
+                "How am you?"
+              ],
+              "why": "you এর সাথে সবসময় are।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "How are you?",
+                  "bn": "তুমি কেমন আছ?"
+                },
+                {
+                  "who": "you",
+                  "en": "I am fine, thank you.",
+                  "bn": "আমি ভালো আছি, ধন্যবাদ।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "My name is Rina.",
+                "Goodbye."
+              ]
+            },
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What is your name?",
+                  "bn": "তোমার নাম কী?"
+                },
+                {
+                  "who": "you",
+                  "en": "My name is Rahim.",
+                  "bn": "আমার নাম রহিম।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am fine.",
+                "Yes, thank you."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Friends",
+          "titleBn": "বন্ধু",
+          "vocab": [
+            {
+              "en": "a",
+              "bn": "একটা / একজন"
+            },
+            {
+              "en": "friend",
+              "bn": "বন্ধু"
+            },
+            {
+              "en": "student",
+              "bn": "শিক্ষার্থী"
+            },
+            {
+              "en": "teacher",
+              "bn": "শিক্ষক"
+            },
+            {
+              "en": "and",
+              "bn": "আর / এবং"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I am a student.",
+              "bn": "আমি একজন শিক্ষার্থী।",
+              "alt": [
+                "I'm a student."
+              ]
+            },
+            {
+              "en": "You are my friend.",
+              "bn": "তুমি আমার বন্ধু।",
+              "alt": [
+                "You're my friend."
+              ]
+            },
+            {
+              "en": "Rina is my teacher.",
+              "bn": "রিনা আমার শিক্ষক।",
+              "alt": []
+            },
+            {
+              "en": "Rahim is a student and my friend.",
+              "bn": "রহিম একজন শিক্ষার্থী আর আমার বন্ধু।",
+              "alt": []
+            },
+            {
+              "en": "Are you a teacher?",
+              "bn": "তুমি কি একজন শিক্ষক?",
+              "alt": []
+            },
+            {
+              "en": "Yes, I am a teacher.",
+              "bn": "হ্যাঁ, আমি একজন শিক্ষক।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I am ___ student.",
+              "answer": "a",
+              "options": [
+                "a",
+                "my",
+                "is"
+              ],
+              "bn": "আমি একজন শিক্ষার্থী।"
+            },
+            {
+              "text": "You ___ my friend.",
+              "answer": "are",
+              "options": [
+                "are",
+                "am",
+                "is"
+              ],
+              "bn": "তুমি আমার বন্ধু।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "My name ___ Karim. I am ___ teacher.",
+              "answers": [
+                "is",
+                "a"
+              ],
+              "extra": [
+                "are",
+                "my"
+              ],
+              "bn": "আমার নাম করিম। আমি একজন শিক্ষক।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "একজন বা একটা বোঝাতে a, শব্দের আগে।",
+              "correct": "I am a teacher.",
+              "wrong": [
+                "I am teacher a.",
+                "I a am teacher."
+              ],
+              "why": "a বসে teacher এর আগে।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Are you a student?",
+                  "bn": "তুমি কি একজন শিক্ষার্থী?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, I am a student.",
+                  "bn": "হ্যাঁ, আমি একজন শিক্ষার্থী।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "How are you?",
+                "My name is Rina."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Family",
+      "titleBn": "পরিবার",
+      "color": "#af52de",
+      "tips": [
+        {
+          "title": "he / she, his / her",
+          "body": "ছেলের জন্য he, মেয়ের জন্য she। তার নাম: ছেলের হলে his, মেয়ের হলে her।",
+          "examples": [
+            "He is my brother.",
+            "Her name is Rina."
+          ]
+        },
+        {
+          "title": "not",
+          "body": "না বলতে is / am / are এর পরে not বসাও।",
+          "examples": [
+            "He is not tall."
+          ]
+        },
+        {
+          "title": "we / they",
+          "body": "we (আমরা) আর they (তারা) এর সাথে are বসে।",
+          "examples": [
+            "We are a big family."
+          ]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "My family",
+          "titleBn": "আমার পরিবার",
+          "vocab": [
+            {
+              "en": "mother",
+              "bn": "মা"
+            },
+            {
+              "en": "father",
+              "bn": "বাবা"
+            },
+            {
+              "en": "brother",
+              "bn": "ভাই"
+            },
+            {
+              "en": "sister",
+              "bn": "বোন"
+            },
+            {
+              "en": "this",
+              "bn": "এ / ইনি / এটা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "This is my mother.",
+              "bn": "ইনি আমার মা।",
+              "alt": []
+            },
+            {
+              "en": "This is my father.",
+              "bn": "ইনি আমার বাবা।",
+              "alt": []
+            },
+            {
+              "en": "My brother is a student.",
+              "bn": "আমার ভাই একজন শিক্ষার্থী।",
+              "alt": []
+            },
+            {
+              "en": "Is this your sister?",
+              "bn": "এ কি তোমার বোন?",
+              "alt": []
+            },
+            {
+              "en": "Yes, this is my sister.",
+              "bn": "হ্যাঁ, এ আমার বোন।",
+              "alt": []
+            },
+            {
+              "en": "My mother is a teacher.",
+              "bn": "আমার মা একজন শিক্ষক।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "This ___ my father.",
+              "answer": "is",
+              "options": [
+                "is",
+                "am",
+                "are"
+              ],
+              "bn": "ইনি আমার বাবা।"
+            },
+            {
+              "text": "My ___ is a student.",
+              "answer": "brother",
+              "options": [
+                "brother",
+                "this",
+                "a"
+              ],
+              "bn": "আমার ভাই একজন শিক্ষার্থী।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "কাউকে দেখিয়ে পরিচয় দিতে: This is ...",
+              "correct": "This is my mother.",
+              "wrong": [
+                "This my is mother.",
+                "This am my mother."
+              ],
+              "why": "This এর পরে is বসে।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Is this your father?",
+                  "bn": "ইনি কি তোমার বাবা?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, this is my father.",
+                  "bn": "হ্যাঁ, ইনি আমার বাবা।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am fine.",
+                "Good morning."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "He and she",
+          "titleBn": "ছেলে, মেয়ে",
+          "vocab": [
+            {
+              "en": "he",
+              "bn": "সে (ছেলে)"
+            },
+            {
+              "en": "she",
+              "bn": "সে (মেয়ে)"
+            },
+            {
+              "en": "happy",
+              "bn": "খুশি"
+            },
+            {
+              "en": "tall",
+              "bn": "লম্বা"
+            },
+            {
+              "en": "very",
+              "bn": "খুব"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "He is my brother.",
+              "bn": "সে আমার ভাই।",
+              "alt": [
+                "He's my brother."
+              ]
+            },
+            {
+              "en": "She is my sister.",
+              "bn": "সে আমার বোন।",
+              "alt": [
+                "She's my sister."
+              ]
+            },
+            {
+              "en": "She is very happy.",
+              "bn": "সে খুব খুশি।",
+              "alt": []
+            },
+            {
+              "en": "He is tall.",
+              "bn": "সে লম্বা।",
+              "alt": []
+            },
+            {
+              "en": "Is she your mother?",
+              "bn": "উনি কি তোমার মা?",
+              "alt": []
+            },
+            {
+              "en": "My father is very tall.",
+              "bn": "আমার বাবা খুব লম্বা।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "She ___ very happy.",
+              "answer": "is",
+              "options": [
+                "is",
+                "am",
+                "are"
+              ],
+              "bn": "সে খুব খুশি।"
+            },
+            {
+              "text": "___ is my brother.",
+              "answer": "He",
+              "options": [
+                "He",
+                "I",
+                "You"
+              ],
+              "bn": "সে আমার ভাই।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "He ___ tall. She ___ very happy.",
+              "answers": [
+                "is",
+                "is"
+              ],
+              "extra": [
+                "am",
+                "are"
+              ],
+              "bn": "সে লম্বা। সে খুব খুশি।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "ছেলের জন্য he, মেয়ের জন্য she।",
+              "correct": "She is my sister.",
+              "wrong": [
+                "He is my sister.",
+                "She am my sister."
+              ],
+              "why": "বোন মেয়ে, তাই she।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Is he your brother?",
+                  "bn": "সে কি তোমার ভাই?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, he is my brother.",
+                  "bn": "হ্যাঁ, সে আমার ভাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "She is my sister.",
+                "Thank you."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "His, her",
+          "titleBn": "তার",
+          "vocab": [
+            {
+              "en": "his",
+              "bn": "তার (ছেলের)"
+            },
+            {
+              "en": "her",
+              "bn": "তার (মেয়ের)"
+            },
+            {
+              "en": "uncle",
+              "bn": "চাচা / মামা"
+            },
+            {
+              "en": "aunt",
+              "bn": "খালা / ফুফু"
+            },
+            {
+              "en": "not",
+              "bn": "না"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "His name is Karim.",
+              "bn": "তার নাম করিম।",
+              "alt": []
+            },
+            {
+              "en": "Her name is Rina.",
+              "bn": "তার নাম রিনা।",
+              "alt": []
+            },
+            {
+              "en": "He is not my uncle.",
+              "bn": "উনি আমার চাচা নন।",
+              "alt": [
+                "He isn't my uncle."
+              ]
+            },
+            {
+              "en": "She is my aunt.",
+              "bn": "উনি আমার খালা।",
+              "alt": []
+            },
+            {
+              "en": "Her brother is not tall.",
+              "bn": "তার ভাই লম্বা না।",
+              "alt": []
+            },
+            {
+              "en": "His sister is a teacher.",
+              "bn": "তার বোন একজন শিক্ষক।",
+              "alt": []
+            },
+            {
+              "en": "This is not my aunt.",
+              "bn": "ইনি আমার খালা নন।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "___ name is Rina.",
+              "answer": "Her",
+              "options": [
+                "Her",
+                "She",
+                "I"
+              ],
+              "bn": "তার নাম রিনা।"
+            },
+            {
+              "text": "He is ___ my uncle.",
+              "answer": "not",
+              "options": [
+                "not",
+                "a",
+                "my"
+              ],
+              "bn": "উনি আমার চাচা নন।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "না বোঝাতে is / am / are এর পরে not।",
+              "correct": "She is not my aunt.",
+              "wrong": [
+                "She not is my aunt.",
+                "Not she is my aunt."
+              ],
+              "why": "not বসে is এর পরে।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Is she your aunt?",
+                  "bn": "উনি কি তোমার খালা?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, she is my aunt.",
+                  "bn": "হ্যাঁ, উনি আমার খালা।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "His name is Karim.",
+                "I am fine."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "We, they",
+          "titleBn": "আমরা, তারা",
+          "vocab": [
+            {
+              "en": "we",
+              "bn": "আমরা"
+            },
+            {
+              "en": "they",
+              "bn": "তারা"
+            },
+            {
+              "en": "family",
+              "bn": "পরিবার"
+            },
+            {
+              "en": "big",
+              "bn": "বড়"
+            },
+            {
+              "en": "small",
+              "bn": "ছোট"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "We are a big family.",
+              "bn": "আমরা একটা বড় পরিবার।",
+              "alt": []
+            },
+            {
+              "en": "They are my brother and sister.",
+              "bn": "তারা আমার ভাই আর বোন।",
+              "alt": []
+            },
+            {
+              "en": "My family is small.",
+              "bn": "আমার পরিবার ছোট।",
+              "alt": []
+            },
+            {
+              "en": "We are very happy.",
+              "bn": "আমরা খুব খুশি।",
+              "alt": []
+            },
+            {
+              "en": "Are they your uncle and aunt?",
+              "bn": "তাঁরা কি তোমার চাচা আর চাচি?",
+              "alt": []
+            },
+            {
+              "en": "They are not tall.",
+              "bn": "তারা লম্বা না।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "We ___ a big family.",
+              "answer": "are",
+              "options": [
+                "are",
+                "is",
+                "am"
+              ],
+              "bn": "আমরা একটা বড় পরিবার।"
+            },
+            {
+              "text": "My family is ___.",
+              "answer": "small",
+              "options": [
+                "small",
+                "they",
+                "we"
+              ],
+              "bn": "আমার পরিবার ছোট।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "We ___ a small family. My father ___ tall.",
+              "answers": [
+                "are",
+                "is"
+              ],
+              "extra": [
+                "am",
+                "a"
+              ],
+              "bn": "আমরা একটা ছোট পরিবার। আমার বাবা লম্বা।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "we আর they এর সাথে are বসে।",
+              "correct": "They are happy.",
+              "wrong": [
+                "They is happy.",
+                "They am happy."
+              ],
+              "why": "they এর সাথে are।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Is your family big?",
+                  "bn": "তোমার পরিবার কি বড়?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, we are a big family.",
+                  "bn": "হ্যাঁ, আমরা একটা বড় পরিবার।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "She is my aunt.",
+                "How are you?"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Food & Drink",
+      "titleBn": "খাবার ও পানীয়",
+      "color": "#ff9500",
+      "tips": [
+        {
+          "title": "like / likes",
+          "body": "I, you, we, they এর সাথে like; he, she বা একজনের নামের সাথে likes।",
+          "examples": [
+            "I like tea.",
+            "She likes fish."
+          ]
+        },
+        {
+          "title": "don't / doesn't",
+          "body": "না বলতে: I, you, we, they এর সাথে don't; he, she এর সাথে doesn't।",
+          "examples": [
+            "I don't like fish.",
+            "He doesn't want tea."
+          ]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "I like rice",
+          "titleBn": "ভাত পছন্দ",
+          "vocab": [
+            {
+              "en": "rice",
+              "bn": "ভাত"
+            },
+            {
+              "en": "fish",
+              "bn": "মাছ"
+            },
+            {
+              "en": "tea",
+              "bn": "চা"
+            },
+            {
+              "en": "water",
+              "bn": "পানি"
+            },
+            {
+              "en": "like",
+              "bn": "পছন্দ করি"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I like rice.",
+              "bn": "আমি ভাত পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "I like fish and rice.",
+              "bn": "আমি মাছ আর ভাত পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "We like tea.",
+              "bn": "আমরা চা পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "They like water.",
+              "bn": "তারা পানি পছন্দ করে।",
+              "alt": []
+            },
+            {
+              "en": "My mother and I like fish.",
+              "bn": "আমার মা আর আমি মাছ পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "Tea and water, thank you.",
+              "bn": "চা আর পানি, ধন্যবাদ।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ rice.",
+              "answer": "like",
+              "options": [
+                "like",
+                "is",
+                "am"
+              ],
+              "bn": "আমি ভাত পছন্দ করি।"
+            },
+            {
+              "text": "We like ___.",
+              "answer": "tea",
+              "options": [
+                "tea",
+                "a",
+                "my"
+              ],
+              "bn": "আমরা চা পছন্দ করি।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "পছন্দ বোঝাতে: I like ...",
+              "correct": "I like fish.",
+              "wrong": [
+                "I am like fish.",
+                "I fish like."
+              ],
+              "why": "like এর আগে am লাগে না।"
+            }
+          ],
+          "dialogs": []
+        },
+        {
+          "title": "Do you like milk?",
+          "titleBn": "দুধ পছন্দ?",
+          "vocab": [
+            {
+              "en": "do",
+              "bn": "প্রশ্নের শুরুতে (কি)"
+            },
+            {
+              "en": "likes",
+              "bn": "পছন্দ করে"
+            },
+            {
+              "en": "milk",
+              "bn": "দুধ"
+            },
+            {
+              "en": "eggs",
+              "bn": "ডিম"
+            },
+            {
+              "en": "no",
+              "bn": "না"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "Do you like milk?",
+              "bn": "তুমি কি দুধ পছন্দ করো?",
+              "alt": []
+            },
+            {
+              "en": "Yes, I like milk.",
+              "bn": "হ্যাঁ, আমি দুধ পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "No, I like tea.",
+              "bn": "না, আমি চা পছন্দ করি।",
+              "alt": []
+            },
+            {
+              "en": "She likes fish.",
+              "bn": "সে মাছ পছন্দ করে।",
+              "alt": []
+            },
+            {
+              "en": "My brother likes milk.",
+              "bn": "আমার ভাই দুধ পছন্দ করে।",
+              "alt": []
+            },
+            {
+              "en": "Do they like eggs?",
+              "bn": "তারা কি ডিম পছন্দ করে?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "He ___ milk.",
+              "answer": "likes",
+              "options": [
+                "likes",
+                "like",
+                "is"
+              ],
+              "bn": "সে দুধ পছন্দ করে।"
+            },
+            {
+              "text": "___ you like fish?",
+              "answer": "Do",
+              "options": [
+                "Do",
+                "Are",
+                "Is"
+              ],
+              "bn": "তুমি কি মাছ পছন্দ করো?"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I ___ tea. My sister ___ milk.",
+              "answers": [
+                "like",
+                "likes"
+              ],
+              "extra": [
+                "is",
+                "do"
+              ],
+              "bn": "আমি চা পছন্দ করি। আমার বোন দুধ পছন্দ করে।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "he / she এর সাথে like এর শেষে s: likes।",
+              "correct": "She likes tea.",
+              "wrong": [
+                "She like tea.",
+                "She is like tea."
+              ],
+              "why": "she এর সাথে likes।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Do you like fish?",
+                  "bn": "তুমি কি মাছ পছন্দ করো?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, I like fish.",
+                  "bn": "হ্যাঁ, আমি মাছ পছন্দ করি।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "She is my sister.",
+                "Good morning."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "I don't like it",
+          "titleBn": "পছন্দ না",
+          "vocab": [
+            {
+              "en": "don't",
+              "bn": "না (I / you / we / they)"
+            },
+            {
+              "en": "doesn't",
+              "bn": "না (he / she)"
+            },
+            {
+              "en": "want",
+              "bn": "চাই"
+            },
+            {
+              "en": "bread",
+              "bn": "রুটি"
+            },
+            {
+              "en": "banana",
+              "bn": "কলা"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I don't like fish.",
+              "bn": "আমি মাছ পছন্দ করি না।",
+              "alt": [
+                "I do not like fish."
+              ]
+            },
+            {
+              "en": "She doesn't like milk.",
+              "bn": "সে দুধ পছন্দ করে না।",
+              "alt": [
+                "She does not like milk."
+              ]
+            },
+            {
+              "en": "I want a banana.",
+              "bn": "আমি একটা কলা চাই।",
+              "alt": []
+            },
+            {
+              "en": "Do you want bread?",
+              "bn": "তুমি কি রুটি চাও?",
+              "alt": []
+            },
+            {
+              "en": "He doesn't want tea.",
+              "bn": "সে চা চায় না।",
+              "alt": [
+                "He does not want tea."
+              ]
+            },
+            {
+              "en": "We want rice and fish.",
+              "bn": "আমরা ভাত আর মাছ চাই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ like fish.",
+              "answer": "don't",
+              "options": [
+                "don't",
+                "doesn't",
+                "not"
+              ],
+              "bn": "আমি মাছ পছন্দ করি না।"
+            },
+            {
+              "text": "She ___ like milk.",
+              "answer": "doesn't",
+              "options": [
+                "doesn't",
+                "don't",
+                "not"
+              ],
+              "bn": "সে দুধ পছন্দ করে না।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I ___ want bread. My brother ___ like fish.",
+              "answers": [
+                "don't",
+                "doesn't"
+              ],
+              "extra": [
+                "not",
+                "is"
+              ],
+              "bn": "আমি রুটি চাই না। আমার ভাই মাছ পছন্দ করে না।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "I / you / we / they এর সাথে don't, he / she এর সাথে doesn't।",
+              "correct": "He doesn't want tea.",
+              "wrong": [
+                "He don't want tea.",
+                "He not want tea."
+              ],
+              "why": "he এর সাথে doesn't।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Do you want tea?",
+                  "bn": "তুমি কি চা চাও?"
+                },
+                {
+                  "who": "you",
+                  "en": "No, I want water.",
+                  "bn": "না, আমি পানি চাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am a student.",
+                "She likes fish."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Breakfast, lunch, dinner",
+          "titleBn": "তিন বেলার খাবার",
+          "vocab": [
+            {
+              "en": "breakfast",
+              "bn": "সকালের নাস্তা"
+            },
+            {
+              "en": "lunch",
+              "bn": "দুপুরের খাবার"
+            },
+            {
+              "en": "dinner",
+              "bn": "রাতের খাবার"
+            },
+            {
+              "en": "eat",
+              "bn": "খাই"
+            },
+            {
+              "en": "for",
+              "bn": "জন্য"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I eat rice for lunch.",
+              "bn": "আমি দুপুরে ভাত খাই।",
+              "alt": []
+            },
+            {
+              "en": "We eat bread for breakfast.",
+              "bn": "আমরা নাস্তায় রুটি খাই।",
+              "alt": []
+            },
+            {
+              "en": "What do you want for dinner?",
+              "bn": "রাতে তুমি কী খেতে চাও?",
+              "alt": []
+            },
+            {
+              "en": "She doesn't eat fish.",
+              "bn": "সে মাছ খায় না।",
+              "alt": [
+                "She does not eat fish."
+              ]
+            },
+            {
+              "en": "They eat fish for dinner.",
+              "bn": "তারা রাতে মাছ খায়।",
+              "alt": []
+            },
+            {
+              "en": "Do you eat eggs for breakfast?",
+              "bn": "তুমি কি নাস্তায় ডিম খাও?",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I eat bread ___ breakfast.",
+              "answer": "for",
+              "options": [
+                "for",
+                "a",
+                "and"
+              ],
+              "bn": "আমি নাস্তায় রুটি খাই।"
+            },
+            {
+              "text": "We ___ rice for lunch.",
+              "answer": "eat",
+              "options": [
+                "eat",
+                "likes",
+                "is"
+              ],
+              "bn": "আমরা দুপুরে ভাত খাই।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "কোন বেলার খাবার: for breakfast / for lunch / for dinner।",
+              "correct": "I eat rice for dinner.",
+              "wrong": [
+                "I eat rice dinner for.",
+                "I for eat rice dinner."
+              ],
+              "why": "for বসে dinner এর আগে।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What do you want for lunch?",
+                  "bn": "দুপুরে তুমি কী খেতে চাও?"
+                },
+                {
+                  "who": "you",
+                  "en": "I want rice and fish.",
+                  "bn": "আমি ভাত আর মাছ চাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "My name is Rahim.",
+                "He is tall."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Numbers & Time",
+      "titleBn": "সংখ্যা ও সময়",
+      "color": "#007aff",
+      "tips": [
+        {
+          "title": "One, two ... many",
+          "body": "একের বেশি হলে শব্দের শেষে s: one brother, two brothers।",
+          "examples": [
+            "I have two sisters."
+          ]
+        },
+        {
+          "title": "Age and time",
+          "body": "বয়স: I am ... years old। সময়: It is ... o'clock।",
+          "examples": [
+            "I am ten years old.",
+            "It is two o'clock."
+          ]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "One to five",
+          "titleBn": "এক থেকে পাঁচ",
+          "vocab": [
+            {
+              "en": "one",
+              "bn": "এক"
+            },
+            {
+              "en": "two",
+              "bn": "দুই"
+            },
+            {
+              "en": "three",
+              "bn": "তিন"
+            },
+            {
+              "en": "four",
+              "bn": "চার"
+            },
+            {
+              "en": "five",
+              "bn": "পাঁচ"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I want one banana.",
+              "bn": "আমি একটা কলা চাই।",
+              "alt": []
+            },
+            {
+              "en": "Two and two are four.",
+              "bn": "দুই আর দুই চার।",
+              "alt": []
+            },
+            {
+              "en": "One and four are five.",
+              "bn": "এক আর চার পাঁচ।",
+              "alt": []
+            },
+            {
+              "en": "Two and one are three.",
+              "bn": "দুই আর এক তিন।",
+              "alt": []
+            },
+            {
+              "en": "I eat two eggs for breakfast.",
+              "bn": "আমি নাস্তায় দুটো ডিম খাই।",
+              "alt": []
+            },
+            {
+              "en": "We want five eggs.",
+              "bn": "আমরা পাঁচটা ডিম চাই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "Two and two are ___.",
+              "answer": "four",
+              "options": [
+                "four",
+                "three",
+                "five"
+              ],
+              "bn": "দুই আর দুই চার।"
+            },
+            {
+              "text": "One and four are ___.",
+              "answer": "five",
+              "options": [
+                "five",
+                "two",
+                "three"
+              ],
+              "bn": "এক আর চার পাঁচ।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Do you want one banana?",
+                  "bn": "তুমি কি একটা কলা চাও?"
+                },
+                {
+                  "who": "you",
+                  "en": "No, I want two.",
+                  "bn": "না, আমি দুটো চাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am fine.",
+                "Her name is Rina."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How many?",
+          "titleBn": "কয়টা?",
+          "vocab": [
+            {
+              "en": "have",
+              "bn": "আছে (আমার)"
+            },
+            {
+              "en": "how many",
+              "bn": "কয়টা / কতজন"
+            },
+            {
+              "en": "sisters",
+              "bn": "বোনেরা (একের বেশি)"
+            },
+            {
+              "en": "brothers",
+              "bn": "ভাইয়েরা (একের বেশি)"
+            },
+            {
+              "en": "six",
+              "bn": "ছয়"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "How many brothers do you have?",
+              "bn": "তোমার কয়জন ভাই?",
+              "alt": []
+            },
+            {
+              "en": "I have two brothers.",
+              "bn": "আমার দুই ভাই।",
+              "alt": []
+            },
+            {
+              "en": "I have one sister.",
+              "bn": "আমার একজন বোন।",
+              "alt": []
+            },
+            {
+              "en": "Do you have a brother?",
+              "bn": "তোমার কি ভাই আছে?",
+              "alt": []
+            },
+            {
+              "en": "How many sisters do you have?",
+              "bn": "তোমার কয়জন বোন?",
+              "alt": []
+            },
+            {
+              "en": "We have six eggs.",
+              "bn": "আমাদের ছয়টা ডিম আছে।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ two brothers.",
+              "answer": "have",
+              "options": [
+                "have",
+                "am",
+                "is"
+              ],
+              "bn": "আমার দুই ভাই।"
+            },
+            {
+              "text": "I have three ___.",
+              "answer": "sisters",
+              "options": [
+                "sisters",
+                "sister",
+                "a"
+              ],
+              "bn": "আমার তিন বোন।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I ___ one brother and two ___.",
+              "answers": [
+                "have",
+                "sisters"
+              ],
+              "extra": [
+                "sister",
+                "am"
+              ],
+              "bn": "আমার একজন ভাই আর দুইজন বোন।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "একের বেশি হলে শেষে s: one brother, two brothers।",
+              "correct": "I have two sisters.",
+              "wrong": [
+                "I have two sister.",
+                "I two have sisters."
+              ],
+              "why": "two এর পরে sisters, s সহ।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "How many brothers do you have?",
+                  "bn": "তোমার কয়জন ভাই?"
+                },
+                {
+                  "who": "you",
+                  "en": "I have one brother.",
+                  "bn": "আমার একজন ভাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am fine, thank you.",
+                "I like tea."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How old?",
+          "titleBn": "বয়স কত?",
+          "vocab": [
+            {
+              "en": "old",
+              "bn": "বয়স / বুড়ো"
+            },
+            {
+              "en": "years",
+              "bn": "বছর"
+            },
+            {
+              "en": "seven",
+              "bn": "সাত"
+            },
+            {
+              "en": "eight",
+              "bn": "আট"
+            },
+            {
+              "en": "ten",
+              "bn": "দশ"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "How old are you?",
+              "bn": "তোমার বয়স কত?",
+              "alt": []
+            },
+            {
+              "en": "I am ten years old.",
+              "bn": "আমার বয়স দশ বছর।",
+              "alt": [
+                "I'm ten years old."
+              ]
+            },
+            {
+              "en": "My sister is seven years old.",
+              "bn": "আমার বোনের বয়স সাত বছর।",
+              "alt": []
+            },
+            {
+              "en": "He is eight years old.",
+              "bn": "তার বয়স আট বছর।",
+              "alt": []
+            },
+            {
+              "en": "How old is your brother?",
+              "bn": "তোমার ভাইয়ের বয়স কত?",
+              "alt": []
+            },
+            {
+              "en": "My father is not old.",
+              "bn": "আমার বাবা বুড়ো না।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I am ten ___ old.",
+              "answer": "years",
+              "options": [
+                "years",
+                "year",
+                "old"
+              ],
+              "bn": "আমার বয়স দশ বছর।"
+            },
+            {
+              "text": "How ___ are you?",
+              "answer": "old",
+              "options": [
+                "old",
+                "many",
+                "what"
+              ],
+              "bn": "তোমার বয়স কত?"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "How ___ is your sister? She is eight ___ old.",
+              "answers": [
+                "old",
+                "years"
+              ],
+              "extra": [
+                "many",
+                "is"
+              ],
+              "bn": "তোমার বোনের বয়স কত? তার বয়স আট বছর।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "বয়স বলতে: is / am / are + ... years old।",
+              "correct": "She is eight years old.",
+              "wrong": [
+                "She has eight years.",
+                "She eight years old."
+              ],
+              "why": "বয়স বলতে is ... years old।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "How old are you?",
+                  "bn": "তোমার বয়স কত?"
+                },
+                {
+                  "who": "you",
+                  "en": "I am seven years old.",
+                  "bn": "আমার বয়স সাত বছর।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I have two brothers.",
+                "Goodbye."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "What time is it?",
+          "titleBn": "কয়টা বাজে?",
+          "vocab": [
+            {
+              "en": "time",
+              "bn": "সময়"
+            },
+            {
+              "en": "it",
+              "bn": "এটা"
+            },
+            {
+              "en": "now",
+              "bn": "এখন"
+            },
+            {
+              "en": "today",
+              "bn": "আজ"
+            },
+            {
+              "en": "o'clock",
+              "bn": "টা বাজে"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "What time is it?",
+              "bn": "কয়টা বাজে?",
+              "alt": []
+            },
+            {
+              "en": "It is two o'clock.",
+              "bn": "দুইটা বাজে।",
+              "alt": [
+                "It's two o'clock."
+              ]
+            },
+            {
+              "en": "It is ten o'clock now.",
+              "bn": "এখন দশটা বাজে।",
+              "alt": []
+            },
+            {
+              "en": "Is it five o'clock?",
+              "bn": "পাঁচটা কি বাজে?",
+              "alt": []
+            },
+            {
+              "en": "Today I am very happy.",
+              "bn": "আজ আমি খুব খুশি।",
+              "alt": []
+            },
+            {
+              "en": "Yes, it is three o'clock now.",
+              "bn": "হ্যাঁ, এখন তিনটা বাজে।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "What ___ is it?",
+              "answer": "time",
+              "options": [
+                "time",
+                "old",
+                "many"
+              ],
+              "bn": "কয়টা বাজে?"
+            },
+            {
+              "text": "It is two ___.",
+              "answer": "o'clock",
+              "options": [
+                "o'clock",
+                "years",
+                "time"
+              ],
+              "bn": "দুইটা বাজে।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "সময় বলতে: It is ... o'clock।",
+              "correct": "It is four o'clock.",
+              "wrong": [
+                "It four o'clock.",
+                "It are four o'clock."
+              ],
+              "why": "সময় বলতে It is।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What time is it?",
+                  "bn": "কয়টা বাজে?"
+                },
+                {
+                  "who": "you",
+                  "en": "It is six o'clock.",
+                  "bn": "ছয়টা বাজে।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am six years old.",
+                "I have six eggs."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Daily Life",
+      "titleBn": "দৈনন্দিন জীবন",
+      "color": "#ff2d55",
+      "tips": [
+        {
+          "title": "he goes, she works",
+          "body": "he / she এর সাথে কাজের শব্দের শেষে s বা es: goes, works, reads।",
+          "examples": [
+            "He goes to school every day."
+          ]
+        },
+        {
+          "title": "at + time",
+          "body": "কয়টায় বলতে at: at six o'clock।",
+          "examples": [
+            "I get up at six o'clock."
+          ]
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Going out",
+          "titleBn": "বাইরে যাওয়া",
+          "vocab": [
+            {
+              "en": "go",
+              "bn": "যাই"
+            },
+            {
+              "en": "to",
+              "bn": "-এ / দিকে"
+            },
+            {
+              "en": "school",
+              "bn": "স্কুল"
+            },
+            {
+              "en": "work",
+              "bn": "কাজ"
+            },
+            {
+              "en": "read",
+              "bn": "পড়ি"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I go to school.",
+              "bn": "আমি স্কুলে যাই।",
+              "alt": []
+            },
+            {
+              "en": "Today we go to school.",
+              "bn": "আজ আমরা স্কুলে যাই।",
+              "alt": []
+            },
+            {
+              "en": "They go to work.",
+              "bn": "তারা কাজে যায়।",
+              "alt": []
+            },
+            {
+              "en": "My mother and father go to work.",
+              "bn": "আমার মা আর বাবা কাজে যান।",
+              "alt": []
+            },
+            {
+              "en": "Do you go to school?",
+              "bn": "তুমি কি স্কুলে যাও?",
+              "alt": []
+            },
+            {
+              "en": "I want to read.",
+              "bn": "আমি পড়তে চাই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I go ___ school.",
+              "answer": "to",
+              "options": [
+                "to",
+                "for",
+                "a"
+              ],
+              "bn": "আমি স্কুলে যাই।"
+            },
+            {
+              "text": "They ___ to work.",
+              "answer": "go",
+              "options": [
+                "go",
+                "is",
+                "are"
+              ],
+              "bn": "তারা কাজে যায়।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "কোথাও যাওয়া: go to + জায়গা।",
+              "correct": "I go to school.",
+              "wrong": [
+                "I go school to.",
+                "I to go school."
+              ],
+              "why": "go এর পরে to, তারপর জায়গা।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Do you go to school?",
+                  "bn": "তুমি কি স্কুলে যাও?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, I go to school.",
+                  "bn": "হ্যাঁ, আমি স্কুলে যাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I like milk.",
+                "It is two o'clock."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Every day",
+          "titleBn": "প্রতিদিন",
+          "vocab": [
+            {
+              "en": "goes",
+              "bn": "যায়"
+            },
+            {
+              "en": "works",
+              "bn": "কাজ করে"
+            },
+            {
+              "en": "reads",
+              "bn": "পড়ে"
+            },
+            {
+              "en": "book",
+              "bn": "বই"
+            },
+            {
+              "en": "every day",
+              "bn": "প্রতিদিন"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "He goes to school every day.",
+              "bn": "সে প্রতিদিন স্কুলে যায়।",
+              "alt": []
+            },
+            {
+              "en": "She works every day.",
+              "bn": "সে প্রতিদিন কাজ করে।",
+              "alt": []
+            },
+            {
+              "en": "My sister reads a book.",
+              "bn": "আমার বোন একটা বই পড়ে।",
+              "alt": []
+            },
+            {
+              "en": "Rina reads every day.",
+              "bn": "রিনা প্রতিদিন পড়ে।",
+              "alt": []
+            },
+            {
+              "en": "My father goes to work every day.",
+              "bn": "আমার বাবা প্রতিদিন কাজে যান।",
+              "alt": []
+            },
+            {
+              "en": "I read a book every day.",
+              "bn": "আমি প্রতিদিন একটা বই পড়ি।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "He ___ to school.",
+              "answer": "goes",
+              "options": [
+                "goes",
+                "go",
+                "is"
+              ],
+              "bn": "সে স্কুলে যায়।"
+            },
+            {
+              "text": "She ___ every day.",
+              "answer": "works",
+              "options": [
+                "works",
+                "work",
+                "are"
+              ],
+              "bn": "সে প্রতিদিন কাজ করে।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I ___ to school. My brother ___ to work.",
+              "answers": [
+                "go",
+                "goes"
+              ],
+              "extra": [
+                "is",
+                "reads"
+              ],
+              "bn": "আমি স্কুলে যাই। আমার ভাই কাজে যায়।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "he / she এর সাথে কাজের শব্দে s / es: goes, works, reads।",
+              "correct": "She reads a book.",
+              "wrong": [
+                "She read a book.",
+                "She is read a book."
+              ],
+              "why": "she এর সাথে reads।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "Do you read every day?",
+                  "bn": "তুমি কি প্রতিদিন পড়ো?"
+                },
+                {
+                  "who": "you",
+                  "en": "Yes, I read a book every day.",
+                  "bn": "হ্যাঁ, আমি প্রতিদিন একটা বই পড়ি।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "He is tall.",
+                "I want water."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "My morning",
+          "titleBn": "আমার সকাল",
+          "vocab": [
+            {
+              "en": "get up",
+              "bn": "ঘুম থেকে উঠি"
+            },
+            {
+              "en": "wash",
+              "bn": "ধুই"
+            },
+            {
+              "en": "face",
+              "bn": "মুখ"
+            },
+            {
+              "en": "at",
+              "bn": "-টায় (সময়)"
+            },
+            {
+              "en": "then",
+              "bn": "তারপর"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I get up at six o'clock.",
+              "bn": "আমি ছয়টায় উঠি।",
+              "alt": []
+            },
+            {
+              "en": "I wash my face.",
+              "bn": "আমি মুখ ধুই।",
+              "alt": []
+            },
+            {
+              "en": "Then I eat breakfast.",
+              "bn": "তারপর আমি নাস্তা খাই।",
+              "alt": []
+            },
+            {
+              "en": "We get up at seven o'clock.",
+              "bn": "আমরা সাতটায় উঠি।",
+              "alt": []
+            },
+            {
+              "en": "Then I go to school.",
+              "bn": "তারপর আমি স্কুলে যাই।",
+              "alt": []
+            },
+            {
+              "en": "I get up, then I wash my face.",
+              "bn": "আমি উঠি, তারপর মুখ ধুই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I get up ___ six o'clock.",
+              "answer": "at",
+              "options": [
+                "at",
+                "to",
+                "for"
+              ],
+              "bn": "আমি ছয়টায় উঠি।"
+            },
+            {
+              "text": "I ___ my face.",
+              "answer": "wash",
+              "options": [
+                "wash",
+                "eat",
+                "read"
+              ],
+              "bn": "আমি মুখ ধুই।"
+            }
+          ],
+          "gaps": [
+            {
+              "text": "I get ___ at six. ___ I wash my face.",
+              "answers": [
+                "up",
+                "Then"
+              ],
+              "extra": [
+                "at",
+                "to"
+              ],
+              "bn": "আমি ছয়টায় উঠি। তারপর মুখ ধুই।"
+            }
+          ],
+          "grammar": [
+            {
+              "rule": "কয়টায়: at + সময়।",
+              "correct": "I get up at seven o'clock.",
+              "wrong": [
+                "I get up seven o'clock at.",
+                "I at get up seven o'clock."
+              ],
+              "why": "at বসে সময়ের আগে।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Karim",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What time do you get up?",
+                  "bn": "তুমি কয়টায় ওঠো?"
+                },
+                {
+                  "who": "you",
+                  "en": "I get up at six o'clock.",
+                  "bn": "আমি ছয়টায় উঠি।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I am six years old.",
+                "I wash my face."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "My evening",
+          "titleBn": "আমার সন্ধ্যা",
+          "vocab": [
+            {
+              "en": "evening",
+              "bn": "সন্ধ্যা"
+            },
+            {
+              "en": "night",
+              "bn": "রাত"
+            },
+            {
+              "en": "sleep",
+              "bn": "ঘুমাই"
+            },
+            {
+              "en": "TV",
+              "bn": "টিভি"
+            },
+            {
+              "en": "watch",
+              "bn": "দেখি"
+            }
+          ],
+          "sentences": [
+            {
+              "en": "I watch TV every evening.",
+              "bn": "আমি প্রতি সন্ধ্যায় টিভি দেখি।",
+              "alt": []
+            },
+            {
+              "en": "I sleep at ten o'clock.",
+              "bn": "আমি দশটায় ঘুমাই।",
+              "alt": []
+            },
+            {
+              "en": "We watch TV at night.",
+              "bn": "আমরা রাতে টিভি দেখি।",
+              "alt": []
+            },
+            {
+              "en": "Good night, mother.",
+              "bn": "শুভ রাত্রি, মা।",
+              "alt": []
+            },
+            {
+              "en": "My brother and I watch TV every evening.",
+              "bn": "আমার ভাই আর আমি প্রতি সন্ধ্যায় টিভি দেখি।",
+              "alt": []
+            },
+            {
+              "en": "Then I sleep.",
+              "bn": "তারপর আমি ঘুমাই।",
+              "alt": []
+            }
+          ],
+          "fills": [
+            {
+              "text": "I ___ TV every evening.",
+              "answer": "watch",
+              "options": [
+                "watch",
+                "eat",
+                "wash"
+              ],
+              "bn": "আমি প্রতি সন্ধ্যায় টিভি দেখি।"
+            },
+            {
+              "text": "I sleep ___ ten o'clock.",
+              "answer": "at",
+              "options": [
+                "at",
+                "for",
+                "to"
+              ],
+              "bn": "আমি দশটায় ঘুমাই।"
+            }
+          ],
+          "gaps": [],
+          "grammar": [
+            {
+              "rule": "রোজকার কাজে am / is লাগে না।",
+              "correct": "I sleep at ten o'clock.",
+              "wrong": [
+                "I am sleep at ten o'clock.",
+                "I sleep ten o'clock at."
+              ],
+              "why": "sleep এর আগে am বসে না।"
+            }
+          ],
+          "dialogs": [
+            {
+              "with": "Rina",
+              "lines": [
+                {
+                  "who": "them",
+                  "en": "What time do you sleep?",
+                  "bn": "তুমি কয়টায় ঘুমাও?"
+                },
+                {
+                  "who": "you",
+                  "en": "I sleep at ten o'clock.",
+                  "bn": "আমি দশটায় ঘুমাই।"
+                }
+              ],
+              "reply": 1,
+              "wrong": [
+                "I watch TV.",
+                "Good morning."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
