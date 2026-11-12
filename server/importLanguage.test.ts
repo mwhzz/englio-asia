@@ -282,3 +282,15 @@ describe('new content has no emoji (owner: no emoji in lessons)', () => {
       expect(readFileSync(new URL(`../content/${file}`, import.meta.url), 'utf8')).not.toMatch(/\p{Extended_Pictographic}/u);
     });
 });
+
+describe('Arabic grammar for Bangla speakers (bn-ar-grammar.json)', () => {
+  it('passes the admin checks: 10 simple topics in the Arabic course', async () => {
+    const { importMore } = await import('./importLanguage.ts');
+    const db = openDb(':memory:');
+    importLanguage(db, contentFile('bn-ar-letters.json'));
+    expect(importMore(db, { body: { ...contentFile('bn-ar-grammar.json'), lang: 'bn-ar', draft: false } })).toMatchObject({ grammar: 10 });
+    const topics = readGrammar(db, 'bn-ar', { drafts: false });
+    expect(topics).toHaveLength(10);
+    expect(topics.every((t) => t.id.startsWith('bn-ar-'))).toBe(true);
+  });
+});

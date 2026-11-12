@@ -6,6 +6,7 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Arabic grammar tab: 10 simple topics in Bangla (harakat, no "is", masculine and feminine, ال, my and your, I/you/he/she, verb beginnings, questions, adjectives after the noun, فِي and إِلَى), each with a table, examples, common mistakes and a short quiz.
 ## 1.16.0 (2026-11-12)
 
 - English: 28 units, 112 lessons, 4 in every unit (A1 units 1–11 completed, units 12–28 added), in 5 sections.
