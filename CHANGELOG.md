@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.17.1 (2026-11-12)
+
 - Arabic: a vowel mark explained on its own (যবর, যের, পেশ, সুকুন, তাশদীদ, তানউইন) is now shown big on a dotted circle and highlighted; before, it could not be seen.
 
 ## 1.17.0 (2026-11-12)
