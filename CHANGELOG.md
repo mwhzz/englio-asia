@@ -6,8 +6,11 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.16.0 (2026-11-12)
+
 - English: 28 units, 112 lessons, 4 in every unit (A1 units 1–11 completed, units 12–28 added), in 5 sections.
 - Arabic: 11 units, 45 lessons. Units 6–11 rewritten (greetings, family, numbers and time, food, my day, work and travel): 5 new words a lesson and nothing used before it is taught, in 3 sections.
+
 ## 1.15.0 (2026-11-12)
 
 - First run in two parts: welcome, taste, why, name, daily goal, then the first lesson right away; district and class come after that lesson.
