@@ -67,6 +67,10 @@ describe('nothing comes before it is taught', () => {
     expect(untaught(file('bn-ar-letters.json').units)).toEqual([]);
   });
 
+  it('the whole Arabic course: letters, then batch 01 (units 6–11)', () => {
+    expect(untaught([...file('bn-ar-letters.json').units, ...file('bn-ar-batch-01.json').units])).toEqual([]);
+  });
+
   it('a word or letter used too early is found', () => {
     const units = [{ title: 'U', titleBn: 'U', color: '#000000', tips: [], lessons: [{ title: 'L', titleBn: 'L', vocab: [{ en: 'ب', bn: 'ব' }], sentences: [{ en: 'بَاب', bn: 'বাব', alt: [] }], fills: [] }] }];
     expect(untaught(units as Unit[])).toEqual(['U / L: word "باب"', 'U / L: letter "ا"']);

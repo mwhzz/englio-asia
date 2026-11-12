@@ -44,7 +44,7 @@ The A1 goal and the rules for arranging lessons (so nobody gives up): `docs/LEAR
 
 | # | Unit | Grammar and focus | Status |
 | --- | --- | --- | --- |
-| 12 | My Home | there is / there are, in / on / under | draft |
+| 12 | My Home | there is / there are, in / on / under | live |
 | 13 | Clothes & Shopping | this / these, How much is / are? | draft |
 | 14 | Free Time | like + -ing, can / can't | draft |
 | 15 | Jobs & Work | present simple he works, What do you do? | draft |
@@ -148,7 +148,7 @@ Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar
 | L1–L3 | الحروف ١–٣ · আরবি হরফ | letters 5 at a time (ا ب ت ن ي → د ر و م ه → س ش ك ل ذ → ع ج ح خ ة → ث ز ص ض ط → ظ غ ف ق ء), zabar/zer/pesh/sukun/tashdid, long vowels, and reading lessons (Arabic → its sound in Bangla letters, no meaning needed) | `content/bn-ar-letters.json` | live |
 | L4 | اِقْرَأْ · পড়া অনুশীলন | all letters, ال (sun and moon letters), tanween, reading বিসমিল্লাহ | same | live |
 | L5 | أَوَّلُ كَلَام · প্রথম কথা | first words with meaning: أَنَا, وَ, هَذَا/هَذِهِ, هَلْ/نَعَمْ/لَا, عِنْدِي | same | live |
-| 1–6 (below) | | | `content/bn-ar-batch-01.json` | to rewrite: 475 of 852 words come before they are taught (`server/taughtFirst.test.ts`) |
+| 6–11 | সালাম ও পরিচয় · পরিবার · সংখ্যা ও সময় · খাবার · আমার দিন · কাজ ও ভ্রমণ | 5 new words a lesson, nothing before it is taught | `content/bn-ar-batch-01.json` (rewritten 2026-11-12) | live |
 | 1 | السلام عليكم · সালাম ও পরিচয় | greetings, أنا/أنت/هو/هي, no "is" in Arabic | `content/bn-ar-batch-01.json` | draft |
 | 2 | العائلة · পরিবার | family, هذا/هذه, ة for feminine, ـي = my | same | draft |
 | 3 | الأرقام والوقت · সংখ্যা ও সময় | numbers 1–10, time, days | same | draft |
@@ -164,3 +164,7 @@ Create it in admin → ভাষা → "আরবি শেখা" (code `bn-ar
 - **SSC/HSC board prep:** stays separate (15 topics, 257 questions today).
 - **Adult track (job / other learners):** units 15, 16, 18, 41–43, 51 first, with polite আপনি wording.
 - **Audio:** every word and sentence can get a recording on the admin's শব্দ / অডিও pages; until then the phone's voice reads it.
+
+## Status (2026-11-12)
+
+Live: English 28 units / 112 lessons (units 1–28, 4 lessons each, 5 sections in `src/data/sections.ts`); Arabic for Bangla speakers 11 units / 45 lessons (3 sections). All AI-written content still wants a teacher's check.

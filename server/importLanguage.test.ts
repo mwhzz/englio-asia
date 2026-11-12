@@ -277,7 +277,7 @@ describe('Arabic letters (bn-ar-letters.json), the first units of course bn-ar',
 });
 
 describe('new content has no emoji (owner: no emoji in lessons)', () => {
-  for (const file of ['bn-a1-more.json', 'bn-batch-02.json', 'bn-ar-letters.json'])
+  for (const file of ['bn-a1-more.json', 'bn-batch-01.json', 'bn-batch-02.json', 'bn-ar-letters.json'])
     it(file, () => {
       expect(readFileSync(new URL(`../content/${file}`, import.meta.url), 'utf8')).not.toMatch(/\p{Extended_Pictographic}/u);
     });
