@@ -6,7 +6,10 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.10.1 (2026-11-12)
+
 - Arabic: the hamza (ء) lesson shows ء more often.
+
 ## 1.10.0 (2026-11-12)
 
 - Learn Arabic from zero: letters 5 at a time, then reading (Arabic and its sound in Bangla letters, so you can read without knowing the meaning), ال, tanween and বিসমিল্লাহ, then first words and questions. 5 units, 21 lessons.
