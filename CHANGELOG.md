@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.9.0 (2026-11-12)
+
 - Arabic letters: two units (8 lessons) at the start of the Arabic course teach all 28 letters, zabar/zer/pesh/sukun and the first words, a few letters at a time (draft, for an Arabic teacher's check).
 - English A1 complete: units 1–11 get their grammar and conversation lessons (21 lessons; unit 1 gets "All about me", introducing yourself), as drafts.
 - Units 22–28 (A2: a day out, questions about the past, cooking, festivals, people, sports, phones), 28 lessons, as drafts.
