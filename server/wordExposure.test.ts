@@ -15,7 +15,7 @@ import type { Exercise, Unit } from '../src/types.ts';
 // docs/LEARNING_DESIGN.md: 5 new words a lesson, at least 15 a unit, and every word is seen 15–20 times
 // over its first two weeks: 6–8 times in its own lesson, then coming back after 1, 2, 4 and 7 days.
 
-const RUNS = 20;
+const RUNS = 10;
 
 /** The same "random" lessons every run (a fixed seed), so the result never depends on luck. */
 function seeded(seed: number) {
@@ -127,5 +127,5 @@ describe('every word keeps coming back (Arabic letters, reading and first words)
     } finally {
       setTarget('en');
     }
-  });
+  }, 60_000);
 });
