@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.17.0 (2026-11-12)
+
 - English units 1–5 rewritten by the rules: 5 new words a lesson, no word before it is taught, no emoji (same lessons, learners keep their progress).
 - Admin, lesson page: a lesson check shows the number of new words, how often each word comes in the lesson and its unit, and any word not taught yet.
 - Practice prefers sentences for the learner's goal (work, abroad, exam, ...), and a lesson that serves that goal says so on its first screen.
