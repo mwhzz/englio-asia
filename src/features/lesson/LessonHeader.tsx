@@ -22,10 +22,10 @@ export function LessonHeader({ done, total, hearts, onQuit }: Props) {
         <span className="lesson-pill is-practice" aria-label="Practice">
           <Glyph name="dumbbell" size={16} />
         </span>
-      ) : (
+      ) : hearts === Infinity ? null : (
         <span className="lesson-pill" key={hearts} aria-label={`${hearts} hearts`}>
           <Glyph name="heart" size={15} />
-          {hearts === Infinity ? '∞' : hearts}
+          {hearts}
         </span>
       )}
     </header>

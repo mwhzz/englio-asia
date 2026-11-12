@@ -38,31 +38,23 @@
 
 .trail-seg {
   fill: none;
-  stroke-width: 4;
+  stroke-width: 6;
   stroke-linecap: round;
 }
 
 .trail-seg.is-done {
-  stroke: color-mix(in srgb, var(--u) 45%, transparent);
+  stroke: color-mix(in srgb, var(--u) 70%, transparent);
 }
 
 /* Toward the next lesson: dots in the unit's color, drifting forward. */
 .trail-seg.is-current {
-  stroke: color-mix(in srgb, var(--u) 60%, transparent);
-  stroke-dasharray: 0.1 11;
-  animation: trail-flow 1.4s linear infinite;
+  stroke: color-mix(in srgb, var(--u) 40%, transparent);
 }
 
 .trail-seg.is-locked {
-  stroke: var(--ios-separator);
-  stroke-dasharray: 0.1 11;
+  stroke: color-mix(in srgb, var(--ios-separator) 70%, transparent);
 }
 
-@keyframes trail-flow {
-  to {
-    stroke-dashoffset: -11.1;
-  }
-}
 
 /* ---------- Lesson stops ---------- */
 
@@ -86,8 +78,9 @@
 
 .tstop-btn {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 68px;
+  height: 68px;
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.25);
   display: grid;
   place-items: center;
   border: none;
@@ -118,19 +111,23 @@
 
 /* Next: bigger, with a halo and a ripple. */
 .tstop-current .tstop-btn {
-  width: 72px;
-  height: 72px;
+  width: 84px;
+  height: 84px;
   padding-left: 3px;
   background: var(--u);
   color: #fff;
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--u) 18%, transparent);
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--u) 16%, transparent),
+    0 14px 28px -12px color-mix(in srgb, var(--u) 70%, black);
 }
 
 /* Locked: a quiet white cell with a lock. */
 .tstop-locked .tstop-btn {
   background: var(--ios-cell);
   color: var(--ios-tertiary);
-  box-shadow: inset 0 0 0 0.5px var(--ios-separator);
+  box-shadow:
+    inset 0 0 0 0.5px var(--ios-separator),
+    0 4px 12px -8px rgba(0, 0, 0, 0.2);
 }
 
 /* The lesson's name under its stop. */
@@ -142,12 +139,13 @@
   flex-direction: column;
   align-items: center;
   width: max-content;
-  max-width: 140px;
-  /* A pill in the page color, so the line passes behind the name. */
-  padding: 2px 8px 3px;
-  border-radius: 10px;
-  background: var(--ios-bg);
-  font-size: 13px;
+  max-width: 170px;
+  /* A small white card, so the line passes behind the name. */
+  padding: 5px 12px 6px;
+  border-radius: 12px;
+  background: var(--ios-cell);
+  box-shadow: 0 4px 14px -8px rgba(0, 0, 0, 0.18);
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.25;
   text-align: center;
@@ -375,46 +373,47 @@
   font-weight: 600;
 }
 
-/* ---------- Background detail: a soft glow and line drawings in the unit's color ---------- */
+/* ---------- Background: a soft band in the unit's color and its one big faint word (TrailMark) ---------- */
 
 .trail-stops::before {
   content: '';
   position: absolute;
+  z-index: -2;
+  inset: -24px -16px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--u) 7%, transparent) 22%,
+    color-mix(in srgb, var(--u) 7%, transparent) 78%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.trail-mark {
+  position: absolute;
   z-index: -1;
-  inset: -20px -16px;
-  background: radial-gradient(55% 45% at 50% 50%, color-mix(in srgb, var(--u) 11%, transparent), transparent 72%);
+  inset: 0 -16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
 }
 
-.trail-doodles {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+.trail-mark span {
+  font-size: 112px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--u) 6%, transparent);
+  transform: rotate(-8deg);
 }
 
-.trail-doodle {
-  position: absolute;
-  width: 46px;
-  height: 46px;
-  margin-left: -23px;
-  fill: none;
-  stroke: color-mix(in srgb, var(--u) 34%, transparent);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transform: rotate(var(--tilt));
-  animation: doodle-bob 6s ease-in-out var(--d) infinite;
-}
-
-@keyframes doodle-bob {
-  50% {
-    transform: rotate(var(--tilt)) translateY(-5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .trail-doodle {
-    animation: none;
-  }
+.trail-mark span.is-ar {
+  font-family: var(--font-ar);
+  font-size: 150px;
+  font-weight: 600;
+  letter-spacing: 0;
 }

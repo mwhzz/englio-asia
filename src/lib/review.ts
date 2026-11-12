@@ -12,6 +12,7 @@ export const INTERVALS = [1, 2, 4, 7];
 export function reviewKey(ex: Exercise): string | null {
   switch (ex.kind) {
     case 'select':
+    case 'hearWord':
       return `w:${ex.word.en}`;
     case 'translate':
     case 'listen':

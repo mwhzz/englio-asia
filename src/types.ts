@@ -155,6 +155,8 @@ export interface Unit {
 
 export type ExerciseBody =
   | { kind: 'select'; word: Vocab; choices: Vocab[] }
+  /** Hear a word or letter (nothing written), pick which one it was. */
+  | { kind: 'hearWord'; word: Vocab; choices: Vocab[] }
   | { kind: 'match'; pairs: Vocab[] }
   | { kind: 'translate'; sentence: Sentence; tiles: string[] }
   | { kind: 'listen'; sentence: Sentence; tiles: string[] }

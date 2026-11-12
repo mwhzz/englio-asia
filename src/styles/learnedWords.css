@@ -193,3 +193,153 @@ html[data-target='ar'] .rc-word {
   border-radius: 99px;
   padding: 2px 10px;
 }
+
+/* ---------- Lesson complete (features/lesson/LessonComplete.tsx): a burst, three numbers, the streak ---------- */
+.done-hero {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: grid;
+  place-items: center;
+}
+.done-burst span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--ios-blue);
+  opacity: 0;
+  animation: done-burst 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  animation-delay: calc(0.25s + var(--i) * 0.015s);
+}
+.done-burst span:nth-child(4n + 1) {
+  background: var(--ios-green);
+}
+.done-burst span:nth-child(4n + 2) {
+  background: #ffcc00;
+  width: 8px;
+  height: 8px;
+}
+.done-burst span:nth-child(4n + 3) {
+  background: var(--ios-orange);
+  border-radius: 3px;
+}
+@keyframes done-burst {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--a)) translateY(0) scale(0.4);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateY(-78px) scale(1);
+  }
+}
+.done-stats {
+  width: 100%;
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.done-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 6px 12px;
+  border-radius: 18px;
+  background: var(--ios-cell);
+  box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.25);
+  animation: done-rise 0.45s var(--ease) both;
+}
+.done-stat:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.done-stat:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.done-stat strong {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--tone);
+  font-variant-numeric: tabular-nums;
+}
+.done-stat span {
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+.done-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--ios-orange) 14%, var(--ios-cell));
+  color: color-mix(in srgb, var(--ios-orange) 70%, black);
+  font-weight: 600;
+}
+@keyframes done-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+.lw-chip {
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  animation: done-rise 0.4s var(--ease) both;
+}
+.lw-chip:active {
+  transform: scale(0.95);
+}
+@media (prefers-reduced-motion: reduce) {
+  .done-burst span,
+  .done-stat,
+  .lw-chip {
+    animation: none;
+  }
+}
+
+/* Hear and pick (features/exercises/HearWordExercise.tsx): one big speaker, nothing written. */
+.hw-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.hw-play {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: none;
+  display: grid;
+  place-items: center;
+  background: var(--u, var(--ios-blue));
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 0 10px color-mix(in srgb, var(--u, var(--ios-blue)) 16%, transparent);
+}
+.hw-play:active {
+  transform: scale(0.95);
+}
+.hw-slow {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 99px;
+  border: none;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}

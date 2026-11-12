@@ -3,6 +3,7 @@ import { target } from '../../lib/target';
 
 export const INSTRUCTIONS: Record<Exercise['kind'], { en: string; bn: string }> = {
   select: { en: 'Select the correct word', bn: 'সঠিক শব্দটি বেছে নাও' },
+  hearWord: { en: 'Listen and pick what you heard', bn: 'শুনে বাছো: কোনটা বলল?' },
   match: { en: 'Tap the matching pairs', bn: 'মিলিয়ে জোড়া বানাও' },
   translate: { en: 'Write this in English', bn: 'ইংরেজিতে সাজিয়ে লেখো' },
   listen: { en: 'Tap what you hear', bn: 'যা শুনছ তা সাজাও' },
@@ -26,5 +27,7 @@ export function instructionFor(ex: Exercise): { en: string; bn: string } {
 
 function instructionOf(ex: Exercise): { en: string; bn: string } {
   if (ex.kind === 'speak' && !/\s/.test(ex.sentence.en.trim())) return { en: 'Say this word', bn: 'শব্দটা জোরে বলো' };
+  // A letter or one word to choose (a letters lesson) isn't a sentence.
+  if (ex.kind === 'grammar' && !/\s/.test(ex.grammar.correct.trim())) return { en: 'Choose the right one', bn: 'ঠিকটা বাছো' };
   return INSTRUCTIONS[ex.kind];
 }

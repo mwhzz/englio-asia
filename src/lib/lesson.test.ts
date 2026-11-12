@@ -114,7 +114,7 @@ describe('new exercise kinds', () => {
   it('appear in lessons that have the data', () => {
     const kinds = new Set<string>();
     for (let run = 0; run < RUNS; run++) for (const ex of buildLesson('u1-l1')) kinds.add(ex.kind);
-    for (const kind of ['gaps', 'grammar', 'dialog', 'dictate']) expect(kinds).toContain(kind);
+    for (const kind of ['gaps', 'grammar', 'dialog', 'dictate', 'hearWord']) expect(kinds).toContain(kind);
   });
 
   it('accepts a dictation with a small typo but not a wrong sentence', () => {

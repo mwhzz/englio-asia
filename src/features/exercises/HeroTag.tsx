@@ -4,6 +4,7 @@ import type { Exercise } from '../../types';
 // A short Bangla name for each kind of question.
 const LABELS: Record<Exercise['kind'], string> = {
   select: 'নতুন শব্দ',
+  hearWord: 'শুনে বাছো',
   match: 'জোড়া মেলাও',
   translate: 'অনুবাদ',
   listen: 'শোনো',

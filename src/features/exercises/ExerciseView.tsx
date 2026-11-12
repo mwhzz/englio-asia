@@ -1,6 +1,7 @@
 import type { Exercise } from '../../types';
 import { ChoiceExercise } from './ChoiceExercise';
 import { HearExercise } from './HearExercise';
+import { HearWordExercise } from './HearWordExercise';
 import { DialogExercise } from './DialogExercise';
 import { DictateExercise } from './DictateExercise';
 import { FillExercise } from './FillExercise';
@@ -18,6 +19,8 @@ export function ExerciseView({ ex, disabled, onChange }: ExerciseProps<Exercise>
   switch (ex.kind) {
     case 'select':
       return <SelectExercise ex={ex} disabled={disabled} onChange={onChange} />;
+    case 'hearWord':
+      return <HearWordExercise ex={ex} disabled={disabled} onChange={onChange} />;
     case 'match':
       return <MatchExercise ex={ex} disabled={disabled} onChange={onChange} />;
     case 'translate':

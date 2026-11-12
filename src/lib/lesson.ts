@@ -89,6 +89,10 @@ function generate(
 
   const rest: ExerciseBody[] = [];
   if (words.length >= 3) rest.push({ kind: 'match', pairs: sample(words, 5) });
+  // Hear a new word or letter, nothing written, and pick it: the ear learns it too.
+  if (words.length >= 3)
+    for (const word of sample(words, 2))
+      rest.push({ kind: 'hearWord', word, choices: shuffle([word, ...sample(words.filter((o) => o.bn !== word.bn && o.en !== word.en), 2)]) });
   shuffle(sentences).forEach((sentence, i) => {
     const kinds = KINDS_BY_LEVEL[level];
     rest.push(sentenceExercise(kinds[i % kinds.length], sentence, sentencePool));

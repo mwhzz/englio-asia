@@ -35,6 +35,7 @@ const file = (name: string) => JSON.parse(readFileSync(new URL(`../content/${nam
 function seenText(ex: Exercise): string[] {
   switch (ex.kind) {
     case 'select':
+    case 'hearWord':
       return ex.choices.map((c) => c.en);
     case 'match':
       return ex.pairs.map((p) => p.en);

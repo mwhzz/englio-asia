@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import type { Unit } from '../../../types';
 import type { StopState } from '../StopPopover';
 import { UnitSign } from '../UnitSign';
-import { TrailDoodles } from './TrailDoodles';
+import { TrailMark } from './TrailMark';
 import { TrailLine } from './TrailLine';
 import { trailLayout } from './trailLayout';
 import { TrailStop } from './TrailStop';
@@ -36,7 +36,7 @@ export function TrailUnit({ unit, unitIndex, firstIndex, stateOf, openId, onTogg
       <UnitSign mark={{ unit, unitIndex }} style={{}} done={done} onGuide={onGuide} />
       {unitLocked(unit.id) && <PlusBadge />}
       <div className="trail-stops" style={{ height }}>
-        <TrailDoodles title={unit.title} points={points} />
+        <TrailMark unit={unit} />
         <TrailLine points={points} states={states} height={height} />
         {unit.lessons.map((lesson, lessonIndex) => (
           <TrailStop

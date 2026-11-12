@@ -16,6 +16,7 @@ const ARABIC = JSON.parse(readFileSync(new URL('../content/ar-starter.json', imp
 const solve = (ex: Exercise): string | null => {
   switch (ex.kind) {
     case 'select':
+    case 'hearWord':
       return ex.word.en;
     case 'translate':
     case 'listen':

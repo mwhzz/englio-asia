@@ -1,5 +1,5 @@
 import { useEffect, type CSSProperties } from 'react';
-import { Glyph, type GlyphName } from '../../components/Glyph';
+import { Glyph } from '../../components/Glyph';
 import { toBanglaDigits } from '../../lib/bangla';
 import { playSound } from '../../lib/sounds';
 import { useTween } from '../home/useTween';
@@ -12,20 +12,23 @@ function formatTime(seconds: number): string {
   return toBanglaDigits(`${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`);
 }
 
-/** One row of the results list, with a colored icon tile like iOS Settings. */
-function Row({ icon, color, label, value }: { icon: GlyphName; color: string; label: string; value: string }) {
+/** Twelve dots that burst out of the mark, in the iOS colors. */
+const BURST = Array.from({ length: 12 }, (_, i) => i);
+
+/** One big number with its label. */
+function Stat({ value, label, tone }: { value: string; label: string; tone: string }) {
   return (
-    <li className="done-row">
-      <span className="done-icon" style={{ background: color }}>
-        <Glyph name={icon} size={16} />
-      </span>
+    <div className="done-stat" style={{ '--tone': tone } as CSSProperties}>
+      <strong>{value}</strong>
       <span lang="bn">{label}</span>
-      <strong lang="bn">{value}</strong>
-    </li>
+    </div>
   );
 }
 
-/** End of a lesson: a check in the unit's color, then the results as an iOS grouped list. */
+/**
+ * End of a lesson: a mark with a burst of dots, three big numbers, the streak, then the words just learned
+ * (tap to hear) and when they come back.
+ */
 export function LessonComplete({ result, accent, words = [], onContinue }: { result: LessonResult; accent: string; words?: Vocab[]; onContinue: () => void }) {
   useEffect(() => {
     playSound('complete');
@@ -35,29 +38,39 @@ export function LessonComplete({ result, accent, words = [], onContinue }: { res
   const accuracy = Math.round(useTween(result.accuracy, 800, 400));
 
   const title = result.practice ? 'অনুশীলন শেষ!' : result.perfect ? 'নিখুঁত লেসন!' : 'লেসন শেষ!';
-  const sub = result.practice ? 'Practice complete · you earned a heart' : 'Lesson complete';
+  const sub = result.practice ? 'যা শিখেছ, আরও পাকা হলো' : result.perfect ? 'একটাও ভুল হয়নি, ৫ বোনাস XP' : 'দারুণ, আরেক ধাপ এগোলে';
 
   return (
     <div className="done-screen" style={{ '--u': accent } as CSSProperties}>
       <div className="done-main">
-        <span className="done-mark" aria-hidden="true">
-          <Glyph name={result.perfect ? 'trophy' : 'check'} size={44} />
-        </span>
+        <div className="done-hero">
+          <span className="done-burst" aria-hidden="true">
+            {BURST.map((i) => (
+              <span key={i} style={{ '--a': `${i * 30}deg`, '--i': i } as CSSProperties} />
+            ))}
+          </span>
+          <span className="done-mark" aria-hidden="true">
+            <Glyph name={result.perfect ? 'trophy' : 'check'} size={44} />
+          </span>
+        </div>
         <h1 lang="bn">{title}</h1>
-        <p className="done-sub">{sub}</p>
+        <p className="done-sub" lang="bn">
+          {sub}
+        </p>
 
-        <ul className="done-list">
-          <Row icon="gem" color="var(--ios-orange)" label="XP পেয়েছ" value={`+${toBanglaDigits(xp)}`} />
-          <Row icon="target" color="var(--ios-green)" label="সঠিক উত্তর" value={`${toBanglaDigits(accuracy)}%`} />
-          <Row icon="clock" color="var(--ios-blue)" label="সময়" value={formatTime(result.seconds)} />
-          {result.streakUp && <Row icon="flame" color="var(--ios-red)" label="টানা দিন" value={toBanglaDigits(result.streak)} />}
-        </ul>
-        {!result.practice && <LearnedWords words={words} />}
-        {result.perfect && !result.practice && (
-          <p className="done-note" lang="bn">
-            একটাও ভুল হয়নি, তাই ৫ বোনাস XP যোগ হয়েছে।
+        <div className="done-stats">
+          <Stat value={`+${toBanglaDigits(xp)}`} label="XP" tone="var(--ios-orange)" />
+          <Stat value={`${toBanglaDigits(accuracy)}%`} label="সঠিক" tone="var(--ios-green)" />
+          <Stat value={formatTime(result.seconds)} label="সময়" tone="var(--ios-blue)" />
+        </div>
+        {result.streakUp && (
+          <p className="done-streak" lang="bn">
+            <Glyph name="flame" size={16} />
+            {toBanglaDigits(result.streak)} দিন টানা
           </p>
         )}
+
+        {!result.practice && <LearnedWords words={words} />}
       </div>
 
       <button className="cta" onClick={onContinue} autoFocus>

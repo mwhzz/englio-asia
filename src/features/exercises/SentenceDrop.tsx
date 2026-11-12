@@ -60,10 +60,12 @@ export function SentenceDrop({ text, bn, bank, disabled, onChange }: Props) {
   }
 
   const next = filled.indexOf(null);
+  // Only blanks ("___ ___", letters to place): they follow the meaning's order, left to right.
+  const onlyBlanks = !parts.join('').trim();
   return (
     <>
       <div className="qcard hero drop-card">
-        <p className="drop-sentence">
+        <p className="drop-sentence" dir={onlyBlanks ? 'ltr' : undefined}>
           {parts.map((part, i) => (
             <span key={i}>
               <GlossText text={part} />

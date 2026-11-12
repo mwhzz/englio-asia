@@ -5,6 +5,7 @@ import type { Exercise } from '../../types';
 export function answerOf(ex: Exercise): { en: string; bn: string } | null {
   switch (ex.kind) {
     case 'select':
+    case 'hearWord':
       return { en: ex.word.en, bn: ex.word.bn };
     case 'fill':
       return { en: ex.fill.text.replace('___', ex.fill.answer), bn: ex.fill.bn };

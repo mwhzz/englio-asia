@@ -27,7 +27,7 @@ export function GrammarExercise({ ex, disabled, onChange }: ExerciseProps<Exerci
             type="button"
             role="radio"
             aria-checked={picked === option}
-            className={`row${picked === option ? ' selected' : ''}`}
+            className={`row${/[؀-ۿ]/.test(option) ? ' is-word' : ''}${picked === option ? ' selected' : ''}`}
             disabled={disabled}
             onClick={() => {
               setPicked(option);

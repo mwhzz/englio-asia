@@ -1,11 +1,11 @@
 /** Room above the first stop (below the unit card). */
-const TOP = 58;
+const TOP = 64;
 /** Between two stops. */
-const STEP = 112;
+const STEP = 136;
 /** Extra room under the next lesson for its start button. */
-const START_ROOM = 28;
+const START_ROOM = 32;
 /** How far a stop swings left or right of the middle, in px. */
-export const SWING = 64;
+export const SWING = 76;
 
 export interface TrailPoint {
   /** Offset from the middle of the column, in px. */
@@ -26,7 +26,7 @@ export function trailLayout(count: number, unitIndex: number, currentIndex: numb
     y += STEP + (i === currentIndex ? START_ROOM : 0);
   }
   const last = points[points.length - 1];
-  return { points, height: last.y + (currentIndex === count - 1 ? 100 : 72) };
+  return { points, height: last.y + (currentIndex === count - 1 ? 132 : 104) };
 }
 
 /** A smooth curve from one stop to the next (in the SVG's centered coordinates). */

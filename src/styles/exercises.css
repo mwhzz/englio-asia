@@ -949,9 +949,25 @@
 html[data-target='ar'] :is(.answer-line, .bank, .drop-sentence, .drop-bank, .type-input, .gaps-text) {
   direction: rtl;
 }
+/* Blanks only (letters to place): left to right, in the order the Bangla meaning says them. */
+html[data-target='ar'] .drop-sentence[dir='ltr'] {
+  direction: ltr;
+}
 html[data-target='ar'] :is(.lesson-body, .gt, .feedback) :where(p, h2, h3, li, strong, span, button, label) {
   unicode-bidi: plaintext;
 }
-html[data-target='ar'] :is(.tile, .drop-tile, .prompt-card strong, .feedback-en) {
+html[data-target='ar'] :is(.tile, .drop-tile, .feedback-en) {
   font-size: 1.12em;
+}
+/* Arabic letters and words to tap: big and clear in the Arabic font (a lone letter is small otherwise). */
+html[data-target='ar'] :is(.drop-tile, .slot, .tile) {
+  font-family: var(--font-ar);
+  font-size: 28px;
+  min-width: 64px;
+  justify-content: center;
+}
+html[data-target='ar'] .row.is-word .row-word {
+  font-family: var(--font-ar);
+  font-size: 30px;
+  line-height: 1.5;
 }

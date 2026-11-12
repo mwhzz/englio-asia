@@ -13,7 +13,7 @@ test('home shows the next lesson, stories and league, and every tab opens', asyn
   await expect(page.locator('.upnext')).toBeVisible();
   await expect(page.locator('.sc')).toContainText('গল্প পড়ো');
   await expect(page.locator('.lgc')).toContainText('জেলা লিগ');
-  await expect(page.locator('.trail-doodle').first()).toBeAttached();
+  await expect(page.locator('.trail-mark').first()).toBeAttached();
 
   await openTab(page, 2);
   await expect(page.getByRole('heading', { name: 'শোনা ও বলা' })).toBeVisible();

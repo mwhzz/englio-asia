@@ -16,6 +16,7 @@ const verdict = (ok: boolean, solution: string): Grade => ({ result: ok ? 'corre
 export function grade(ex: Exercise, answer: string): Grade {
   switch (ex.kind) {
     case 'select':
+    case 'hearWord':
       return verdict(answer === ex.word.en, ex.word.en);
     case 'match':
       return { result: 'correct', solution: '' };

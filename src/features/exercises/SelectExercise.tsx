@@ -13,8 +13,8 @@ export function SelectExercise({ ex, disabled, onChange }: ExerciseProps<Exercis
     <>
       <h2 className="prompt-card hero">
         {ex.word.image && !isLowData() && <img className="prompt-pic" src={mediaUrl(ex.word.image)} alt="" />}
-        <small>Which one is</small>
-        <strong lang="bn">{ex.word.bn}?</strong>
+        <small lang="bn">কোনটা?</small>
+        <strong lang="bn">{ex.word.bn}</strong>
       </h2>
       <div className="list" role="radiogroup">
         {ex.choices.map((choice) => (

@@ -1,6 +1,7 @@
 import type { Vocab } from '../../types';
 import { toBanglaDigits } from '../../lib/bangla';
 import { INTERVALS } from '../../lib/review';
+import { speak } from '../../lib/speech';
 
 /** When a word comes back, in plain words (days after today, lib/review.ts INTERVALS). */
 const WHEN = ['কাল', 'পরশু', '৪ দিন পর', '৭ দিন পর'];
@@ -14,14 +15,14 @@ export function LearnedWords({ words }: { words: Vocab[] }) {
   return (
     <section className="lw" aria-label="আজ যা শিখলে">
       <p className="lw-title" lang="bn">
-        আজ শিখলে {toBanglaDigits(words.length)}টা নতুন
+        আজ শিখলে {toBanglaDigits(words.length)}টা নতুন · টাচ করে শোনো
       </p>
       <div className="lw-chips">
-        {words.map((w) => (
-          <span key={w.en} className="lw-chip" title={w.bn}>
+        {words.map((w, i) => (
+          <button key={w.en} type="button" className="lw-chip" style={{ animationDelay: `${600 + i * 90}ms` }} onClick={() => speak(w.en)} aria-label={`${w.en}: ${w.bn}, শোনো`}>
             <span className="lw-en">{w.en}</span>
             <small lang="bn">{w.bn}</small>
-          </span>
+          </button>
         ))}
       </div>
       <p className="lw-title" lang="bn">
