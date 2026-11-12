@@ -6,10 +6,13 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.10.0 (2026-11-12)
+
 - Learn Arabic from zero: letters 5 at a time, then reading (Arabic and its sound in Bangla letters, so you can read without knowing the meaning), ال, tanween and বিসমিল্লাহ, then first words and questions. 5 units, 21 lessons.
 - Every word you learn comes back after 1, 2, 4 and 7 days: each lesson ends with today's words to match again (heard when tapped). Each new word is seen 6+ times in its lesson and 15+ times in two weeks.
 - New words are highlighted in sentences; tap a word you've learned to see its meaning.
 - After an answer, only the English or Arabic part is read aloud (not the Bangla).
+
 ## 1.9.0 (2026-11-12)
 
 - Arabic letters: two units (8 lessons) at the start of the Arabic course teach all 28 letters, zabar/zer/pesh/sukun and the first words, a few letters at a time (draft, for an Arabic teacher's check).
