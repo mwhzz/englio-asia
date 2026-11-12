@@ -6,6 +6,8 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- Arabic: a vowel mark explained on its own (যবর, যের, পেশ, সুকুন, তাশদীদ, তানউইন) is now shown big on a dotted circle and highlighted; before, it could not be seen.
+
 ## 1.17.0 (2026-11-12)
 
 - English units 1–5 rewritten by the rules: 5 new words a lesson, no word before it is taught, no emoji (same lessons, learners keep their progress).
