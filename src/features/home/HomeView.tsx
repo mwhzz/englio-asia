@@ -30,7 +30,10 @@ interface Props {
   onTest: (unitId: string) => void;
 }
 
-/** The home page: greeting with today's sun path, the next lesson, then the lesson path. */
+/**
+ * The home page, in order of what matters: the greeting and today's goal, the next lesson, what comes back
+ * today, anything that needs the learner now, the path; the rest (tasks, league, stories) below it.
+ */
 export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview, onTest }: Props) {
   const { progress } = useProgress();
   const anyDone = Object.keys(progress.completed).length > 0;
@@ -40,27 +43,24 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
       <HomeHeader onProfile={onProfile} />
       <div className="home-body">
         <SyncNote />
-        {/* The next lesson first, so it's in reach without scrolling, even with large text on a small phone. */}
+        {/* 1. The one thing to do: the next lesson, in reach without scrolling, even with large text. */}
         <div className="home-rise" style={{ animationDelay: '140ms' }}>
           <UpNextCard onStart={onStart} onPractice={onPractice} />
         </div>
+        {/* 2. What comes back today. */}
+        <ReviewCard onStart={onReview} />
+        {/* 3. Only what needs the learner now (each shows only when it applies). */}
+        <NoticeBanner />
+        <ReplyCard />
+        <StreakLost onStart={onStart} />
+        <StreakNudge onStart={onStart} />
+        <BackupNudge />
         {!anyDone && !progress.placementTaken && (
           <div className="home-rise" style={{ animationDelay: '100ms' }}>
             <PlacementCard onStart={onPlacement} />
           </div>
         )}
-        <NoticeBanner />
-        <ReplyCard />
-        <StreakNudge onStart={onStart} />
-        <StreakLost onStart={onStart} />
-        {Object.keys(progress.completed).length < 3 && <HowItWorks />}
-        <VoiceHint />
-        {anyDone && <QuestsCard />}
-        <BackupNudge />
-        <ReviewCard onStart={onReview} />
-        {feature('board') && boardCourse() && boardYears(progress.profile?.classId) && <BoardCard delay={190} />}
-        {feature('stories') && anyDone && <StoriesCard />}
-        {feature('league') && anyDone && <LeagueCard />}
+        {!anyDone && <HowItWorks />}
         <section className="home-path home-rise" style={{ animationDelay: '220ms' }}>
           <div className="home-section-head">
             <h2 className="home-section-title">
@@ -70,6 +70,19 @@ export function HomeView({ onStart, onPractice, onProfile, onPlacement, onReview
           </div>
           <LessonTrail onStart={onStart} onTest={onTest} />
         </section>
+        {/* The rest, below the path: today's tasks, the league, stories, board prep. */}
+        {anyDone && (
+          <section className="home-more" aria-label="আরও">
+            <h2 className="home-section-title">
+              <span lang="bn">আরও</span>
+            </h2>
+            <QuestsCard />
+            {feature('league') && <LeagueCard />}
+            {feature('stories') && <StoriesCard />}
+            {feature('board') && boardCourse() && boardYears(progress.profile?.classId) && <BoardCard delay={0} />}
+          </section>
+        )}
+        <VoiceHint />
       </div>
     </div>
   );

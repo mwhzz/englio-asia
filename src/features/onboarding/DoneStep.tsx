@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { playSound } from '../../lib/sounds';
 
 /** A short "all set" moment before the dashboard opens. */
-export function DoneStep({ name, onDone }: { name: string; onDone: () => void }) {
+export function DoneStep({ name, text, onDone }: { name: string; text: string; onDone: () => void }) {
   useEffect(() => {
     playSound('complete');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -22,7 +22,7 @@ export function DoneStep({ name, onDone }: { name: string; onDone: () => void })
         <span lang="bn">সব প্রস্তুত,</span> {name}!
       </h1>
       <p className="ob-sub ob-rise" style={{ textAlign: 'center' }}>
-        <span lang="bn">তোমার ইংরেজি শেখা শুরু হলো।</span>
+        <span lang="bn">{text}</span>
       </p>
     </div>
   );

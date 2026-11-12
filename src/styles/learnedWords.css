@@ -343,3 +343,23 @@ html[data-target='ar'] .rc-word {
   font-size: 14px;
   cursor: pointer;
 }
+.done-goal {
+  margin: 14px 0 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ios-green) 14%, var(--ios-cell));
+  font-size: 15px;
+  line-height: 1.5;
+}
+.done-home {
+  align-self: center;
+  margin-top: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--ios-blue);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}

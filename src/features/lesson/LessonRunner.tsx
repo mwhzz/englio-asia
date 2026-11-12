@@ -15,6 +15,9 @@ import { shouldAskReminder } from '../reminder/askOnce';
 import { ReminderAsk } from '../reminder/ReminderAsk';
 import { LessonComplete } from './LessonComplete';
 import { LessonIntro } from './LessonIntro';
+import { nextStep } from './nextStep';
+import { unitLocked } from '../../lib/appSettings';
+import { markJustDone } from '../../lib/justDone';
 import { LessonView } from './LessonView';
 import { applyRewards, type LessonResult } from './rewards';
 import { feature } from '../../lib/appSettings';
@@ -30,9 +33,12 @@ interface Props {
   mode?: 'listening' | 'speaking';
   onExit: () => void;
   onPractice: () => void;
+  /** After a lesson: open the next one, or the unit's test (the finish screen's main button). */
+  onLesson?: (lessonId: string) => void;
+  onTest?: (unitId: string) => void;
 }
 
-export function LessonRunner({ lessonId, review = false, mode, onExit, onPractice }: Props) {
+export function LessonRunner({ lessonId, review = false, mode, onExit, onPractice, onLesson, onTest }: Props) {
   const { progress, update } = useProgress();
   // A lesson left halfway in the last few hours carries on where it stopped.
   const [resume] = useState(() => (lessonId ? loadResume(lessonId) : null));
@@ -63,11 +69,23 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
   const accent = ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.unit.color ?? (mode ? MODE_COLOR[mode] : PRACTICE_COLOR);
 
   if (result) {
-    const next = () => (lessonId && feature('reminders') && shouldAskReminder(progress.reminder?.on ?? false) ? setAskReminder(true) : onExit());
+    // The one next thing: the unit's test, done for today, or the next lesson (nextStep.ts).
+    const step = nextStep(progress, lessonId, unitLocked);
+    const go = () =>
+      step.kind === 'test' && onTest ? onTest(step.unitId) : step.kind === 'lesson' && onLesson ? onLesson(step.lessonId) : onExit();
+    const ask = lessonId && feature('reminders') && shouldAskReminder(progress.reminder?.on ?? false);
+    const next = () => (ask ? setAskReminder(true) : go());
     return (
       <>
-        <LessonComplete result={result} accent={accent} words={ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.lesson.vocab ?? []} onContinue={next} />
-        {askReminder && <ReminderAsk onDone={onExit} />}
+        <LessonComplete
+          result={result}
+          accent={accent}
+          words={ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.lesson.vocab ?? []}
+          step={step.kind}
+          onContinue={next}
+          onHome={onExit}
+        />
+        {askReminder && <ReminderAsk onDone={go} />}
       </>
     );
   }
@@ -91,7 +109,10 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
       onPractice={onPractice}
       onFinish={(stats) => {
         const today = dayKey();
-        if (lessonId) track('lesson_done', lessonId);
+        if (lessonId) {
+          track('lesson_done', lessonId);
+          markJustDone(lessonId);
+        }
         clearResume();
         setResult(applyRewards(progress, lessonId, stats, today).result);
         update((p) => applyRewards(p, lessonId, stats, today).progress);

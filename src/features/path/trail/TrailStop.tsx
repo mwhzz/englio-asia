@@ -10,6 +10,7 @@ interface Props {
   state: StopState;
   order: number;
   open: boolean;
+  justDone?: boolean;
   onToggle: () => void;
   onStart: () => void;
 }
@@ -19,7 +20,7 @@ interface Props {
  * a play button with a soft ripple for the next one, a lock for the rest.
  * The unit's last lesson is its trophy.
  */
-export function TrailStop({ place, point, state, order, open, onToggle, onStart }: Props) {
+export function TrailStop({ place, point, state, order, open, justDone, onToggle, onStart }: Props) {
   const { lesson, unit, lessonIndex } = place;
   const final = lessonIndex === unit.lessons.length - 1;
   const current = state === 'current';
@@ -29,7 +30,7 @@ export function TrailStop({ place, point, state, order, open, onToggle, onStart 
 
   return (
     <div
-      className={`tstop tstop-${state}${final ? ' is-final' : ''}${open ? ' is-open' : ''}`}
+      className={`tstop tstop-${state}${final ? ' is-final' : ''}${open ? ' is-open' : ''}${justDone ? ' is-just-done' : ''}`}
       style={
         {
           top: point.y,

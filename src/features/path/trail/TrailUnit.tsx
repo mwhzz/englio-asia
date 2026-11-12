@@ -17,6 +17,7 @@ interface Props {
   /** Position of the unit's first lesson in the whole course. */
   firstIndex: number;
   stateOf: (lessonId: string) => StopState;
+  justDone?: string | null;
   openId: string | null;
   onToggle: (lessonId: string) => void;
   onStart: (lessonId: string) => void;
@@ -25,7 +26,7 @@ interface Props {
 }
 
 /** A unit on the path: its card, then its lessons on a curve. */
-export function TrailUnit({ unit, unitIndex, firstIndex, stateOf, openId, onToggle, onStart, onGuide, onTest }: Props) {
+export function TrailUnit({ unit, unitIndex, firstIndex, stateOf, justDone, openId, onToggle, onStart, onGuide, onTest }: Props) {
   const { progress } = useProgress();
   const states = unit.lessons.map((l) => stateOf(l.id));
   const { points, height } = trailLayout(unit.lessons.length, unitIndex, states.indexOf('current'));
@@ -46,6 +47,7 @@ export function TrailUnit({ unit, unitIndex, firstIndex, stateOf, openId, onTogg
             state={states[lessonIndex]}
             order={firstIndex + lessonIndex}
             open={openId === lesson.id}
+            justDone={justDone === lesson.id}
             onToggle={() => onToggle(lesson.id)}
             onStart={() => onStart(lesson.id)}
           />

@@ -6,6 +6,7 @@ import { useTween } from '../home/useTween';
 import type { Vocab } from '../../types';
 import { LearnedWords } from './LearnedWords';
 import type { LessonResult } from './rewards';
+import type { NextStep } from './nextStep';
 import { useEnterKey } from './useEnterKey';
 
 function formatTime(seconds: number): string {
@@ -29,7 +30,20 @@ function Stat({ value, label, tone }: { value: string; label: string; tone: stri
  * End of a lesson: a mark with a burst of dots, three big numbers, the streak, then the words just learned
  * (tap to hear) and when they come back.
  */
-export function LessonComplete({ result, accent, words = [], onContinue }: { result: LessonResult; accent: string; words?: Vocab[]; onContinue: () => void }) {
+interface Props {
+  result: LessonResult;
+  accent: string;
+  words?: Vocab[];
+  /** What the main button does next (nextStep.ts). */
+  step?: NextStep['kind'];
+  onContinue: () => void;
+  onHome?: () => void;
+}
+
+/** The main button's words for each next step. */
+const NEXT: Record<NextStep['kind'], string> = { test: 'ইউনিট টেস্ট দাও', goal: 'হোমে যাও', lesson: 'পরের লেসন', home: 'পরবর্তী' };
+
+export function LessonComplete({ result, accent, words = [], step = 'home', onContinue, onHome }: Props) {
   useEffect(() => {
     playSound('complete');
   }, []);
@@ -70,12 +84,27 @@ export function LessonComplete({ result, accent, words = [], onContinue }: { res
           </p>
         )}
 
+        {step === 'goal' && (
+          <p className="done-goal" lang="bn">
+            আজকের লক্ষ্য পূরণ! কাল আবার এসো, শব্দগুলো ফিরে আসবে।
+          </p>
+        )}
+        {step === 'test' && (
+          <p className="done-goal" lang="bn">
+            ইউনিটের সব লেসন শেষ। টেস্ট দিলে সার্টিফিকেট পাবে।
+          </p>
+        )}
         {!result.practice && <LearnedWords words={words} />}
       </div>
 
       <button className="cta" onClick={onContinue} autoFocus>
-        <span lang="bn">পরবর্তী</span>
+        <span lang="bn">{NEXT[step]}</span>
       </button>
+      {onHome && (step === 'lesson' || step === 'test') && (
+        <button type="button" className="done-home" onClick={onHome}>
+          <span lang="bn">এখন না, হোমে যাও</span>
+        </button>
+      )}
     </div>
   );
 }

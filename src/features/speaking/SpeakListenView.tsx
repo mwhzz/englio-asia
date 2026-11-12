@@ -7,6 +7,7 @@ import { conversationsFor, ROUND } from '../../lib/speakListen';
 import { useProgress } from '../../state/ProgressContext';
 import type { Dialog } from '../../types';
 import { StoriesCard } from '../stories/StoriesCard';
+import { ReviewCard } from '../home/ReviewCard';
 import { Conversation } from './Conversation';
 
 type Part = 'listen' | 'speak';
@@ -14,6 +15,8 @@ type Part = 'listen' | 'speak';
 interface Props {
   onListening: () => void;
   onSpeaking: () => void;
+  /** Today's returning words and missed items (the same as on Home). */
+  onReview?: () => void;
 }
 
 function Card({ icon, color, title, note, onClick, disabled }: { icon: GlyphName; color: string; title: string; note: string; onClick: () => void; disabled?: boolean }) {
@@ -40,7 +43,7 @@ function Card({ icon, color, title, note, onClick, disabled }: { icon: GlyphName
 }
 
 /** The "শোনা ও বলা" tab: listening rounds and stories, pronunciation rounds and acted-out conversations. */
-export default function SpeakListenView({ onListening, onSpeaking }: Props) {
+export default function SpeakListenView({ onListening, onSpeaking, onReview }: Props) {
   const { progress } = useProgress();
   const [part, setPart] = useState<Part>('listen');
   const [talk, setTalk] = useState<Dialog | null>(null);
@@ -53,6 +56,7 @@ export default function SpeakListenView({ onListening, onSpeaking }: Props) {
         <h1 lang="bn">শোনা ও বলা</h1>
         <small>Listening &amp; speaking</small>
       </header>
+      {onReview && <ReviewCard onStart={onReview} />}
 
       <div className="pf-segmented sl-parts" role="tablist">
         {(

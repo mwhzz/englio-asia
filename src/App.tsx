@@ -78,6 +78,15 @@ export default function App() {
     );
   }
 
+  // The second part of the first run (district, class) once the first lesson is done, on Home.
+  if (progress.profile.setupLater && screen.name === 'learn' && Object.keys(progress.completed).length > 0) {
+    return (
+      <Suspense fallback={<div className="ob-loading" />}>
+        <Onboarding phase="finish" />
+      </Suspense>
+    );
+  }
+
   if (needsIntro) {
     return (
       <Suspense fallback={<div className="ob-loading" />}>
@@ -116,7 +125,15 @@ export default function App() {
   if (screen.name === 'lesson' || screen.name === 'practice' || screen.name === 'review') {
     const lessonId = screen.name === 'lesson' ? screen.lessonId : null;
     return guard(
-      <LessonRunner key={lessonId ?? screen.name} lessonId={lessonId} review={screen.name === 'review'} onExit={home} onPractice={practice} />
+      <LessonRunner
+        key={lessonId ?? screen.name}
+        lessonId={lessonId}
+        review={screen.name === 'review'}
+        onExit={home}
+        onPractice={practice}
+        onLesson={(id) => (lessonLocked(id) ? home() : setScreen({ name: 'lesson', lessonId: id }))}
+        onTest={(unitId) => setScreen({ name: 'test', unitId })}
+      />
     );
   }
 
@@ -134,7 +151,11 @@ export default function App() {
       ) : (
         <Suspense fallback={<div className="pf" />}>
           {screen.name === 'speak' ? (
-            <SpeakListenView onListening={() => setScreen({ name: 'listening' })} onSpeaking={() => setScreen({ name: 'speaking' })} />
+            <SpeakListenView
+              onListening={() => setScreen({ name: 'listening' })}
+              onSpeaking={() => setScreen({ name: 'speaking' })}
+              onReview={() => setScreen({ name: 'review' })}
+            />
           ) : screen.name === 'grammar' ? <GrammarView /> : <ProfileView onPlacement={() => setScreen({ name: 'placement' })} />}
         </Suspense>
       )}

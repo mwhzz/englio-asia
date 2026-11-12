@@ -12,6 +12,7 @@ import { learnerLang } from '../../../lib/learnerLang';
 import { sectionTestId } from '../../../lib/sectionTest';
 import { SectionCheckpoint } from './SectionCheckpoint';
 import { SectionHeader } from './SectionHeader';
+import { takeJustDone } from '../../../lib/justDone';
 
 /** Units past the current one that stay open; the rest fold into rows. */
 const OPEN_AHEAD = 1;
@@ -26,6 +27,8 @@ export function LessonTrail({ onStart, onTest }: { onStart: (lessonId: string) =
   const [openId, setOpenId] = useState<string | null>(null);
   const [guide, setGuide] = useState<Unit | null>(null);
   const [unfolded, setUnfolded] = useState<string[]>([]);
+  // The lesson just finished pops as it turns done (once, coming back from it).
+  const [justDone] = useState(takeJustDone);
 
   const currentId = ALL.find((l) => !progress.completed[l.id])?.id;
   const stateOf = (lessonId: string): StopState =>
@@ -64,6 +67,7 @@ export function LessonTrail({ onStart, onTest }: { onStart: (lessonId: string) =
             unitIndex={unitIndex}
             firstIndex={FIRST[unitIndex]}
             stateOf={stateOf}
+            justDone={justDone}
             openId={openId}
             onToggle={(id) => setOpenId(openId === id ? null : id)}
             onStart={onStart}

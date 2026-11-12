@@ -9,6 +9,8 @@ export interface Profile {
   lang?: string;
   /** Why they learn (onboarding WhyStep): work, abroad, exam, quran, travel, fun. */
   goals?: string[];
+  /** District and class not picked yet: asked after the first lesson (onboarding, phase "finish"). */
+  setupLater?: boolean;
 }
 
 export const NAME_MAX = 30;

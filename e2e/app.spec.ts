@@ -94,3 +94,17 @@ test('Back closes a page instead of leaving the app, and asks before quitting a 
   await expect(page.locator('.sheet')).toBeVisible();
   await expect(page.locator('.lesson-body')).toBeVisible();
 });
+
+test('a brand-new learner: welcome, a taste, why, name, daily goal, then straight into the first lesson', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('.ob button').filter({ hasText: 'শুরু করো' }).first().click();
+  await page.locator('.ob-taste-option').filter({ hasText: 'ডাক্তার' }).click();
+  await page.getByRole('button', { name: 'দারুণ, চলো' }).click();
+  await page.getByRole('button', { name: 'পরে বলব' }).click();
+  await page.locator('.ob-field input').fill('Rina');
+  await page.getByRole('button', { name: 'পরবর্তী' }).click();
+  await page.getByRole('button', { name: 'প্রথম লেসন শুরু করো' }).click();
+  // No district or class yet: the first lesson opens on its intro.
+  await expect(page.locator('.li-start')).toBeVisible({ timeout: 10_000 });
+  await expect(page.locator('.li-word').first()).toBeVisible();
+});
