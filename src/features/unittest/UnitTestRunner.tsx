@@ -1,11 +1,11 @@
 import { useState, type CSSProperties } from 'react';
 import { Glyph } from '../../components/Glyph';
-import { COURSE } from '../../data/course';
 import { toBanglaDigits } from '../../lib/bangla';
 import { dayKey } from '../../lib/days';
 import { playSound } from '../../lib/sounds';
 import { applyTest, buildUnitTest, PASS_SCORE, TEST_SIZE, TEST_XP, testScore } from '../../lib/unitTest';
 import { useProgress } from '../../state/ProgressContext';
+import { testUnit } from '../../lib/sectionTest';
 import { setGloss } from '../../lib/gloss';
 import { LessonView } from '../lesson/LessonView';
 import { CertificateView } from './CertificateView';
@@ -15,13 +15,15 @@ import { useBackButton } from '../../lib/backButton';
 export function UnitTestRunner({ unitId, onExit }: { unitId: string; onExit: () => void }) {
   useBackButton(onExit);
   const { update } = useProgress();
-  const unitIndex = COURSE.findIndex((u) => u.id === unitId);
-  const unit = COURSE[unitIndex];
+  // A unit, or a section's checkpoint (all its units together, lib/sectionTest.ts).
+  const found = testUnit(unitId)!;
+  const unit = found.unit;
+  const unitIndex = found.number - 1;
   const [phase, setPhase] = useState<'intro' | 'test' | 'result'>('intro');
   const [run, setRun] = useState(0);
   const [score, setScore] = useState(0);
   // Every word of the unit (and before) can be tapped for its meaning; nothing is marked new in a test.
-  useState(() => setGloss(COURSE.find((u) => u.id === unitId)?.lessons.at(-1)?.id ?? null, false));
+  useState(() => setGloss(unit.lessons.at(-1)?.id ?? null, false));
   const [exercises, setExercises] = useState(() => buildUnitTest(unitId));
   const passed = score >= PASS_SCORE;
   const style = { '--u': unit.color } as CSSProperties;

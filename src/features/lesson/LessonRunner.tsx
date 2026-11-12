@@ -14,6 +14,7 @@ import { useProgress } from '../../state/ProgressContext';
 import { shouldAskReminder } from '../reminder/askOnce';
 import { ReminderAsk } from '../reminder/ReminderAsk';
 import { LessonComplete } from './LessonComplete';
+import { LessonIntro } from './LessonIntro';
 import { LessonView } from './LessonView';
 import { applyRewards, type LessonResult } from './rewards';
 import { feature } from '../../lib/appSettings';
@@ -53,6 +54,8 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
   const [result, setResult] = useState<LessonResult | null>(null);
   // After a real lesson, offer the daily reminder once per phone (see features/reminder).
   const [askReminder, setAskReminder] = useState(false);
+  // A lesson opens on its intro (what it teaches), unless it's carrying on from where it stopped.
+  const [started, setStarted] = useState(!lessonId || !!resume);
   useEffect(() => {
     if (lessonId) track('lesson_start', lessonId);
   }, [lessonId]);
@@ -68,6 +71,9 @@ export function LessonRunner({ lessonId, review = false, mode, onExit, onPractic
       </>
     );
   }
+
+  const lesson = ALL_LESSONS.find((x) => x.lesson.id === lessonId)?.lesson;
+  if (!started && lesson) return <LessonIntro lesson={lesson} accent={accent} onStart={() => setStarted(true)} onQuit={onExit} />;
 
   return (
     <LessonView

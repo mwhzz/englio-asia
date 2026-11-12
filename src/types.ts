@@ -171,7 +171,10 @@ export type ExerciseBody =
   | { kind: 'dictate'; sentence: Sentence }
   | { kind: 'speak'; sentence: Sentence };
 
-export type Exercise = ExerciseBody & { id: string };
+/** A lesson in three parts: new words, practice (easy to hard), and what comes back. */
+export type LessonPart = 'learn' | 'practice' | 'review';
+
+export type Exercise = ExerciseBody & { id: string; part?: LessonPart };
 
 export type ExerciseOf<K extends Exercise['kind']> = Extract<Exercise, { kind: K }>;
 

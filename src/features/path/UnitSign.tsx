@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { Glyph } from '../../components/Glyph';
 import { toBanglaDigits } from '../../lib/bangla';
 import type { Unit } from '../../types';
+import { unitGoal } from '../../data/unitGoals';
 
 interface Props {
   mark: { unit: Unit; unitIndex: number };
@@ -25,6 +26,11 @@ export function UnitSign({ mark, style, done, onGuide }: Props) {
         <small>UNIT {unitIndex + 1}</small>
         <strong>{unit.title}</strong>
         <span lang="bn">{unit.titleBn}</span>
+        {unitGoal(unit.title) && (
+          <span className="usign-goal" lang="bn">
+            শেষে পারবে: {unitGoal(unit.title)}
+          </span>
+        )}
         <span className="usign-bar" aria-hidden="true">
           <span style={{ width: `${(100 * done) / total}%` }} />
         </span>

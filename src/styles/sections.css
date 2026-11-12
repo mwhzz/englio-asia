@@ -1,0 +1,238 @@
+/* The path in sections (features/path/trail/SectionHeader, SectionCheckpoint) and a unit's goal. */
+.sec-head {
+  margin: 28px 0 14px;
+  padding: 20px;
+  border-radius: 22px;
+  background: var(--ios-cell);
+  box-shadow: 0 8px 24px -16px rgba(0, 0, 0, 0.25);
+}
+.sec-kicker {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ios-blue);
+}
+.sec-head h2 {
+  margin: 4px 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.sec-goal {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ios-secondary);
+}
+.sec-bar {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--ios-fill, rgba(120, 120, 128, 0.16));
+  overflow: hidden;
+}
+.sec-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--ios-blue);
+}
+.sec-count {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--ios-secondary);
+}
+.sec-check {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 18px 0 8px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 2px dashed var(--ios-separator);
+  background: transparent;
+  color: var(--ios-secondary);
+  font: inherit;
+  text-align: left;
+}
+.sec-check-icon {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--ios-fill, rgba(120, 120, 128, 0.16));
+}
+.sec-check-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sec-check-text strong {
+  font-size: 17px;
+  color: var(--ios-label);
+}
+.sec-check-text small {
+  font-size: 14px;
+}
+.sec-check.is-ready {
+  border: 0;
+  background: var(--ios-blue);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 12px 26px -14px var(--ios-blue);
+}
+.sec-check.is-ready .sec-check-text strong {
+  color: #fff;
+}
+.sec-check.is-ready .sec-check-icon {
+  background: rgba(255, 255, 255, 0.2);
+}
+.sec-check.is-passed {
+  border: 0;
+  background: color-mix(in srgb, #ffcc00 20%, var(--ios-cell));
+  color: var(--ios-label);
+}
+.usign-goal {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ios-secondary);
+}
+
+/* Before a lesson (features/lesson/LessonIntro.tsx). */
+.li {
+  min-height: calc(100dvh / var(--zoom));
+  display: flex;
+  flex-direction: column;
+  padding: calc(16px + env(safe-area-inset-top)) max(20px, calc((100% - 440px) / 2)) calc(20px + env(safe-area-inset-bottom));
+  background: var(--ios-bg);
+  color: var(--ios-label);
+}
+.li-close {
+  align-self: flex-start;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+.li-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+.li-kicker {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--u);
+}
+.li h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+}
+html[data-target='ar'] .li h1 {
+  font-family: var(--font-ar);
+}
+.li-sub {
+  margin: 0 0 14px;
+  font-size: 17px;
+  color: var(--ios-secondary);
+}
+.li-words {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+}
+.li-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 8px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--ios-cell);
+  color: var(--ios-label);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.25);
+  animation: done-rise 0.4s var(--ease) both;
+}
+.li-word:active {
+  transform: scale(0.96);
+}
+.li-en {
+  font-size: 20px;
+  font-weight: 700;
+}
+html[data-target='ar'] .li-en {
+  font-family: var(--font-ar);
+  font-size: 28px;
+  font-weight: 600;
+}
+.li-word small {
+  font-size: 12px;
+  color: var(--ios-secondary);
+  text-align: center;
+}
+.li-parts {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--ios-cell);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+}
+.li-parts b {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--u) 16%, var(--ios-cell));
+  color: var(--u);
+  font-size: 13px;
+}
+
+/* In a lesson: its three parts under the progress bar (features/lesson/LessonParts.tsx). */
+.lparts {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 480px;
+  display: flex;
+  gap: 6px;
+}
+.lparts li {
+  flex: 1;
+  padding: 5px 0;
+  border-radius: 99px;
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+.lparts li.is-done {
+  background: color-mix(in srgb, var(--u) 22%, var(--ios-cell));
+  color: color-mix(in srgb, var(--u) 75%, var(--ios-label));
+}
+.lparts li.is-now {
+  background: var(--u);
+  color: #fff;
+}

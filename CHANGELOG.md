@@ -6,6 +6,9 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+- The path in sections (“সেকশন ১ · A1 · শুরু: নিজের কথা”) with what each teaches and how far along; a checkpoint test at the end of each section.
+- Each unit card says what you will be able to do after it (“শেষে পারবে: …”).
+- A lesson starts with its new words (tap to hear) and its three parts; during the lesson the parts show under the progress bar: শেখো → অনুশীলন → ফিরে আসা. Practice questions go easy to hard.
 ## 1.13.0 (2026-11-12)
 
 - Learning path: bigger stops and more room, a soft band in the unit's color with one big faint word of the unit behind it, one smooth line (the done part in color); the scattered drawings are gone.

@@ -32,6 +32,7 @@ test('with the largest text on a small phone, the lesson header stays on screen'
   await largest(page);
   await signIn(page);
   await page.locator('.upnext').click();
+  await page.locator('.li-start').click();
   await page.locator('.lesson-stage').waitFor();
   await fits(page, '.lesson-top');
   await fits(page, '.lesson-foot .cta');
@@ -70,6 +71,9 @@ test('with the largest text on a small phone, onboarding fits: text size on the 
 test('a beginner out of hearts can practise (no crash), and the first lessons cost no hearts', async ({ page }) => {
   await signIn(page, 'Karim', { completed: {}, hearts: 0, heartsUpdatedAt: Date.now() });
   await page.locator('.upnext').click();
+  // A lesson opens on its intro; practice (out of hearts) opens straight on a question.
+  await page.locator('.li-start, .lesson-stage').first().waitFor();
+  if (await page.locator('.li-start').count()) await page.locator('.li-start').click();
   await page.locator('.lesson-stage').waitFor();
   await page.goBack().catch(() => undefined);
   await page.goto('/');
@@ -79,6 +83,7 @@ test('a beginner out of hearts can practise (no crash), and the first lessons co
   });
   await page.reload();
   await expect(page.locator('.upnext')).toContainText('হার্ট শেষ');
+  // Out of hearts it opens practice, which has no intro.
   await page.locator('.upnext').click();
   await expect(page.locator('.lesson-stage')).toBeVisible();
   await expect(page.locator('.crash')).toHaveCount(0);

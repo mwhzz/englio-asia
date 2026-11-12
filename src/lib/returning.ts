@@ -41,5 +41,5 @@ export function withReturning(exercises: Exercise[], p: Progress, lessonId: stri
   const chosen = new Set(others.slice(0, RETURNING_OTHERS));
   const singles = buildReview(p, today, { max: RETURNING_OTHERS, skip: new Set(due.filter((k) => !chosen.has(k))) });
 
-  return [...exercises, ...shuffle([...matches.map((m, i) => ({ ...m, id: `rm${i}` })), ...singles])];
+  return [...exercises, ...shuffle([...matches.map((m, i) => ({ ...m, id: `rm${i}` })), ...singles]).map((ex) => ({ ...ex, part: 'review' as const }))];
 }

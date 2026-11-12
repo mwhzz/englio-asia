@@ -1,5 +1,5 @@
 import { ALL_LESSONS } from '../data/course';
-import type { Exercise, ExerciseBody, Fill, Lesson, Sentence, Vocab } from '../types';
+import type { Exercise, ExerciseBody, Fill, Lesson, LessonPart, Sentence, Vocab } from '../types';
 import { tokens } from './answer';
 import { sample, shuffle, uniqueBy } from './random';
 import { wordInSentence } from './wordInSentence';
@@ -67,6 +67,12 @@ function extraExercises(extras: Extras, sentences: Sentence[], speak = false, le
   return out;
 }
 
+/** How hard a kind of question is, for the practice part's order. */
+const RANK: Record<ExerciseBody['kind'], number> = {
+  select: 0, match: 0, hearWord: 1, choice: 2, hear: 3, listen: 4, translate: 5, fill: 6, gaps: 7,
+  grammar: 8, dialog: 9, type: 10, dictate: 11, speak: 12,
+};
+
 function generate(
   vocab: Vocab[],
   sentences: Sentence[],
@@ -87,8 +93,9 @@ function generate(
     choices: shuffle([word, ...sample(uniqueBy(words.length >= 3 ? words : vocabPool, (o) => o.bn).filter((o) => o.bn !== word.bn), 2)]),
   }));
 
+  // Learn: pick each new word, then match them all.
+  if (words.length >= 3) intro.push({ kind: 'match', pairs: sample(words, 5) });
   const rest: ExerciseBody[] = [];
-  if (words.length >= 3) rest.push({ kind: 'match', pairs: sample(words, 5) });
   // Hear a new word or letter, nothing written, and pick it: the ear learns it too.
   if (words.length >= 3)
     for (const word of sample(words, 2))
@@ -104,7 +111,6 @@ function generate(
     .filter((fill): fill is Fill => fill !== null);
   for (const fill of inSentences.slice(0, 2)) rest.push({ kind: 'fill', fill: { ...fill, options: shuffle(fill.options) } });
   rest.push(...extraExercises(extras, sentences, speak, level));
-  rest.push(...review);
   // A second look at the new words near the end (match all, pick three again), so each is seen 6+ times.
   const again: ExerciseBody[] = [];
   if (words.length >= 3) {
@@ -113,7 +119,14 @@ function generate(
       again.push({ kind: 'select', word, choices: shuffle([word, ...sample(words.filter((o) => o.bn !== word.bn), 2)]) });
   }
 
-  return [...intro, ...shuffle(rest), ...again].map((ex, i) => ({ ...ex, id: `ex${i}` }));
+  // Practice runs easy to hard: recognise, hear, read, build, write, say (mixed within each step).
+  const practice = shuffle(rest).sort((a, b) => RANK[a.kind] - RANK[b.kind]);
+  const parts: [ExerciseBody[], LessonPart][] = [
+    [intro, 'learn'],
+    [practice, 'practice'],
+    [[...again, ...review], 'review'],
+  ];
+  return parts.flatMap(([list, part]) => list.map((ex) => ({ ...ex, part }))).map((ex, i) => ({ ...ex, id: `ex${i}` }));
 }
 
 /**

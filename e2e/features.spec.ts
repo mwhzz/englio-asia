@@ -40,6 +40,7 @@ test('board practice: pick a topic, answer a round, and the best score is kept',
 test('a lesson left halfway carries on where it stopped', async ({ page }) => {
   await signIn(page);
   await page.locator('.upnext').click();
+  await page.locator('.li-start').click();
   for (let i = 0; i < 2; i++) {
     await page.locator('.lesson-stage .row').first().click();
     await page.locator('.lesson-foot .cta').click();

@@ -1,17 +1,20 @@
-import { COURSE } from '../data/course';
 import type { Exercise } from '../types';
 import { buildLesson } from './lesson';
 import { recordLesson, type Progress } from './progress';
 import { shuffle } from './random';
+import { testUnit } from './sectionTest';
 
 export const TEST_SIZE = 15;
 /** Percent needed to pass and earn the certificate. */
 export const PASS_SCORE = 80;
 export const TEST_XP = 20;
 
-/** Fifteen questions from across a unit's lessons (matching is left out: it can't be got wrong). */
+/**
+ * Fifteen questions from across a unit's lessons (matching is left out: it can't be got wrong), or a
+ * section's units for its checkpoint (lib/sectionTest.ts).
+ */
 export function buildUnitTest(unitId: string): Exercise[] {
-  const unit = COURSE.find((u) => u.id === unitId);
+  const unit = testUnit(unitId)?.unit;
   if (!unit) throw new Error(`Unknown unit: ${unitId}`);
   const pool = unit.lessons.flatMap((l) => buildLesson(l.id)).filter((ex) => ex.kind !== 'match');
   const seen = new Set<string>();

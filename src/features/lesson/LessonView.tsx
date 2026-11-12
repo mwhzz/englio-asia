@@ -5,6 +5,7 @@ import { HeroTag } from '../exercises/HeroTag';
 import { instructionFor } from '../exercises/instructions';
 import { LessonFooter } from './LessonFooter';
 import { LessonHeader } from './LessonHeader';
+import { LessonParts } from './LessonParts';
 import { OutOfHearts } from './OutOfHearts';
 import { QuitDialog } from './QuitDialog';
 import { useEnterKey } from './useEnterKey';
@@ -47,6 +48,8 @@ export function LessonView({ exercises, practice, accent, where, resume, onSave,
         hearts={practice ? null : unlimitedHearts() ? Infinity : session.hearts}
         onQuit={() => (session.started ? setConfirmQuit(true) : onQuit())}
       />
+
+      <LessonParts part={exercise.part} />
 
       <main className={`lesson-body${feedback?.result === 'wrong' ? ' is-wrong' : ''}`} key={exercise.id}>
         {resume && session.index === resume.index && (

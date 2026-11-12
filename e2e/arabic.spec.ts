@@ -26,6 +26,7 @@ test('an Arabic-speaking learner gets the app in Arabic, right to left, with the
   await expect(page.locator('.upnext')).toContainText('الخطوات الأولى');
   await page.screenshot({ path: 'test-results/ar-home.png' });
   await page.locator('.upnext').click();
+  await page.locator('.li-start').click();
   await expect(page.locator('.lesson-stage')).toBeVisible();
   await page.screenshot({ path: 'test-results/ar-lesson.png' });
 
@@ -51,6 +52,7 @@ test('a Bangla speaker can learn Arabic too: picks it on the first screen, and l
   await signIn(page, 'Tania', { completed: {} });
   await expect(page.locator('.upnext')).toContainText('সালাম ও পরিচয়');
   await page.locator('.upnext').click();
+  await page.locator('.li-start').click();
   await expect(page.locator('.lesson-stage')).toBeVisible();
   await page.screenshot({ path: 'test-results/bn-ar-lesson.png' });
 
@@ -73,7 +75,8 @@ test('switching to a course not started yet: the switch on Home, then its intro,
   await page.locator('.ob-taste-option').filter({ hasText: 'বা' }).click();
   await page.getByRole('button', { name: 'দারুণ, চলো' }).click();
   await page.locator('.ob-list-row').filter({ hasText: 'একদম নতুন' }).click();
-  // Its first lesson opens by itself.
+  // Its first lesson opens by itself, on its intro.
+  await page.locator('.li-start').click();
   await expect(page.locator('.lesson-stage')).toBeVisible();
 
   await request.put(`${API}/admin/languages/bn-ar`, { headers: auth, data: { status: 'draft' } });

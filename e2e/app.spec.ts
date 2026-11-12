@@ -26,6 +26,7 @@ test('home shows the next lesson, stories and league, and every tab opens', asyn
 test('a lesson starts, checks an answer and moves on', async ({ page }) => {
   await signIn(page);
   await page.locator('.upnext').click();
+  await page.locator('.li-start').click();
   await expect(page.getByText(/প্রশ্ন ১\//)).toBeVisible();
   await page.locator('.lesson-stage .row').first().click();
   await page.locator('.lesson-foot .cta').click();
@@ -86,6 +87,7 @@ test('Back closes a page instead of leaving the app, and asks before quitting a 
   await expect(page.locator('.home-greeting')).toBeVisible();
 
   await page.locator('.upnext').click();
+  await page.locator('.li-start').click();
   await page.locator('.lesson-stage .row').first().click();
   await page.locator('.lesson-foot .cta').click();
   await page.goBack();

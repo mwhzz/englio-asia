@@ -6,6 +6,12 @@ import { Guidebook } from '../Guidebook';
 import type { StopState } from '../StopPopover';
 import { TrailUnit } from './TrailUnit';
 import { UnitRow } from './UnitRow';
+import { Fragment } from 'react';
+import { sectionsOf } from '../../../data/sections';
+import { learnerLang } from '../../../lib/learnerLang';
+import { sectionTestId } from '../../../lib/sectionTest';
+import { SectionCheckpoint } from './SectionCheckpoint';
+import { SectionHeader } from './SectionHeader';
 
 /** Units past the current one that stay open; the rest fold into rows. */
 const OPEN_AHEAD = 1;
@@ -24,6 +30,10 @@ export function LessonTrail({ onStart, onTest }: { onStart: (lessonId: string) =
   const currentId = ALL.find((l) => !progress.completed[l.id])?.id;
   const stateOf = (lessonId: string): StopState =>
     progress.completed[lessonId] ? 'done' : lessonId === currentId ? 'current' : 'locked';
+  // The path in sections (data/sections.ts): a heading before each, a checkpoint test after.
+  const sections = sectionsOf(learnerLang(), COURSE.length);
+  const sectionAt = (unitIndex: number) => sections.findIndex((x) => x.from <= unitIndex && unitIndex <= x.to);
+  const lessonsOf = (i: number) => COURSE.slice(sections[i].from, sections[i].to + 1).flatMap((u) => u.lessons);
   const currentUnit = currentId ? COURSE.findIndex((u) => u.lessons.some((l) => l.id === currentId)) : COURSE.length;
 
   // Tapping anywhere outside a lesson closes its card.
@@ -38,12 +48,18 @@ export function LessonTrail({ onStart, onTest }: { onStart: (lessonId: string) =
 
   return (
     <div className="trail">
-      {COURSE.map((unit, unitIndex) =>
-        unitIndex > currentUnit + OPEN_AHEAD && !unfolded.includes(unit.id) ? (
-          <UnitRow key={unit.id} unit={unit} unitIndex={unitIndex} onOpen={() => setUnfolded([...unfolded, unit.id])} />
+      {COURSE.map((unit, unitIndex) => {
+        const si = sectionAt(unitIndex);
+        const section = sections[si];
+        const lessons = si >= 0 ? lessonsOf(si) : [];
+        const done = lessons.filter((l) => progress.completed[l.id]).length;
+        return (
+          <Fragment key={unit.id}>
+            {section && section.from === unitIndex && sections.length > 1 && <SectionHeader section={section} number={si + 1} done={done} total={lessons.length} />}
+            {unitIndex > currentUnit + OPEN_AHEAD && !unfolded.includes(unit.id) ? (
+          <UnitRow unit={unit} unitIndex={unitIndex} onOpen={() => setUnfolded([...unfolded, unit.id])} />
         ) : (
           <TrailUnit
-            key={unit.id}
             unit={unit}
             unitIndex={unitIndex}
             firstIndex={FIRST[unitIndex]}
@@ -54,8 +70,18 @@ export function LessonTrail({ onStart, onTest }: { onStart: (lessonId: string) =
             onGuide={() => setGuide(unit)}
             onTest={() => onTest(unit.id)}
           />
-        ),
-      )}
+            )}
+            {section && section.to === unitIndex && sections.length > 1 && (
+              <SectionCheckpoint
+                number={si + 1}
+                ready={done === lessons.length}
+                passed={progress.unitTests?.[sectionTestId(section)]?.score}
+                onStart={() => onTest(sectionTestId(section))}
+              />
+            )}
+          </Fragment>
+        );
+      })}
 
       <p className="trail-end" lang="bn">
         আরও ইউনিট আসছে
