@@ -6,11 +6,14 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## Unreleased
 
+## 1.13.0 (2026-11-12)
+
 - Learning path: bigger stops and more room, a soft band in the unit's color with one big faint word of the unit behind it, one smooth line (the done part in color); the scattered drawings are gone.
 - New question: hear a word or letter (nothing written) and pick it.
 - Lesson complete: a burst of dots, three big numbers, the streak, and the new words to tap and hear.
 - Arabic letters: “কোনটা? ব” instead of “Which one is বা — ব?”; blanks are just the blank (the question under it); letters on tiles and choices are big; a letter question says “ঠিকটা বাছো”.
 - No hearts when the owner turns hearts off (learning is free): nothing shows in the lesson header.
+
 ## 1.12.0 (2026-11-12)
 
 - New first run: a 30-second taste right after the welcome (hear a letter or word, pick it, can't fail) and the words you already know; why you learn; your name in Arabic letters (Arabic course); minutes a day, when to remind (after breakfast, after Isha…), আপনি and bigger text; then the first lesson opens by itself.
