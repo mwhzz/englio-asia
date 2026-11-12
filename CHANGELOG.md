@@ -8,7 +8,7 @@ Version numbers: **patch** (1.0.0 → 1.0.1) for fixes, **minor** (1.0.0 → 1.1
 
 ## 1.17.1 (2026-11-12)
 
-- Arabic: a vowel mark explained on its own (যবর, যের, পেশ, সুকুন, তাশদীদ, তানউইন) is now shown big on a dotted circle and highlighted; before, it could not be seen.
+- Arabic: a vowel mark explained on its own (যবর, যের, পেশ, সুকুন, তাশদীদ, তানউইন) is now shown big and highlighted on a short line (ـَ) in the Arabic font, so fatha and kasra look slanted as in the Quran.
 
 ## 1.17.0 (2026-11-12)
 

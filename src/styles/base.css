@@ -120,7 +120,7 @@ html[lang='ar'] body {
   line-height: 1.6;
 }
 
-/* An Arabic vowel mark explained on its own ("যবর ( َ )", MixedText): big, on a dotted circle, in a
+/* An Arabic vowel mark explained on its own ("যবর ( َ )", MixedText): big, on a tatweel (ـ), in a
    highlighted chip, so the small mark can be seen. */
 .ar-mark {
   display: inline-block;
